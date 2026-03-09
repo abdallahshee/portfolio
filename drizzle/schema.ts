@@ -1,5 +1,5 @@
 import { pgTable, index, text, timestamp, unique, boolean, foreignKey, pgEnum } from "drizzle-orm/pg-core"
-import { sql } from "drizzle-orm"
+
 
 export const role = pgEnum("role", ['user', 'admin'])
 

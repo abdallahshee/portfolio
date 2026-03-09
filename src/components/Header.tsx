@@ -1,5 +1,3 @@
-import { Link } from '@tanstack/react-router'
-
 import { useState } from 'react';
 import { Burger, Drawer, ScrollArea } from '@mantine/core';
 
@@ -7,7 +5,7 @@ export default function Header() {
     const [opened, setOpened] = useState(false);
 
   const links = [
-    { label: 'Home', href: '#home' },
+    { label: 'Home', href: '/' },
     { label: 'Projects', href: 'projects' },
     { label: 'About', href: 'about' },
     { label: 'Contact', href: 'contact' },

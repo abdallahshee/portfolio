@@ -1,6 +1,6 @@
 import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
 import { pgTable, text, timestamp ,boolean} from "drizzle-orm/pg-core";
-import { createInsertSchema, createSelectSchema} from 'drizzle-zod';
+import { createInsertSchema} from 'drizzle-zod';
 import { nanoid } from "nanoid";
 
 export const project = pgTable('project', {
@@ -19,11 +19,9 @@ export const project = pgTable('project', {
 })
 
 export type Project=InferSelectModel<typeof project>
-
 export type ProjectRequest=Omit<InferInsertModel<typeof project>, "id"|"createdAt"|"updatedAt">
 export const ProjectSchema = createInsertSchema(project).omit({id:true, createdAt:true,updatedAt:true})
-// export const NewProjectSchema = createInsertSchema()
-// .omit({id:true,createdAt:true, updatedAt:true})
+
 
 
 

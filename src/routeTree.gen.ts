@@ -12,9 +12,15 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
+import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
+import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as ProjectsNewRouteImport } from './routes/projects/new'
+import { Route as AccountVerifyRouteImport } from './routes/account/verify'
+import { Route as AccountResetPasswordRouteImport } from './routes/account/reset-password'
+import { Route as AccountRegisterRouteImport } from './routes/account/register'
+import { Route as AccountForgotPasswordRouteImport } from './routes/account/forgot-password'
 import { Route as ProjectsEditIdRouteImport } from './routes/projects/edit.$id'
 import { Route as ProjectsDetailsIdRouteImport } from './routes/projects/details.$id'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
@@ -34,6 +40,11 @@ const ProjectsRouteRoute = ProjectsRouteRouteImport.update({
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AccountRouteRoute = AccountRouteRouteImport.update({
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -44,10 +55,35 @@ const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
+const AccountIndexRoute = AccountIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AccountRouteRoute,
+} as any)
 const ProjectsNewRoute = ProjectsNewRouteImport.update({
   id: '/new',
   path: '/new',
   getParentRoute: () => ProjectsRouteRoute,
+} as any)
+const AccountVerifyRoute = AccountVerifyRouteImport.update({
+  id: '/verify',
+  path: '/verify',
+  getParentRoute: () => AccountRouteRoute,
+} as any)
+const AccountResetPasswordRoute = AccountResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => AccountRouteRoute,
+} as any)
+const AccountRegisterRoute = AccountRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => AccountRouteRoute,
+} as any)
+const AccountForgotPasswordRoute = AccountForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => AccountRouteRoute,
 } as any)
 const ProjectsEditIdRoute = ProjectsEditIdRouteImport.update({
   id: '/edit/$id',
@@ -67,10 +103,16 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/account': typeof AccountRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/account/forgot-password': typeof AccountForgotPasswordRoute
+  '/account/register': typeof AccountRegisterRoute
+  '/account/reset-password': typeof AccountResetPasswordRoute
+  '/account/verify': typeof AccountVerifyRoute
   '/projects/new': typeof ProjectsNewRoute
+  '/account/': typeof AccountIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/projects/details/$id': typeof ProjectsDetailsIdRoute
@@ -80,7 +122,12 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/account/forgot-password': typeof AccountForgotPasswordRoute
+  '/account/register': typeof AccountRegisterRoute
+  '/account/reset-password': typeof AccountResetPasswordRoute
+  '/account/verify': typeof AccountVerifyRoute
   '/projects/new': typeof ProjectsNewRoute
+  '/account': typeof AccountIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/projects/details/$id': typeof ProjectsDetailsIdRoute
@@ -89,10 +136,16 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/account': typeof AccountRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
+  '/account/forgot-password': typeof AccountForgotPasswordRoute
+  '/account/register': typeof AccountRegisterRoute
+  '/account/reset-password': typeof AccountResetPasswordRoute
+  '/account/verify': typeof AccountVerifyRoute
   '/projects/new': typeof ProjectsNewRoute
+  '/account/': typeof AccountIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/projects/details/$id': typeof ProjectsDetailsIdRoute
@@ -102,10 +155,16 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/account'
     | '/projects'
     | '/about'
     | '/contact'
+    | '/account/forgot-password'
+    | '/account/register'
+    | '/account/reset-password'
+    | '/account/verify'
     | '/projects/new'
+    | '/account/'
     | '/projects/'
     | '/api/auth/$'
     | '/projects/details/$id'
@@ -115,7 +174,12 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/contact'
+    | '/account/forgot-password'
+    | '/account/register'
+    | '/account/reset-password'
+    | '/account/verify'
     | '/projects/new'
+    | '/account'
     | '/projects'
     | '/api/auth/$'
     | '/projects/details/$id'
@@ -123,10 +187,16 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/account'
     | '/projects'
     | '/about'
     | '/contact'
+    | '/account/forgot-password'
+    | '/account/register'
+    | '/account/reset-password'
+    | '/account/verify'
     | '/projects/new'
+    | '/account/'
     | '/projects/'
     | '/api/auth/$'
     | '/projects/details/$id'
@@ -135,6 +205,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AccountRouteRoute: typeof AccountRouteRouteWithChildren
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
@@ -164,6 +235,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -178,12 +256,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
+    '/account/': {
+      id: '/account/'
+      path: '/'
+      fullPath: '/account/'
+      preLoaderRoute: typeof AccountIndexRouteImport
+      parentRoute: typeof AccountRouteRoute
+    }
     '/projects/new': {
       id: '/projects/new'
       path: '/new'
       fullPath: '/projects/new'
       preLoaderRoute: typeof ProjectsNewRouteImport
       parentRoute: typeof ProjectsRouteRoute
+    }
+    '/account/verify': {
+      id: '/account/verify'
+      path: '/verify'
+      fullPath: '/account/verify'
+      preLoaderRoute: typeof AccountVerifyRouteImport
+      parentRoute: typeof AccountRouteRoute
+    }
+    '/account/reset-password': {
+      id: '/account/reset-password'
+      path: '/reset-password'
+      fullPath: '/account/reset-password'
+      preLoaderRoute: typeof AccountResetPasswordRouteImport
+      parentRoute: typeof AccountRouteRoute
+    }
+    '/account/register': {
+      id: '/account/register'
+      path: '/register'
+      fullPath: '/account/register'
+      preLoaderRoute: typeof AccountRegisterRouteImport
+      parentRoute: typeof AccountRouteRoute
+    }
+    '/account/forgot-password': {
+      id: '/account/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/account/forgot-password'
+      preLoaderRoute: typeof AccountForgotPasswordRouteImport
+      parentRoute: typeof AccountRouteRoute
     }
     '/projects/edit/$id': {
       id: '/projects/edit/$id'
@@ -209,6 +322,26 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface AccountRouteRouteChildren {
+  AccountForgotPasswordRoute: typeof AccountForgotPasswordRoute
+  AccountRegisterRoute: typeof AccountRegisterRoute
+  AccountResetPasswordRoute: typeof AccountResetPasswordRoute
+  AccountVerifyRoute: typeof AccountVerifyRoute
+  AccountIndexRoute: typeof AccountIndexRoute
+}
+
+const AccountRouteRouteChildren: AccountRouteRouteChildren = {
+  AccountForgotPasswordRoute: AccountForgotPasswordRoute,
+  AccountRegisterRoute: AccountRegisterRoute,
+  AccountResetPasswordRoute: AccountResetPasswordRoute,
+  AccountVerifyRoute: AccountVerifyRoute,
+  AccountIndexRoute: AccountIndexRoute,
+}
+
+const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
+  AccountRouteRouteChildren,
+)
+
 interface ProjectsRouteRouteChildren {
   ProjectsNewRoute: typeof ProjectsNewRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
@@ -229,6 +362,7 @@ const ProjectsRouteRouteWithChildren = ProjectsRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AccountRouteRoute: AccountRouteRouteWithChildren,
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
