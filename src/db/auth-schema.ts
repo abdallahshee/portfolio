@@ -1,11 +1,11 @@
-import { relations } from "drizzle-orm";
+import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, text, timestamp, boolean, index, pgEnum } from "drizzle-orm/pg-core";
-const roleEnum = pgEnum("role", ["user", "admin"])
+export const roleEnum = pgEnum("role", ["user", "admin"])
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
-    role: roleEnum().$default(() => "user"),
+  role: roleEnum("role").$default(() => "user"),
   emailVerified: boolean("email_verified").default(false).notNull(),
   image: text("image"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
@@ -94,3 +94,5 @@ export const accountRelations = relations(account, ({ one }) => ({
   }),
 }));
 
+export type User=InferSelectModel<typeof user>
+export type NewUser=InferInsertModel<typeof user>

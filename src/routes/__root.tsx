@@ -9,7 +9,7 @@ import Footer from '../components/Footer'
 import Header from '../components/Header'
 import '@mantine/core/styles.css';
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
-
+import '@mantine/core/styles.css';
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import { createTheme, MantineProvider } from '@mantine/core';
 import appCss from '../styles.css?url'
@@ -55,7 +55,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
         
-        <MantineProvider><TanStackQueryProvider>
+        <MantineProvider>
+        <TanStackQueryProvider>
           <Header />
           {children}
           <Footer />

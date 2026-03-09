@@ -1,3 +1,5 @@
+
+CREATE TYPE "public"."role" AS ENUM('user', 'admin');--> statement-breakpoint
 CREATE TABLE "account" (
 	"id" text PRIMARY KEY NOT NULL,
 	"account_id" text NOT NULL,
@@ -19,7 +21,7 @@ CREATE TABLE "project" (
 	"name" text NOT NULL,
 	"url" text NOT NULL,
 	"description" text NOT NULL,
-	"image" text,
+	"imageUrl" text,
 	"isPublic" boolean NOT NULL,
 	"githubUrl" text NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
