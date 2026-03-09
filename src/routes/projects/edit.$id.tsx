@@ -4,7 +4,7 @@ import { Container, TextInput, Textarea, Checkbox, Button, Title, Group, Stack }
 import { useForm } from '@mantine/form';
 import type { ProjectRequest } from '../../db/project-schema';
 
-export const Route = createFileRoute('/projects/edit/$projectId')({
+export const Route = createFileRoute('/projects/edit/$id')({
   component: RouteComponent,
 })
 
@@ -24,7 +24,7 @@ function RouteComponent() {
   const [submitting, setSubmitting] = useState(false);
 
  return(
-      <Container size="md" className="py-20">
+      <Container size="md" className="">
       <Title order={2} className="text-3xl font-bold mb-8 text-center">
         Create New Project
       </Title>

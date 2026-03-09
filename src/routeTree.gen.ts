@@ -15,8 +15,8 @@ import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
 import { Route as ProjectsNewRouteImport } from './routes/projects/new'
-import { Route as ProjectsProjectIdRouteImport } from './routes/projects/$projectId'
-import { Route as ProjectsEditProjectIdRouteImport } from './routes/projects/edit.$projectId'
+import { Route as ProjectsEditIdRouteImport } from './routes/projects/edit.$id'
+import { Route as ProjectsDetailsIdRouteImport } from './routes/projects/details.$id'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const ContactRoute = ContactRouteImport.update({
@@ -49,14 +49,14 @@ const ProjectsNewRoute = ProjectsNewRouteImport.update({
   path: '/new',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
-const ProjectsProjectIdRoute = ProjectsProjectIdRouteImport.update({
-  id: '/$projectId',
-  path: '/$projectId',
+const ProjectsEditIdRoute = ProjectsEditIdRouteImport.update({
+  id: '/edit/$id',
+  path: '/edit/$id',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
-const ProjectsEditProjectIdRoute = ProjectsEditProjectIdRouteImport.update({
-  id: '/edit/$projectId',
-  path: '/edit/$projectId',
+const ProjectsDetailsIdRoute = ProjectsDetailsIdRouteImport.update({
+  id: '/details/$id',
+  path: '/details/$id',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
@@ -70,21 +70,21 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/projects/new': typeof ProjectsNewRoute
   '/projects/': typeof ProjectsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/projects/edit/$projectId': typeof ProjectsEditProjectIdRoute
+  '/projects/details/$id': typeof ProjectsDetailsIdRoute
+  '/projects/edit/$id': typeof ProjectsEditIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/projects/new': typeof ProjectsNewRoute
   '/projects': typeof ProjectsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/projects/edit/$projectId': typeof ProjectsEditProjectIdRoute
+  '/projects/details/$id': typeof ProjectsDetailsIdRoute
+  '/projects/edit/$id': typeof ProjectsEditIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -92,11 +92,11 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
-  '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/projects/new': typeof ProjectsNewRoute
   '/projects/': typeof ProjectsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/projects/edit/$projectId': typeof ProjectsEditProjectIdRoute
+  '/projects/details/$id': typeof ProjectsDetailsIdRoute
+  '/projects/edit/$id': typeof ProjectsEditIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -105,32 +105,32 @@ export interface FileRouteTypes {
     | '/projects'
     | '/about'
     | '/contact'
-    | '/projects/$projectId'
     | '/projects/new'
     | '/projects/'
     | '/api/auth/$'
-    | '/projects/edit/$projectId'
+    | '/projects/details/$id'
+    | '/projects/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
     | '/contact'
-    | '/projects/$projectId'
     | '/projects/new'
     | '/projects'
     | '/api/auth/$'
-    | '/projects/edit/$projectId'
+    | '/projects/details/$id'
+    | '/projects/edit/$id'
   id:
     | '__root__'
     | '/'
     | '/projects'
     | '/about'
     | '/contact'
-    | '/projects/$projectId'
     | '/projects/new'
     | '/projects/'
     | '/api/auth/$'
-    | '/projects/edit/$projectId'
+    | '/projects/details/$id'
+    | '/projects/edit/$id'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -185,18 +185,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsNewRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
-    '/projects/$projectId': {
-      id: '/projects/$projectId'
-      path: '/$projectId'
-      fullPath: '/projects/$projectId'
-      preLoaderRoute: typeof ProjectsProjectIdRouteImport
+    '/projects/edit/$id': {
+      id: '/projects/edit/$id'
+      path: '/edit/$id'
+      fullPath: '/projects/edit/$id'
+      preLoaderRoute: typeof ProjectsEditIdRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
-    '/projects/edit/$projectId': {
-      id: '/projects/edit/$projectId'
-      path: '/edit/$projectId'
-      fullPath: '/projects/edit/$projectId'
-      preLoaderRoute: typeof ProjectsEditProjectIdRouteImport
+    '/projects/details/$id': {
+      id: '/projects/details/$id'
+      path: '/details/$id'
+      fullPath: '/projects/details/$id'
+      preLoaderRoute: typeof ProjectsDetailsIdRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
     '/api/auth/$': {
@@ -210,17 +210,17 @@ declare module '@tanstack/react-router' {
 }
 
 interface ProjectsRouteRouteChildren {
-  ProjectsProjectIdRoute: typeof ProjectsProjectIdRoute
   ProjectsNewRoute: typeof ProjectsNewRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
-  ProjectsEditProjectIdRoute: typeof ProjectsEditProjectIdRoute
+  ProjectsDetailsIdRoute: typeof ProjectsDetailsIdRoute
+  ProjectsEditIdRoute: typeof ProjectsEditIdRoute
 }
 
 const ProjectsRouteRouteChildren: ProjectsRouteRouteChildren = {
-  ProjectsProjectIdRoute: ProjectsProjectIdRoute,
   ProjectsNewRoute: ProjectsNewRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
-  ProjectsEditProjectIdRoute: ProjectsEditProjectIdRoute,
+  ProjectsDetailsIdRoute: ProjectsDetailsIdRoute,
+  ProjectsEditIdRoute: ProjectsEditIdRoute,
 }
 
 const ProjectsRouteRouteWithChildren = ProjectsRouteRoute._addFileChildren(

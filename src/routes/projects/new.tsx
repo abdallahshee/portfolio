@@ -1,8 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { useState } from 'react';
+
 import { Container, TextInput, Textarea, Checkbox, Button, Title, Group, Stack } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import type { ProjectRequest } from '@/db/project-schema';
+import { useServerFn } from '@tanstack/react-start';
+import { createProject } from '@/server/project.functions';
 
 
 export const Route = createFileRoute('/projects/new')({
@@ -21,8 +23,10 @@ function RouteComponent() {
       isPublic: true,
     },
   });
-
-  const [submitting, setSubmitting] = useState(false);
+const createProjectFn=useServerFn(createProject)
+const handleSubmit=async(values:ProjectRequest)=>{
+  await createProjectFn({data:{...values}})
+}
 
  return(
       <Container size="md" className="py-20">
@@ -30,7 +34,7 @@ function RouteComponent() {
         Create New Project
       </Title>
 
-      <form onSubmit={form.onSubmit(()=>console.log('first'))} >
+      <form onSubmit={form.onSubmit(handleSubmit)} >
         <Stack>
         {/* Project Title */}
         <TextInput
@@ -78,7 +82,7 @@ function RouteComponent() {
         <Group  mt="md">
           <Button
             type="submit"
-            loading={submitting}
+            // loading={submitting}
             className="bg-indigo-500 hover:bg-indigo-600 text-white"
           >
             Create Project

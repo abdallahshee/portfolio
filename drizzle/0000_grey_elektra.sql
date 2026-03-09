@@ -1,5 +1,17 @@
-
 CREATE TYPE "public"."role" AS ENUM('user', 'admin');--> statement-breakpoint
+CREATE TABLE "project" (
+	"id" uuid PRIMARY KEY NOT NULL,
+	"name" text NOT NULL,
+	"url" text NOT NULL,
+	"description" text NOT NULL,
+	"imageUrl" text,
+	"isPublic" boolean NOT NULL,
+	"githubUrl" text NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "project_description_unique" UNIQUE("description")
+);
+--> statement-breakpoint
 CREATE TABLE "account" (
 	"id" text PRIMARY KEY NOT NULL,
 	"account_id" text NOT NULL,
@@ -14,19 +26,6 @@ CREATE TABLE "account" (
 	"password" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp NOT NULL
-);
---> statement-breakpoint
-CREATE TABLE "project" (
-	"id" text PRIMARY KEY NOT NULL,
-	"name" text NOT NULL,
-	"url" text NOT NULL,
-	"description" text NOT NULL,
-	"imageUrl" text,
-	"isPublic" boolean NOT NULL,
-	"githubUrl" text NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"updated_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "project_description_unique" UNIQUE("description")
 );
 --> statement-breakpoint
 CREATE TABLE "session" (

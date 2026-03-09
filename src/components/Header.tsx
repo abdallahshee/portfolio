@@ -1,6 +1,5 @@
 import { Link } from '@tanstack/react-router'
-import BetterAuthHeader from '../integrations/better-auth/header-user.tsx'
-import ThemeToggle from './ThemeToggle'
+
 import { useState } from 'react';
 import { Burger, Drawer, ScrollArea } from '@mantine/core';
 
@@ -9,9 +8,9 @@ export default function Header() {
 
   const links = [
     { label: 'Home', href: '#home' },
-    { label: 'Projects', href: '#projects' },
-    { label: 'About', href: '#about' },
-    { label: 'Contact', href: '#contact' },
+    { label: 'Projects', href: 'projects' },
+    { label: 'About', href: 'about' },
+    { label: 'Contact', href: 'contact' },
   ];
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white dark:bg-slate-900 shadow-md">
