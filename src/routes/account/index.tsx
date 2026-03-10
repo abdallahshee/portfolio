@@ -11,7 +11,6 @@ import {
   Stack,
   Checkbox
 } from '@mantine/core'
-
 import { notifications } from '@mantine/notifications'
 import { Github, Globe } from 'lucide-react'
 import { Link, createFileRoute, useSearch } from '@tanstack/react-router'
@@ -82,7 +81,6 @@ function RouteComponent() {
         <Title order={2} className="text-center mb-4">
           Sign In
         </Title>
-
         {/* OAuth Buttons */}
         <Stack gap="sm" className="mb-4">
           <Button
@@ -96,7 +94,6 @@ function RouteComponent() {
               <span>Sign in with GitHub</span>
             </div>
           </Button>
-
           <Button
             variant="outline"
             fullWidth
@@ -108,9 +105,7 @@ function RouteComponent() {
             </div>
           </Button>
         </Stack>
-
         <Divider label="Or continue with email" labelPosition="center" my="md" />
-
         {/* Email / Password Form */}
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="sm">
@@ -120,31 +115,26 @@ function RouteComponent() {
               {...form.getInputProps('email')}
               required
             />
-
             <PasswordInput
               label="Password"
               placeholder="Your password"
               {...form.getInputProps('password')}
               required
             />
-
             <Checkbox
               label="Remember me"
               {...form.getInputProps('rememberMe', { type: 'checkbox' })}
             />
-
             <Button type="submit" fullWidth mt="sm">
               Sign In
             </Button>
           </Stack>
         </form>
-
         {/* Links */}
         <Group justify="apart" mt="md">
           <Anchor component={Link} to="/account/register" size="sm">
             Don’t have an account? Sign Up
           </Anchor>
-
           <Anchor component={Link} to="/account/forgot-password" size="sm">
             Forgot Password?
           </Anchor>

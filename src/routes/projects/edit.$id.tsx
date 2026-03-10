@@ -2,31 +2,30 @@ import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { Container, TextInput, Textarea, Checkbox, Button, Title, Group, Stack, ActionIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import type { ProjectRequest } from '@/db/project-schema';
-import { createProject, updateProject } from '@/server/project.functions';
+import { updateProject } from '@/server/project.functions';
 import { Plus, Trash } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
 import { getProjectByIdQueryOptions } from '@/queries/project-querie';
 
-
-
 export const Route = createFileRoute('/projects/edit/$id')({
-    loader: async ({ context, params }) => {
-    console.log('PARAMS IS HERE '+ params.id)
-  const data = await context.queryClient.fetchQuery(
-  getProjectByIdQueryOptions(params.id)
-);
+  loader: async ({ context, params }) => {
+    console.log('PARAMS IS HERE ' + params.id)
+    const data = await context.queryClient.fetchQuery(
+      getProjectByIdQueryOptions(params.id)
+    );
     return data;
   },
- 
+
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const project=Route.useLoaderData()
+  const project = Route.useLoaderData()
   const form = useForm<ProjectRequest>({
-    initialValues: 
-    {...project!
+    initialValues:
+    {
+      ...project!
     },
   });
 
@@ -34,7 +33,7 @@ function RouteComponent() {
   const querClient = useQueryClient()
   const router = useRouter()
   const handleSubmit = async (values: ProjectRequest) => {
-    await createProjectFn ({ data: { projectId:project?.id!, projectShema:{...values} } });
+    await createProjectFn({ data: { projectId: project?.id!, projectShema: { ...values } } });
     await querClient.invalidateQueries({ queryKey: ['projects'] })
     router.navigate({ to: '/projects' });
   };

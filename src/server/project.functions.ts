@@ -1,11 +1,9 @@
 
 import { db } from "../db/index";
-import { project, ProjectSchema, type ProjectRequest } from "@/db/project-schema";
+import { project, ProjectSchema} from "@/db/project-schema";
 import zod from "zod"
 import { desc, eq } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
-
-
 
 export const getAllProjects = createServerFn({ method: "GET" })
   .handler(async () => {
@@ -17,7 +15,6 @@ export const getAllProjects = createServerFn({ method: "GET" })
       console.error("Error fetching projects:", err);
       // Return an empty array or throw a meaningful error
       return [];
-
     }
   });
 
@@ -27,7 +24,6 @@ export const createProject = createServerFn({ method: 'POST' })
     try {
       // Insert the project into the database
       await db.insert(project).values({ ...data });
-
       return { success: true, message: 'Project created successfully' };
     } catch (err) {
       console.error('Error creating project:', err);
@@ -58,23 +54,20 @@ export const updateProject = createServerFn({ method: "POST" })
       await db.update(project)
         .set({ ...data.projectShema })
         .where(eq(project.id, data.projectId));
-
     } catch (err) {
       console.log(err)
     }
   })
 
 export const getTop3Projects = createServerFn({ method: "GET" })
-.inputValidator((data:{limit:number})=>data)
+  .inputValidator((data: { limit: number }) => data)
   .handler(async () => {
     try {
-
-const topProjects = await db
-  .select({ id: project.id, title: project.title, imageUrl: project.imageUrl, rate: project.rate, createdAt: project.createdAt })
-  .from(project)
-  .orderBy(desc(project.rate))
-  .limit(3); // must be literal, not param
-      
+      const topProjects = await db
+        .select({ id: project.id, title: project.title, imageUrl: project.imageUrl, rate: project.rate, createdAt: project.createdAt })
+        .from(project)
+        .orderBy(desc(project.rate))
+        .limit(3); // must be literal, not param
       return topProjects
     } catch (err) {
       console.log(err)

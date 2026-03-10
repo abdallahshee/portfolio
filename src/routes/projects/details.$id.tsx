@@ -17,10 +17,10 @@ import { getProjectByIdQueryOptions } from "@/queries/project-querie";
 
 export const Route = createFileRoute("/projects/details/$id")({
   loader: async ({ context, params }) => {
-    console.log('PARAMS IS HERE '+ params.id)
-  const data = await context.queryClient.fetchQuery(
-  getProjectByIdQueryOptions(params.id)
-);
+
+    const data = await context.queryClient.fetchQuery(
+      getProjectByIdQueryOptions(params.id)
+    );
     return data;
   },
   component: ProjectDetails,
@@ -38,7 +38,7 @@ function ProjectDetails() {
   }
 
   return (
-  <Container size="lg" mt="xl">
+    <Container size="lg" mt="xl">
       <Stack gap="lg">
         {/* Project Title */}
         <Title order={2}>{project.title}</Title>

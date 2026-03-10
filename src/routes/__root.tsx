@@ -11,7 +11,7 @@ import '@mantine/core/styles.css';
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
 import '@mantine/core/styles.css';
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-import { createTheme, MantineProvider } from '@mantine/core';
+import {  MantineProvider } from '@mantine/core';
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'

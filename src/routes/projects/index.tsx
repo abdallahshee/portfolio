@@ -36,8 +36,8 @@ export const Route = createFileRoute('/projects/')({
 function RouteComponent() {
   const projects = Route.useLoaderData()
   const { data: session } = authClient.useSession()
- const [opened, { open, close }] = useDisclosure(false)
- const [selectedProject, setSelectedProject] = useState<Project|null>(null)
+  const [opened, { open, close }] = useDisclosure(false)
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null)
   if (!projects || projects.length === 0) {
     return (
       <Container size="sm" className="py-24 text-center">
@@ -48,10 +48,10 @@ function RouteComponent() {
       </Container>
     )
   }
-const handleSelectProject=(project:Project)=>{
-  setSelectedProject(project)
-  open()
-}
+  const handleSelectProject = (project: Project) => {
+    setSelectedProject(project)
+    open()
+  }
   return (
     <Container size="xl" className="py-16">
       <Modal
@@ -60,34 +60,34 @@ const handleSelectProject=(project:Project)=>{
         title="Rate Project"
         centered
       >
-        {session?.user ?(
-           <Stack>
-          <Text size="sm">
-            Select your rating for <b>{selectedProject?.title}</b>
-          </Text>
+        {session?.user ? (
+          <Stack>
+            <Text size="sm">
+              Select your rating for <b>{selectedProject?.title}</b>
+            </Text>
 
-          <Rating
-            // value={rating}
-            // onChange={setRating}
-            size="lg"
-          />
+            <Rating
+              // value={rating}
+              // onChange={setRating}
+              size="lg"
+            />
 
-          <Button >
-            Submit Rating
-          </Button>
-        </Stack>
-        ):(
-           <Stack>
-          <Text size="sm">
-            Sign In to Rate <b>{selectedProject?.title}</b>
-          </Text>
-          <Button >
-          Login
-          </Button>
-        </Stack>
+            <Button >
+              Submit Rating
+            </Button>
+          </Stack>
+        ) : (
+          <Stack>
+            <Text size="sm">
+              Sign In to Rate <b>{selectedProject?.title}</b>
+            </Text>
+            <Button >
+              Login
+            </Button>
+          </Stack>
         )
         }
-       
+
       </Modal>
       {/* Page Header */}
       <div className="max-w-2xl mb-12">
@@ -135,7 +135,7 @@ const handleSelectProject=(project:Project)=>{
               <Group justify="apart" align="center">
                 <Title order={4}>{project.title}</Title>
 
-                {session?.user.role === "admin" ?(
+                {session?.user.role === "admin" ? (
                   <Link to="/projects/edit/$id" params={{ id: project.id }}>
                     <Tooltip label="Edit project">
                       <ActionIcon variant="light" size="md">
@@ -143,8 +143,8 @@ const handleSelectProject=(project:Project)=>{
                       </ActionIcon>
                     </Tooltip>
                   </Link>
-                ):(
-                     <Badge onClick={()=>handleSelectProject(project)}>
+                ) : (
+                  <Badge onClick={() => handleSelectProject(project)}>
                     {/* <Tooltip label="Edit project">
                       <ActionIcon variant="light" size="md">
                         <Pencil size={16} />

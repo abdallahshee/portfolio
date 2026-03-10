@@ -140,70 +140,70 @@ function App() {
 
         </div>
 
-     <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
-  {projects?.map((project) => {
-    const isNew =
-      new Date(project.createdAt).getTime() >
-      Date.now() - 1000 * 60 * 60 * 24 * 30
+        <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+          {projects?.map((project) => {
+            const isNew =
+              new Date(project.createdAt).getTime() >
+              Date.now() - 1000 * 60 * 60 * 24 * 30
 
-    return (
-      <Card
-        key={project.id}
-        shadow="sm"
-        padding="lg"
-        radius="lg"
-        withBorder
-        className="flex flex-col justify-between hover:shadow-xl transition"
-      >
-        <Stack>
+            return (
+              <Card
+                key={project.id}
+                shadow="sm"
+                padding="lg"
+                radius="lg"
+                withBorder
+                className="flex flex-col justify-between hover:shadow-xl transition"
+              >
+                <Stack>
 
-          {/* IMAGE */}
-          {project.imageUrl && (
-            <Image
-              src={project.imageUrl}
-              alt={project.title}
-              height={180}
-              className="rounded-md object-cover"
-            />
-          )}
+                  {/* IMAGE */}
+                  {project.imageUrl && (
+                    <Image
+                      src={project.imageUrl}
+                      alt={project.title}
+                      height={180}
+                      className="rounded-md object-cover"
+                    />
+                  )}
 
-          {/* TITLE + BADGE */}
-          <Group justify="space-between">
-            <Title order={4}>{project.title}</Title>
+                  {/* TITLE + BADGE */}
+                  <Group justify="space-between">
+                    <Title order={4}>{project.title}</Title>
 
-            {isNew && (
-              <Badge color="green" variant="light">
-                New
-              </Badge>
-            )}
-          </Group>
+                    {isNew && (
+                      <Badge color="green" variant="light">
+                        New
+                      </Badge>
+                    )}
+                  </Group>
 
-          {/* RATING */}
-          <Rating value={project.rate} readOnly />
+                  {/* RATING */}
+                  <Rating value={project.rate} readOnly />
 
-          {/* CREATED DATE */}
-          <Text size="sm" c="dimmed">
-            Created {new Date(project.createdAt).toLocaleDateString()}
-          </Text>
+                  {/* CREATED DATE */}
+                  <Text size="sm" c="dimmed">
+                    Created {new Date(project.createdAt).toLocaleDateString()}
+                  </Text>
 
-          {/* BUTTON */}
-          <Link
-            to="/projects/details/$id"
-            params={{ id: project.id }}
-          >
-            <Button
-              fullWidth
-              rightSection={<ArrowRight size={16} />}
-            >
-              View Project
-            </Button>
-          </Link>
+                  {/* BUTTON */}
+                  <Link
+                    to="/projects/details/$id"
+                    params={{ id: project.id }}
+                  >
+                    <Button
+                      fullWidth
+                      rightSection={<ArrowRight size={16} />}
+                    >
+                      View Project
+                    </Button>
+                  </Link>
 
-        </Stack>
-      </Card>
-    )
-  })}
-</div>
+                </Stack>
+              </Card>
+            )
+          })}
+        </div>
 
         <div className="flex justify-center mt-12">
 

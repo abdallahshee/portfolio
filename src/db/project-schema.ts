@@ -1,6 +1,5 @@
 
-import { sql, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { check } from "drizzle-orm/gel-core";
+import {  type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, text, timestamp ,boolean,integer} from "drizzle-orm/pg-core";
 import { createInsertSchema} from 'drizzle-zod';
 import { nanoid } from "nanoid";

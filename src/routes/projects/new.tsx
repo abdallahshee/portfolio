@@ -20,7 +20,7 @@ function RouteComponent() {
       websiteUrl: '',
       githubUrl: '',
       description: '',
-      rate:1,
+      rate: 1,
       imageUrl: '',
       isPublic: true,
       technologies: ['React'],

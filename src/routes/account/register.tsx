@@ -50,7 +50,6 @@ function RouteComponent() {
         value !== values.password ? 'Passwords do not match' : null,
     },
   })
-
   // Handle email sign up
   const handleSubmit = async (values: SignUpForm) => {
     try {
@@ -149,7 +148,6 @@ function RouteComponent() {
               {...form.getInputProps('email')}
               required
             />
-
             {/* Profile Image Upload */}
             <Stack gap="xs">
               {form.values.image && (
