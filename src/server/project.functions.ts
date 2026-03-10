@@ -60,7 +60,6 @@ export const updateProject = createServerFn({ method: "POST" })
   })
 
 export const getTop3Projects = createServerFn({ method: "GET" })
-  .inputValidator((data: { limit: number }) => data)
   .handler(async () => {
     try {
       const topProjects = await db

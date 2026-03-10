@@ -1,12 +1,22 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router';
-import { Container, TextInput, Textarea, Checkbox, Button, Title, Group, Stack, ActionIcon } from '@mantine/core';
+import { Container, TextInput, Textarea, Checkbox, Button, Title, Group, Stack, ActionIcon, FileInput, Avatar } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import type { ProjectRequest } from '@/db/project-schema';
 import { createProject } from '@/server/project.functions';
 import { Plus, Trash } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
-
+import { uploadImage } from '@/lib/utils';
+interface ProjectCreateForm {
+  title: string;
+  websiteUrl: string;
+  description: string;
+  imageUrl: File | null;
+  isPublic: boolean;
+  githubUrl: string;
+  rate: number;
+  technologies: string[];
+}
 
 
 export const Route = createFileRoute('/projects/new')({
@@ -14,14 +24,14 @@ export const Route = createFileRoute('/projects/new')({
 });
 
 function RouteComponent() {
-  const form = useForm<ProjectRequest>({
+  const form = useForm<ProjectCreateForm>({
     initialValues: {
       title: '',
       websiteUrl: '',
       githubUrl: '',
       description: '',
       rate: 1,
-      imageUrl: '',
+      imageUrl: null,
       isPublic: true,
       technologies: ['React'],
     },
@@ -30,10 +40,21 @@ function RouteComponent() {
   const createProjectFn = useServerFn(createProject);
   const querClient = useQueryClient()
   const router = useRouter()
-  const handleSubmit = async (values: ProjectRequest) => {
-    await createProjectFn({ data: { ...values } });
-    await querClient.invalidateQueries({ queryKey: ['projects'] })
-    router.navigate({ to: '/projects' });
+  const handleSubmit = async (values: ProjectCreateForm) => {
+    try {
+      let Url = ''
+      if (values.imageUrl) {
+        // Upload image and get URL
+        Url = await uploadImage(values.imageUrl)
+      }
+      const { imageUrl, ...datas } = values
+      await createProjectFn({ data: { imageUrl: Url, ...datas } });
+      await querClient.invalidateQueries({ queryKey: ['projects'] })
+      router.navigate({ to: '/projects' });
+    } catch (err) {
+      console.log(err)
+    }
+
   };
 
   // Add a new empty technology field
@@ -58,6 +79,17 @@ function RouteComponent() {
       </Title>
 
       <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack gap="sm">
+          {form.values.imageUrl && (
+            <Avatar
+              src={URL.createObjectURL(form.values.imageUrl)}
+              alt="Profile Preview"
+              size={100}
+              radius="xl"
+              className="mx-auto"
+            />
+          )}
+        </Stack>
         <Stack gap="md">
           {/* Project Title */}
           <TextInput
@@ -89,11 +121,15 @@ function RouteComponent() {
           />
 
           {/* Image URL */}
-          <TextInput
-            label="Image URL"
-            placeholder="https://myproject.com/screenshot.png"
-            {...form.getInputProps('imageUrl')}
-          />
+          <Stack gap="xs">
+
+            <FileInput
+              placeholder="Upload profile image"
+              accept="image/*"
+              {...form.getInputProps('imageUrl')}
+              defaultValue={null}
+            />
+          </Stack>
 
           {/* Public Checkbox */}
           <Checkbox

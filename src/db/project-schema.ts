@@ -9,7 +9,7 @@ export const project = pgTable('project', {
     title: text("name").notNull(),
     websiteUrl:text('url').notNull(),
     description: text("description").notNull().unique(),
-    imageUrl: text("imageUrl").notNull().$default(()=>"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRfd834DcqKcny5gtla6rEfZDnc1-LKliWUqdUB-wTeaNNaIf6b6QOfYgE&s"),
+    imageUrl: text("imageUrl").notNull(),
     isPublic:boolean('isPublic').notNull(),
     githubUrl:text('githubUrl').notNull(),
     rate:integer("rate").notNull(),

@@ -135,6 +135,15 @@ function RouteComponent() {
         {/* Sign-Up Form */}
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="sm">
+                 {form.values.image && (
+                <Avatar
+                  src={URL.createObjectURL(form.values.image)}
+                  alt="Profile Preview"
+                  size={100}
+                  radius="xl"
+                  className="mx-auto"
+                />
+              )}
             <TextInput
               label="Full Name"
               placeholder="John Doe"
@@ -150,15 +159,7 @@ function RouteComponent() {
             />
             {/* Profile Image Upload */}
             <Stack gap="xs">
-              {form.values.image && (
-                <Avatar
-                  src={URL.createObjectURL(form.values.image)}
-                  alt="Profile Preview"
-                  size={100}
-                  radius="xl"
-                  className="mx-auto"
-                />
-              )}
+         
               <FileInput
                 placeholder="Upload profile image"
                 accept="image/*"
