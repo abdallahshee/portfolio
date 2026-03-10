@@ -1,5 +1,5 @@
 {
-  "id": "a289785c-de83-4679-b6f5-64117ededc95",
+  "id": "263da5cf-b0be-41f6-b1f4-ba1cce4b5333",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,7 +10,7 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "uuid",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -36,7 +36,7 @@
           "name": "imageUrl",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "isPublic": {
           "name": "isPublic",
@@ -47,6 +47,18 @@
         "githubUrl": {
           "name": "githubUrl",
           "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "rate": {
+          "name": "rate",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "technologies": {
+          "name": "technologies",
+          "type": "text[]",
           "primaryKey": false,
           "notNull": true
         },

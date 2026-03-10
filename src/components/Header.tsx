@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import { Burger, Drawer, ScrollArea } from '@mantine/core';
-import { Link } from '@tanstack/react-router';
+import { Burger, Drawer, ScrollArea, Button, Avatar } from '@mantine/core';
+import { Link, useRouter } from '@tanstack/react-router';
+import { authClient } from '@/lib/auth-client';
 
 export default function Header() {
-    const [opened, setOpened] = useState(false);
+  const [opened, setOpened] = useState(false);
+  const session = authClient.useSession();
+  const router = useRouter();
 
   const links = [
     { label: 'Home', to: '/' },
@@ -11,6 +14,18 @@ export default function Header() {
     { label: 'About', to: '/about' },
     { label: 'Contact', to: '/contact' },
   ];
+
+  const handleLogout = async () => {
+    await authClient.signOut();
+  };
+
+  const handleLogin = async () => {
+    router.navigate({ 
+      to: '/account',
+      search: { callbackUrl: '/' },
+    });
+  };
+
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white dark:bg-slate-900 shadow-md mb-40">
       <div className="container mx-auto flex items-center justify-between py-4 px-6">
@@ -20,7 +35,7 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex space-x-8">
+        <nav className="hidden md:flex items-center space-x-6">
           {links.map((link) => (
             <Link
               key={link.label}
@@ -30,6 +45,38 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
+
+          {/* Auth / Avatar */}
+          {session.data?.session.userId ? (
+            <div className="flex items-center space-x-4 ml-4">
+              {/* Avatar */}
+              <Avatar
+                src={session.data.user?.image || undefined}
+                alt={session.data.user?.name || 'User'}
+                radius="xl"
+                size="sm"
+              />
+              {/* Logout Button */}
+              <Button
+                variant="outline"
+                color="red"
+                size="sm"
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <Button
+              variant="outline"
+              color="blue"
+              size="sm"
+              onClick={handleLogin}
+              className="ml-4"
+            >
+              Login
+            </Button>
+          )}
         </nav>
 
         {/* Mobile Burger Menu */}
@@ -64,9 +111,38 @@ export default function Header() {
                 {link.label}
               </Link>
             ))}
+
+            {session.data?.session.userId ? (
+              <div className="flex items-center space-x-4 mt-4">
+                <Avatar
+                  src={session.data.user.image || undefined}
+                  alt={session.data.user.name || 'User'}
+                  radius="xl"
+                  size="sm"
+                />
+                <Button
+                  variant="outline"
+                  color="red"
+                  size="md"
+                  onClick={handleLogout}
+                >
+                  Logout
+                </Button>
+              </div>
+            ) : (
+              <Button
+                variant="outline"
+                color="blue"
+                size="md"
+                onClick={handleLogin}
+                className="mt-4"
+              >
+                Login
+              </Button>
+            )}
           </div>
         </ScrollArea>
       </Drawer>
     </header>
-  )
+  );
 }

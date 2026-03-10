@@ -2,7 +2,7 @@
 import { db } from "../db/index";
 import { project, ProjectSchema, type ProjectRequest } from "@/db/project-schema";
 import zod from "zod"
-import { eq } from "drizzle-orm";
+import { desc, eq } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 
 
@@ -46,16 +46,6 @@ export const getProjectById = createServerFn({ method: "GET" })
     }
   })
 
-export const getTopRatedProjects = createServerFn({ method: "GET" })
-  .handler(async () => {
-    try {
-      const top5Projects = await db.select().from(project)
-
-    } catch (err) {
-      console.log(err)
-    }
-  })
-
 export const updateProjectSchema = zod.object({
   projectId: zod.string().nonempty(),
   projectShema: ProjectSchema
@@ -66,9 +56,28 @@ export const updateProject = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     try {
       await db.update(project)
-        .set({...data.projectShema})
+        .set({ ...data.projectShema })
         .where(eq(project.id, data.projectId));
+
     } catch (err) {
       console.log(err)
+    }
+  })
+
+export const getTop3Projects = createServerFn({ method: "GET" })
+.inputValidator((data:{limit:number})=>data)
+  .handler(async () => {
+    try {
+
+const topProjects = await db
+  .select({ id: project.id, title: project.title, imageUrl: project.imageUrl, rate: project.rate, createdAt: project.createdAt })
+  .from(project)
+  .orderBy(desc(project.rate))
+  .limit(3); // must be literal, not param
+      
+      return topProjects
+    } catch (err) {
+      console.log(err)
+      throw err
     }
   })

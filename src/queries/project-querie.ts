@@ -1,4 +1,4 @@
-import { getAllProjects, getProjectById, updateProject, updateProjectSchema } from "@/server/project.functions"
+import { getAllProjects, getProjectById, getTop3Projects, updateProject, updateProjectSchema } from "@/server/project.functions"
 import { queryOptions } from "@tanstack/react-query"
 import zod from "zod"
 //Geting all projects
@@ -20,4 +20,11 @@ export const getProjectsQueryOptions = () =>
     queryKey:["updateProject",project.projectId],
     queryFn:()=>updateProject({data:project})
   })
+
+  export const getTopProjectsQueryOptions = (limit:number) =>
+  queryOptions({
+    queryKey: ['top5Projects'],
+    queryFn: () => getTop3Projects({data:{limit}}),
+  })
+  
   

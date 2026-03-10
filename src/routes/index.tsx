@@ -1,11 +1,24 @@
-import { getProjectsQueryOptions } from '@/queries/project-querie'
-import { Badge, Button, Container, Text, Title } from '@mantine/core'
-import { createFileRoute } from '@tanstack/react-router'
-import { ArrowRight } from 'lucide-react'
+import { getTopProjectsQueryOptions } from '@/queries/project-querie'
+import {
+  Badge,
+  Button,
+  Container,
+  Text,
+  Title,
+  Card,
+  Image,
+  Group,
+  Stack,
+  Rating,
+  Divider
+} from '@mantine/core'
+import { createFileRoute, Link } from '@tanstack/react-router'
+import { ArrowRight, Mail, Github, Linkedin } from 'lucide-react'
+
 export const Route = createFileRoute('/')({
   loader: async ({ context }) => {
     const data = await context.queryClient.fetchQuery(
-      getProjectsQueryOptions()
+      getTopProjectsQueryOptions(3)
     )
     return data
   },
@@ -13,135 +26,252 @@ export const Route = createFileRoute('/')({
 })
 
 function App() {
-  const projects=Route.useLoaderData()
-  return (
-    <Container size="lg" className="py-20">
-      {/* Hero Section */}
-      <div className="flex flex-col lg:flex-row items-center gap-10">
+  const projects = Route.useLoaderData()
 
-        {/* Left Column: Text */}
-        <div className="flex-1 space-y-6">
-          <Text size="lg" color="gray" className="uppercase tracking-wider">
-            Hi, I am Abdallah Shee 👋
+  return (
+    <Container size="xl" className="py-24 space-y-32">
+
+      {/* HERO SECTION */}
+      <section className="grid lg:grid-cols-2 gap-16 items-center">
+
+        <div className="space-y-8">
+
+          <Text className="uppercase tracking-widest text-indigo-500 font-semibold">
+            Hello, I'm Abdallah Shee
           </Text>
 
-          <Title order={1} className="text-4xl lg:text-5xl font-bold">
-            Modern Full-Stack Developer
+          <Title className="text-4xl lg:text-5xl font-bold leading-tight">
+            Full-Stack Developer crafting
+            <span className="text-indigo-500"> scalable modern web apps</span>
           </Title>
 
-          <Text size="md" className="text-gray-600 max-w-xl">
-            I build scalable and high-performance web applications using modern technologies like React, TanStack Start, Drizzle ORM, and Neon PostgreSQL.
-            I leverage AI tools to accelerate development while ensuring your product is clean, functional, and user-friendly.
+          <Text size="lg" c="dimmed" className="max-w-xl">
+            I design and build production-ready web platforms using
+            React, TanStack Start, Drizzle ORM and PostgreSQL.
+            My focus is performance, scalability and clean architecture.
           </Text>
 
-          {/* Call to Action Buttons */}
-          <div className="flex flex-wrap gap-4 mt-6">
+          <Group>
             <Button
               component="a"
               href="#projects"
               size="md"
-              className="bg-indigo-500 hover:bg-indigo-600 text-white flex items-center gap-2"
+              className="bg-indigo-500 hover:bg-indigo-600"
+              rightSection={<ArrowRight size={18} />}
             >
               View Projects
-              <ArrowRight size={18} />
             </Button>
 
             <Button
               component="a"
               href="#contact"
               variant="outline"
-              size="md"
-              className="border-indigo-500 text-indigo-500 hover:bg-indigo-50"
             >
               Contact Me
             </Button>
-          </div>
+          </Group>
 
-          {/* Tech Stack Badges */}
-          <div className="flex flex-wrap gap-2 mt-8">
-            {['React', 'TanStack Start', 'Drizzle ORM', 'Neon PostgreSQL', 'Tailwind CSS', 'AI-assisted Development'].map((tech) => (
-              <Badge
-                key={tech}
-                size="lg"
-                color="indigo"
-                variant="filled"
-                className="uppercase tracking-wide"
-              >
+          {/* TECH STACK */}
+          <Group mt="lg">
+            {[
+              "React",
+              "TanStack Start",
+              "TypeScript",
+              "Drizzle ORM",
+              "PostgreSQL",
+              "TailwindCSS"
+            ].map((tech) => (
+              <Badge key={tech} variant="light" color="indigo">
                 {tech}
               </Badge>
             ))}
-          </div>
+          </Group>
+
         </div>
 
-        {/* Right Column: Hero Image */}
-        <div className="flex-1">
+        {/* PROFILE IMAGE */}
+        <div className="flex justify-center lg:justify-end">
           <img
-            src="/images/hero.png" // Replace with your illustration or photo
-            alt="Abdallah Shee - Fullstack Developer"
-            className="rounded-xl shadow-lg object-cover w-full h-full"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQa8Rxqr_hb8AMHN4DEEg_cGg4yUNdaX6lyg&s"
+            alt="Abdallah Shee"
+            className="w-80 h-80 object-cover rounded-2xl shadow-2xl"
           />
         </div>
-      </div>
 
-      {/* Projects Preview Section */}
-      <div id="projects" className="mt-32 text-center">
-        <Title order={2} className="text-3xl font-bold mb-4">
-          My Projects
+      </section>
+
+      <Divider />
+
+      {/* ABOUT SECTION */}
+      <section className="max-w-3xl">
+
+        <Title order={2} className="text-3xl font-bold mb-6">
+          About Me
         </Title>
-        <Text size="md" className="text-gray-600 mb-10">
-          Here are some of the web applications I’ve built recently.
+
+        <Text size="lg" c="dimmed">
+          I'm a full-stack developer passionate about building modern web
+          applications that are scalable, fast and user-friendly.
+          I enjoy working across the entire stack — from crafting elegant
+          front-end interfaces to designing efficient backend systems.
         </Text>
 
-        {/* Example placeholder for 3 project cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {projects.map((i) => (
-            <div
-              key={i.id}
-              className="border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition"
-            >
-              <img
-                src={`/images/project${i}.png`}
-                alt={`Project ${i}`}
-                className="w-full h-52 object-cover"
-              />
-              <div className="p-6 flex flex-col gap-4">
-                <Title order={4} className="font-semibold">
-                  {i.title}
-                </Title>
-                <Text className="text-gray-500 text-sm">
-                  {i.description}
-                </Text>
+        <Text size="lg" c="dimmed" mt="md">
+          My stack focuses on modern TypeScript technologies including
+          React, TanStack Start, Drizzle ORM and PostgreSQL.
+        </Text>
 
-                {/* Buttons */}
-                <div className="flex flex-col gap-2 md:flex-row">
-                  {/* Live Website Button */}
-                  <Button
-                    component="a"
-                    href={`https://project${i}-live.com`} // Replace with real URLs
-                    target="_blank"
-                    size="sm"
-                    variant="outline"
-                    className="border-indigo-500 text-indigo-500 hover:bg-indigo-50 flex-1"
-                  >
-                    View Website
-                  </Button>
+      </section>
 
-                  {/* Project Details Button */}
-                  <Button
-                    component="a"
-                    href={`/projects/project-${i}`} // This will be your project details route
-                    size="sm"
-                    variant="filled"
-                    className="bg-indigo-500 hover:bg-indigo-600 text-white flex-1"
-                  >
-                    Project Details
-                  </Button>
-                </div>
-              </div>
-            </div>
-          ))}
+      <Divider />
+
+      {/* PROJECTS */}
+      <section id="projects">
+
+        <div className="mb-12">
+
+          <Title order={2} className="text-3xl font-bold mb-2">
+            Featured Projects
+          </Title>
+
+          <Text c="dimmed">
+            A selection of some of my best work.
+          </Text>
+
         </div>
-      </div>
+
+     <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
+  {projects?.map((project) => {
+    const isNew =
+      new Date(project.createdAt).getTime() >
+      Date.now() - 1000 * 60 * 60 * 24 * 30
+
+    return (
+      <Card
+        key={project.id}
+        shadow="sm"
+        padding="lg"
+        radius="lg"
+        withBorder
+        className="flex flex-col justify-between hover:shadow-xl transition"
+      >
+        <Stack>
+
+          {/* IMAGE */}
+          {project.imageUrl && (
+            <Image
+              src={project.imageUrl}
+              alt={project.title}
+              height={180}
+              className="rounded-md object-cover"
+            />
+          )}
+
+          {/* TITLE + BADGE */}
+          <Group justify="space-between">
+            <Title order={4}>{project.title}</Title>
+
+            {isNew && (
+              <Badge color="green" variant="light">
+                New
+              </Badge>
+            )}
+          </Group>
+
+          {/* RATING */}
+          <Rating value={project.rate} readOnly />
+
+          {/* CREATED DATE */}
+          <Text size="sm" c="dimmed">
+            Created {new Date(project.createdAt).toLocaleDateString()}
+          </Text>
+
+          {/* BUTTON */}
+          <Link
+            to="/projects/details/$id"
+            params={{ id: project.id }}
+          >
+            <Button
+              fullWidth
+              rightSection={<ArrowRight size={16} />}
+            >
+              View Project
+            </Button>
+          </Link>
+
+        </Stack>
+      </Card>
+    )
+  })}
+</div>
+
+        <div className="flex justify-center mt-12">
+
+          <Link to="/projects">
+            <Button
+              size="lg"
+              variant="outline"
+              rightSection={<ArrowRight size={18} />}
+            >
+              View All Projects
+            </Button>
+          </Link>
+
+        </div>
+
+      </section>
+
+      <Divider />
+
+      {/* CONTACT */}
+      <section
+        id="contact"
+        className="text-center space-y-6 max-w-2xl mx-auto"
+      >
+
+        <Title order={2} className="text-3xl font-bold">
+          Let's Work Together
+        </Title>
+
+        <Text c="dimmed" size="lg">
+          I'm always open to discussing new opportunities,
+          collaborations or interesting projects.
+        </Text>
+
+        <Group justify="center">
+
+          <Button
+            component="a"
+            href="mailto:abdallah@example.com"
+            leftSection={<Mail size={18} />}
+          >
+            Email Me
+          </Button>
+
+          <Button
+            component="a"
+            href="https://github.com"
+            target="_blank"
+            variant="outline"
+            leftSection={<Github size={18} />}
+          >
+            GitHub
+          </Button>
+
+          <Button
+            component="a"
+            href="https://linkedin.com"
+            target="_blank"
+            variant="outline"
+            leftSection={<Linkedin size={18} />}
+          >
+            LinkedIn
+          </Button>
+
+        </Group>
+
+      </section>
+
     </Container>
   )
 }
