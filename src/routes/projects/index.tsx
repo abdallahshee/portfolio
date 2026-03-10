@@ -116,18 +116,21 @@ function RouteComponent() {
               </Text>
 
               {/* Example Tech Stack */}
-              <Group gap="xs" mt="xs">
-                {["React", "TypeScript", "PostgreSQL"].map((tech) => (
-                  <Badge key={tech} size="sm" variant="outline">
-                    {tech}
-                  </Badge>
-                ))}
-              </Group>
+              <Stack gap="xs" mt="xs">
+                <Text variant='text' size='md'>Main Technologies used</Text>
+                <div>
+                  {project.technologies.slice(0,4).map((tech) => (
+                    <Badge key={tech} size="sm" variant="outline" mr="xs">
+                      {tech}
+                    </Badge>
+                  ))}
+                </div>
+              </Stack>
             </Stack>
 
             {/* Action Buttons */}
             <Stack mt="md" gap="xs">
-              <Group grow>
+              <Group grow justify='space-evenly'>
                 <Button
                   component="a"
                   href={project.websiteUrl}

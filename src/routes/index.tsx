@@ -1,9 +1,19 @@
+import { getProjectsQueryOptions } from '@/queries/project-querie'
 import { Badge, Button, Container, Text, Title } from '@mantine/core'
 import { createFileRoute } from '@tanstack/react-router'
 import { ArrowRight } from 'lucide-react'
-export const Route = createFileRoute('/')({ component: App })
+export const Route = createFileRoute('/')({
+  loader: async ({ context }) => {
+    const data = await context.queryClient.fetchQuery(
+      getProjectsQueryOptions()
+    )
+    return data
+  },
+  component: App
+})
 
 function App() {
+  const projects=Route.useLoaderData()
   return (
     <Container size="lg" className="py-20">
       {/* Hero Section */}
@@ -83,54 +93,54 @@ function App() {
         </Text>
 
         {/* Example placeholder for 3 project cards */}
-       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-  {[1, 2, 3].map((i) => (
-    <div
-      key={i}
-      className="border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition"
-    >
-      <img
-        src={`/images/project${i}.png`}
-        alt={`Project ${i}`}
-        className="w-full h-52 object-cover"
-      />
-      <div className="p-6 flex flex-col gap-4">
-        <Title order={4} className="font-semibold">
-          Project {i} Title
-        </Title>
-        <Text className="text-gray-500 text-sm">
-          A short description of this project, what it does, and why it is useful.
-        </Text>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {projects.map((i) => (
+            <div
+              key={i.id}
+              className="border rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition"
+            >
+              <img
+                src={`/images/project${i}.png`}
+                alt={`Project ${i}`}
+                className="w-full h-52 object-cover"
+              />
+              <div className="p-6 flex flex-col gap-4">
+                <Title order={4} className="font-semibold">
+                  {i.title}
+                </Title>
+                <Text className="text-gray-500 text-sm">
+                  {i.description}
+                </Text>
 
-        {/* Buttons */}
-        <div className="flex flex-col gap-2 md:flex-row">
-          {/* Live Website Button */}
-          <Button
-            component="a"
-            href={`https://project${i}-live.com`} // Replace with real URLs
-            target="_blank"
-            size="sm"
-            variant="outline"
-            className="border-indigo-500 text-indigo-500 hover:bg-indigo-50 flex-1"
-          >
-            View Website
-          </Button>
+                {/* Buttons */}
+                <div className="flex flex-col gap-2 md:flex-row">
+                  {/* Live Website Button */}
+                  <Button
+                    component="a"
+                    href={`https://project${i}-live.com`} // Replace with real URLs
+                    target="_blank"
+                    size="sm"
+                    variant="outline"
+                    className="border-indigo-500 text-indigo-500 hover:bg-indigo-50 flex-1"
+                  >
+                    View Website
+                  </Button>
 
-          {/* Project Details Button */}
-          <Button
-            component="a"
-            href={`/projects/project-${i}`} // This will be your project details route
-            size="sm"
-            variant="filled"
-            className="bg-indigo-500 hover:bg-indigo-600 text-white flex-1"
-          >
-            Project Details
-          </Button>
+                  {/* Project Details Button */}
+                  <Button
+                    component="a"
+                    href={`/projects/project-${i}`} // This will be your project details route
+                    size="sm"
+                    variant="filled"
+                    className="bg-indigo-500 hover:bg-indigo-600 text-white flex-1"
+                  >
+                    Project Details
+                  </Button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-    </div>
-  ))}
-</div>
       </div>
     </Container>
   )

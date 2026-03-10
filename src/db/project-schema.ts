@@ -11,7 +11,7 @@ export const project = pgTable('project', {
     imageUrl: text("imageUrl"),
     isPublic:boolean('isPublic').notNull(),
     githubUrl:text('githubUrl').notNull(),
-    technologies: text('scores').array(),
+    technologies: text('technologies').array().notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
         .defaultNow()

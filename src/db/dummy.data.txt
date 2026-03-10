@@ -1,0 +1,49 @@
+INSERT INTO project (id, name, url, description, "imageUrl", "isPublic", "githubUrl", technologies)
+VALUES
+('proj_001', 'EcoTravel Hub', 'https://ecotravelhub.example.com', 
+ 'EcoTravel Hub is an innovative platform designed to connect environmentally-conscious travelers with sustainable travel experiences around the globe. Users can search for eco-friendly accommodations, book carbon-neutral transportation options, and participate in community-driven sustainability projects. The platform leverages advanced AI recommendation algorithms to suggest personalized eco-adventures while providing real-time carbon footprint tracking.',
+ 'https://example.com/images/ecotravelhub.png', true, 'https://github.com/example/ecotravelhub', 
+ ARRAY['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'TailwindCSS', 'GraphQL']
+),
+
+('proj_002', 'HealthTrack Pro', 'https://healthtrackpro.example.com', 
+ 'HealthTrack Pro is a comprehensive health management application that empowers users to monitor their physical and mental well-being seamlessly. Featuring advanced analytics dashboards, users can track vital signs, exercise routines, sleep patterns, and diet habits. The platform integrates with wearable devices and offers AI-driven health insights, personalized wellness plans, and interactive community challenges to motivate sustainable healthy lifestyles.',
+ 'https://example.com/images/healthtrackpro.png', true, 'https://github.com/example/healthtrackpro', 
+ ARRAY['Vue.js', 'Node.js', 'Express', 'MongoDB', 'D3.js', 'Sass']
+),
+
+('proj_003', 'SmartHome AI', 'https://smarthomeai.example.com',
+ 'SmartHome AI is a cutting-edge home automation system that enables users to control and optimize their living environment through intelligent AI solutions. The platform supports voice control, energy consumption analytics, and automated routines for lighting, heating, and security. By leveraging IoT integration and predictive learning algorithms, SmartHome AI enhances home efficiency, safety, and comfort while reducing energy waste.',
+ 'https://example.com/images/smarthomeai.png', true, 'https://github.com/example/smarthomeai',
+ ARRAY['Angular', 'TypeScript', 'Python', 'TensorFlow', 'MQTT', 'PostgreSQL']
+),
+
+('proj_004', 'EduLearn Academy', 'https://edulearnacademy.example.com',
+ 'EduLearn Academy is a modern e-learning platform designed to deliver immersive educational experiences for students of all ages. It features interactive lessons, gamified quizzes, virtual classrooms, and a collaborative project space. The platform incorporates AI-driven adaptive learning pathways, enabling personalized curriculum recommendations, progress tracking, and intelligent tutoring to maximize knowledge retention and engagement.',
+ 'https://example.com/images/edulearnacademy.png', true, 'https://github.com/example/edulearnacademy',
+ ARRAY['React', 'Next.js', 'Node.js', 'GraphQL', 'PostgreSQL', 'TailwindCSS']
+),
+
+('proj_005', 'FoodieConnect', 'https://foodieconnect.example.com',
+ 'FoodieConnect is a social networking platform dedicated to food enthusiasts, connecting users with local restaurants, chefs, and cooking communities. Users can share recipes, post reviews, and participate in culinary challenges. With integrated geolocation, personalized recommendations, and a recipe AI assistant, FoodieConnect creates an interactive ecosystem for discovering, creating, and sharing culinary experiences worldwide.',
+ 'https://example.com/images/foodieconnect.png', true, 'https://github.com/example/foodieconnect',
+ ARRAY['React Native', 'Node.js', 'Express', 'MongoDB', 'Firebase', 'Styled-Components']
+),
+
+('proj_006', 'FinTrack Analytics', 'https://fintrackanalytics.example.com',
+ 'FinTrack Analytics is an advanced financial management platform designed for both individuals and businesses to gain deep insights into their financial health. Featuring real-time dashboards, predictive modeling, and automated reporting, it helps users make informed investment and budgeting decisions. Integration with multiple banking APIs, AI-driven trend analysis, and secure encryption protocols make it a reliable tool for modern financial planning.',
+ 'https://example.com/images/fintrackanalytics.png', true, 'https://github.com/example/fintrackanalytics',
+ ARRAY['React', 'TypeScript', 'Node.js', 'PostgreSQL', 'Chart.js', 'TailwindCSS']
+),
+
+('proj_007', 'TravelMate VR', 'https://travelmatevr.example.com',
+ 'TravelMate VR is an immersive virtual reality travel platform that allows users to explore destinations around the world from the comfort of their homes. Using VR headsets, users can experience guided tours, cultural experiences, and interactive environments. The platform combines 3D modeling, photogrammetry, and AI-driven personalization to provide highly realistic simulations, helping users plan trips and explore new locations virtually before visiting.',
+ 'https://example.com/images/travelmatevr.png', true, 'https://github.com/example/travelmatevr',
+ ARRAY['Unity', 'C#', 'Blender', 'Three.js', 'WebXR', 'Node.js']
+),
+
+('proj_008', 'Artistry Hub', 'https://artistryhub.example.com',
+ 'Artistry Hub is an online platform that empowers artists to showcase, sell, and collaborate on creative projects globally. Featuring customizable portfolios, live streaming workshops, digital galleries, and a marketplace for artwork, the platform bridges artists with collectors and enthusiasts. AI-powered style recommendations, trend analytics, and community engagement tools make Artistry Hub a dynamic ecosystem for nurturing creative talent.',
+ 'https://example.com/images/artistryhub.png', true, 'https://github.com/example/artistryhub',
+ ARRAY['React', 'Next.js', 'Node.js', 'MongoDB', 'TailwindCSS', 'Framer Motion']
+);

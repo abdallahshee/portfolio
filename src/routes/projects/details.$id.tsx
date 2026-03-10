@@ -8,10 +8,11 @@ import {
   Grid,
   Group,
   Image,
-  Stack
+  Stack,
+  Divider
 } from "@mantine/core";
 import { ArrowRight, Github, Globe } from "lucide-react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { getProjectByIdQueryOptions } from "@/queries/project-querie";
 
 export const Route = createFileRoute("/projects/details/$id")({
@@ -37,137 +38,85 @@ function ProjectDetails() {
   }
 
   return (
-    <Container size="lg" className="py-16 space-y-16">
+  <Container size="lg" mt="xl">
+      <Stack gap="lg">
+        {/* Project Title */}
+        <Title order={2}>{project.title}</Title>
 
-      {/* HERO */}
-      <div className="text-center max-w-3xl mx-auto space-y-4">
-        <Title order={1} className="text-4xl font-bold">
-          {project.title}
-        </Title>
+        {/* Main Image */}
+        {project.imageUrl && (
+          <Image
+            src={project.imageUrl}
+            alt={project.title}
+            radius="md"
+            fit="cover"
+            style={{ maxHeight: 400, width: '100%' }}
+          />
+        )}
 
-        <Text size="lg" c="dimmed">
+        {/* Description */}
+        <Text size="md" mt="sm">
           {project.description}
         </Text>
 
-        <Group justify="center" mt="md">
-          <Button
-            component="a"
-            href={project.websiteUrl}
-            target="_blank"
-            leftSection={<Globe size={18} />}
-            rightSection={<ArrowRight size={18} />}
-            size="md"
-          >
-            Live Website
-          </Button>
+        <Divider my="md" />
 
-          <Button
-            component="a"
-            href={project.githubUrl}
-            target="_blank"
-            variant="light"
-            leftSection={<Github size={18} />}
-          >
-            Source Code
-          </Button>
-        </Group>
-      </div>
-
-      {/* PROJECT IMAGE */}
-      {project.imageUrl && (
-        <div className="max-w-5xl mx-auto">
-          <Card radius="lg" shadow="md" className="overflow-hidden">
-            <Image
-              src={project.imageUrl}
-              alt={project.title}
-              className="w-full object-cover"
-            />
-          </Card>
-        </div>
-      )}
-
-      {/* PROJECT INFO */}
-      <Grid gutter="xl">
-
-        {/* LEFT CONTENT */}
-        <Grid.Col span={{ base: 12, md: 8 }}>
-          <Stack>
-
-            <div>
-              <Title order={3} className="mb-2">
-                About the Project
-              </Title>
-
-              <Text c="dimmed">
-                {project.description}
-              </Text>
-            </div>
-
-            <div>
-              <Title order={3} className="mb-2">
-                Visibility
-              </Title>
-
-              <Badge
-                color={project.isPublic ? "green" : "gray"}
-                size="lg"
-              >
-                {project.isPublic ? "Public Project" : "Private Project"}
+        {/* Technologies Used */}
+        <Stack gap="xs">
+          <Text size='{500'>Main Technologies Used</Text>
+          <Group gap="xs" wrap="wrap">
+            {project.technologies.map((tech) => (
+              <Badge key={tech} size="sm" variant="outline">
+                {tech}
               </Badge>
-            </div>
+            ))}
+          </Group>
+        </Stack>
 
-          </Stack>
-        </Grid.Col>
+        {/* Project Info */}
+        <Stack gap="xs" mt="md">
+          <Text>
+            <strong>Public:</strong> {project.isPublic ? 'Yes' : 'No'}
+          </Text>
+          <Text>
+            <strong>GitHub:</strong>{' '}
+            <a href={project.githubUrl} target="_blank" rel="noopener noreferrer">
+              {project.githubUrl}
+            </a>
+          </Text>
+          <Text>
+            <strong>Website:</strong>{' '}
+            <a href={project.websiteUrl} target="_blank" rel="noopener noreferrer">
+              {project.websiteUrl}
+            </a>
+          </Text>
+          <Text size="sm" color="dimmed">
+            Created at: {new Date(project.createdAt).toLocaleDateString()} | Updated at:{' '}
+            {new Date(project.updatedAt).toLocaleDateString()}
+          </Text>
+        </Stack>
 
-        {/* SIDEBAR */}
-        <Grid.Col span={{ base: 12, md: 4 }}>
-          <Card shadow="sm" radius="md" withBorder>
+        <Divider my="md" />
 
-            <Stack>
+        {/* Action Buttons */}
+        <Group justify="apart" grow={false} mt="md">
+          {project.websiteUrl && (
+            <Button
+              component="a"
+              href={project.websiteUrl}
+              target="_blank"
+              leftSection={<Globe size={16} />}
+              variant="light"
+            >
+              Live Demo
+            </Button>
+          )}
 
-              <Title order={4}>Project Info</Title>
-
-              <div>
-                <Text fw={500}>Created</Text>
-                <Text c="dimmed">
-                  {new Date(project.createdAt).toLocaleDateString()}
-                </Text>
-              </div>
-
-              <div>
-                <Text fw={500}>Last Updated</Text>
-                <Text c="dimmed">
-                  {new Date(project.updatedAt).toLocaleDateString()}
-                </Text>
-              </div>
-
-              <Button
-                component="a"
-                href={project.websiteUrl}
-                target="_blank"
-                fullWidth
-                leftSection={<Globe size={16} />}
-              >
-                Visit Website
-              </Button>
-
-              <Button
-                component="a"
-                href={project.githubUrl}
-                target="_blank"
-                variant="light"
-                fullWidth
-                leftSection={<Github size={16} />}
-              >
-                View Repository
-              </Button>
-
-            </Stack>
-
-          </Card>
-        </Grid.Col>
-
-      </Grid>
+          <Link to="/projects" params={{ id: project.id }}>
+            <Button rightSection={<ArrowRight size={16} />}>More Projects</Button>
+          </Link>
+        </Group>
+      </Stack>
     </Container>
   );
 }

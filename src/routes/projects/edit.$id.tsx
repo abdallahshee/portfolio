@@ -18,6 +18,7 @@ function RouteComponent() {
       description: '',
       imageUrl: '',
       isPublic: true,
+      technologies:['React']
     },
   });
 
