@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ContactRouteImport } from './routes/contact'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -28,11 +27,6 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AboutRoute = AboutRouteImport.update({
-  id: '/about',
-  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsRouteRoute = ProjectsRouteRouteImport.update({
@@ -105,7 +99,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
-  '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
@@ -120,7 +113,6 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
@@ -138,7 +130,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
-  '/about': typeof AboutRoute
   '/contact': typeof ContactRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
@@ -157,7 +148,6 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/projects'
-    | '/about'
     | '/contact'
     | '/account/forgot-password'
     | '/account/register'
@@ -172,7 +162,6 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/about'
     | '/contact'
     | '/account/forgot-password'
     | '/account/register'
@@ -189,7 +178,6 @@ export interface FileRouteTypes {
     | '/'
     | '/account'
     | '/projects'
-    | '/about'
     | '/contact'
     | '/account/forgot-password'
     | '/account/register'
@@ -207,7 +195,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRouteRoute: typeof AccountRouteRouteWithChildren
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
-  AboutRoute: typeof AboutRoute
   ContactRoute: typeof ContactRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
@@ -219,13 +206,6 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -364,7 +344,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRouteRoute: AccountRouteRouteWithChildren,
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
-  AboutRoute: AboutRoute,
   ContactRoute: ContactRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }

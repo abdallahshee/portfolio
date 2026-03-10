@@ -92,7 +92,7 @@ function App() {
         {/* PROFILE IMAGE */}
         <div className="flex justify-center lg:justify-end">
           <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQa8Rxqr_hb8AMHN4DEEg_cGg4yUNdaX6lyg&s"
+            src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
             alt="Abdallah Shee"
             className="w-80 h-80 object-cover rounded-2xl shadow-2xl"
           />

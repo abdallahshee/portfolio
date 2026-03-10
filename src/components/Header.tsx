@@ -11,7 +11,7 @@ export default function Header() {
   const links = [
     { label: 'Home', to: '/' },
     { label: 'Projects', to: '/projects' },
-    { label: 'About', to: '/about' },
+  
     { label: 'Contact', to: '/contact' },
   ];
 
@@ -51,8 +51,8 @@ export default function Header() {
             <div className="flex items-center space-x-4 ml-4">
               {/* Avatar */}
               <Avatar
-                src={session.data.user?.image || undefined}
-                alt={session.data.user?.name || 'User'}
+                src={session.data.user.image }
+                alt={session.data.user.name }
                 radius="xl"
                 size="sm"
               />
