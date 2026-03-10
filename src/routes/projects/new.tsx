@@ -2,10 +2,12 @@ import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { Container, TextInput, Textarea, Checkbox, Button, Title, Group, Stack, ActionIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import type { ProjectRequest } from '@/db/project-schema';
-import { useServerFn } from '@tanstack/react-start';
 import { createProject } from '@/server/project.functions';
 import { Plus, Trash } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
+import { useServerFn } from '@tanstack/react-start';
+
+
 
 export const Route = createFileRoute('/projects/new')({
   component: RouteComponent,
@@ -18,6 +20,7 @@ function RouteComponent() {
       websiteUrl: '',
       githubUrl: '',
       description: '',
+      rate:1,
       imageUrl: '',
       isPublic: true,
       technologies: ['React'],
@@ -29,7 +32,8 @@ function RouteComponent() {
   const router = useRouter()
   const handleSubmit = async (values: ProjectRequest) => {
     await createProjectFn({ data: { ...values } });
-    querClient.invalidateQueries({ queryKey: ['projects'] })
+    await querClient.invalidateQueries({ queryKey: ['projects'] })
+    router.navigate({ to: '/projects' });
   };
 
   // Add a new empty technology field

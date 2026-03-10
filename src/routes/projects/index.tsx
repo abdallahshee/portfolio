@@ -10,8 +10,12 @@ import {
   Badge,
   Title,
   Container,
+  Tooltip,
+  ActionIcon,
 } from '@mantine/core'
-import { Globe, Github, ArrowRight } from 'lucide-react'
+import { Globe, Github, ArrowRight, Pencil } from 'lucide-react'
+import { authClient } from '@/lib/auth-client'
+
 
 export const Route = createFileRoute('/projects/')({
   loader: async ({ context }) => {
@@ -25,7 +29,7 @@ export const Route = createFileRoute('/projects/')({
 
 function RouteComponent() {
   const projects = Route.useLoaderData()
-
+  const { data: session } = authClient.useSession()  
   if (!projects || projects.length === 0) {
     return (
       <Container size="sm" className="py-24 text-center">
@@ -70,7 +74,6 @@ function RouteComponent() {
             className="flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
           >
             <Stack gap="sm">
-
               {/* Image */}
               {project.imageUrl && (
                 <div className="overflow-hidden rounded-md">
@@ -83,8 +86,19 @@ function RouteComponent() {
                 </div>
               )}
 
-              {/* Title */}
-              <Title order={4}>{project.title}</Title>
+              {/* Title + Edit Icon */}
+              <Group gap="apart" align="center">
+                <Title order={4}>{project.title}</Title>
+                {session?.user.role === "admin" &&
+                  <Link to="/projects/edit/$id" params={{ id: project.id }}>
+                    <Tooltip label="Edit project">
+                      <ActionIcon variant="light" size="md">
+                        <Pencil size={16} />
+                      </ActionIcon>
+                    </Tooltip>
+                  </Link>
+                  }
+              </Group>
 
               {/* Status Badge + Optional GitHub Button */}
               <Group gap="sm">
@@ -117,9 +131,11 @@ function RouteComponent() {
 
               {/* Example Tech Stack */}
               <Stack gap="xs" mt="xs">
-                <Text variant='text' size='md'>Main Technologies used</Text>
+                <Text variant="text" size="md">
+                  Main Technologies used
+                </Text>
                 <div>
-                  {project.technologies.slice(0,4).map((tech) => (
+                  {project.technologies.slice(0, 4).map((tech) => (
                     <Badge key={tech} size="sm" variant="outline" mr="xs">
                       {tech}
                     </Badge>
@@ -130,7 +146,7 @@ function RouteComponent() {
 
             {/* Action Buttons */}
             <Stack mt="md" gap="xs">
-              <Group grow justify='space-evenly'>
+              <Group grow justify="space-evenly">
                 <Button
                   component="a"
                   href={project.websiteUrl}
@@ -141,10 +157,7 @@ function RouteComponent() {
                   Live Demo
                 </Button>
 
-                <Link
-                  to="/projects/details/$id"
-                  params={{ id: project.id }}
-                >
+                <Link to="/projects/details/$id" params={{ id: project.id }}>
                   <Button rightSection={<ArrowRight size={16} />}>
                     Details
                   </Button>

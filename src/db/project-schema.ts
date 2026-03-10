@@ -1,5 +1,7 @@
-import type { InferInsertModel, InferSelectModel } from "drizzle-orm";
-import { pgTable, text, timestamp ,boolean} from "drizzle-orm/pg-core";
+
+import { sql, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { check } from "drizzle-orm/gel-core";
+import { pgTable, text, timestamp ,boolean,integer} from "drizzle-orm/pg-core";
 import { createInsertSchema} from 'drizzle-zod';
 import { nanoid } from "nanoid";
 
@@ -11,6 +13,7 @@ export const project = pgTable('project', {
     imageUrl: text("imageUrl"),
     isPublic:boolean('isPublic').notNull(),
     githubUrl:text('githubUrl').notNull(),
+    rate:integer("rate").notNull(),
     technologies: text('technologies').array().notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")

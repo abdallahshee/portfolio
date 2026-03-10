@@ -1,9 +1,10 @@
-import { createServerFn } from "@tanstack/react-start";
+
 import { db } from "../db/index";
 import { project, ProjectSchema, type ProjectRequest } from "@/db/project-schema";
-import { nanoid } from "nanoid"
-import { id } from "zod/v4/locales";
+import zod from "zod"
 import { eq } from "drizzle-orm";
+import { createServerFn } from "@tanstack/react-start";
+
 
 
 export const getAllProjects = createServerFn({ method: "GET" })
@@ -25,7 +26,7 @@ export const createProject = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     try {
       // Insert the project into the database
-      await db.insert(project).values({...data});
+      await db.insert(project).values({ ...data });
 
       return { success: true, message: 'Project created successfully' };
     } catch (err) {
@@ -34,12 +35,39 @@ export const createProject = createServerFn({ method: 'POST' })
     }
   });
 
-export const getProjectById = createServerFn()
+export const getProjectById = createServerFn({ method: "GET" })
   .inputValidator((data: { projectId: string }) => data)
   .handler(async ({ data }) => {
     try {
       const theProject = await db.select().from(project).where(eq(project.id, data.projectId));
       return theProject[0]
+    } catch (err) {
+      console.log(err)
+    }
+  })
+
+export const getTopRatedProjects = createServerFn({ method: "GET" })
+  .handler(async () => {
+    try {
+      const top5Projects = await db.select().from(project)
+
+    } catch (err) {
+      console.log(err)
+    }
+  })
+
+export const updateProjectSchema = zod.object({
+  projectId: zod.string().nonempty(),
+  projectShema: ProjectSchema
+})
+
+export const updateProject = createServerFn({ method: "POST" })
+  .inputValidator(updateProjectSchema)
+  .handler(async ({ data }) => {
+    try {
+      await db.update(project)
+        .set({...data.projectShema})
+        .where(eq(project.id, data.projectId));
     } catch (err) {
       console.log(err)
     }
