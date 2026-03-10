@@ -12,9 +12,15 @@ import {
   Container,
   Tooltip,
   ActionIcon,
+  Rating,
+  Modal
 } from '@mantine/core'
 import { Globe, Github, ArrowRight, Pencil } from 'lucide-react'
 import { authClient } from '@/lib/auth-client'
+import { useDisclosure } from '@mantine/hooks'
+import { useState } from 'react'
+import type { Project } from '@/db/project-schema'
+import { notifications } from '@mantine/notifications'
 
 
 export const Route = createFileRoute('/projects/')({
@@ -29,7 +35,9 @@ export const Route = createFileRoute('/projects/')({
 
 function RouteComponent() {
   const projects = Route.useLoaderData()
-  const { data: session } = authClient.useSession()  
+  const { data: session } = authClient.useSession()
+ const [opened, { open, close }] = useDisclosure(false)
+ const [selectedProject, setSelectedProject] = useState<Project|null>(null)
   if (!projects || projects.length === 0) {
     return (
       <Container size="sm" className="py-24 text-center">
@@ -40,10 +48,47 @@ function RouteComponent() {
       </Container>
     )
   }
-
+const handleSelectProject=(project:Project)=>{
+  setSelectedProject(project)
+  open()
+}
   return (
     <Container size="xl" className="py-16">
+      <Modal
+        opened={opened}
+        onClose={close}
+        title="Rate Project"
+        centered
+      >
+        {session?.user ?(
+           <Stack>
+          <Text size="sm">
+            Select your rating for <b>{selectedProject?.title}</b>
+          </Text>
 
+          <Rating
+            // value={rating}
+            // onChange={setRating}
+            size="lg"
+          />
+
+          <Button >
+            Submit Rating
+          </Button>
+        </Stack>
+        ):(
+           <Stack>
+          <Text size="sm">
+            Sign In to Rate <b>{selectedProject?.title}</b>
+          </Text>
+          <Button >
+          Login
+          </Button>
+        </Stack>
+        )
+        }
+       
+      </Modal>
       {/* Page Header */}
       <div className="max-w-2xl mb-12">
         <Title order={1} className="text-4xl font-bold mb-4">
@@ -59,7 +104,6 @@ function RouteComponent() {
         </Text>
       </div>
 
-      {/* Divider */}
       <div className="border-b border-gray-200 mb-12"></div>
 
       {/* Projects Grid */}
@@ -74,6 +118,7 @@ function RouteComponent() {
             className="flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
           >
             <Stack gap="sm">
+
               {/* Image */}
               {project.imageUrl && (
                 <div className="overflow-hidden rounded-md">
@@ -87,9 +132,10 @@ function RouteComponent() {
               )}
 
               {/* Title + Edit Icon */}
-              <Group gap="apart" align="center">
+              <Group justify="apart" align="center">
                 <Title order={4}>{project.title}</Title>
-                {session?.user.role === "admin" &&
+
+                {session?.user.role === "admin" ?(
                   <Link to="/projects/edit/$id" params={{ id: project.id }}>
                     <Tooltip label="Edit project">
                       <ActionIcon variant="light" size="md">
@@ -97,8 +143,20 @@ function RouteComponent() {
                       </ActionIcon>
                     </Tooltip>
                   </Link>
-                  }
+                ):(
+                     <Badge onClick={()=>handleSelectProject(project)}>
+                    {/* <Tooltip label="Edit project">
+                      <ActionIcon variant="light" size="md">
+                        <Pencil size={16} />
+                      </ActionIcon>
+                    </Tooltip> */}
+                    Rate Project
+                  </Badge>
+                )}
               </Group>
+
+              {/* ⭐ Rating */}
+              <Rating value={project.rate} fractions={1} readOnly />
 
               {/* Status Badge + Optional GitHub Button */}
               <Group gap="sm">
@@ -129,11 +187,12 @@ function RouteComponent() {
                 {project.description}
               </Text>
 
-              {/* Example Tech Stack */}
+              {/* Technologies */}
               <Stack gap="xs" mt="xs">
                 <Text variant="text" size="md">
                   Main Technologies used
                 </Text>
+
                 <div>
                   {project.technologies.slice(0, 4).map((tech) => (
                     <Badge key={tech} size="sm" variant="outline" mr="xs">
@@ -164,6 +223,7 @@ function RouteComponent() {
                 </Link>
               </Group>
             </Stack>
+
           </Card>
         ))}
       </div>
