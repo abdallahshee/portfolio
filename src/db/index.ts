@@ -1,6 +1,9 @@
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { project } from './project-schema'
-import { account, roleEnum, session, user, verification } from './auth-schema'
+import { account, session,  verification } from './auth-schema'
+import { roleEnum, user } from './user-schema'
+import { comment } from './comment-schema'
+import { blog, blogStatusEnum } from './blog-schema'
 
 // Build a schema object
 const schema = {
@@ -9,7 +12,10 @@ const schema = {
   session,
   account,
   verification,
-  roleEnum
+  roleEnum,
+  comment,
+  blog,
+  blogStatusEnum
 }
 
 export const db = drizzle(process.env.DATABASE_URL!, { schema })

@@ -1,19 +1,7 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
 import { pgTable, text, timestamp, boolean, index, pgEnum } from "drizzle-orm/pg-core";
-export const roleEnum = pgEnum("role", ["user", "admin"])
-export const user = pgTable("user", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull().unique(),
-  role: roleEnum("role").$default(() => "user"),
-  emailVerified: boolean("email_verified").default(false).notNull(),
-  image: text("image"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
-    .notNull(),
-});
+import { user } from "./user-schema";
+
 
 export const session = pgTable(
   "session",
@@ -75,10 +63,7 @@ export const verification = pgTable(
   (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
-export const userRelations = relations(user, ({ many }) => ({
-  sessions: many(session),
-  accounts: many(account),
-}));
+
 
 export const sessionRelations = relations(session, ({ one }) => ({
   user: one(user, {
@@ -94,5 +79,3 @@ export const accountRelations = relations(account, ({ one }) => ({
   }),
 }));
 
-export type User=InferSelectModel<typeof user>
-export type NewUser=InferInsertModel<typeof user>
