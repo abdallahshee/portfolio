@@ -1,5 +1,5 @@
 {
-  "id": "6f6f2408-9c73-436b-b617-41bea08dd611",
+  "id": "caebb896-4a6f-46c6-9296-ca037affbbc5",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -14,14 +14,14 @@
           "primaryKey": true,
           "notNull": true
         },
-        "name": {
-          "name": "name",
+        "title": {
+          "name": "title",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "url": {
-          "name": "url",
+        "website_url": {
+          "name": "website_url",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -32,20 +32,20 @@
           "primaryKey": false,
           "notNull": true
         },
-        "imageUrl": {
-          "name": "imageUrl",
+        "image_url": {
+          "name": "image_url",
           "type": "text",
           "primaryKey": false,
           "notNull": true
         },
-        "isPublic": {
-          "name": "isPublic",
+        "is_public": {
+          "name": "is_public",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true
         },
-        "githubUrl": {
-          "name": "githubUrl",
+        "github_url": {
+          "name": "github_url",
           "type": "text",
           "primaryKey": false,
           "notNull": true
@@ -499,7 +499,7 @@
           "name": "cover_image",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "status": {
           "name": "status",
@@ -512,7 +512,7 @@
           "name": "tags",
           "type": "text[]",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "published": {
           "name": "published",
@@ -566,8 +566,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.comments": {
-      "name": "comments",
+    "public.comment": {
+      "name": "comment",
       "schema": "",
       "columns": {
         "id": {
@@ -587,6 +587,12 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "parent_id": {
+          "name": "parent_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         },
         "content": {
           "name": "content",
@@ -611,9 +617,9 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "comments_blog_id_blog_id_fk": {
-          "name": "comments_blog_id_blog_id_fk",
-          "tableFrom": "comments",
+        "comment_blog_id_blog_id_fk": {
+          "name": "comment_blog_id_blog_id_fk",
+          "tableFrom": "comment",
           "tableTo": "blog",
           "columnsFrom": [
             "blog_id"
@@ -621,12 +627,12 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
           "onUpdate": "no action"
         },
-        "comments_user_id_user_id_fk": {
-          "name": "comments_user_id_user_id_fk",
-          "tableFrom": "comments",
+        "comment_user_id_user_id_fk": {
+          "name": "comment_user_id_user_id_fk",
+          "tableFrom": "comment",
           "tableTo": "user",
           "columnsFrom": [
             "user_id"
@@ -634,7 +640,20 @@
           "columnsTo": [
             "id"
           ],
-          "onDelete": "no action",
+          "onDelete": "cascade",
+          "onUpdate": "no action"
+        },
+        "comment_parent_id_comment_id_fk": {
+          "name": "comment_parent_id_comment_id_fk",
+          "tableFrom": "comment",
+          "tableTo": "comment",
+          "columnsFrom": [
+            "parent_id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "cascade",
           "onUpdate": "no action"
         }
       },

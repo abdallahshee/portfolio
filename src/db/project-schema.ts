@@ -6,12 +6,12 @@ import { nanoid } from "nanoid";
 
 export const project = pgTable('project', {
     id: text("id").primaryKey().$default(() => nanoid(16)),
-    title: text("name").notNull(),
-    websiteUrl:text('url').notNull(),
+    title: text("title").notNull(),
+    websiteUrl:text('website_url').notNull(),
     description: text("description").notNull().unique(),
-    imageUrl: text("imageUrl").notNull(),
-    isPublic:boolean('isPublic').notNull(),
-    githubUrl:text('githubUrl').notNull(),
+    imageUrl: text("image_url").notNull(),
+    isPublic:boolean('is_public').notNull(),
+    githubUrl:text('github_url').notNull(),
     rate:integer("rate").notNull(),
     technologies: text('technologies').array().notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
