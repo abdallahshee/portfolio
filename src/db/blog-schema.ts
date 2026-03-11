@@ -14,9 +14,9 @@ export const blog = pgTable("blog", {
   excerpt: text("excerpt").notNull(),
   userId:text("userId").notNull().references(()=>user.id),
   content: text("content").notNull(), // markdown
-  coverImage: text("cover_image"),
+  coverImage: text("cover_image").notNull(),
   status:blogStatusEnum("status").notNull().$default(()=>"draft"),
-  tags: text("tags").array(),
+  tags: text("tags").array().notNull(),
   published: boolean("published").notNull().default(true),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
