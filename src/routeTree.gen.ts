@@ -11,13 +11,14 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
-import { Route as BlogRouteRouteImport } from './routes/blog/route'
+import { Route as BlogsRouteRouteImport } from './routes/blogs/route'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
-import { Route as BlogIndexRouteImport } from './routes/blog/index'
+import { Route as BlogsIndexRouteImport } from './routes/blogs/index'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as ProjectsNewRouteImport } from './routes/projects/new'
+import { Route as BlogsNewRouteImport } from './routes/blogs/new'
 import { Route as AccountVerifyRouteImport } from './routes/account/verify'
 import { Route as AccountResetPasswordRouteImport } from './routes/account/reset-password'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
@@ -36,9 +37,9 @@ const ProjectsRouteRoute = ProjectsRouteRouteImport.update({
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
-const BlogRouteRoute = BlogRouteRouteImport.update({
-  id: '/blog',
-  path: '/blog',
+const BlogsRouteRoute = BlogsRouteRouteImport.update({
+  id: '/blogs',
+  path: '/blogs',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AccountRouteRoute = AccountRouteRouteImport.update({
@@ -56,10 +57,10 @@ const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
-const BlogIndexRoute = BlogIndexRouteImport.update({
+const BlogsIndexRoute = BlogsIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => BlogRouteRoute,
+  getParentRoute: () => BlogsRouteRoute,
 } as any)
 const AccountIndexRoute = AccountIndexRouteImport.update({
   id: '/',
@@ -70,6 +71,11 @@ const ProjectsNewRoute = ProjectsNewRouteImport.update({
   id: '/new',
   path: '/new',
   getParentRoute: () => ProjectsRouteRoute,
+} as any)
+const BlogsNewRoute = BlogsNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => BlogsRouteRoute,
 } as any)
 const AccountVerifyRoute = AccountVerifyRouteImport.update({
   id: '/verify',
@@ -110,16 +116,17 @@ const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
-  '/blog': typeof BlogRouteRouteWithChildren
+  '/blogs': typeof BlogsRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/contact': typeof ContactRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
   '/account/verify': typeof AccountVerifyRoute
+  '/blogs/new': typeof BlogsNewRoute
   '/projects/new': typeof ProjectsNewRoute
   '/account/': typeof AccountIndexRoute
-  '/blog/': typeof BlogIndexRoute
+  '/blogs/': typeof BlogsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/projects/details/$id': typeof ProjectsDetailsIdRoute
@@ -132,9 +139,10 @@ export interface FileRoutesByTo {
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
   '/account/verify': typeof AccountVerifyRoute
+  '/blogs/new': typeof BlogsNewRoute
   '/projects/new': typeof ProjectsNewRoute
   '/account': typeof AccountIndexRoute
-  '/blog': typeof BlogIndexRoute
+  '/blogs': typeof BlogsIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/projects/details/$id': typeof ProjectsDetailsIdRoute
@@ -144,16 +152,17 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
-  '/blog': typeof BlogRouteRouteWithChildren
+  '/blogs': typeof BlogsRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/contact': typeof ContactRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
   '/account/verify': typeof AccountVerifyRoute
+  '/blogs/new': typeof BlogsNewRoute
   '/projects/new': typeof ProjectsNewRoute
   '/account/': typeof AccountIndexRoute
-  '/blog/': typeof BlogIndexRoute
+  '/blogs/': typeof BlogsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/projects/details/$id': typeof ProjectsDetailsIdRoute
@@ -164,16 +173,17 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/account'
-    | '/blog'
+    | '/blogs'
     | '/projects'
     | '/contact'
     | '/account/forgot-password'
     | '/account/register'
     | '/account/reset-password'
     | '/account/verify'
+    | '/blogs/new'
     | '/projects/new'
     | '/account/'
-    | '/blog/'
+    | '/blogs/'
     | '/projects/'
     | '/api/auth/$'
     | '/projects/details/$id'
@@ -186,9 +196,10 @@ export interface FileRouteTypes {
     | '/account/register'
     | '/account/reset-password'
     | '/account/verify'
+    | '/blogs/new'
     | '/projects/new'
     | '/account'
-    | '/blog'
+    | '/blogs'
     | '/projects'
     | '/api/auth/$'
     | '/projects/details/$id'
@@ -197,16 +208,17 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/account'
-    | '/blog'
+    | '/blogs'
     | '/projects'
     | '/contact'
     | '/account/forgot-password'
     | '/account/register'
     | '/account/reset-password'
     | '/account/verify'
+    | '/blogs/new'
     | '/projects/new'
     | '/account/'
-    | '/blog/'
+    | '/blogs/'
     | '/projects/'
     | '/api/auth/$'
     | '/projects/details/$id'
@@ -216,7 +228,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRouteRoute: typeof AccountRouteRouteWithChildren
-  BlogRouteRoute: typeof BlogRouteRouteWithChildren
+  BlogsRouteRoute: typeof BlogsRouteRouteWithChildren
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
   ContactRoute: typeof ContactRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
@@ -238,11 +250,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/blog': {
-      id: '/blog'
-      path: '/blog'
-      fullPath: '/blog'
-      preLoaderRoute: typeof BlogRouteRouteImport
+    '/blogs': {
+      id: '/blogs'
+      path: '/blogs'
+      fullPath: '/blogs'
+      preLoaderRoute: typeof BlogsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/account': {
@@ -266,12 +278,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
-    '/blog/': {
-      id: '/blog/'
+    '/blogs/': {
+      id: '/blogs/'
       path: '/'
-      fullPath: '/blog/'
-      preLoaderRoute: typeof BlogIndexRouteImport
-      parentRoute: typeof BlogRouteRoute
+      fullPath: '/blogs/'
+      preLoaderRoute: typeof BlogsIndexRouteImport
+      parentRoute: typeof BlogsRouteRoute
     }
     '/account/': {
       id: '/account/'
@@ -286,6 +298,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/projects/new'
       preLoaderRoute: typeof ProjectsNewRouteImport
       parentRoute: typeof ProjectsRouteRoute
+    }
+    '/blogs/new': {
+      id: '/blogs/new'
+      path: '/new'
+      fullPath: '/blogs/new'
+      preLoaderRoute: typeof BlogsNewRouteImport
+      parentRoute: typeof BlogsRouteRoute
     }
     '/account/verify': {
       id: '/account/verify'
@@ -359,16 +378,18 @@ const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
   AccountRouteRouteChildren,
 )
 
-interface BlogRouteRouteChildren {
-  BlogIndexRoute: typeof BlogIndexRoute
+interface BlogsRouteRouteChildren {
+  BlogsNewRoute: typeof BlogsNewRoute
+  BlogsIndexRoute: typeof BlogsIndexRoute
 }
 
-const BlogRouteRouteChildren: BlogRouteRouteChildren = {
-  BlogIndexRoute: BlogIndexRoute,
+const BlogsRouteRouteChildren: BlogsRouteRouteChildren = {
+  BlogsNewRoute: BlogsNewRoute,
+  BlogsIndexRoute: BlogsIndexRoute,
 }
 
-const BlogRouteRouteWithChildren = BlogRouteRoute._addFileChildren(
-  BlogRouteRouteChildren,
+const BlogsRouteRouteWithChildren = BlogsRouteRoute._addFileChildren(
+  BlogsRouteRouteChildren,
 )
 
 interface ProjectsRouteRouteChildren {
@@ -392,7 +413,7 @@ const ProjectsRouteRouteWithChildren = ProjectsRouteRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRouteRoute: AccountRouteRouteWithChildren,
-  BlogRouteRoute: BlogRouteRouteWithChildren,
+  BlogsRouteRoute: BlogsRouteRouteWithChildren,
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
   ContactRoute: ContactRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,

@@ -9,11 +9,12 @@ import {
   Group,
   Anchor,
   Stack,
-  Checkbox
+  Checkbox,
+  Switch
 } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
 import { Github, Globe } from 'lucide-react'
-import { Link, createFileRoute, useSearch } from '@tanstack/react-router'
+import { Link, createFileRoute, useRouter, useSearch } from '@tanstack/react-router'
 import { authClient } from '@/lib/auth-client'
 
 interface LoginForm {
@@ -32,7 +33,7 @@ export const Route = createFileRoute('/account/')({
 
 function RouteComponent() {
   const { callbackUrl } = useSearch({ from: '/account/' })
-
+  const router=useRouter()
   const form = useForm<LoginForm>({
     initialValues: {
       email: '',
@@ -47,7 +48,7 @@ function RouteComponent() {
         email: values.email,
         password: values.password,
         rememberMe: values.rememberMe,
-        callbackURL: callbackUrl,
+        // callbackURL: callbackUrl,
       })
 
       notifications.show({
@@ -55,6 +56,7 @@ function RouteComponent() {
         message: 'Welcome back 👋',
         color: 'green',
       })
+      router.navigate({to:"/projects"})
     } catch (error: any) {
       notifications.show({
         title: 'Login failed',
@@ -74,7 +76,7 @@ function RouteComponent() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <Paper
-        className="w-full max-w-md p-6 shadow-md rounded-lg"
+        className="w-full max-w-xl p-6 shadow-md rounded-lg"
         radius="md"
         withBorder
       >
@@ -121,10 +123,14 @@ function RouteComponent() {
               {...form.getInputProps('password')}
               required
             />
-            <Checkbox
+              <Switch
+                          label="Remember Me"
+                          {...form.getInputProps("rememberMe", { type: "checkbox" })}
+                        />
+            {/* <Checkbox
               label="Remember me"
               {...form.getInputProps('rememberMe', { type: 'checkbox' })}
-            />
+            /> */}
             <Button type="submit" fullWidth mt="sm">
               Sign In
             </Button>

@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useSearch } from '@tanstack/react-router'
+import { createFileRoute, Link, useRouter, useSearch } from '@tanstack/react-router'
 import { useForm } from '@mantine/form'
 import {
   TextInput,
@@ -14,7 +14,7 @@ import {
   Avatar,
 } from '@mantine/core'
 import { notifications } from '@mantine/notifications'
-import { Github, Globe } from 'lucide-react'
+import { Github, Globe, ImagePlus, ImagePlusIcon } from 'lucide-react'
 import { authClient } from '@/lib/auth-client'
 import { uploadImage } from '@/lib/utils'
 
@@ -36,7 +36,7 @@ export const Route = createFileRoute('/account/register')({
 function RouteComponent() {
   const search = useSearch({ from: '/account/register' })
   const callbackUrl = search.callbackUrl ?? '/'
-
+const router=useRouter()
   const form = useForm<SignUpForm>({
     initialValues: {
       name: '',
@@ -66,15 +66,21 @@ function RouteComponent() {
         name: values.name,
         email: values.email,
         password: values.password,
-        image: imageUrl || defaultUrl, // Pass uploaded URL or default
-        callbackURL: callbackUrl,
+        // image: imageUrl || defaultUrl, // Pass uploaded URL or default
+        // callbackURL: callbackUrl,
       })
-
+  
       notifications.show({
         title: 'Account created',
         message: 'Your account has been created successfully 🎉',
         color: 'green',
       })
+    router.navigate({
+  to: "/account",
+  search: {
+    callbackUrl: "/projects",
+  },
+})
     } catch (err: any) {
       notifications.show({
         title: 'Registration failed',
@@ -95,7 +101,7 @@ function RouteComponent() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
       <Paper
-        className="w-full max-w-md p-6 shadow-md rounded-lg"
+        className="w-full max-w-xl p-6 shadow-md rounded-lg"
         radius="md"
         withBorder
       >
@@ -162,6 +168,7 @@ function RouteComponent() {
          
               <FileInput
                 placeholder="Upload profile image"
+                 leftSection={<ImagePlus size={16} />}
                 accept="image/*"
                 {...form.getInputProps('image')}
                 defaultValue={null}

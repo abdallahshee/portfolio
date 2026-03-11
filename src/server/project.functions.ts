@@ -9,7 +9,7 @@ export const getAllProjects = createServerFn({ method: "GET" })
   .handler(async () => {
     try {
       const projects = await db.select().from(project);
-      console.log(`Here are the projects ${JSON.stringify(projects, null, 2)}`)
+    
       return projects;
     } catch (err) {
       console.error("Error fetching projects:", err);

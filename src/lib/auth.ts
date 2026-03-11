@@ -7,21 +7,24 @@ import 'better-auth'; // or 'next-auth'
 
 
 export const auth = betterAuth({
-   database: drizzleAdapter(db, { 
-    provider: "pg", // or "pg" or "mysql"
-  }), 
-   user: {
+  database: drizzleAdapter(db, {
+    provider: "pg",
+  }),
+
+  user: {
     additionalFields: {
       role: {
-        type: 'string',
+        type: "string",
         required: false,
-        defaultValue: 'user',
-        input: false, // users can't set their own role
+        defaultValue: "user",
+        input: false,
       },
     },
   },
+
   emailAndPassword: {
     enabled: true,
+    autoSignIn: false,
   },
   plugins: [tanstackStartCookies()],
 })

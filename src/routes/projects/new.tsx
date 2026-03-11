@@ -3,7 +3,7 @@ import { Container, TextInput, Textarea, Checkbox, Button, Title, Group, Stack, 
 import { useForm } from '@mantine/form';
 import type { ProjectRequest } from '@/db/project-schema';
 import { createProject } from '@/server/project.functions';
-import { Plus, Trash } from 'lucide-react';
+import { ImagePlus, Plus, Trash } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
 import { uploadImage } from '@/lib/utils';
@@ -125,6 +125,7 @@ function RouteComponent() {
 
             <FileInput
               placeholder="Upload profile image"
+              leftSection={<ImagePlus size={16} />}
               accept="image/*"
               {...form.getInputProps('imageUrl')}
               defaultValue={null}
