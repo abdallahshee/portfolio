@@ -10,7 +10,7 @@ import { getProjectByIdQueryOptions } from '@/queries/project.queries';
 import { updateProject } from '@/server/project.functions';
 
 
-export const Route = createFileRoute('/projects/edit/$id')({
+export const Route = createFileRoute('/projects/$id/edit')({
   loader: async ({ context, params }) => {
     console.log('PARAMS IS HERE ' + params.id)
     const data = await context.queryClient.fetchQuery(

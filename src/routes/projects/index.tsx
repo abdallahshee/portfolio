@@ -136,7 +136,7 @@ function RouteComponent() {
                 <Title order={4}>{project.title}</Title>
 
                 {session?.user.role === "admin" ? (
-                  <Link to="/projects/edit/$id" params={{ id: project.id }}>
+                  <Link to="/projects/$id/edit" params={{ id: project.id }}>
                     <Tooltip label="Edit project">
                       <ActionIcon variant="light" size="md">
                         <Pencil size={16} />
@@ -216,7 +216,7 @@ function RouteComponent() {
                   Live Demo
                 </Button>
 
-                <Link to="/projects/details/$id" params={{ id: project.id }}>
+                <Link to="/projects/$id/details" params={{ id: project.id }}>
                   <Button rightSection={<ArrowRight size={16} />}>
                     Details
                   </Button>

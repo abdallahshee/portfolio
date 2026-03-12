@@ -51,7 +51,7 @@ export default function Header() {
             <div className="flex items-center space-x-4 ml-4">
               {/* Avatar */}
               <Avatar
-                src={session.data.user.image}
+                src="https://i.pravatar.cc/100"
                 alt={session.data.user.name}
                 radius="xl"
                 size="sm"
@@ -112,11 +112,11 @@ export default function Header() {
               </Link>
             ))}
 
-            {session.data?.session.userId ? (
+            {session.data?.user ? (
               <div className="flex items-center space-x-4 mt-4">
                 <Avatar
-                  src={session.data.user.image || undefined}
-                  alt={session.data.user.name || 'User'}
+                  src="https://i.pravatar.cc/100"
+                  alt={session.data.user.name}
                   radius="xl"
                   size="sm"
                 />

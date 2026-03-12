@@ -23,8 +23,10 @@ import { Route as AccountVerifyRouteImport } from './routes/account/verify'
 import { Route as AccountResetPasswordRouteImport } from './routes/account/reset-password'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
 import { Route as AccountForgotPasswordRouteImport } from './routes/account/forgot-password'
-import { Route as ProjectsEditIdRouteImport } from './routes/projects/edit.$id'
-import { Route as ProjectsDetailsIdRouteImport } from './routes/projects/details.$id'
+import { Route as ProjectsIdEditRouteImport } from './routes/projects/$id.edit'
+import { Route as ProjectsIdDetailsRouteImport } from './routes/projects/$id.details'
+import { Route as BlogsIdEditRouteImport } from './routes/blogs/$id.edit'
+import { Route as BlogsIdDetailsRouteImport } from './routes/blogs/$id.details'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 
 const ContactRoute = ContactRouteImport.update({
@@ -97,15 +99,25 @@ const AccountForgotPasswordRoute = AccountForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => AccountRouteRoute,
 } as any)
-const ProjectsEditIdRoute = ProjectsEditIdRouteImport.update({
-  id: '/edit/$id',
-  path: '/edit/$id',
+const ProjectsIdEditRoute = ProjectsIdEditRouteImport.update({
+  id: '/$id/edit',
+  path: '/$id/edit',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
-const ProjectsDetailsIdRoute = ProjectsDetailsIdRouteImport.update({
-  id: '/details/$id',
-  path: '/details/$id',
+const ProjectsIdDetailsRoute = ProjectsIdDetailsRouteImport.update({
+  id: '/$id/details',
+  path: '/$id/details',
   getParentRoute: () => ProjectsRouteRoute,
+} as any)
+const BlogsIdEditRoute = BlogsIdEditRouteImport.update({
+  id: '/$id/edit',
+  path: '/$id/edit',
+  getParentRoute: () => BlogsRouteRoute,
+} as any)
+const BlogsIdDetailsRoute = BlogsIdDetailsRouteImport.update({
+  id: '/$id/details',
+  path: '/$id/details',
+  getParentRoute: () => BlogsRouteRoute,
 } as any)
 const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
   id: '/api/auth/$',
@@ -129,8 +141,10 @@ export interface FileRoutesByFullPath {
   '/blogs/': typeof BlogsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/projects/details/$id': typeof ProjectsDetailsIdRoute
-  '/projects/edit/$id': typeof ProjectsEditIdRoute
+  '/blogs/$id/details': typeof BlogsIdDetailsRoute
+  '/blogs/$id/edit': typeof BlogsIdEditRoute
+  '/projects/$id/details': typeof ProjectsIdDetailsRoute
+  '/projects/$id/edit': typeof ProjectsIdEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -145,8 +159,10 @@ export interface FileRoutesByTo {
   '/blogs': typeof BlogsIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/projects/details/$id': typeof ProjectsDetailsIdRoute
-  '/projects/edit/$id': typeof ProjectsEditIdRoute
+  '/blogs/$id/details': typeof BlogsIdDetailsRoute
+  '/blogs/$id/edit': typeof BlogsIdEditRoute
+  '/projects/$id/details': typeof ProjectsIdDetailsRoute
+  '/projects/$id/edit': typeof ProjectsIdEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -165,8 +181,10 @@ export interface FileRoutesById {
   '/blogs/': typeof BlogsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
-  '/projects/details/$id': typeof ProjectsDetailsIdRoute
-  '/projects/edit/$id': typeof ProjectsEditIdRoute
+  '/blogs/$id/details': typeof BlogsIdDetailsRoute
+  '/blogs/$id/edit': typeof BlogsIdEditRoute
+  '/projects/$id/details': typeof ProjectsIdDetailsRoute
+  '/projects/$id/edit': typeof ProjectsIdEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -186,8 +204,10 @@ export interface FileRouteTypes {
     | '/blogs/'
     | '/projects/'
     | '/api/auth/$'
-    | '/projects/details/$id'
-    | '/projects/edit/$id'
+    | '/blogs/$id/details'
+    | '/blogs/$id/edit'
+    | '/projects/$id/details'
+    | '/projects/$id/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -202,8 +222,10 @@ export interface FileRouteTypes {
     | '/blogs'
     | '/projects'
     | '/api/auth/$'
-    | '/projects/details/$id'
-    | '/projects/edit/$id'
+    | '/blogs/$id/details'
+    | '/blogs/$id/edit'
+    | '/projects/$id/details'
+    | '/projects/$id/edit'
   id:
     | '__root__'
     | '/'
@@ -221,8 +243,10 @@ export interface FileRouteTypes {
     | '/blogs/'
     | '/projects/'
     | '/api/auth/$'
-    | '/projects/details/$id'
-    | '/projects/edit/$id'
+    | '/blogs/$id/details'
+    | '/blogs/$id/edit'
+    | '/projects/$id/details'
+    | '/projects/$id/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -334,19 +358,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountForgotPasswordRouteImport
       parentRoute: typeof AccountRouteRoute
     }
-    '/projects/edit/$id': {
-      id: '/projects/edit/$id'
-      path: '/edit/$id'
-      fullPath: '/projects/edit/$id'
-      preLoaderRoute: typeof ProjectsEditIdRouteImport
+    '/projects/$id/edit': {
+      id: '/projects/$id/edit'
+      path: '/$id/edit'
+      fullPath: '/projects/$id/edit'
+      preLoaderRoute: typeof ProjectsIdEditRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
-    '/projects/details/$id': {
-      id: '/projects/details/$id'
-      path: '/details/$id'
-      fullPath: '/projects/details/$id'
-      preLoaderRoute: typeof ProjectsDetailsIdRouteImport
+    '/projects/$id/details': {
+      id: '/projects/$id/details'
+      path: '/$id/details'
+      fullPath: '/projects/$id/details'
+      preLoaderRoute: typeof ProjectsIdDetailsRouteImport
       parentRoute: typeof ProjectsRouteRoute
+    }
+    '/blogs/$id/edit': {
+      id: '/blogs/$id/edit'
+      path: '/$id/edit'
+      fullPath: '/blogs/$id/edit'
+      preLoaderRoute: typeof BlogsIdEditRouteImport
+      parentRoute: typeof BlogsRouteRoute
+    }
+    '/blogs/$id/details': {
+      id: '/blogs/$id/details'
+      path: '/$id/details'
+      fullPath: '/blogs/$id/details'
+      preLoaderRoute: typeof BlogsIdDetailsRouteImport
+      parentRoute: typeof BlogsRouteRoute
     }
     '/api/auth/$': {
       id: '/api/auth/$'
@@ -381,11 +419,15 @@ const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
 interface BlogsRouteRouteChildren {
   BlogsNewRoute: typeof BlogsNewRoute
   BlogsIndexRoute: typeof BlogsIndexRoute
+  BlogsIdDetailsRoute: typeof BlogsIdDetailsRoute
+  BlogsIdEditRoute: typeof BlogsIdEditRoute
 }
 
 const BlogsRouteRouteChildren: BlogsRouteRouteChildren = {
   BlogsNewRoute: BlogsNewRoute,
   BlogsIndexRoute: BlogsIndexRoute,
+  BlogsIdDetailsRoute: BlogsIdDetailsRoute,
+  BlogsIdEditRoute: BlogsIdEditRoute,
 }
 
 const BlogsRouteRouteWithChildren = BlogsRouteRoute._addFileChildren(
@@ -395,15 +437,15 @@ const BlogsRouteRouteWithChildren = BlogsRouteRoute._addFileChildren(
 interface ProjectsRouteRouteChildren {
   ProjectsNewRoute: typeof ProjectsNewRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
-  ProjectsDetailsIdRoute: typeof ProjectsDetailsIdRoute
-  ProjectsEditIdRoute: typeof ProjectsEditIdRoute
+  ProjectsIdDetailsRoute: typeof ProjectsIdDetailsRoute
+  ProjectsIdEditRoute: typeof ProjectsIdEditRoute
 }
 
 const ProjectsRouteRouteChildren: ProjectsRouteRouteChildren = {
   ProjectsNewRoute: ProjectsNewRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
-  ProjectsDetailsIdRoute: ProjectsDetailsIdRoute,
-  ProjectsEditIdRoute: ProjectsEditIdRoute,
+  ProjectsIdDetailsRoute: ProjectsIdDetailsRoute,
+  ProjectsIdEditRoute: ProjectsIdEditRoute,
 }
 
 const ProjectsRouteRouteWithChildren = ProjectsRouteRoute._addFileChildren(

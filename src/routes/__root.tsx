@@ -12,9 +12,11 @@ import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
 import '@mantine/core/styles.css';
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import {  MantineProvider } from '@mantine/core';
+import '@mantine/notifications/styles.css'
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
+import { Notifications } from '@mantine/notifications'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -57,6 +59,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         
         <MantineProvider>
         <TanStackQueryProvider>
+          <Notifications/>
           <Header />
           {children}
           <Footer />

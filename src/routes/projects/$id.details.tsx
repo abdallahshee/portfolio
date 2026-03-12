@@ -13,7 +13,7 @@ import { ArrowRight, Github, Globe } from "lucide-react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { getProjectByIdQueryOptions } from "@/queries/project.queries";
 
-export const Route = createFileRoute("/projects/details/$id")({
+export const Route = createFileRoute("/projects/$id/details")({
   loader: async ({ context, params }) => {
 
     const data = await context.queryClient.fetchQuery(

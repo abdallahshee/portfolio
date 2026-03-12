@@ -6,7 +6,7 @@ import {
   Container,
   Text,
   Title,
- Table, ActionIcon,
+  Table,
   Image,
   Group,
   Stack,
@@ -14,8 +14,9 @@ import {
   Divider,
   Paper,
   ThemeIcon,
+  Avatar,
 } from '@mantine/core'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {
   ArrowRight,
   Mail,
@@ -23,12 +24,7 @@ import {
   Linkedin,
   Heart,
   MessageCircle,
-  Globe,
   FolderKanban,
-  BookOpenText,
-  ExternalLink,
-  Eye,
-  Anchor
 } from 'lucide-react'
 
 export const Route = createFileRoute('/')({
@@ -50,6 +46,7 @@ export const Route = createFileRoute('/')({
 
 function App() {
   const { projects, blogs } = Route.useLoaderData()
+  const router = useRouter()
 
   return (
     <Container size="xl" className="py-16 lg:py-24 space-y-20">
@@ -158,167 +155,143 @@ function App() {
 
       <Divider />
 
-      {/* PROJECTS + BLOGS SAME ROW */}
+      {/* PROJECTS + BLOGS */}
+      <section id="featured" className="grid lg:grid-cols-2 gap-12">
+        {/* PROJECTS COLUMN */}
+        <div className="space-y-6">
+          <Group justify="space-between">
+           <Title order={2}>Top Rated Projects</Title>
 
+            <Link to="/projects">
+              <Button variant="subtle" rightSection={<ArrowRight size={16} />}>
+                View All
+              </Button>
+            </Link>
+          </Group>
 
-<section id="featured" className="grid lg:grid-cols-2 gap-12">
+          <Table striped highlightOnHover withTableBorder>
+            <Table.Thead>
+              <Table.Tr>
+                  <Table.Th></Table.Th>
+                {/* <Table.Th>Project</Table.Th> */}
+                <Table.Th>Rating</Table.Th>
+                <Table.Th>Link</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
 
-  {/* PROJECTS COLUMN */}
-  <div className="space-y-6">
+            <Table.Tbody>
+              {projects?.map((project) => {
+                const rating = Number(project.avgRating ?? 0)
 
-    <Group justify="space-between">
-      <Title order={2}>Featured Projects</Title>
+                return (
+                  <Table.Tr
+                    key={project.id}
+                    onClick={() =>
+                      router.navigate({
+                        to: '/projects/$id/details',
+                        params: { id: project.id },
+                      })
+                    }
+                    className="cursor-pointer transition hover:bg-gray-50"
+                  >
+                    <Table.Td>
+                      <Group gap="sm">
+                        {project.imageUrl && (
+                          <Image
+                            src={project.imageUrl}
+                            w={40}
+                            h={40}
+                            radius="sm"
+                          />
+                        )}
 
-      <Link to="/projects">
-        <Button variant="subtle" rightSection={<ArrowRight size={16} />}>
-          View All
-        </Button>
-      </Link>
-    </Group>
+                        <Text fw={500}>{project.title}</Text>
+                      </Group>
+                    </Table.Td>
 
-    <Table striped highlightOnHover withTableBorder>
-      <Table.Thead>
-        <Table.Tr>
-          <Table.Th>Project</Table.Th>
-          <Table.Th>Rating</Table.Th>
-          <Table.Th>Website</Table.Th>
-          <Table.Th></Table.Th>
-        </Table.Tr>
-      </Table.Thead>
+                    <Table.Td>
+                      <Rating value={rating} readOnly size="sm" />
+                    </Table.Td>
 
-      <Table.Tbody>
-        {projects?.map((project) => {
+                    <Table.Td>
+                      <Text c="blue" size="sm" fw={500}>
+                        View
+                      </Text>
+                    </Table.Td>
+                  </Table.Tr>
+                )
+              })}
+            </Table.Tbody>
+          </Table>
+        </div>
 
-          const rating = Number(project.avgRating ?? 0)
+        {/* BLOGS COLUMN */}
+        <div className="space-y-6">
+          <Group justify="space-between">
+          <Title order={2}>Most Popular Articles</Title>
 
-          return (
-            <Table.Tr key={project.id}>
+            <Link to="/blogs">
+              <Button variant="subtle" rightSection={<ArrowRight size={16} />}>
+                View All
+              </Button>
+            </Link>
+          </Group>
 
-              <Table.Td>
-                <Group gap="sm">
+          <Table striped highlightOnHover withTableBorder>
+            <Table.Thead>
+              <Table.Tr>
+                 <Table.Th></Table.Th>
+                {/* <Table.Th>Title</Table.Th> */}
+                <Table.Th>Likes</Table.Th>
+                {/* <Table.Th>Comments</Table.Th> */}
+                <Table.Th>Link</Table.Th>
+              </Table.Tr>
+            </Table.Thead>
 
-                  {project.imageUrl && (
-                    <Image
-                      src={project.imageUrl}
-                      w={40}
-                      h={40}
-                      radius="sm"
-                    />
-                  )}
-
-                  <Text fw={500}>{project.title}</Text>
-
-                </Group>
-              </Table.Td>
-
-              <Table.Td>
-                <Rating value={rating} readOnly size="sm" />
-              </Table.Td>
-
-              <Table.Td>
-                <Anchor
-                  href={project.websiteUrl}
-                  target="_blank"
+            <Table.Tbody>
+              {blogs?.map((blog) => (
+                <Table.Tr
+                  key={blog.id}
+                  onClick={() =>
+                    router.navigate({
+                      to: '/blogs/$id/details',
+                      params: { id: blog.id },
+                    })
+                  }
+                  className="cursor-pointer transition hover:bg-gray-50"
                 >
-                  Visit
-                </Anchor>
-              </Table.Td>
+                  <Table.Td>
+                    <Group gap="sm">
+                      <Avatar src={blog.authorImage || undefined} alt={blog.title} />
+                      <Text fw={500}>{blog.title}</Text>
+                    </Group>
+                  </Table.Td>
 
-              <Table.Td>
-                <Link
-                  to="/projects/details/$id"
-                  params={{ id: project.id }}
-                >
-                  <ActionIcon variant="light">
-                    <Eye size={16} />
-                  </ActionIcon>
-                </Link>
-              </Table.Td>
+                  <Table.Td>
+                    <Group gap={4}>
+                      <Heart size={16} />
+                      <Text size="sm">{blog.likes}</Text>
+                    </Group>
+                  </Table.Td>
 
-            </Table.Tr>
-          )
-        })}
-      </Table.Tbody>
-    </Table>
+                  {/* <Table.Td>
+                    <Group gap={4}>
+                      <MessageCircle size={16} />
+                      <Text size="sm">{blog.comments}</Text>
+                    </Group>
+                  </Table.Td> */}
 
-  </div>
-
-
-  {/* BLOGS COLUMN */}
-  <div className="space-y-6">
-
-    <Group justify="space-between">
-      <Title order={2}>Latest Blogs</Title>
-
-      <Link to="/blogs">
-        <Button variant="subtle" rightSection={<ArrowRight size={16} />}>
-          View All
-        </Button>
-      </Link>
-    </Group>
-
-    <Table striped highlightOnHover withTableBorder>
-      <Table.Thead>
-        <Table.Tr>
-          <Table.Th>Title</Table.Th>
-          <Table.Th>Likes</Table.Th>
-          <Table.Th>Comments</Table.Th>
-          <Table.Th></Table.Th>
-        </Table.Tr>
-      </Table.Thead>
-
-      <Table.Tbody>
-
-        {blogs?.map((blog) => (
-          <Table.Tr key={blog.id}>
-
-            <Table.Td>
-              <Group gap="sm">
-
-                <BookOpenText size={18} />
-
-                <Text fw={500}>
-                  {blog.title}
-                </Text>
-
-              </Group>
-            </Table.Td>
-
-            <Table.Td>
-              <Group gap={4}>
-                <Heart size={16} />
-                {blog.likes}
-              </Group>
-            </Table.Td>
-
-            <Table.Td>
-              <Group gap={4}>
-                <MessageCircle size={16} />
-                {blog.comments}
-              </Group>
-            </Table.Td>
-
-            <Table.Td>
-              <Link
-                to="/blogs"
-                // params={{ id: blog.id }}
-              >
-           
-                Read
-              
-              </Link>
-            </Table.Td>
-
-          </Table.Tr>
-        ))}
-
-      </Table.Tbody>
-
-    </Table>
-
-  </div>
-
-</section>
+                  <Table.Td>
+                    <Text c="blue" size="sm" fw={500}>
+                      Read
+                    </Text>
+                  </Table.Td>
+                </Table.Tr>
+              ))}
+            </Table.Tbody>
+          </Table>
+        </div>
+      </section>
 
       <Divider />
 
