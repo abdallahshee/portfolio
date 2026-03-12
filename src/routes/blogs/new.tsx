@@ -9,22 +9,24 @@ import {
   Stack,
   FileInput,
   Switch,
-  Select,
+
   TagsInput,
   Group
 } from "@mantine/core"
 
 import { Save, ImagePlus, FileText } from "lucide-react"
 import { useState } from "react"
-import type { BlogRequest } from "@/db/blog-schema"
+
 import { uploadImage } from "@/lib/utils"
+import { useServerFn } from "@tanstack/react-start"
+import { createBlog } from "@/server/blog.functions"
 
 interface BlogForm {
   title: string
   slug: string
   excerpt: string
   content: string
-  coverImage: File
+  coverImage: File | null
   tags: string[]
 }
 
@@ -35,7 +37,7 @@ export const Route = createFileRoute("/blogs/new")({
 function CreateBlogPage() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-
+  const blogCreate = useServerFn(createBlog)
   const form = useForm<BlogForm>({
     initialValues: {
       title: "",
@@ -49,8 +51,16 @@ function CreateBlogPage() {
 
   const handleSubmit = async (values: BlogForm) => {
     try {
+      let imageUrl = ""
+      if (values.coverImage) {
 
-      const imageUrl = await uploadImage(values.coverImage)
+        imageUrl = await uploadImage(values.coverImage)
+      }
+      const defaultUrl = "https://images.pexels.com/photos/265667/pexels-photo-265667.jpeg"
+      
+      const {coverImage, ...rest}=values
+      
+      await blogCreate({ data:{coverImage:defaultUrl, ...rest}})
 
       router.navigate({
         to: "/account",

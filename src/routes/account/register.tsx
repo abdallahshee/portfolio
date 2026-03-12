@@ -66,7 +66,7 @@ const router=useRouter()
         name: values.name,
         email: values.email,
         password: values.password,
-        // image: imageUrl || defaultUrl, // Pass uploaded URL or default
+        image:  defaultUrl, // Pass uploaded URL or default
         // callbackURL: callbackUrl,
       })
   

@@ -42,30 +42,40 @@ function RouteComponent() {
     },
   })
 
-  const handleSubmit = async (values: LoginForm) => {
-    try {
-      await authClient.signIn.email({
-        email: values.email,
-        password: values.password,
-        rememberMe: values.rememberMe,
-        // callbackURL: callbackUrl,
+const handleSubmit = async (values: LoginForm) => {
+  try {
+    const res = await authClient.signIn.email({
+      email: values.email,
+      password: values.password,
+      rememberMe: values.rememberMe,
+    })
+
+    if (res.data?.user) {
+      notifications.show({
+        title: "Login successful",
+        message: "Welcome back 👋",
+        color: "green",
       })
 
-      notifications.show({
-        title: 'Login successful',
-        message: 'Welcome back 👋',
-        color: 'green',
+      router.navigate({ to: "/projects" })
+    } else {
+        notifications.show({
+        title: "Login Failed",
+        message: "Try Again 👋",
+        color: "red",
       })
-      router.navigate({to:"/projects"})
-    } catch (error: any) {
-      notifications.show({
-        title: 'Login failed',
-        message: error?.message ?? 'Invalid email or password',
-        color: 'red',
-      })
+      // router.navigate({ to: "/account" })
     }
-  }
+  } catch (error: any) {
+    notifications.show({
+      title: "Login failed",
+      message: error?.message ?? "Invalid email or password",
+      color: "red",
+    })
 
+    // router.navigate({ to: "/account" })
+  }
+}
   const handleOAuthSignIn = async (provider: 'github' | 'google') => {
     await authClient.signIn.social({
       provider,
