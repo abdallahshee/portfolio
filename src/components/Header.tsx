@@ -11,7 +11,7 @@ export default function Header() {
   const links = [
     { label: 'Home', to: '/' },
     { label: 'Projects', to: '/projects' },
-  
+    { label: 'Blog', to: '/blogs' },
     { label: 'Contact', to: '/contact' },
   ];
 
@@ -20,7 +20,7 @@ export default function Header() {
   };
 
   const handleLogin = async () => {
-    router.navigate({ 
+    router.navigate({
       to: '/account',
       search: { callbackUrl: '/' },
     });
@@ -47,12 +47,12 @@ export default function Header() {
           ))}
 
           {/* Auth / Avatar */}
-          {session.data?.session.userId ? (
+          {session.data?.user ? (
             <div className="flex items-center space-x-4 ml-4">
               {/* Avatar */}
               <Avatar
-                src={session.data.user.image }
-                alt={session.data.user.name }
+                src={session.data.user.image}
+                alt={session.data.user.name}
                 radius="xl"
                 size="sm"
               />

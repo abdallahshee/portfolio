@@ -33,7 +33,7 @@ export const Route = createFileRoute('/account/')({
 
 function RouteComponent() {
   const { callbackUrl } = useSearch({ from: '/account/' })
-  const router=useRouter()
+  const router = useRouter()
   const form = useForm<LoginForm>({
     initialValues: {
       email: '',
@@ -42,40 +42,40 @@ function RouteComponent() {
     },
   })
 
-const handleSubmit = async (values: LoginForm) => {
-  try {
-    const res = await authClient.signIn.email({
-      email: values.email,
-      password: values.password,
-      rememberMe: values.rememberMe,
-    })
-
-    if (res.data?.user) {
-      notifications.show({
-        title: "Login successful",
-        message: "Welcome back 👋",
-        color: "green",
+  const handleSubmit = async (values: LoginForm) => {
+    try {
+      const res = await authClient.signIn.email({
+        email: values.email,
+        password: values.password,
+        rememberMe: values.rememberMe,
       })
 
-      router.navigate({ to: "/projects" })
-    } else {
+      if (res.data?.user) {
         notifications.show({
-        title: "Login Failed",
-        message: "Try Again 👋",
+          title: "Login successful",
+          message: "Welcome back 👋",
+          color: "green",
+        })
+
+        router.navigate({ to: "/projects" })
+      } else {
+        notifications.show({
+          title: "Login Failed",
+          message: "Try Again 👋",
+          color: "red",
+        })
+        // router.navigate({ to: "/account" })
+      }
+    } catch (error: any) {
+      notifications.show({
+        title: "Login failed",
+        message: error?.message ?? "Invalid email or password",
         color: "red",
       })
+
       // router.navigate({ to: "/account" })
     }
-  } catch (error: any) {
-    notifications.show({
-      title: "Login failed",
-      message: error?.message ?? "Invalid email or password",
-      color: "red",
-    })
-
-    // router.navigate({ to: "/account" })
   }
-}
   const handleOAuthSignIn = async (provider: 'github' | 'google') => {
     await authClient.signIn.social({
       provider,
@@ -133,10 +133,10 @@ const handleSubmit = async (values: LoginForm) => {
               {...form.getInputProps('password')}
               required
             />
-              <Switch
-                          label="Remember Me"
-                          {...form.getInputProps("rememberMe", { type: "checkbox" })}
-                        />
+            <Switch
+              label="Remember Me"
+              {...form.getInputProps("rememberMe", { type: "checkbox" })}
+            />
             {/* <Checkbox
               label="Remember me"
               {...form.getInputProps('rememberMe', { type: 'checkbox' })}
