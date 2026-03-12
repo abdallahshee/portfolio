@@ -18,11 +18,13 @@ config({ path: ['.env.local', '.env'] })
 
 export default defineConfig({
   schema: [
-    "./src/db/project-schema.ts",
-  "./src/db/auth-schema.ts",
-  "./src/db/user-schema.ts",
-  "./src/db/blog-schema.ts",
-  "./src/db/comment-schema.ts"
+    "./src/db/project.schema.ts",
+    "./src/db/auth.schema.ts",
+    "./src/db/user.schema.ts",
+    "./src/db/blog.schema.ts",
+    "./src/db/comment.schema.ts",
+    "./src/db/blog-like.schema.ts",
+    "./src/db/project-rating.schema.ts"
   ],
   out: "./drizzle",
   dialect: "postgresql",

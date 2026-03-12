@@ -1,4 +1,4 @@
-import { getProjectsQueryOptions } from '@/queries/project-querie'
+import { getProjectsQueryOptions } from '@/queries/project.queries'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import {
   Card,
@@ -19,7 +19,7 @@ import { Globe, Github, ArrowRight, Pencil } from 'lucide-react'
 import { authClient } from '@/lib/auth-client'
 import { useDisclosure } from '@mantine/hooks'
 import { useState } from 'react'
-import type { Project } from '@/db/project-schema'
+import type { Project } from '@/db/project.schema'
 import { notifications } from '@mantine/notifications'
 
 
@@ -156,7 +156,7 @@ function RouteComponent() {
               </Group>
 
               {/* ⭐ Rating */}
-              <Rating value={project.rate} fractions={1} readOnly />
+              <Rating value={4} fractions={1} readOnly />
 
               {/* Status Badge + Optional GitHub Button */}
               <Group gap="sm">

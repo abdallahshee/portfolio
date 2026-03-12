@@ -1,12 +1,13 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { Container, TextInput, Textarea, Checkbox, Button, Title, Group, Stack, ActionIcon, FileInput, Avatar } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import type { ProjectRequest } from '@/db/project-schema';
-import { createProject } from '@/server/project.functions';
+import type { ProjectRequest } from '@/db/project.schema';
+
 import { ImagePlus, Plus, Trash } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
 import { uploadImage } from '@/lib/utils';
+import { createProject } from '@/server/project.functions';
 interface ProjectCreateForm {
   title: string;
   websiteUrl: string;

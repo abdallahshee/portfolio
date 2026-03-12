@@ -1,12 +1,14 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router';
 import { Container, TextInput, Textarea, Checkbox, Button, Title, Group, Stack, ActionIcon } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import type { ProjectRequest } from '@/db/project-schema';
-import { updateProject } from '@/server/project.functions';
+import type { ProjectRequest } from '@/db/project.schema';
+
 import { Plus, Trash } from 'lucide-react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
-import { getProjectByIdQueryOptions } from '@/queries/project-querie';
+import { getProjectByIdQueryOptions } from '@/queries/project.queries';
+import { updateProject } from '@/server/project.functions';
+
 
 export const Route = createFileRoute('/projects/edit/$id')({
   loader: async ({ context, params }) => {

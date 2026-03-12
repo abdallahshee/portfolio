@@ -1,4 +1,4 @@
-import { getTopProjectsQueryOptions } from '@/queries/project-querie'
+import { getTopProjectsQueryOptions } from '@/queries/project.queries'
 import {
   Badge,
   Button,
@@ -17,16 +17,18 @@ import { ArrowRight, Mail, Github, Linkedin } from 'lucide-react'
 
 export const Route = createFileRoute('/')({
   loader: async ({ context }) => {
-    const data = await context.queryClient.fetchQuery(
-      getTopProjectsQueryOptions(3)
+    const top4Projects = await context.queryClient.fetchQuery(
+      getTopProjectsQueryOptions()
     )
+    // const blogs=
+    const data={projects: top4Projects}
     return data
   },
   component: App
 })
 
 function App() {
-  const projects = Route.useLoaderData()
+  const {projects} = Route.useLoaderData()
 
   return (
     <Container size="xl" className="py-24 space-y-32">
@@ -142,10 +144,7 @@ function App() {
 
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-3">
           {projects?.map((project) => {
-            const isNew =
-              new Date(project.createdAt).getTime() >
-              Date.now() - 1000 * 60 * 60 * 24 * 30
-
+          
             return (
               <Card
                 key={project.id}
@@ -171,20 +170,14 @@ function App() {
                   <Group justify="space-between">
                     <Title order={4}>{project.title}</Title>
 
-                    {isNew && (
-                      <Badge color="green" variant="light">
-                        New
-                      </Badge>
-                    )}
+                  
                   </Group>
 
                   {/* RATING */}
-                  <Rating value={project.rate} readOnly />
+                  <Rating value={4} readOnly />
 
                   {/* CREATED DATE */}
-                  <Text size="sm" c="dimmed">
-                    Created {new Date(project.createdAt).toLocaleDateString()}
-                  </Text>
+                
 
                   {/* BUTTON */}
                   <Link

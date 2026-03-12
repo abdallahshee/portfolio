@@ -1,8 +1,9 @@
 
-import {  type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, text, timestamp ,boolean,integer} from "drizzle-orm/pg-core";
+import {  relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { pgTable, text, timestamp ,boolean} from "drizzle-orm/pg-core";
 import { createInsertSchema} from 'drizzle-zod';
 import { nanoid } from "nanoid";
+import { projectRating } from "./project-rating.schema";
 
 export const project = pgTable('project', {
     id: text("id").primaryKey().$default(() => nanoid(16)),
@@ -12,7 +13,6 @@ export const project = pgTable('project', {
     imageUrl: text("image_url"),
     isPublic:boolean('is_public').notNull(),
     githubUrl:text('github_url').notNull(),
-    rate:integer("rate").notNull(),
     technologies: text('technologies').array().notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
@@ -20,6 +20,12 @@ export const project = pgTable('project', {
         .$onUpdate(() => /* @__PURE__ */ new Date())
         .notNull(),
 })
+
+
+// Project relations
+export const projectRelations = relations(project, ({ many }) => ({
+  ratings: many(projectRating), // all ratings associated with this project
+}));
 
 export type Project=InferSelectModel<typeof project>
 export type ProjectRequest=Omit<InferInsertModel<typeof project>, "id"|"createdAt"|"updatedAt">

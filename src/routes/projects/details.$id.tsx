@@ -4,8 +4,6 @@ import {
   Container,
   Text,
   Title,
-  Card,
-  Grid,
   Group,
   Image,
   Stack,
@@ -13,7 +11,7 @@ import {
 } from "@mantine/core";
 import { ArrowRight, Github, Globe } from "lucide-react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { getProjectByIdQueryOptions } from "@/queries/project-querie";
+import { getProjectByIdQueryOptions } from "@/queries/project.queries";
 
 export const Route = createFileRoute("/projects/details/$id")({
   loader: async ({ context, params }) => {
@@ -65,7 +63,7 @@ function ProjectDetails() {
         <Stack gap="xs">
           <Text size='{500'>Main Technologies Used</Text>
           <Group gap="xs" wrap="wrap">
-            {project.technologies.map((tech) => (
+            {project.technologies.map((tech:string) => (
               <Badge key={tech} size="sm" variant="outline">
                 {tech}
               </Badge>

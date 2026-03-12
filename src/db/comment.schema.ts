@@ -1,6 +1,6 @@
 import { pgTable, text, timestamp, type AnyPgColumn } from 'drizzle-orm/pg-core';
-import { blog } from './blog-schema';
-import { user } from './user-schema';
+import { blog } from './blog.schema';
+import { user } from './user.schema';
 import { relations, type InferInsertModel, type InferSelectModel } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-zod';
 

@@ -1,6 +1,6 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index, pgEnum } from "drizzle-orm/pg-core";
-import { user } from "./user-schema";
+import { relations } from "drizzle-orm";
+import { pgTable, text, timestamp, index } from "drizzle-orm/pg-core";
+import { user } from "./user.schema";
 
 
 export const session = pgTable(

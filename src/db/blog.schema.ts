@@ -1,9 +1,10 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index, pgEnum } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, pgEnum } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
-import { user } from "./user-schema";
-import { comment } from "./comment-schema";
+import { user } from "./user.schema";
+import { comment } from "./comment.schema";
 import { createInsertSchema} from "drizzle-zod";
+import { blogLike } from "./blog-like.schema";
 
 
 export const blogStatusEnum = pgEnum('blog_status', ['draft', 'pending', 'published'])
@@ -24,13 +25,15 @@ export const blog = pgTable("blog", {
     .notNull(),
 })
 
-export const blogRelations=relations(blog,({one,many})=>({
-    author:one(user,{
-        fields:[blog.userId],
-        references:[user.id]
-    }),
-    comments:many(comment)
- 
+export const blogRelations = relations(blog, ({ one, many }) => ({
+  author: one(user, {
+    fields: [blog.userId],
+    references: [user.id],
+  }),
+
+  comments: many(comment),
+
+  likes: many(blogLike),
 }))
 export type Blog=InferSelectModel<typeof blog>
 export type BlogRequest=Omit<InferInsertModel< typeof blog>,"status"|"userId"|"id"|"createdAt"|"updatedAt">

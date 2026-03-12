@@ -1,9 +1,10 @@
 
 import { db } from "../db/index";
-import { project, ProjectSchema} from "@/db/project-schema";
+import { project, ProjectSchema} from "@/db/project.schema";
 import zod from "zod"
-import { desc, eq } from "drizzle-orm";
+import { avg, desc, eq } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
+import { projectRating } from "@/db/project-rating.schema";
 
 export const getAllProjects = createServerFn({ method: "GET" })
   .handler(async () => {
@@ -59,17 +60,29 @@ export const updateProject = createServerFn({ method: "POST" })
     }
   })
 
-export const getTop3Projects = createServerFn({ method: "GET" })
+
+
+export const getTopProjects = createServerFn({ method: "GET" })
   .handler(async () => {
     try {
       const topProjects = await db
-        .select({ id: project.id, title: project.title, imageUrl: project.imageUrl, rate: project.rate, createdAt: project.createdAt })
+        .select({
+          id: project.id,
+          title: project.title,
+          imageUrl: project.imageUrl,
+          websiteUrl: project.websiteUrl,
+          githubUrl: project.githubUrl,
+          avgRating: avg(projectRating.rating), // calculate average rating
+        })
         .from(project)
-        .orderBy(desc(project.rate))
-        .limit(3); // must be literal, not param
-      return topProjects
+        .leftJoin(projectRating, eq(project.id, projectRating.projectId))
+        .groupBy(project.id)
+        .orderBy(desc(avg(projectRating.rating)))
+        .limit(5); // top 5 projects
+
+      return topProjects;
     } catch (err) {
-      console.log(err)
-      throw err
+      console.log(err);
+      throw err;
     }
-  })
+  });

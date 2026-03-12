@@ -1,8 +1,10 @@
 import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, index, pgEnum } from "drizzle-orm/pg-core";
-import { account, session } from "./auth-schema";
-import { comment} from "./comment-schema";
-import { blog } from "./blog-schema";
+import { pgTable, text, timestamp, boolean, pgEnum } from "drizzle-orm/pg-core";
+import { account, session } from "./auth.schema";
+import { comment } from "./comment.schema";
+import { blog } from "./blog.schema";
+import { blogLike } from "./blog-like.schema";
+import { projectRating } from "./project-rating.schema";
 
 export const roleEnum = pgEnum("role", ["user", "admin"])
 export const user = pgTable("user", {
@@ -22,11 +24,13 @@ export const user = pgTable("user", {
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
-  comments:many(comment),
-  blogs:many(blog)
+  comments: many(comment),
+  blogs: many(blog),
+  blogLikes: many(blogLike),
+  projectRatings: many(projectRating),
 }));
 
 
-export type User=InferSelectModel<typeof user>
-export type NewUser=InferInsertModel<typeof user>
+export type User = InferSelectModel<typeof user>
+export type NewUser = InferInsertModel<typeof user>
 
