@@ -345,3 +345,8 @@ a {
     color: var(--foreground);
   }
 }
+
+html {
+  overflow-y: scroll;
+  scrollbar-gutter: stable;
+}

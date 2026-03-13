@@ -149,7 +149,7 @@ function CreateBlogPage() {
             <Group justify="flex-end" mt="md">
               <Button
                 variant="default"
-                onClick={() => router.navigate({ to: "/blogs" })}
+                onClick={() => router.history.back}
               >
                 Cancel
               </Button>
