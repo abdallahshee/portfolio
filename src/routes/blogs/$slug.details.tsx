@@ -28,13 +28,13 @@ import {
   Tag,
 } from 'lucide-react'
 import { useCreateCommentMutation } from '@/queries/blog.mutations'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
 export const Route = createFileRoute('/blogs/$slug/details')({
   loader: async ({ context, params }) => {
-    const data = await context.queryClient.fetchQuery(
+    await context.queryClient.ensureQueryData(
       getBlogBySlugQueryOptions(params.slug)
     )
-    return data
   },
   component: RouteComponent,
 })
@@ -115,20 +115,19 @@ function ReplyForm({ blogId, slug, parentId, onSuccess }: ReplyFormProps) {
 }
 
 function RouteComponent() {
-  const loaderData = Route.useLoaderData()
   const { slug } = Route.useParams()
+  const { data } = useSuspenseQuery(getBlogBySlugQueryOptions(slug))
   const createCommentMutation = useCreateCommentMutation()
   const [activeReplyId, setActiveReplyId] = useState<string | null>(null)
 
-  if (!loaderData) {
+  if (!data) {
     return (
       <Container size="md" className="py-20">
         <Paper withBorder radius="xl" className="p-10 text-center">
           <Stack align="center" gap="sm">
             <Title order={2}>Blog not found</Title>
             <Text c="dimmed">
-              The article you are looking for does not exist or may have been
-              removed.
+              The article you are looking for does not exist or may have been removed.
             </Text>
             <Button
               component={Link}
@@ -144,8 +143,8 @@ function RouteComponent() {
     )
   }
 
-  const data = loaderData
   type BlogComment = (typeof data.comments)[number]
+  type CommentNode = BlogComment & { replies: CommentNode[] }
 
   const form = useForm<CommentForm>({
     initialValues: {
@@ -159,21 +158,28 @@ function RouteComponent() {
     },
   })
 
-  const commentTree = useMemo(() => {
-    const rootComments: BlogComment[] = data.comments.filter(
-      (comment) => !comment.parentId
-    )
-
-    const repliesMap = new Map<string, BlogComment[]>()
+  const commentTree = useMemo<CommentNode[]>(() => {
+    const map = new Map<string, CommentNode>()
+    const roots: CommentNode[] = []
 
     data.comments.forEach((comment) => {
-      if (comment.parentId) {
-        const existing = repliesMap.get(comment.parentId) ?? []
-        repliesMap.set(comment.parentId, [...existing, comment])
+      map.set(comment.id, { ...comment, replies: [] })
+    })
+
+    map.forEach((commentNode) => {
+      if (commentNode.parentId) {
+        const parent = map.get(commentNode.parentId)
+        if (parent) {
+          parent.replies.push(commentNode)
+        } else {
+          roots.push(commentNode)
+        }
+      } else {
+        roots.push(commentNode)
       }
     })
 
-    return { rootComments, repliesMap }
+    return roots
   }, [data.comments])
 
   const handleSubmit = async (values: CommentForm) => {
@@ -200,6 +206,100 @@ function RouteComponent() {
       })
     }
   }
+
+const renderCommentNode = (comment: CommentNode, depth = 0): React.ReactNode => {
+  const indentClass =
+    depth === 0
+      ? ''
+      : depth === 1
+        ? 'ml-4'
+        : depth === 2
+          ? 'ml-8'
+          : depth === 3
+            ? 'ml-12'
+            : 'ml-16'
+
+  return (
+    <div key={comment.id} className="space-y-3">
+      {/* Comment row */}
+      <div className={indentClass}>
+        <Paper
+          radius="xl"
+          withBorder
+          className={`${depth === 0 ? 'bg-gray-50' : 'bg-white'} p-4`}
+        >
+          <Stack gap="sm">
+            <Group justify="space-between" align="flex-start">
+              <Group gap="sm" wrap="nowrap">
+                <Avatar
+                  src={comment.authorImage || undefined}
+                  alt={comment.authorName || 'User'}
+                  radius="xl"
+                  size="sm"
+                />
+
+                <div className="min-w-0">
+                  <Text fw={600} size="sm">
+                    {comment.authorName || 'Anonymous'}
+                  </Text>
+                  <Text size="xs" c="dimmed">
+                    {new Date(comment.createdAt).toLocaleDateString()}
+                  </Text>
+                </div>
+              </Group>
+            </Group>
+
+            <Text
+              size="sm"
+              c="dark"
+              className="leading-7 whitespace-pre-wrap"
+            >
+              {comment.content}
+            </Text>
+
+            <Group justify="flex-end">
+              <Button
+                variant="subtle"
+                size="xs"
+                leftSection={<Reply size={14} />}
+                onClick={() =>
+                  setActiveReplyId((prev) =>
+                    prev === comment.id ? null : comment.id
+                  )
+                }
+              >
+                {activeReplyId === comment.id ? 'Cancel' : 'Reply'}
+              </Button>
+            </Group>
+          </Stack>
+        </Paper>
+      </div>
+
+      {/* Reply form: slightly indented, but not deeply nested */}
+      {activeReplyId === comment.id ? (
+        <div className={depth === 0 ? 'ml-4' : 'ml-6'}>
+          <Paper withBorder radius="lg" className="p-3 bg-white">
+            <ReplyForm
+              blogId={data.id}
+              slug={slug}
+              parentId={comment.id}
+              onSuccess={() => setActiveReplyId(null)}
+            />
+          </Paper>
+        </div>
+      ) : null}
+
+      {/* Children */}
+      {comment.replies.length > 0 ? (
+        <div className={depth === 0 ? 'ml-4 border-l border-gray-200 pl-3' : 'ml-6 border-l border-gray-200 pl-3'}>
+          <Stack gap="sm">
+            {comment.replies.map((reply) => renderCommentNode(reply, depth + 1))}
+          </Stack>
+        </div>
+      ) : null}
+    </div>
+  )
+}
 
   return (
     <Container size="lg" className="py-12 lg:py-16 space-y-10">
@@ -347,117 +447,9 @@ function RouteComponent() {
 
               <Divider />
 
-              {commentTree.rootComments.length > 0 ? (
-                <Stack gap="md">
-                  {commentTree.rootComments.map((comment) => {
-                    const replies = commentTree.repliesMap.get(comment.id) ?? []
-
-                    return (
-                      <Paper
-                        key={comment.id}
-                        radius="xl"
-                        withBorder
-                        className="p-4 bg-gray-50"
-                      >
-                        <Stack gap="sm">
-                          <Group justify="space-between" align="flex-start">
-                            <Group gap="sm">
-                              <Avatar
-                                src={comment.authorImage || undefined}
-                                alt={comment.authorName || 'User'}
-                                radius="xl"
-                                size="sm"
-                              />
-                              <div>
-                                <Text fw={600} size="sm">
-                                  {comment.authorName || 'Anonymous'}
-                                </Text>
-                                <Text size="xs" c="dimmed">
-                                  {new Date(comment.createdAt).toLocaleDateString()}
-                                </Text>
-                              </div>
-                            </Group>
-                          </Group>
-
-                          <Text
-                            size="sm"
-                            c="dark"
-                            className="leading-7 whitespace-pre-wrap"
-                          >
-                            {comment.content}
-                          </Text>
-
-                          <Group justify="flex-end">
-                            <Button
-                              variant="subtle"
-                              size="xs"
-                              leftSection={<Reply size={14} />}
-                              onClick={() =>
-                                setActiveReplyId((prev) =>
-                                  prev === comment.id ? null : comment.id
-                                )
-                              }
-                            >
-                              {activeReplyId === comment.id ? 'Cancel' : 'Reply'}
-                            </Button>
-                          </Group>
-
-                          {activeReplyId === comment.id ? (
-                            <ReplyForm
-                              blogId={data.id}
-                              slug={slug}
-                              parentId={comment.id}
-                              onSuccess={() => setActiveReplyId(null)}
-                            />
-                          ) : null}
-
-                          {replies.length > 0 ? (
-                            <Stack
-                              gap="sm"
-                              mt="xs"
-                              className="pl-5 border-l border-gray-200"
-                            >
-                              {replies.map((reply) => (
-                                <Paper
-                                  key={reply.id}
-                                  radius="lg"
-                                  withBorder
-                                  className="p-3 bg-white"
-                                >
-                                  <Stack gap="xs">
-                                    <Group gap="sm">
-                                      <Avatar
-                                        src={reply.authorImage || undefined}
-                                        alt={reply.authorName || 'User'}
-                                        radius="xl"
-                                        size="xs"
-                                      />
-                                      <div>
-                                        <Text fw={600} size="xs">
-                                          {reply.authorName || 'Anonymous'}
-                                        </Text>
-                                        <Text size="xs" c="dimmed">
-                                          {new Date(reply.createdAt).toLocaleDateString()}
-                                        </Text>
-                                      </div>
-                                    </Group>
-
-                                    <Text
-                                      size="sm"
-                                      c="dark"
-                                      className="leading-6 whitespace-pre-wrap"
-                                    >
-                                      {reply.content}
-                                    </Text>
-                                  </Stack>
-                                </Paper>
-                              ))}
-                            </Stack>
-                          ) : null}
-                        </Stack>
-                      </Paper>
-                    )
-                  })}
+              {commentTree.length > 0 ? (
+                <Stack gap="sm">
+                  {commentTree.map((comment) => renderCommentNode(comment))}
                 </Stack>
               ) : (
                 <Text c="dimmed" size="sm">
