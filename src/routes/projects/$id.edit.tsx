@@ -8,11 +8,15 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
 import { getProjectByIdQueryOptions } from '@/queries/project.queries';
 import { updateProject } from '@/server/project.functions';
+import { EditProjectMiddleware } from '@/server/middleware';
 
 
 export const Route = createFileRoute('/projects/$id/edit')({
+   server: {
+      middleware: [EditProjectMiddleware],
+    },
+  
   loader: async ({ context, params }) => {
-    console.log('PARAMS IS HERE ' + params.id)
     const data = await context.queryClient.fetchQuery(
       getProjectByIdQueryOptions(params.id)
     );

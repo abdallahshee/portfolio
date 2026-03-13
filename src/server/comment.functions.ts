@@ -3,12 +3,12 @@ import { eq, and } from 'drizzle-orm'
 import { nanoid } from 'nanoid'
 import { blog } from '@/db/blog.schema'
 import { comment, createCommentSchema } from '@/db/comment.schema'
-import { authMiddleware } from './middleware'
+import { AuthMiddleware } from './middleware'
 import { db } from '../db/index'
 
 
 export const createComment = createServerFn({ method: 'POST' })
-  .middleware([authMiddleware])
+  .middleware([AuthMiddleware])
   .inputValidator(createCommentSchema)
   .handler(async ({ data, context }) => {
     try {

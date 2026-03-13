@@ -5,6 +5,7 @@ import zod from "zod"
 import { avg, desc, eq } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { projectRating } from "@/db/project-rating.schema";
+import { EditProjectMiddleware } from "./middleware";
 
 export const getAllProjects = createServerFn({ method: "GET" })
   .handler(async () => {
@@ -20,6 +21,7 @@ export const getAllProjects = createServerFn({ method: "GET" })
   });
 
 export const createProject = createServerFn({ method: 'POST' })
+.middleware([EditProjectMiddleware])
   .inputValidator(ProjectSchema) // validates incoming data using Zod
   .handler(async ({ data }) => {
     try {
@@ -49,6 +51,7 @@ export const updateProjectSchema = zod.object({
 })
 
 export const updateProject = createServerFn({ method: "POST" })
+.middleware([EditProjectMiddleware])
   .inputValidator(updateProjectSchema)
   .handler(async ({ data }) => {
     try {

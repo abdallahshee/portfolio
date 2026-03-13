@@ -12,8 +12,12 @@ import {
 import { ArrowRight, Github, Globe } from "lucide-react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { getProjectByIdQueryOptions } from "@/queries/project.queries";
+import { AuthMiddleware } from "@/server/middleware";
 
 export const Route = createFileRoute("/projects/$id/details")({
+  server:{
+    middleware:[AuthMiddleware]
+  },
   loader: async ({ context, params }) => {
 
     const data = await context.queryClient.fetchQuery(

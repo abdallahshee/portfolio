@@ -17,6 +17,9 @@ export default function Header() {
 
   const handleLogout = async () => {
     await authClient.signOut();
+    await router.navigate({
+      to: "/",
+    })
   };
 
   const handleLogin = async () => {
