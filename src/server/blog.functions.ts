@@ -1,7 +1,7 @@
 import { blog, BlogSchema } from "@/db/blog.schema";
 import { createServerFn } from "@tanstack/react-start";
 import { db } from "../db/index";
-import { AuthMiddleware } from "./middleware";
+import { AuthMiddleware, OptionalAuthMiddleware } from "./middleware";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { blogLike } from "@/db/blog-like.schema";
 import { comment } from "@/db/comment.schema";
@@ -50,224 +50,226 @@ export const getAllBlogs = createServerFn()
         }
     })
 
+export const getBlogBySlugde = createServerFn()
+    .middleware([OptionalAuthMiddleware])
+    .inputValidator((data: { slug: string }) => data)
+    .handler(async ({ data, context }) => {
+        try {
+            // Blog
+            const blogResult = await db
+                .select({
+                    id: blog.id,
+                    title: blog.title,
+                    tags: blog.tags,
+                    content: blog.content,
+                    coverImage: blog.coverImage,
+                    userId: blog.userId,
+                    authorId: user.id,
+                    authorName: user.name,
+                    authorImage: user.image,
+
+                    createdAt: blog.createdAt,
+                    updatedAt: blog.updatedAt,
+                })
+                .from(blog)
+                .leftJoin(user, eq(blog.userId, user.id))
+                .where(eq(blog.slug, data.slug))
+
+            const blogData = blogResult[0]
+
+            if (!blogData) return null
+
+            // Comments
+            const comments = await db
+                .select({
+                    id: comment.id,
+                    parentId: comment.parentId,
+                    content: comment.content,
+                    createdAt: comment.createdAt,
+                    authorId: user.id,
+                    authorName: user.name,
+                    authorImage: user.image,
+                })
+                .from(comment)
+                .leftJoin(user, eq(comment.userId, user.id))
+                .where(eq(comment.blogId, blogData.id))
+                .orderBy(desc(comment.createdAt))
+
+            // Likes count
+            const likesResult = await db
+                .select({
+                    likes: sql<number>`count(*)`,
+                })
+                .from(blogLike)
+                .where(eq(blogLike.blogId, blogData.id))
+
+            const likes = Number(likesResult[0]?.likes ?? 0)
+
+            // Whether current user has liked this blog
+
+            return {
+                ...blogData,
+                likes,
+                comments,
+
+
+            }
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    })
+
 export const getBlogBySlug = createServerFn()
-//   .middleware([AuthMiddleware])
-  .inputValidator((data: { slug: string }) => data)
-  .handler(async ({ data, context }) => {
-    try {
-      // Blog
-      const blogResult = await db
-        .select({
-          id: blog.id,
-          title: blog.title,
-          tags: blog.tags,
-          content: blog.content,
-          coverImage: blog.coverImage,
+    .middleware([OptionalAuthMiddleware])
+    .inputValidator((data: { slug: string }) => data)
+    .handler(async ({ data, context }) => {
+        try {
+            const currentUserId = context.user?.id ?? null
 
-          authorId: user.id,
-          authorName: user.name,
-          authorImage: user.image,
+            // Blog
+            const blogResult = await db
+                .select({
+                    id: blog.id,
+                    title: blog.title,
+                    tags: blog.tags,
+                    content: blog.content,
+                    coverImage: blog.coverImage,
+                    userId: blog.userId,
+                    authorId: user.id,
+                    authorName: user.name,
+                    authorImage: user.image,
 
-          createdAt: blog.createdAt,
-          updatedAt: blog.updatedAt,
-        })
-        .from(blog)
-        .leftJoin(user, eq(blog.userId, user.id))
-        .where(eq(blog.slug, data.slug))
+                    createdAt: blog.createdAt,
+                    updatedAt: blog.updatedAt,
+                })
+                .from(blog)
+                .leftJoin(user, eq(blog.userId, user.id))
+                .where(eq(blog.slug, data.slug))
 
-      const blogData = blogResult[0]
+            const blogData = blogResult[0]
 
-      if (!blogData) return null
+            if (!blogData) return null
 
-      // Comments
-      const comments = await db
-        .select({
-          id: comment.id,
-          parentId: comment.parentId,
-          content: comment.content,
-          createdAt: comment.createdAt,
-          authorId: user.id,
-          authorName: user.name,
-          authorImage: user.image,
-        })
-        .from(comment)
-        .leftJoin(user, eq(comment.userId, user.id))
-        .where(eq(comment.blogId, blogData.id))
-        .orderBy(desc(comment.createdAt))
+            // Comments
+            const comments = await db
+                .select({
+                    id: comment.id,
+                    parentId: comment.parentId,
+                    content: comment.content,
+                    createdAt: comment.createdAt,
+                    authorId: user.id,
+                    authorName: user.name,
+                    authorImage: user.image,
+                })
+                .from(comment)
+                .leftJoin(user, eq(comment.userId, user.id))
+                .where(eq(comment.blogId, blogData.id))
+                .orderBy(desc(comment.createdAt))
 
-      // Likes count
-      const likesResult = await db
-        .select({
-          likes: sql<number>`count(*)`,
-        })
-        .from(blogLike)
-        .where(eq(blogLike.blogId, blogData.id))
+            // Likes count
+            const likesResult = await db
+                .select({
+                    likes: sql<number>`count(*)`,
+                })
+                .from(blogLike)
+                .where(eq(blogLike.blogId, blogData.id))
 
-      const likes = Number(likesResult[0]?.likes ?? 0)
+            const likes = Number(likesResult[0]?.likes ?? 0)
 
-      // Whether current user has liked this blog
-     
-      return {
-        ...blogData,
-        likes,
-        comments,
-      }
-    } catch (err) {
-      console.log(err)
-      throw err
-    }
-  })
+            // Whether current user has liked this blog
+            let likedByUser = false
 
-  export const getBlogBySlugs = createServerFn()
-  .middleware([AuthMiddleware])
-  .inputValidator((data: { slug: string }) => data)
-  .handler(async ({ data, context }) => {
-    try {
-      const currentUserId = context.user?.id ?? null
+            if (currentUserId) {
+                const likedResult = await db
+                    .select({ id: blogLike.id })
+                    .from(blogLike)
+                    .where(
+                        and(
+                            eq(blogLike.blogId, blogData.id),
+                            eq(blogLike.userId, currentUserId)
+                        )
+                    )
+                    .limit(1)
 
-      // Blog
-      const blogResult = await db
-        .select({
-          id: blog.id,
-          title: blog.title,
-          tags: blog.tags,
-          content: blog.content,
-          coverImage: blog.coverImage,
+                likedByUser = likedResult.length > 0
+            }
 
-          authorId: user.id,
-          authorName: user.name,
-          authorImage: user.image,
-
-          createdAt: blog.createdAt,
-          updatedAt: blog.updatedAt,
-        })
-        .from(blog)
-        .leftJoin(user, eq(blog.userId, user.id))
-        .where(eq(blog.slug, data.slug))
-
-      const blogData = blogResult[0]
-
-      if (!blogData) return null
-
-      // Comments
-      const comments = await db
-        .select({
-          id: comment.id,
-          parentId: comment.parentId,
-          content: comment.content,
-          createdAt: comment.createdAt,
-          authorId: user.id,
-          authorName: user.name,
-          authorImage: user.image,
-        })
-        .from(comment)
-        .leftJoin(user, eq(comment.userId, user.id))
-        .where(eq(comment.blogId, blogData.id))
-        .orderBy(desc(comment.createdAt))
-
-      // Likes count
-      const likesResult = await db
-        .select({
-          likes: sql<number>`count(*)`,
-        })
-        .from(blogLike)
-        .where(eq(blogLike.blogId, blogData.id))
-
-      const likes = Number(likesResult[0]?.likes ?? 0)
-
-      // Whether current user has liked this blog
-      let likedByUser = false
-
-      if (currentUserId) {
-        const likedResult = await db
-          .select({ id: blogLike.id })
-          .from(blogLike)
-          .where(
-            and(
-              eq(blogLike.blogId, blogData.id),
-              eq(blogLike.userId, currentUserId)
-            )
-          )
-          .limit(1)
-
-        likedByUser = likedResult.length > 0
-      }
-
-      return {
-        ...blogData,
-        likes,
-        likedByUser,
-        comments,
-      }
-    } catch (err) {
-      console.log(err)
-      throw err
-    }
-  })
+            return {
+                ...blogData,
+                likes,
+                likedByUser,
+                comments,
+            }
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    })
 
 export const getPaginatedBlogs = createServerFn({ method: 'GET' })
-  .inputValidator((data: { page?: number; limit?: number }) => ({
-    page: data.page && data.page > 0 ? data.page : 1,
-    limit: data.limit && data.limit > 0 ? data.limit : 6,
-  }))
-  .handler(async ({ data }) => {
-    try {
-      const page = data.page ?? 1
-      const limit = data.limit ?? 6
-      const offset = (page - 1) * limit
+    .inputValidator((data: { page?: number; limit?: number }) => ({
+        page: data.page && data.page > 0 ? data.page : 1,
+        limit: data.limit && data.limit > 0 ? data.limit : 6,
+    }))
+    .handler(async ({ data }) => {
+        try {
+            const page = data.page ?? 1
+            const limit = data.limit ?? 6
+            const offset = (page - 1) * limit
 
-      const blogs = await db
-        .select({
-          id: blog.id,
-          title: blog.title,
-          slug: blog.slug,
-          excerpt: blog.excerpt,
-          coverImage: blog.coverImage,
-          createdAt: blog.createdAt,
-          authorImage: user.image,
-          likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
-          comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
-        })
-        .from(blog)
-        .leftJoin(user, eq(blog.userId, user.id))
-        .leftJoin(blogLike, eq(blog.id, blogLike.blogId))
-        .leftJoin(comment, eq(blog.id, comment.blogId))
-        .groupBy(
-          blog.id,
-          blog.title,
-          blog.slug,
-          blog.excerpt,
-          blog.coverImage,
-          blog.createdAt,
-          user.image
-        )
-        .orderBy(desc(blog.createdAt))
-        .limit(limit)
-        .offset(offset)
+            const blogs = await db
+                .select({
+                    id: blog.id,
+                    title: blog.title,
+                    slug: blog.slug,
+                    excerpt: blog.excerpt,
+                    coverImage: blog.coverImage,
+                    createdAt: blog.createdAt,
+                    authorImage: user.image,
+                    likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
+                    comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
+                })
+                .from(blog)
+                .leftJoin(user, eq(blog.userId, user.id))
+                .leftJoin(blogLike, eq(blog.id, blogLike.blogId))
+                .leftJoin(comment, eq(blog.id, comment.blogId))
+                .groupBy(
+                    blog.id,
+                    blog.title,
+                    blog.slug,
+                    blog.excerpt,
+                    blog.coverImage,
+                    blog.createdAt,
+                    user.image
+                )
+                .orderBy(desc(blog.createdAt))
+                .limit(limit)
+                .offset(offset)
 
-      const totalResult = await db
-        .select({
-          count: sql<number>`COUNT(*)`,
-        })
-        .from(blog)
+            const totalResult = await db
+                .select({
+                    count: sql<number>`COUNT(*)`,
+                })
+                .from(blog)
 
-      const total = Number(totalResult[0]?.count ?? 0)
-      const totalPages = Math.ceil(total / limit)
+            const total = Number(totalResult[0]?.count ?? 0)
+            const totalPages = Math.ceil(total / limit)
 
-      return {
-        blogs,
-        pagination: {
-          page,
-          limit,
-          total,
-          totalPages,
-        },
-      }
-    } catch (err) {
-      console.log(err)
-      throw err
-    }
-  })
+            return {
+                blogs,
+                pagination: {
+                    page,
+                    limit,
+                    total,
+                    totalPages,
+                },
+            }
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    })
 
 
 export const getTopBlogs = createServerFn({ method: "GET" })
@@ -277,8 +279,8 @@ export const getTopBlogs = createServerFn({ method: "GET" })
                 .select({
                     id: blog.id,
                     title: blog.title,
-                    slug:blog.slug,
-                    coverImage:blog.coverImage,
+                    slug: blog.slug,
+                    coverImage: blog.coverImage,
                     authorImage: user.image,
                     likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
                     comments: sql<number>`COUNT(DISTINCT ${comment.id})`,

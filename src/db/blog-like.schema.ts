@@ -19,7 +19,7 @@ export const blogLike = pgTable(
 
     createdAt: timestamp("created_at").defaultNow().notNull(),
   },
-  
+
   (table) => [
     unique("blog_like_unique").on(table.blogId, table.userId),
   ]

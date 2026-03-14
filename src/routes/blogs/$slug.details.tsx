@@ -1,6 +1,6 @@
 import { getBlogBySlugQueryOptions } from '@/queries/blog.queries'
 import { useCreateCommentMutation } from '@/queries/blog.mutations'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute, getRouteApi, Link } from '@tanstack/react-router'
 import {
   Avatar,
   Badge,
@@ -32,12 +32,17 @@ import {
   X,
 } from 'lucide-react'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import { getSessionQueryOptions } from '@/queries/utils.queries'
+import { toggleBlogLike } from '@/server/block-like.functions'
 
 export const Route = createFileRoute('/blogs/$slug/details')({
   loader: async ({ context, params }) => {
     await context.queryClient.ensureQueryData(
       getBlogBySlugQueryOptions(params.slug)
     )
+    const session = await context.queryClient.fetchQuery(getSessionQueryOptions())
+    return session
+
   },
   component: RouteComponent,
 })
@@ -50,7 +55,62 @@ function RouteComponent() {
   const { slug } = Route.useParams()
   const { data } = useSuspenseQuery(getBlogBySlugQueryOptions(slug))
   const createCommentMutation = useCreateCommentMutation()
+  const userData = Route.useLoaderData()?.user
 
+  // 👇 move null check here, before any state
+  if (!data) {
+    return (
+      <Container size="md" className="py-20">
+        <Paper withBorder radius="xl" className="p-10 text-center">
+          <Stack align="center" gap="sm">
+            <Title order={2}>Blog not found</Title>
+            <Text c="dimmed">
+              The article you are looking for does not exist or may have been removed.
+            </Text>
+            <Button component={Link} to="/blogs" leftSection={<ArrowLeft size={16} />}>
+              Back to Blogs
+            </Button>
+          </Stack>
+        </Paper>
+      </Container>
+    )
+  }
+  const [likes, setLikes] = useState(data.likes)
+  const [likedByUser, setLikedByUser] = useState(data.likedByUser)
+  const [isLikePending, setIsLikePending] = useState(false)
+
+  const handleLikeToggle = async () => {
+    if (!userData) {
+      notifications.show({
+        title: 'Login required',
+        message: 'You must be logged in to like an article.',
+        color: 'orange',
+      })
+      return
+    }
+
+    // Optimistic update
+    setLikedByUser((prev: any) => !prev)
+    setLikes((prev) => (likedByUser ? prev - 1 : prev + 1))
+    setIsLikePending(true)
+
+    try {
+      const result = await toggleBlogLike({ data: { blogId: data?.id! } })
+      setLikes(result.likes)
+      setLikedByUser(result.likedByUser)
+    } catch (err: any) {
+      // Revert on error
+      setLikedByUser((prev: any) => !prev)
+      setLikes((prev) => (likedByUser ? prev + 1 : prev - 1))
+      notifications.show({
+        title: 'Failed to update like',
+        message: err?.message ?? 'Something went wrong.',
+        color: 'red',
+      })
+    } finally {
+      setIsLikePending(false)
+    }
+  }
   const [replyingTo, setReplyingTo] = useState<{
     id: string
     authorName: string | null
@@ -183,17 +243,11 @@ function RouteComponent() {
     }
   }
 
- const getIndentClass = (depth: number) => {
-  const d = Math.min(depth, 1)
-  if (d === 0) return ''
-  return 'ml-2'
-}
-
-const getReplyFormOffsetClass = (depth: number) => {
-  const d = Math.min(depth, 1)
-  if (d === 0) return 'ml-1'
-  return 'ml-2'
-}
+  const getIndentClass = (depth: number) => {
+    const d = Math.min(depth, 1)
+    if (d === 0) return ''
+    return 'ml-2'
+  }
 
   const renderCommentNode = (comment: CommentNode, depth = 0): React.ReactNode => {
     const indentClass = getIndentClass(depth)
@@ -334,18 +388,18 @@ const getReplyFormOffsetClass = (depth: number) => {
         >
           Back to Blogs
         </Button>
-
+        {((userData?.id === data?.userId) || (userData?.role === "admin")) &&
           <Button
-          color='green'
-        
-          component={Link}
-          to="/blogs"
-          // search={{ page: 1 }}
-          variant="filled"
-          leftSection={<Edit2Icon size={16} />}
-        >
-          Edit this Article
-        </Button>
+            color='green'
+            component={Link}
+            to="/blogs"
+            // search={{ page: 1 }}
+            variant="filled"
+            leftSection={<Edit2Icon size={16} />}
+          >
+            Edit this Article
+          </Button>
+        }
       </Group>
 
       <section className="space-y-8">
@@ -372,7 +426,7 @@ const getReplyFormOffsetClass = (depth: number) => {
               </Badge>
             ))}
           </Group>
-          
+
           <Title className="text-3xl md:text-5xl font-extrabold leading-tight">
             {data.title}
           </Title>
@@ -395,11 +449,32 @@ const getReplyFormOffsetClass = (depth: number) => {
 
             <Group gap="lg" className="flex-wrap">
               <Group gap={6}>
-                {/* <Heart size={18} className={data.likedByUser?"fill-rose-500 text-rose-500":"text-rose-500"} /> */}
-                <Text size="sm" c="dimmed">
-                  {data.likes} {data.likes === 1 ? 'like' : 'likes'}
-                </Text>
+                <button
+                  onClick={handleLikeToggle}
+                  disabled={isLikePending}
+                  aria-label={likedByUser ? 'Unlike this article' : 'Like this article'}
+                  className={`
+      flex items-center gap-2 px-3 py-1.5 rounded-full border transition-all duration-200
+      ${likedByUser
+                      ? 'bg-rose-50 border-rose-300 text-rose-500 hover:bg-rose-100'
+                      : 'bg-white border-gray-200 text-gray-500 hover:border-rose-300 hover:text-rose-400'
+                    }
+      disabled:opacity-50 disabled:cursor-not-allowed
+    `}
+                >
+                  <Heart
+                    size={16}
+                    className={`transition-all duration-200 ${likedByUser
+                        ? 'fill-rose-500 stroke-rose-500 scale-110'
+                        : 'stroke-current'
+                      }`}
+                  />
+                  <span className="text-sm font-medium">
+                    {likes} {likes === 1 ? 'like' : 'likes'}
+                  </span>
+                </button>
               </Group>
+
 
               <Group gap={6}>
                 <CalendarDays size={18} className="text-gray-500" />

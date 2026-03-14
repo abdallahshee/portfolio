@@ -23,19 +23,14 @@ export const Route = createFileRoute('/blogs/')({
           ? Number(search.page)
           : 1,
   }),
-    loaderDeps: ({ search }) => ({
+  loaderDeps: ({ search }) => ({
     page: search.page,
   }),
-  loader: async ({ context,deps }) => {
-    const data=await context.queryClient.fetchQuery(
-      getPaginatedBlogsQueryOptions(deps.page,3)
+  loader: async ({ context, deps }) => {
+    const data = await context.queryClient.fetchQuery(
+      getPaginatedBlogsQueryOptions(deps.page, 3)
     )
-    // const data = await getPaginatedBlogs({
-    //   data: {
-    //     page: search.page,
-    //     limit: 6,
-    //   },
-    // })
+
 
     return data
   },

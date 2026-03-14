@@ -8,7 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
 import { uploadImage } from '@/lib/utils';
 import { createProject } from '@/server/project.functions';
-import { AuthMiddleware } from '@/server/middleware';
+import { AdminMiddleware, AuthMiddleware } from '@/server/middleware';
 interface ProjectCreateForm {
   title: string;
   websiteUrl: string;
@@ -21,12 +21,9 @@ interface ProjectCreateForm {
 }
 
 
-export const Route = createFileRoute('/projects/new')({
+export const Route = createFileRoute('/projects/create')({
   server: {
-    middleware: [AuthMiddleware],
-  },
-  beforeLoad({context}) {
-   
+    middleware: [AdminMiddleware],
   },
   component: RouteComponent,
 });

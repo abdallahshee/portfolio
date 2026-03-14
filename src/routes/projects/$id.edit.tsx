@@ -8,12 +8,12 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
 import { getProjectByIdQueryOptions } from '@/queries/project.queries';
 import { updateProject } from '@/server/project.functions';
-import { EditProjectMiddleware } from '@/server/middleware';
+import { AdminMiddleware } from '@/server/middleware';
 
 
 export const Route = createFileRoute('/projects/$id/edit')({
    server: {
-      middleware: [EditProjectMiddleware],
+      middleware: [AdminMiddleware],
     },
   
   loader: async ({ context, params }) => {

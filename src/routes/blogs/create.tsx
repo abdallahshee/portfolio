@@ -20,6 +20,7 @@ import { useState } from "react"
 import { uploadImage } from "@/lib/utils"
 import { useServerFn } from "@tanstack/react-start"
 import { createBlog } from "@/server/blog.functions"
+import { AuthMiddleware } from "@/server/middleware"
 
 interface BlogForm {
   title: string
@@ -30,7 +31,10 @@ interface BlogForm {
   tags: string[]
 }
 
-export const Route = createFileRoute("/blogs/new")({
+export const Route = createFileRoute("/blogs/create")({
+  server: {
+    middleware: [AuthMiddleware]
+  },
   component: CreateBlogPage,
 })
 
@@ -57,10 +61,10 @@ function CreateBlogPage() {
         imageUrl = await uploadImage(values.coverImage)
       }
       const defaultUrl = "https://images.pexels.com/photos/265667/pexels-photo-265667.jpeg"
-      
-      const {coverImage, ...rest}=values
-      
-      await blogCreate({ data:{coverImage:defaultUrl, ...rest}})
+
+      const { coverImage, ...rest } = values
+
+      await blogCreate({ data: { coverImage: defaultUrl, ...rest } })
 
       router.navigate({
         to: "/account",

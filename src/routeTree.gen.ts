@@ -17,8 +17,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
 import { Route as BlogsIndexRouteImport } from './routes/blogs/index'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
-import { Route as ProjectsNewRouteImport } from './routes/projects/new'
-import { Route as BlogsNewRouteImport } from './routes/blogs/new'
+import { Route as ProjectsCreateRouteImport } from './routes/projects/create'
+import { Route as BlogsCreateRouteImport } from './routes/blogs/create'
 import { Route as AccountVerifyRouteImport } from './routes/account/verify'
 import { Route as AccountResetPasswordRouteImport } from './routes/account/reset-password'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
@@ -69,14 +69,14 @@ const AccountIndexRoute = AccountIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AccountRouteRoute,
 } as any)
-const ProjectsNewRoute = ProjectsNewRouteImport.update({
-  id: '/new',
-  path: '/new',
+const ProjectsCreateRoute = ProjectsCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
-const BlogsNewRoute = BlogsNewRouteImport.update({
-  id: '/new',
-  path: '/new',
+const BlogsCreateRoute = BlogsCreateRouteImport.update({
+  id: '/create',
+  path: '/create',
   getParentRoute: () => BlogsRouteRoute,
 } as any)
 const AccountVerifyRoute = AccountVerifyRouteImport.update({
@@ -135,8 +135,8 @@ export interface FileRoutesByFullPath {
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
   '/account/verify': typeof AccountVerifyRoute
-  '/blogs/new': typeof BlogsNewRoute
-  '/projects/new': typeof ProjectsNewRoute
+  '/blogs/create': typeof BlogsCreateRoute
+  '/projects/create': typeof ProjectsCreateRoute
   '/account/': typeof AccountIndexRoute
   '/blogs/': typeof BlogsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -153,8 +153,8 @@ export interface FileRoutesByTo {
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
   '/account/verify': typeof AccountVerifyRoute
-  '/blogs/new': typeof BlogsNewRoute
-  '/projects/new': typeof ProjectsNewRoute
+  '/blogs/create': typeof BlogsCreateRoute
+  '/projects/create': typeof ProjectsCreateRoute
   '/account': typeof AccountIndexRoute
   '/blogs': typeof BlogsIndexRoute
   '/projects': typeof ProjectsIndexRoute
@@ -175,8 +175,8 @@ export interface FileRoutesById {
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
   '/account/verify': typeof AccountVerifyRoute
-  '/blogs/new': typeof BlogsNewRoute
-  '/projects/new': typeof ProjectsNewRoute
+  '/blogs/create': typeof BlogsCreateRoute
+  '/projects/create': typeof ProjectsCreateRoute
   '/account/': typeof AccountIndexRoute
   '/blogs/': typeof BlogsIndexRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -198,8 +198,8 @@ export interface FileRouteTypes {
     | '/account/register'
     | '/account/reset-password'
     | '/account/verify'
-    | '/blogs/new'
-    | '/projects/new'
+    | '/blogs/create'
+    | '/projects/create'
     | '/account/'
     | '/blogs/'
     | '/projects/'
@@ -216,8 +216,8 @@ export interface FileRouteTypes {
     | '/account/register'
     | '/account/reset-password'
     | '/account/verify'
-    | '/blogs/new'
-    | '/projects/new'
+    | '/blogs/create'
+    | '/projects/create'
     | '/account'
     | '/blogs'
     | '/projects'
@@ -237,8 +237,8 @@ export interface FileRouteTypes {
     | '/account/register'
     | '/account/reset-password'
     | '/account/verify'
-    | '/blogs/new'
-    | '/projects/new'
+    | '/blogs/create'
+    | '/projects/create'
     | '/account/'
     | '/blogs/'
     | '/projects/'
@@ -316,18 +316,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIndexRouteImport
       parentRoute: typeof AccountRouteRoute
     }
-    '/projects/new': {
-      id: '/projects/new'
-      path: '/new'
-      fullPath: '/projects/new'
-      preLoaderRoute: typeof ProjectsNewRouteImport
+    '/projects/create': {
+      id: '/projects/create'
+      path: '/create'
+      fullPath: '/projects/create'
+      preLoaderRoute: typeof ProjectsCreateRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
-    '/blogs/new': {
-      id: '/blogs/new'
-      path: '/new'
-      fullPath: '/blogs/new'
-      preLoaderRoute: typeof BlogsNewRouteImport
+    '/blogs/create': {
+      id: '/blogs/create'
+      path: '/create'
+      fullPath: '/blogs/create'
+      preLoaderRoute: typeof BlogsCreateRouteImport
       parentRoute: typeof BlogsRouteRoute
     }
     '/account/verify': {
@@ -417,14 +417,14 @@ const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
 )
 
 interface BlogsRouteRouteChildren {
-  BlogsNewRoute: typeof BlogsNewRoute
+  BlogsCreateRoute: typeof BlogsCreateRoute
   BlogsIndexRoute: typeof BlogsIndexRoute
   BlogsSlugDetailsRoute: typeof BlogsSlugDetailsRoute
   BlogsSlugEditRoute: typeof BlogsSlugEditRoute
 }
 
 const BlogsRouteRouteChildren: BlogsRouteRouteChildren = {
-  BlogsNewRoute: BlogsNewRoute,
+  BlogsCreateRoute: BlogsCreateRoute,
   BlogsIndexRoute: BlogsIndexRoute,
   BlogsSlugDetailsRoute: BlogsSlugDetailsRoute,
   BlogsSlugEditRoute: BlogsSlugEditRoute,
@@ -435,14 +435,14 @@ const BlogsRouteRouteWithChildren = BlogsRouteRoute._addFileChildren(
 )
 
 interface ProjectsRouteRouteChildren {
-  ProjectsNewRoute: typeof ProjectsNewRoute
+  ProjectsCreateRoute: typeof ProjectsCreateRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   ProjectsIdDetailsRoute: typeof ProjectsIdDetailsRoute
   ProjectsIdEditRoute: typeof ProjectsIdEditRoute
 }
 
 const ProjectsRouteRouteChildren: ProjectsRouteRouteChildren = {
-  ProjectsNewRoute: ProjectsNewRoute,
+  ProjectsCreateRoute: ProjectsCreateRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   ProjectsIdDetailsRoute: ProjectsIdDetailsRoute,
   ProjectsIdEditRoute: ProjectsIdEditRoute,

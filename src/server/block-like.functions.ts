@@ -1,39 +1,59 @@
 import { createServerFn } from "@tanstack/react-start"
 import { AuthMiddleware } from "./middleware"
-import { db } from "../db/index"
 import { blogLike } from "@/db/blog-like.schema"
-import { and, eq } from "drizzle-orm"
+import { db } from "../db/index"
+import { and, eq, sql } from "drizzle-orm"
 
+export const toggleBlogLike = createServerFn()
+    .middleware([AuthMiddleware])
+    .inputValidator((data: { blogId: string }) => data)
+    .handler(async ({ data, context }) => {
+        const currentUserId = context.user?.id
 
-export const toggleBlogLike = createServerFn({ method: "POST" })
-  .middleware([AuthMiddleware])
-  .inputValidator((data: { blogId: string }) => data)
-  .handler(async ({ data, context }) => {
-    const userId = context.user!.id
+        if (!currentUserId) {
+            throw new Error("You must be logged in to like a blog")
+        }
 
-    const existing = await db
-      .select()
-      .from(blogLike)
-      .where(
-        and(
-          eq(blogLike.blogId, data.blogId),
-          eq(blogLike.userId, userId)
-        )
-      )
+        // Check if the user has already liked this blog
+        const existingLike = await db
+            .select({ id: blogLike.id })
+            .from(blogLike)
+            .where(
+                and(
+                    eq(blogLike.blogId, data.blogId),
+                    eq(blogLike.userId, currentUserId)
+                )
+            )
+            .limit(1)
 
-    if (existing.length > 0) {
-      // dislike (remove like)
-      await db
-        .delete(blogLike)
-        .where(eq(blogLike.id, existing[0].id))
+        const alreadyLiked = existingLike.length > 0
 
-      return { liked: false }
-    }
+        if (alreadyLiked) {
+            // Unlike: delete the existing like
+            await db
+                .delete(blogLike)
+                .where(
+                    and(
+                        eq(blogLike.blogId, data.blogId),
+                        eq(blogLike.userId, currentUserId)
+                    )
+                )
+        } else {
+            // Like: insert a new like
+            await db.insert(blogLike).values({
+                blogId: data.blogId,
+                userId: currentUserId,
+            })
+        }
 
-    await db.insert(blogLike).values({
-      blogId: data.blogId,
-      userId,
+        // Return updated likes count and new liked status
+        const likesResult = await db
+            .select({ likes: sql<number>`count(*)` })
+            .from(blogLike)
+            .where(eq(blogLike.blogId, data.blogId))
+
+        return {
+            likes: Number(likesResult[0]?.likes ?? 0),
+            likedByUser: !alreadyLiked,
+        }
     })
-
-    return { liked: true }
-  })

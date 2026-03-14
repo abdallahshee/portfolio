@@ -8,23 +8,22 @@ export const getProjectsQueryOptions = () =>
     queryFn: () => getAllProjects(),
   })
 
-  export const getProjectByIdQueryOptions = (projectId:string) =>
+export const getProjectByIdQueryOptions = (projectId: string) =>
   queryOptions({
-    queryKey: ['projects',projectId],
-    queryFn: () => getProjectById({data:{projectId:projectId}}),
+    queryKey: ['projects', projectId],
+    queryFn: () => getProjectById({ data: { projectId: projectId } }),
   })
 
-  export type UpdateProject = zod.infer<typeof updateProjectSchema>
-  
-  export const updateProjectQueryOptions=(project:UpdateProject)=>queryOptions({
-    queryKey:["updateProject",project.projectId],
-    queryFn:()=>updateProject({data:project})
-  })
+export type UpdateProject = zod.infer<typeof updateProjectSchema>
 
-  export const getTopProjectsQueryOptions = () =>
+export const updateProjectQueryOptions = (project: UpdateProject) => queryOptions({
+  queryKey: ["updateProject", project.projectId],
+  queryFn: () => updateProject({ data: project })
+})
+
+export const getTopProjectsQueryOptions = () =>
   queryOptions({
     queryKey: ['top5Projects'],
     queryFn: () => getTopProjects(),
   })
-  
-  
+

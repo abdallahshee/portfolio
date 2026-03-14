@@ -1,6 +1,6 @@
 import { drizzle } from 'drizzle-orm/node-postgres'
 import { project } from './project.schema'
-import { account, session,  verification } from './auth.schema'
+import { account, session, verification } from './auth.schema'
 import { roleEnum, user } from './user.schema'
 import { comment } from './comment.schema'
 import { blog, blogStatusEnum } from './blog.schema'

@@ -3,7 +3,7 @@ import { pgTable, text, timestamp, pgEnum } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 import { user } from "./user.schema";
 import { comment } from "./comment.schema";
-import { createInsertSchema} from "drizzle-zod";
+import { createInsertSchema } from "drizzle-zod";
 import { blogLike } from "./blog-like.schema";
 
 
@@ -13,10 +13,10 @@ export const blog = pgTable("blog", {
   title: text("title").notNull(),
   slug: text("slug").notNull().unique(),
   excerpt: text("excerpt").notNull(),
-  userId:text("userId").notNull().references(()=>user.id),
+  userId: text("userId").notNull().references(() => user.id),
   content: text("content").notNull(), // markdown
   coverImage: text("cover_image"),
-  status:blogStatusEnum("status").notNull().$default(()=>"draft"),
+  status: blogStatusEnum("status").notNull().$default(() => "draft"),
   tags: text("tags").array().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
@@ -35,6 +35,6 @@ export const blogRelations = relations(blog, ({ one, many }) => ({
 
   likes: many(blogLike),
 }))
-export type Blog=InferSelectModel<typeof blog>
-export type BlogRequest=Omit<InferInsertModel< typeof blog>,"status"|"userId"|"id"|"createdAt"|"updatedAt">
-export const BlogSchema=createInsertSchema(blog).omit({status:true,id:true,userId:true, createdAt:true,updatedAt:true})
+export type Blog = InferSelectModel<typeof blog>
+export type BlogRequest = Omit<InferInsertModel<typeof blog>, "status" | "userId" | "id" | "createdAt" | "updatedAt">
+export const BlogSchema = createInsertSchema(blog).omit({ status: true, id: true, userId: true, createdAt: true, updatedAt: true })

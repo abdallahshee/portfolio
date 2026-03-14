@@ -1,17 +1,17 @@
 
 import { db } from "../db/index";
-import { project, ProjectSchema} from "@/db/project.schema";
+import { project, ProjectSchema } from "@/db/project.schema";
 import zod from "zod"
 import { avg, desc, eq } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { projectRating } from "@/db/project-rating.schema";
-import { EditProjectMiddleware } from "./middleware";
+import { AdminMiddleware } from "./middleware";
 
 export const getAllProjects = createServerFn({ method: "GET" })
   .handler(async () => {
     try {
       const projects = await db.select().from(project);
-    
+
       return projects;
     } catch (err) {
       console.error("Error fetching projects:", err);
@@ -21,7 +21,7 @@ export const getAllProjects = createServerFn({ method: "GET" })
   });
 
 export const createProject = createServerFn({ method: 'POST' })
-.middleware([EditProjectMiddleware])
+  .middleware([AdminMiddleware])
   .inputValidator(ProjectSchema) // validates incoming data using Zod
   .handler(async ({ data }) => {
     try {
@@ -51,7 +51,7 @@ export const updateProjectSchema = zod.object({
 })
 
 export const updateProject = createServerFn({ method: "POST" })
-.middleware([EditProjectMiddleware])
+  .middleware([AdminMiddleware])
   .inputValidator(updateProjectSchema)
   .handler(async ({ data }) => {
     try {

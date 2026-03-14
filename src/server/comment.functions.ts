@@ -8,66 +8,66 @@ import { db } from '../db/index'
 
 
 export const createComment = createServerFn({ method: 'POST' })
-  .middleware([AuthMiddleware])
-  .inputValidator(createCommentSchema)
-  .handler(async ({ data, context }) => {
-    try {
-      if (!context.user?.id) {
-        throw new Error('Unauthorized')
-      }
+    .middleware([AuthMiddleware])
+    .inputValidator(createCommentSchema)
+    .handler(async ({ data, context }) => {
+        try {
+            if (!context.user?.id) {
+                throw new Error('Unauthorized')
+            }
 
-      const existingBlog = await db
-        .select({ id: blog.id })
-        .from(blog)
-        .where(eq(blog.id, data.blogId))
+            const existingBlog = await db
+                .select({ id: blog.id })
+                .from(blog)
+                .where(eq(blog.id, data.blogId))
 
-      if (!existingBlog[0]) {
-        throw new Error('Blog not found')
-      }
+            if (!existingBlog[0]) {
+                throw new Error('Blog not found')
+            }
 
-      const normalizedParentId = data.parentId ?? null
+            const normalizedParentId = data.parentId ?? null
 
-      if (normalizedParentId) {
-        const existingParent = await db
-          .select({
-            id: comment.id,
-            blogId: comment.blogId,
-          })
-          .from(comment)
-          .where(
-            and(
-              eq(comment.id, normalizedParentId),
-              eq(comment.blogId, data.blogId)
-            )
-          )
+            if (normalizedParentId) {
+                const existingParent = await db
+                    .select({
+                        id: comment.id,
+                        blogId: comment.blogId,
+                    })
+                    .from(comment)
+                    .where(
+                        and(
+                            eq(comment.id, normalizedParentId),
+                            eq(comment.blogId, data.blogId)
+                        )
+                    )
 
-        if (!existingParent[0]) {
-          throw new Error('Parent comment not found')
+                if (!existingParent[0]) {
+                    throw new Error('Parent comment not found')
+                }
+            }
+
+            const inserted = await db
+                .insert(comment)
+                .values({
+                    id: nanoid(16),
+                    blogId: data.blogId,
+                    userId: context.user.id,
+                    parentId: normalizedParentId,
+                    content: data.content.trim(),
+                })
+                .returning({
+                    id: comment.id,
+                    blogId: comment.blogId,
+                    userId: comment.userId,
+                    parentId: comment.parentId,
+                    content: comment.content,
+                    createdAt: comment.createdAt,
+                    updatedAt: comment.updatedAt,
+                })
+
+            return inserted[0]
+        } catch (err) {
+            console.log(err)
+            throw err
         }
-      }
-
-      const inserted = await db
-        .insert(comment)
-        .values({
-          id: nanoid(16),
-          blogId: data.blogId,
-          userId: context.user.id,
-          parentId: normalizedParentId,
-          content: data.content.trim(),
-        })
-        .returning({
-          id: comment.id,
-          blogId: comment.blogId,
-          userId: comment.userId,
-          parentId: comment.parentId,
-          content: comment.content,
-          createdAt: comment.createdAt,
-          updatedAt: comment.updatedAt,
-        })
-
-      return inserted[0]
-    } catch (err) {
-      console.log(err)
-      throw err
-    }
-  })
+    })
