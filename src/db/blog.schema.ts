@@ -36,5 +36,6 @@ export const blogRelations = relations(blog, ({ one, many }) => ({
   likes: many(blogLike),
 }))
 export type Blog = InferSelectModel<typeof blog>
-export type BlogRequest = Omit<InferInsertModel<typeof blog>, "status" | "userId" | "id" | "createdAt" | "updatedAt">
-export const BlogSchema = createInsertSchema(blog).omit({ status: true, id: true, userId: true, createdAt: true, updatedAt: true })
+export type BlogRequest = Pick<InferInsertModel<typeof blog>, "title"|"content" | "coverImage" | "tags" >
+export const BlogSchema = createInsertSchema(blog).pick({title:true, content: true, coverImage: true, tags: true })
+

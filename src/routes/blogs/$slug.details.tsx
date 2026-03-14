@@ -16,7 +16,6 @@ import {
   ThumbsUp,
   Share2,
   Bookmark,
-  MoreHorizontal,
   Eye,
   ChevronDown,
   ChevronUp,
@@ -238,7 +237,7 @@ function RouteComponent() {
 
             {comment.replies.length > 0 && (
               <div className="mt-3 ml-1 border-l-2 border-gray-100 pl-4 space-y-4">
-                {comment.replies.map((r) => renderCommentNode(r, depth + 1))}
+                {comment.replies.map((r:any) => renderCommentNode(r, depth + 1))}
               </div>
             )}
           </div>

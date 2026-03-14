@@ -24,7 +24,8 @@ export default defineConfig({
     "./src/db/blog.schema.ts",
     "./src/db/comment.schema.ts",
     "./src/db/blog-like.schema.ts",
-    "./src/db/project-rating.schema.ts"
+    "./src/db/project-rating.schema.ts",
+    "./src/db/setting.schema.ts"
   ],
   out: "./drizzle",
   dialect: "postgresql",

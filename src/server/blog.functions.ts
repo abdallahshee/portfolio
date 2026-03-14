@@ -1,25 +1,50 @@
 import { blog, BlogSchema } from "@/db/blog.schema";
 import { createServerFn } from "@tanstack/react-start";
 import { db } from "../db/index";
-import { AuthMiddleware, OptionalAuthMiddleware } from "./middleware";
+import { AuthMiddleware, OptionalAuthMiddleware} from "./middleware";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { blogLike } from "@/db/blog-like.schema";
 import { comment } from "@/db/comment.schema";
 import { user } from "@/db/user.schema";
 
-export const createBlog = createServerFn({ method: "POST" })
-    .inputValidator(BlogSchema)
-    .middleware([AuthMiddleware])
-    .handler(async ({ data, context }) => {
-        try {
-            console.log("Data is here "+JSON.stringify(data))
-            const newData = { ...data, userId: context.user?.id! }
-            await db.insert(blog).values({ ...newData })
+function createSlug(title: string) {
+  return title
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "") // remove special characters
+    .replace(/\s+/g, "-") // replace spaces with -
+    .replace(/-+/g, "-") // remove duplicate -
+}
 
-        } catch (err) {
-            console.log(err)
-        }
-    })
+function createExcerpt(content: string, maxLength = 160) {
+  const plainText = content.replace(/[#_*>\-\n`]/g, " ").trim()
+  return plainText.length > maxLength
+    ? plainText.slice(0, maxLength).trim() + "..."
+    : plainText
+}
+
+export const createBlog = createServerFn({ method: "POST" })
+  .inputValidator(BlogSchema)
+  .middleware([AuthMiddleware])
+  .handler(async ({ data, context }) => {
+    try {
+      const slug = createSlug(data.title)
+      const excerpt = createExcerpt(data.content)
+        console.log("User in context "+context.user)
+      const newData = {
+        ...data,
+        slug,
+        excerpt,
+        userId: context.user?.id!,
+      }
+
+      const result = await db.insert(blog).values(newData).returning()
+      return result
+    } catch (err) {
+      console.error("Create blog failed:", err)
+      throw err
+    }
+  })
 
 export const getAllBlogs = createServerFn()
     .handler(async () => {

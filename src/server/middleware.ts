@@ -3,15 +3,16 @@ import { createMiddleware } from "@tanstack/react-start"
 import { db } from "../db/index"
 import { eq } from "drizzle-orm"
 import { blog } from "@/db/blog.schema"
-import { getRequest } from "@tanstack/react-start/server"
+
 
 export const AuthMiddleware = createMiddleware()
     .server(async ({ request, next }) => {
         // Get the session from headers
+        console.log("Auth Midddleware is reached")
         const session = await auth.api.getSession({
             headers: request.headers,
         })
-
+console.log("Session data is here "+session)
         const user = session?.user ?? null
         const role = session?.user.role ?? null
         // Stop the request if user is not logged in
@@ -86,9 +87,9 @@ export const AdminMiddleware = createMiddleware()
     })
 
 export const OptionalAuthMiddleware = createMiddleware().server(
-    async ({ next }) => {
+    async ({ next, request }) => {
         const session = await auth.api.getSession({
-            headers: getRequest().headers
+            headers: request.headers
         })
 
         return next({

@@ -6,17 +6,21 @@ import {
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import Footer from '../components/Footer'
-import Header from '../components/Header'
+
 import '@mantine/core/styles.css';
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
 import '@mantine/core/styles.css';
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-import {  MantineProvider } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import '@mantine/notifications/styles.css'
+import "@mantine/core/styles.css"
+import "@mantine/tiptap/styles.css"
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
 import { Notifications } from '@mantine/notifications'
+
+import CombinedHeader from '@/components/CombinedHeader'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -56,27 +60,33 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
-        
+
         <MantineProvider>
-        <TanStackQueryProvider>
-          <Notifications/>
-          <Header />
-          {children}
-          <Footer />
-          <TanStackDevtools
-            config={{
-              position: 'bottom-right',
-            }}
-            plugins={[
-              {
-                name: 'Tanstack Router',
-                render: <TanStackRouterDevtoolsPanel />,
-              },
-              TanStackQueryDevtools,
-            ]}
-          />
-        </TanStackQueryProvider>
-        <Scripts />
+          <TanStackQueryProvider>
+
+            {/* <Header /> */}
+            <main className="pt-20">
+              {/* <HireModeBanner /> */}
+              <CombinedHeader/>
+              <Notifications />
+              {children}
+            </main>
+
+            <Footer />
+            <TanStackDevtools
+              config={{
+                position: 'bottom-right',
+              }}
+              plugins={[
+                {
+                  name: 'Tanstack Router',
+                  render: <TanStackRouterDevtoolsPanel />,
+                },
+                TanStackQueryDevtools,
+              ]}
+            />
+          </TanStackQueryProvider>
+          <Scripts />
         </MantineProvider>
       </body>
     </html>

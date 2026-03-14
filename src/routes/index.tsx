@@ -55,9 +55,9 @@ function App() {
       {/* HERO SECTION */}
       <section className="grid lg:grid-cols-2 gap-16 items-center">
         <div className="space-y-8">
-          <Badge size="lg" radius="sm" variant="light" color="indigo">
+          <Text size="xl" fw={'bold'} variant="light" color="indigo">
             Full-Stack Developer
-          </Badge>
+          </Text>
 
           <div className="space-y-5">
             <Title className="text-4xl lg:text-6xl font-extrabold leading-tight tracking-tight">
