@@ -50,75 +50,75 @@ export const getAllBlogs = createServerFn()
         }
     })
 
-export const getBlogBySlugde = createServerFn()
-    .middleware([OptionalAuthMiddleware])
-    .inputValidator((data: { slug: string }) => data)
-    .handler(async ({ data, context }) => {
-        try {
-            // Blog
-            const blogResult = await db
-                .select({
-                    id: blog.id,
-                    title: blog.title,
-                    tags: blog.tags,
-                    content: blog.content,
-                    coverImage: blog.coverImage,
-                    userId: blog.userId,
-                    authorId: user.id,
-                    authorName: user.name,
-                    authorImage: user.image,
+// export const getBlogBySlugde = createServerFn()
+//     .middleware([OptionalAuthMiddleware])
+//     .inputValidator((data: { slug: string }) => data)
+//     .handler(async ({ data, context }) => {
+//         try {
+//             // Blog
+//             const blogResult = await db
+//                 .select({
+//                     id: blog.id,
+//                     title: blog.title,
+//                     tags: blog.tags,
+//                     content: blog.content,
+//                     coverImage: blog.coverImage,
+//                     userId: blog.userId,
+//                     authorId: user.id,
+//                     authorName: user.name,
+//                     authorImage: user.image,
 
-                    createdAt: blog.createdAt,
-                    updatedAt: blog.updatedAt,
-                })
-                .from(blog)
-                .leftJoin(user, eq(blog.userId, user.id))
-                .where(eq(blog.slug, data.slug))
+//                     createdAt: blog.createdAt,
+//                     updatedAt: blog.updatedAt,
+//                 })
+//                 .from(blog)
+//                 .leftJoin(user, eq(blog.userId, user.id))
+//                 .where(eq(blog.slug, data.slug))
 
-            const blogData = blogResult[0]
+//             const blogData = blogResult[0]
 
-            if (!blogData) return null
+//             if (!blogData) return null
 
-            // Comments
-            const comments = await db
-                .select({
-                    id: comment.id,
-                    parentId: comment.parentId,
-                    content: comment.content,
-                    createdAt: comment.createdAt,
-                    authorId: user.id,
-                    authorName: user.name,
-                    authorImage: user.image,
-                })
-                .from(comment)
-                .leftJoin(user, eq(comment.userId, user.id))
-                .where(eq(comment.blogId, blogData.id))
-                .orderBy(desc(comment.createdAt))
+//             // Comments
+//             const comments = await db
+//                 .select({
+//                     id: comment.id,
+//                     parentId: comment.parentId,
+//                     content: comment.content,
+//                     createdAt: comment.createdAt,
+//                     authorId: user.id,
+//                     authorName: user.name,
+//                     authorImage: user.image,
+//                 })
+//                 .from(comment)
+//                 .leftJoin(user, eq(comment.userId, user.id))
+//                 .where(eq(comment.blogId, blogData.id))
+//                 .orderBy(desc(comment.createdAt))
 
-            // Likes count
-            const likesResult = await db
-                .select({
-                    likes: sql<number>`count(*)`,
-                })
-                .from(blogLike)
-                .where(eq(blogLike.blogId, blogData.id))
+//             // Likes count
+//             const likesResult = await db
+//                 .select({
+//                     likes: sql<number>`count(*)`,
+//                 })
+//                 .from(blogLike)
+//                 .where(eq(blogLike.blogId, blogData.id))
 
-            const likes = Number(likesResult[0]?.likes ?? 0)
+//             const likes = Number(likesResult[0]?.likes ?? 0)
 
-            // Whether current user has liked this blog
+//             // Whether current user has liked this blog
 
-            return {
-                ...blogData,
-                likes,
-                comments,
+//             return {
+//                 ...blogData,
+//                 likes,
+//                 comments,
 
 
-            }
-        } catch (err) {
-            console.log(err)
-            throw err
-        }
-    })
+//             }
+//         } catch (err) {
+//             console.log(err)
+//             throw err
+//         }
+//     })
 
 export const getBlogBySlug = createServerFn()
     .middleware([OptionalAuthMiddleware])
@@ -137,6 +137,7 @@ export const getBlogBySlug = createServerFn()
                     coverImage: blog.coverImage,
                     userId: blog.userId,
                     authorId: user.id,
+                    slug:blog.slug,
                     authorName: user.name,
                     authorImage: user.image,
 

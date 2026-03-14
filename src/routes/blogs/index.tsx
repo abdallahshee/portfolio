@@ -72,7 +72,7 @@ function BlogsPage() {
               className="max-h-[500] overflow-y-auto transition hover:-translate-y-1 hover:shadow-lg "
             >
               <Stack gap="md">
-                {blog.coverImage ? (
+                {/* {blog.coverImage ? (
                   <Image
                     src={blog.coverImage}
                     alt={blog.title}
@@ -82,7 +82,22 @@ function BlogsPage() {
                   />
                 ) : (
                   <div className="h-[220px] rounded-lg bg-gray-100" />
-                )}
+                )} */}
+
+                <div className="overflow-hidden rounded-md h-[180px] bg-gray-100 flex items-center justify-center">
+                  {blog.coverImage ? (
+                    <Image
+                      src={blog.coverImage}
+                      alt={blog.title}
+                      h={200}
+                      radius="lg"
+                      className="object-cover"
+                    // className="w-full h-full transition-transform duration-300 hover:scale-105"
+                    />
+                  ) : (
+                    <div className="h-[200px] rounded-lg bg-gray-100" />
+                  )}
+                </div>
 
                 <div className="space-y-2">
                   <Title order={4} lineClamp={2}>

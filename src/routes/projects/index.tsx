@@ -20,8 +20,6 @@ import { authClient } from '@/lib/auth-client'
 import { useDisclosure } from '@mantine/hooks'
 import { useState } from 'react'
 import type { Project } from '@/db/project.schema'
-import { notifications } from '@mantine/notifications'
-
 
 export const Route = createFileRoute('/projects/')({
   loader: async ({ context }) => {
@@ -120,16 +118,19 @@ function RouteComponent() {
             <Stack gap="sm">
 
               {/* Image */}
-              {project.imageUrl && (
-                <div className="overflow-hidden rounded-md">
+              <div className="overflow-hidden rounded-md h-[180px] bg-gray-100 flex items-center justify-center">
+                {project.imageUrl ? (
                   <Image
                     src={project.imageUrl}
                     alt={project.title}
                     height={180}
-                    className="object-cover transition-transform duration-300 hover:scale-105"
+                    fit="cover"
+                    className="w-full h-full transition-transform duration-300 hover:scale-105"
                   />
-                </div>
-              )}
+                ) : (
+                  <Text size="sm" c="dimmed">No image</Text>
+                )}
+              </div>
 
               {/* Title + Edit Icon */}
               <Group justify="apart" align="center">
@@ -230,3 +231,17 @@ function RouteComponent() {
     </Container>
   )
 }
+
+{/* <div className="overflow-hidden rounded-md h-[180px] bg-gray-100 flex items-center justify-center">
+  {project.imageUrl ? (
+    <Image
+      src={project.imageUrl}
+      alt={project.title}
+      height={180}
+      fit="cover"
+      className="w-full h-full transition-transform duration-300 hover:scale-105"
+    />
+  ) : (
+    <Text size="sm" c="dimmed">No image</Text>
+  )}
+</div> */}

@@ -65,6 +65,7 @@ function RouteComponent() {
         email: values.email.trim().toLowerCase(),
         password: values.password,
         rememberMe: values.rememberMe,
+        callbackURL:callbackUrl
       })
 
       if (res?.data?.user) {
