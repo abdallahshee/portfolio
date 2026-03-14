@@ -12,6 +12,7 @@ export const createBlog = createServerFn({ method: "POST" })
     .middleware([AuthMiddleware])
     .handler(async ({ data, context }) => {
         try {
+            console.log("Data is here "+JSON.stringify(data))
             const newData = { ...data, userId: context.user?.id! }
             await db.insert(blog).values({ ...newData })
 

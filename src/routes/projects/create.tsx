@@ -8,7 +8,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useServerFn } from '@tanstack/react-start';
 import { uploadImage } from '@/lib/utils';
 import { createProject } from '@/server/project.functions';
-import { AdminMiddleware, AuthMiddleware } from '@/server/middleware';
+import { AdminMiddleware } from '@/server/middleware';
 interface ProjectCreateForm {
   title: string;
   websiteUrl: string;

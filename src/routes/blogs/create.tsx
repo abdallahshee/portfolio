@@ -64,7 +64,7 @@ function CreateBlogPage() {
 
       const { coverImage, ...rest } = values
 
-      await blogCreate({ data: { coverImage: defaultUrl, ...rest } })
+      const res=await blogCreate({ data: { coverImage: defaultUrl, ...rest } })
 
       router.navigate({
         to: "/account",

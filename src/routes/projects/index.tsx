@@ -232,16 +232,3 @@ function RouteComponent() {
   )
 }
 
-{/* <div className="overflow-hidden rounded-md h-[180px] bg-gray-100 flex items-center justify-center">
-  {project.imageUrl ? (
-    <Image
-      src={project.imageUrl}
-      alt={project.title}
-      height={180}
-      fit="cover"
-      className="w-full h-full transition-transform duration-300 hover:scale-105"
-    />
-  ) : (
-    <Text size="sm" c="dimmed">No image</Text>
-  )}
-</div> */}
