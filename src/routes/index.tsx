@@ -51,7 +51,7 @@ function App() {
   const router = useRouter()
 
   return (
-    <Container size="xl" className="py-14 lg:py-24 space-y-20">
+    <Container size="xl" className="py-8 lg:py-12 space-y-20">
       {/* HERO SECTION */}
       <section className="grid lg:grid-cols-2 gap-16 items-center">
         <div className="space-y-8">
@@ -94,12 +94,10 @@ function App() {
               'React',
               'TanStack Start',
               'TypeScript',
-              'Drizzle ORM',
-              'PostgreSQL',
-              'Mantine UI',
+              'PostgreSQL', 
               'Tailwind CSS',
             ].map((tech) => (
-              <Badge key={tech} variant="light" color="gray" radius="sm">
+              <Badge key={tech} variant="light" color="green" radius="sm">
                 {tech}
               </Badge>
             ))}
@@ -187,7 +185,7 @@ function App() {
 
                 <Link to="/projects">
                   <Button variant="subtle" rightSection={<ArrowRight size={16} />}>
-                    View All
+                    View More Projects
                   </Button>
                 </Link>
               </Group>
@@ -287,7 +285,7 @@ function App() {
 
                 <Link to="/blogs" search={{page:1}}>
                   <Button variant="subtle" rightSection={<ArrowRight size={16} />}>
-                    View All
+                    View More Articles
                   </Button>
                 </Link>
               </Group>

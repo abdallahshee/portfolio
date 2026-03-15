@@ -1,4 +1,4 @@
-import { getAllProjects, getProjectById, getTopProjects, updateProject, updateProjectSchema } from "@/server/project.functions"
+import { getAllProjects, getProjectById, getTopProjects, searchProjects, updateProject, updateProjectSchema } from "@/server/project.functions"
 import { queryOptions } from "@tanstack/react-query"
 import zod from "zod"
 //Geting all projects
@@ -27,3 +27,13 @@ export const getTopProjectsQueryOptions = () =>
     queryFn: () => getTopProjects(),
   })
 
+export const searchProjectsQueryOptions = (
+  query: string,
+  page: number,
+  pageSize = 6
+) =>
+  queryOptions({
+    queryKey: ["projects", "search", query, page, pageSize],
+    queryFn: () => searchProjects({ data: { query, page, pageSize } }),
+    placeholderData: (prev) => prev,
+  })

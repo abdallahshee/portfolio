@@ -2,7 +2,7 @@ import { blog, BlogSchema, BlogUpdateSchema } from "@/db/blog.schema";
 import { createServerFn } from "@tanstack/react-start";
 import { db } from "../db/index";
 import { AuthMiddleware, OptionalAuthMiddleware } from "./middleware";
-import { and, desc, eq, sql } from "drizzle-orm";
+import { and, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { blogLike } from "@/db/blog-like.schema";
 import { comment } from "@/db/comment.schema";
 import { user } from "@/db/user.schema";
@@ -314,5 +314,74 @@ export const updateBlog = createServerFn({ method: "POST" })
     } catch (err) {
       console.error("Update blog failed:", err)
       throw err
+    }
+  })
+
+  // server/blog.functions.ts
+// server/blog.functions.ts
+export const searchBlogs = createServerFn({ method: "GET" })
+  .inputValidator((data: { query: string; page: number; pageSize: number }) => data)
+  .handler(async ({ data }) => {
+    const { query, page, pageSize } = data
+
+    try {
+      const offset = (page - 1) * pageSize
+      const search = `%${query}%`
+
+    const whereClause = query.trim()
+  ? or(
+      ilike(blog.title, search),
+      ilike(blog.excerpt, search),
+      // ✅ Check if any element in the array matches
+      sql`exists (
+        select 1 from unnest(${blog.tags}) as tag
+        where tag ilike ${search}
+      )`
+    )
+  : undefined
+
+      const [blogRows, totalResult] = await Promise.all([
+        db
+          .select({
+            id: blog.id,
+            title: blog.title,
+            slug: blog.slug,
+            excerpt: blog.excerpt,
+            coverImage: blog.coverImage,
+            tags: blog.tags,
+            createdAt: blog.createdAt,
+            likes: sql<number>`(select count(*) from blog_like where blog_id = ${blog.id})`,
+            comments: sql<number>`(select count(*) from comment where blog_id = ${blog.id})`,
+            authorImage: user.image,
+          })
+          .from(blog)
+          .leftJoin(user, eq(blog.userId, user.id))
+          .where(whereClause)
+          .limit(pageSize)
+          .offset(offset),
+
+        db
+          .select({ count: sql<number>`count(*)` })
+          .from(blog)
+          .where(whereClause),
+      ])
+
+      const total = Number(totalResult[0].count)
+
+      return {
+        blogs: blogRows,
+        pagination: {
+          total,
+          page,
+          pageSize,
+          totalPages: Math.ceil(total / pageSize),
+        },
+      }
+    } catch (err) {
+      console.error("Error searching blogs:", err)
+      return {
+        blogs: [],
+        pagination: { total: 0, page: 1, pageSize, totalPages: 0 },
+      }
     }
   })

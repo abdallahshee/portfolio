@@ -2,7 +2,7 @@
 import { db } from "../db/index";
 import { project, ProjectSchema } from "@/db/project.schema";
 import zod from "zod"
-import { and, avg, count, desc, eq, sql,inArray } from "drizzle-orm";
+import { and, avg, count, desc, eq, sql,inArray, ilike, or } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { projectRating } from "@/db/project-rating.schema";
 import { AdminMiddleware, AuthMiddleware, OptionalAuthMiddleware } from "./middleware";
@@ -183,3 +183,73 @@ export const getTopProjects = createServerFn({ method: "GET" })
       throw err;
     }
   });
+
+
+  // server/project.functions.ts
+export const searchProjects = createServerFn({ method: "GET" })
+  .inputValidator((data: { query: string; page: number; pageSize: number }) => data)
+  .handler(async ({ data }) => {
+    try {
+      const { query, page, pageSize } = data
+      const offset = (page - 1) * pageSize
+      const search = `%${query}%`
+
+      const whereClause = query.trim()
+        ? or(
+            ilike(project.title, search),
+            ilike(project.description, search),
+            sql`${project.technologies}::text ilike ${search}`
+          )
+        : undefined
+
+      const [projectRows, totalResult] = await Promise.all([
+        db.select().from(project).where(whereClause).limit(pageSize).offset(offset),
+        db.select({ count: sql<number>`count(*)` }).from(project).where(whereClause),
+      ])
+
+      const projectIds = projectRows.map((p) => p.id)
+
+      const ratingsResult = projectIds.length
+        ? await db
+            .select({
+              projectId: projectRating.projectId,
+              averageRating: avg(projectRating.rating),
+              totalRatings: count(projectRating.id),
+            })
+            .from(projectRating)
+            .where(inArray(projectRating.projectId, projectIds))
+            .groupBy(projectRating.projectId)
+        : []
+
+      const ratingsMap = new Map(
+        ratingsResult.map((r) => [
+          r.projectId,
+          {
+            averageRating: r.averageRating
+              ? Number(Number(r.averageRating).toFixed(1))
+              : 0,
+            totalRatings: r.totalRatings ?? 0,
+          },
+        ])
+      )
+
+      const projects = projectRows.map((p) => ({
+        ...p,
+        averageRating: ratingsMap.get(p.id)?.averageRating ?? 0,
+        totalRatings: ratingsMap.get(p.id)?.totalRatings ?? 0,
+      }))
+
+      const total = Number(totalResult[0].count)
+
+      return {
+        projects,
+        total,
+        page,
+        pageSize,
+        totalPages: Math.ceil(total / pageSize),
+      }
+    } catch (err) {
+      console.error("Error searching projects:", err)
+      return { projects: [], total: 0, page: 1, pageSize: 6, totalPages: 0 }
+    }
+  })
