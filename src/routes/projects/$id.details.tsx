@@ -192,7 +192,7 @@ const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
                   </Group>
 
                   <Group gap="sm" wrap="wrap">
-                    {project.technologies.map((tech: string) => (
+                    {project.technologies?.map((tech: string) => (
                       <Badge
                         key={tech}
                         size="lg"

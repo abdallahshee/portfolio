@@ -5,7 +5,7 @@ import zod from "zod"
 import { and, avg, count, desc, eq, sql,inArray } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { projectRating } from "@/db/project-rating.schema";
-import { AdminMiddleware, AuthMiddleware } from "./middleware";
+import { AdminMiddleware, AuthMiddleware, OptionalAuthMiddleware } from "./middleware";
 
 export const getAllProjects = createServerFn({ method: "GET" })
   .inputValidator((data: { page: number; pageSize: number }) => data)
@@ -88,7 +88,7 @@ export const createProject = createServerFn({ method: 'POST' })
 
 export const getProjectById = createServerFn({ method: "GET" })
   .inputValidator((data: { projectId: string }) => data)
-  .middleware([AuthMiddleware])
+  .middleware([OptionalAuthMiddleware])
   .handler(async ({ data, context }) => {
     try {
       const userId = context.user?.id

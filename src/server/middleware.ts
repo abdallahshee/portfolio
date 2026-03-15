@@ -3,32 +3,35 @@ import { createMiddleware } from "@tanstack/react-start"
 import { db } from "../db/index"
 import { eq } from "drizzle-orm"
 import { blog } from "@/db/blog.schema"
+import { redirect } from "@tanstack/react-router"
 
 
 export const AuthMiddleware = createMiddleware()
-    .server(async ({ request, next }) => {
-        // Get the session from headers
-
-        const session = await auth.api.getSession({
-            headers: request.headers,
-        })
-
-        const user = session?.user ?? null
-        const role = session?.user.role ?? null
-        // Stop the request if user is not logged in
-        if (!user) {
-            const redirectTo = encodeURIComponent(new URL(request.url).pathname)
-            return Response.redirect(new URL(`/account?redirect=${redirectTo}`, request.url), 302)
-        }
-        // Proceed with the request, attaching user to context
-        return next({
-            context: {
-                user,
-                session,
-                role
-            },
-        })
+  .server(async ({ request, next }) => {
+    const session = await auth.api.getSession({
+      headers: request.headers,
     })
+
+    const user = session?.user ?? null
+    const role = session?.user?.role ?? null
+
+    if (!user) {
+      const redirectTo = new URL(request.url).pathname
+      throw redirect({
+        to: "/account",
+        search: { callbackUrl: redirectTo },
+      })
+    }
+
+    return next({
+      context: {
+        user,
+        session,
+        role,
+      },
+    })
+  })
+
 
 export const EditBlogMiddleware = createMiddleware()
     .middleware([AuthMiddleware])

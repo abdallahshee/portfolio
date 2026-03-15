@@ -1,25 +1,23 @@
 import { useForm } from "@mantine/form"
 import {
-  Anchor,
   Button,
+  Checkbox,
   Divider,
   Group,
   Paper,
   PasswordInput,
   Stack,
-  Switch,
   Text,
   TextInput,
   ThemeIcon,
   Title,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
-import { Github, Globe, Lock, LogIn } from "lucide-react"
+import { Github, Globe, LogIn } from "lucide-react"
 import {
   Link,
   createFileRoute,
   useRouter,
-  useSearch,
 } from "@tanstack/react-router"
 import { authClient } from "@/lib/auth-client"
 import { useState } from "react"
@@ -30,9 +28,6 @@ interface LoginForm {
   rememberMe: boolean
 }
 
-
-
-// src/routes/account/index.tsx
 export const Route = createFileRoute("/account/")({
   validateSearch: (search: Record<string, unknown>) => ({
     callbackUrl: typeof search.callbackUrl === "string" ? search.callbackUrl : "/",
@@ -41,13 +36,11 @@ export const Route = createFileRoute("/account/")({
 })
 
 function RouteComponent() {
-  const { callbackUrl } =Route.useSearch()
+  const { callbackUrl } = Route.useSearch()
   const router = useRouter()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(
-    null
-  )
+  const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(null)
 
   const form = useForm<LoginForm>({
     initialValues: {
@@ -80,8 +73,7 @@ function RouteComponent() {
           message: "Welcome back 👋",
           color: "green",
         })
-
-        router.navigate({ to: "/projects" })
+        router.navigate({ to: callbackUrl })
         return
       }
 
@@ -104,11 +96,7 @@ function RouteComponent() {
   const handleOAuthSignIn = async (provider: "github" | "google") => {
     try {
       setOauthProvider(provider)
-
-      await authClient.signIn.social({
-        provider,
-        callbackURL: callbackUrl,
-      })
+      await authClient.signIn.social({ provider, callbackURL: callbackUrl })
     } catch (err: any) {
       notifications.show({
         title: "OAuth login failed",
@@ -123,22 +111,23 @@ function RouteComponent() {
   return (
     <Paper radius="2xl" p="xl" withBorder className="w-full shadow-lg md:p-8">
       <Stack gap="lg">
+
+        {/* Header */}
         <div className="text-center">
           <Group justify="center" mb="sm">
             <ThemeIcon variant="light" color="indigo" radius="xl" size="xl">
               <LogIn size={20} />
             </ThemeIcon>
           </Group>
-
           <Title order={2} className="text-3xl">
             Sign In
           </Title>
-
           <Text c="dimmed" size="sm" mt={6}>
             Welcome back. Sign in to continue.
           </Text>
         </div>
 
+        {/* OAuth */}
         <Stack gap="sm">
           <Button
             variant="outline"
@@ -172,6 +161,7 @@ function RouteComponent() {
 
         <Divider label="Or continue with email" labelPosition="center" my="xs" />
 
+        {/* Email form */}
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="md">
             <TextInput
@@ -183,19 +173,39 @@ function RouteComponent() {
               required
             />
 
-            <PasswordInput
-              label="Password"
-              placeholder="Your password"
-              radius="md"
-              size="md"
-              {...form.getInputProps("password")}
-              required
-            />
+            {/* Password + Forgot + Remember me row */}
+            <div>
+              <PasswordInput
+                label="Password"
+                placeholder="Your password"
+                radius="md"
+                size="md"
+                {...form.getInputProps("password")}
+                required
+              />
+
+              <Group justify="space-between" mt="xs">
+                <Checkbox
+                  label="Remember me"
+                  size="sm"
+                  {...form.getInputProps("rememberMe", { type: "checkbox" })}
+                />
+                <Link
+                  to="/account/forgot-password"
+                  className="text-xs text-indigo-600 hover:underline dark:text-indigo-400"
+                >
+                  Forgot password?
+                </Link>
+              </Group>
+            </div>
+
+            {/* Remember me */}
+
 
             <Button
               type="submit"
               fullWidth
-              mt="sm"
+              mt="xs"
               radius="xl"
               size="md"
               loading={isSubmitting}
@@ -208,16 +218,17 @@ function RouteComponent() {
 
         <Divider my="xs" />
 
-       <Text ta="center" size="sm" c="dimmed">
-  Don’t have an account?{" "}
-<Link
-  to="/account/register"
-  search={{ callbackUrl: callbackUrl }}  // ← forward the original callbackUrl
-  className="text-blue-600 hover:underline font-medium"
->
-  Sign Up
-</Link>
-</Text>
+        <Text ta="center" size="sm" c="dimmed">
+          Don't have an account?{" "}
+          <Link
+            to="/account/register"
+            search={{ callbackUrl }}
+            className="font-medium text-indigo-600 hover:underline dark:text-indigo-400"
+          >
+            Sign Up
+          </Link>
+        </Text>
+
       </Stack>
     </Paper>
   )

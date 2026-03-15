@@ -247,7 +247,7 @@ function App() {
                                 {project.title}
                               </Text>
 
-                              <Rating value={4} readOnly size="sm" />
+                              <Rating value={rating} readOnly size="sm" />
                             </Stack>
                           </Group>
                         </Table.Td>
