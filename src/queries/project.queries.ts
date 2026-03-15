@@ -2,10 +2,10 @@ import { getAllProjects, getProjectById, getTopProjects, updateProject, updatePr
 import { queryOptions } from "@tanstack/react-query"
 import zod from "zod"
 //Geting all projects
-export const getProjectsQueryOptions = () =>
+export const getProjectsQueryOptions = (page: number, pageSize = 6) =>
   queryOptions({
-    queryKey: ['projects'],
-    queryFn: () => getAllProjects(),
+    queryKey: ['projects', page, pageSize],
+    queryFn: () => getAllProjects({ data: { page, pageSize } }),
   })
 
 export const getProjectByIdQueryOptions = (projectId: string) =>

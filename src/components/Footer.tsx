@@ -123,9 +123,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Abdallah Shee. All rights reserved.
           </Text>
 
-          <Text size="sm" c="dimmed">
-            Built with React • TanStack Start • Mantine
-          </Text>
+        
         </Group>
 
       </Container>

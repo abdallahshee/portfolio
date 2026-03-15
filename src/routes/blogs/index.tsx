@@ -84,7 +84,7 @@ function BlogsPage() {
                   <div className="h-[220px] rounded-lg bg-gray-100" />
                 )} */}
 
-                <div className="overflow-hidden rounded-md h-[180px] bg-gray-100 flex items-center justify-center">
+                <div className="overflow-hidden rounded-md h-[200px] bg-gray-100 flex items-center justify-center">
                   {blog.coverImage ? (
                     <Image
                       src={blog.coverImage}

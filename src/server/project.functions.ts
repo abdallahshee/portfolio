@@ -2,23 +2,37 @@
 import { db } from "../db/index";
 import { project, ProjectSchema } from "@/db/project.schema";
 import zod from "zod"
-import { avg, desc, eq } from "drizzle-orm";
+import { avg, count, desc, eq, sql } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { projectRating } from "@/db/project-rating.schema";
 import { AdminMiddleware } from "./middleware";
 
 export const getAllProjects = createServerFn({ method: "GET" })
-  .handler(async () => {
+  .inputValidator((data: { page: number; pageSize: number }) => data)
+  .handler(async ({ data }) => {
     try {
-      const projects = await db.select().from(project);
+      const { page, pageSize } = data
+      const offset = (page - 1) * pageSize
 
-      return projects;
+      const [projects, totalResult] = await Promise.all([
+        db.select().from(project).limit(pageSize).offset(offset),
+        db.select({ count: sql<number>`count(*)` }).from(project),
+      ])
+
+      const total = Number(totalResult[0].count)
+
+      return {
+        projects,
+        total,
+        page,
+        pageSize,
+        totalPages: Math.ceil(total / pageSize),
+      }
     } catch (err) {
-      console.error("Error fetching projects:", err);
-      // Return an empty array or throw a meaningful error
-      return [];
+      console.error("Error fetching projects:", err)
+      return { projects: [], total: 0, page: 1, pageSize: 6, totalPages: 0 }
     }
-  });
+  })
 
 export const createProject = createServerFn({ method: 'POST' })
   .middleware([AdminMiddleware])
@@ -34,14 +48,41 @@ export const createProject = createServerFn({ method: 'POST' })
     }
   });
 
+
+
 export const getProjectById = createServerFn({ method: "GET" })
   .inputValidator((data: { projectId: string }) => data)
   .handler(async ({ data }) => {
     try {
-      const theProject = await db.select().from(project).where(eq(project.id, data.projectId));
-      return theProject[0]
+      const [theProject, ratingResult] = await Promise.all([
+        db
+          .select()
+          .from(project)
+          .where(eq(project.id, data.projectId))
+          .then((res) => res[0]),
+
+        db
+          .select({
+            averageRating: avg(projectRating.rating),
+            totalRatings: count(projectRating.id),
+          })
+          .from(projectRating)
+          .where(eq(projectRating.projectId, data.projectId))
+          .then((res) => res[0]),
+      ])
+
+      if (!theProject) return null
+
+      return {
+        ...theProject,
+        averageRating: ratingResult.averageRating
+          ? Number(Number(ratingResult.averageRating).toFixed(1))
+          : 0,
+        totalRatings: ratingResult.totalRatings ?? 0,
+      }
     } catch (err) {
-      console.log(err)
+      console.error(err)
+      return null
     }
   })
 
