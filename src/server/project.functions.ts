@@ -2,10 +2,10 @@
 import { db } from "../db/index";
 import { project, ProjectSchema } from "@/db/project.schema";
 import zod from "zod"
-import { avg, count, desc, eq, sql } from "drizzle-orm";
+import { and, avg, count, desc, eq, sql } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { projectRating } from "@/db/project-rating.schema";
-import { AdminMiddleware } from "./middleware";
+import { AdminMiddleware, AuthMiddleware } from "./middleware";
 
 export const getAllProjects = createServerFn({ method: "GET" })
   .inputValidator((data: { page: number; pageSize: number }) => data)
@@ -50,16 +50,17 @@ export const createProject = createServerFn({ method: 'POST' })
 
 
 
+
+
 export const getProjectById = createServerFn({ method: "GET" })
   .inputValidator((data: { projectId: string }) => data)
-  .handler(async ({ data }) => {
+  .middleware([AuthMiddleware])
+  .handler(async ({ data, context }) => {
     try {
-      const [theProject, ratingResult] = await Promise.all([
-        db
-          .select()
-          .from(project)
-          .where(eq(project.id, data.projectId))
-          .then((res) => res[0]),
+      const userId = context.user?.id
+
+      const [projectResult, ratingResult, userRatingResult] = await Promise.all([
+        db.select().from(project).where(eq(project.id, data.projectId)),
 
         db
           .select({
@@ -67,18 +68,36 @@ export const getProjectById = createServerFn({ method: "GET" })
             totalRatings: count(projectRating.id),
           })
           .from(projectRating)
-          .where(eq(projectRating.projectId, data.projectId))
-          .then((res) => res[0]),
+          .where(eq(projectRating.projectId, data.projectId)),
+
+        userId
+          ? db
+              .select({
+                rating: projectRating.rating,
+              })
+              .from(projectRating)
+              .where(
+                and(
+                  eq(projectRating.projectId, data.projectId),
+                  eq(projectRating.userId, userId)
+                )
+              )
+          : Promise.resolve([]),
       ])
+
+      const theProject = projectResult[0]
+      const rating = ratingResult[0]
+      const userRating = userRatingResult[0]
 
       if (!theProject) return null
 
       return {
         ...theProject,
-        averageRating: ratingResult.averageRating
-          ? Number(Number(ratingResult.averageRating).toFixed(1))
+        averageRating: rating?.averageRating
+          ? Number(Number(rating.averageRating).toFixed(1))
           : 0,
-        totalRatings: ratingResult.totalRatings ?? 0,
+        totalRatings: rating?.totalRatings ?? 0,
+        userRating: userRating?.rating ?? null,
       }
     } catch (err) {
       console.error(err)

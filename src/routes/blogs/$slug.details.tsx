@@ -211,7 +211,7 @@ function RouteComponent() {
                     <textarea
                       placeholder={`Reply to ${comment.authorName || 'Anonymous'}...`}
                       rows={2}
-                      className="w-full text-sm border-b border-gray-300 focus:border-indigo-500 outline-none resize-none bg-transparent text-gray-800 py-1"
+                      className="w-full text-sm border-b border-gray-300 focus:border-indigo-500 outline-none resize-none bg-transparent text-gray-800 py-0"
                       {...replyForm.getInputProps('content')}
                     />
                     <div className="flex justify-end gap-2 mt-2">
