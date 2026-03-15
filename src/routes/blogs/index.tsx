@@ -48,23 +48,22 @@ function BlogsPage() {
   const [debouncedSearch] = useDebouncedValue(searchInput, 300)
 
   const isSearching = debouncedSearch.trim().length > 0
+const { data: paginatedData, isLoading: paginatedLoading, isPlaceholderData } = useQuery(
+  getPaginatedBlogsQueryOptions(page, PAGE_SIZE)
+)
 
-  const { data, isLoading, isPlaceholderData } = useQuery(
-    isSearching
-      ? searchBlogsQueryOptions(debouncedSearch, 1, PAGE_SIZE)
-      : getPaginatedBlogsQueryOptions(page, PAGE_SIZE)
-  )
+const { data: searchData, isLoading: searchLoading } = useQuery({
+  ...searchBlogsQueryOptions(debouncedSearch, 1, PAGE_SIZE),
+  enabled: isSearching, // only runs when there's a search term
+})
+ 
 
-  const blogs = (data as any)?.blogs ?? []
-  const pagination = (data as any)?.pagination ?? {
-    page: 1,
-    totalPages: 1,
-    total: 0,
-  }
-  const totalPages = isSearching
-    ? (data as any)?.totalPages ?? 1
-    : pagination.totalPages
+ const data = isSearching ? searchData : paginatedData
+const isLoading = isSearching ? searchLoading : paginatedLoading
 
+const blogs = data?.blogs ?? []
+const pagination = data?.pagination ?? { page: 1, totalPages: 1, total: 0 }
+const totalPages = pagination.totalPages
   const handleSearchChange = (value: string) => {
     setSearchInput(value)
   }

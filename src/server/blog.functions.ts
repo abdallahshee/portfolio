@@ -319,6 +319,7 @@ export const updateBlog = createServerFn({ method: "POST" })
 
   // server/blog.functions.ts
 // server/blog.functions.ts
+// server/blog.functions.ts
 export const searchBlogs = createServerFn({ method: "GET" })
   .inputValidator((data: { query: string; page: number; pageSize: number }) => data)
   .handler(async ({ data }) => {
@@ -328,15 +329,12 @@ export const searchBlogs = createServerFn({ method: "GET" })
       const offset = (page - 1) * pageSize
       const search = `%${query}%`
 
-    const whereClause = query.trim()
+     const whereClause = query.trim()
   ? or(
       ilike(blog.title, search),
       ilike(blog.excerpt, search),
-      // ✅ Check if any element in the array matches
-      sql`exists (
-        select 1 from unnest(${blog.tags}) as tag
-        where tag ilike ${search}
-      )`
+      // ✅ Convert array to comma-separated string then search
+      sql`array_to_string(${blog.tags}, ',') ilike ${search}`
     )
   : undefined
 
