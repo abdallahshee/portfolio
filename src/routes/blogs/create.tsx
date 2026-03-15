@@ -183,7 +183,7 @@ function RouteComponent() {
 
             <FileInput
               label="Cover Image"
-              placeholder="Upload cover image"
+              placeholder="Upload Blog image"
               leftSection={<ImagePlus size={16} />}
               accept="image/*"
               {...form.getInputProps("coverImage")}

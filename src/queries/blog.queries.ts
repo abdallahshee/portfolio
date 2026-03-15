@@ -1,4 +1,4 @@
-import { getAllBlogs, getBlogBySlug, getPaginatedBlogs, getTopBlogs } from "@/server/blog.functions";
+import { getAllBlogs, getBlogBySlug, getBlogBySlugdForUpdate, getPaginatedBlogs, getTopBlogs } from "@/server/blog.functions";
 import { queryOptions } from "@tanstack/react-query";
 
 export const getAllBlogsQueryOptions = () => queryOptions({
@@ -23,5 +23,10 @@ export const getPaginatedBlogsQueryOptions = (page: number, limit = 6) =>
 export const getBlogBySlugQueryOptions = (slug: string) => queryOptions({
     queryKey: ["blogs", slug],
     queryFn: () => getBlogBySlug({ data: { slug } })
+})
+
+export const getBlogBySlugForUpdateQueryOptions = (slug: string) => queryOptions({
+    queryKey: ["blogsUpdate", slug],
+    queryFn: () => getBlogBySlugdForUpdate({ data: { slug } })
 })
 

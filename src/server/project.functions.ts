@@ -2,7 +2,7 @@
 import { db } from "../db/index";
 import { project, ProjectSchema } from "@/db/project.schema";
 import zod from "zod"
-import { and, avg, count, desc, eq, sql } from "drizzle-orm";
+import { and, avg, count, desc, eq, sql,inArray } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { projectRating } from "@/db/project-rating.schema";
 import { AdminMiddleware, AuthMiddleware } from "./middleware";
@@ -14,10 +14,44 @@ export const getAllProjects = createServerFn({ method: "GET" })
       const { page, pageSize } = data
       const offset = (page - 1) * pageSize
 
-      const [projects, totalResult] = await Promise.all([
+      const [projectRows, totalResult] = await Promise.all([
         db.select().from(project).limit(pageSize).offset(offset),
         db.select({ count: sql<number>`count(*)` }).from(project),
       ])
+
+      // Fetch ratings for all projects in the current page in one query
+      const projectIds = projectRows.map((p) => p.id)
+
+      const ratingsResult = projectIds.length
+        ? await db
+            .select({
+              projectId: projectRating.projectId,
+              averageRating: avg(projectRating.rating),
+              totalRatings: count(projectRating.id),
+            })
+            .from(projectRating)
+            .where(inArray(projectRating.projectId, projectIds))
+            .groupBy(projectRating.projectId)
+        : []
+
+      // Map ratings by projectId for O(1) lookup
+      const ratingsMap = new Map(
+        ratingsResult.map((r) => [
+          r.projectId,
+          {
+            averageRating: r.averageRating
+              ? Number(Number(r.averageRating).toFixed(1))
+              : 0,
+            totalRatings: r.totalRatings ?? 0,
+          },
+        ])
+      )
+
+      const projects = projectRows.map((p) => ({
+        ...p,
+        averageRating: ratingsMap.get(p.id)?.averageRating ?? 0,
+        totalRatings: ratingsMap.get(p.id)?.totalRatings ?? 0,
+      }))
 
       const total = Number(totalResult[0].count)
 

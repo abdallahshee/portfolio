@@ -5,6 +5,7 @@ import { user } from "./user.schema";
 import { comment } from "./comment.schema";
 import { createInsertSchema } from "drizzle-zod";
 import { blogLike } from "./blog-like.schema";
+import z from "zod";
 
 
 export const blogStatusEnum = pgEnum('blog_status', ['draft', 'pending', 'published'])
@@ -35,7 +36,15 @@ export const blogRelations = relations(blog, ({ one, many }) => ({
 
   likes: many(blogLike),
 }))
+
+
 export type Blog = InferSelectModel<typeof blog>
 export type BlogRequest = Pick<InferInsertModel<typeof blog>, "title"|"content" | "coverImage" | "tags" >
 export const BlogSchema = createInsertSchema(blog).pick({title:true, content: true, coverImage: true, tags: true })
 
+export const BlogUpdateSchema=z.object({
+  blogSchema:BlogSchema,
+  slug:z.string(),
+})
+
+export type BlogUpdateForm=z.infer<typeof BlogUpdateSchema>

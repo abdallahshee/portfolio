@@ -46,11 +46,6 @@ function RouteComponent() {
   const projects = data?.projects ?? []
   const totalPages = data?.totalPages ?? 1
 
-  const handleSelectProject = (project: Project) => {
-    setSelectedProject(project)
-    open()
-  }
-
   const handlePageChange = (newPage: number) => {
     setPage(newPage)
     window.scrollTo({ top: 0, behavior: 'smooth' })
@@ -140,7 +135,7 @@ function RouteComponent() {
               </Group>
 
               {/* Rating */}
-              <Rating value={4} fractions={1} readOnly />
+              <Rating value={project.totalRatings} fractions={1} readOnly />
 
               {/* Status Badge + GitHub */}
               <Group gap="sm">

@@ -1,50 +1,51 @@
-import { blog, BlogSchema } from "@/db/blog.schema";
+import { blog, BlogSchema, BlogUpdateSchema } from "@/db/blog.schema";
 import { createServerFn } from "@tanstack/react-start";
 import { db } from "../db/index";
-import { AuthMiddleware, OptionalAuthMiddleware} from "./middleware";
+import { AuthMiddleware, OptionalAuthMiddleware } from "./middleware";
 import { and, desc, eq, sql } from "drizzle-orm";
 import { blogLike } from "@/db/blog-like.schema";
 import { comment } from "@/db/comment.schema";
 import { user } from "@/db/user.schema";
+import zod, { z } from "zod"
 
 function createSlug(title: string) {
-  return title
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, "") // remove special characters
-    .replace(/\s+/g, "-") // replace spaces with -
-    .replace(/-+/g, "-") // remove duplicate -
+    return title
+        .toLowerCase()
+        .trim()
+        .replace(/[^\w\s-]/g, "") // remove special characters
+        .replace(/\s+/g, "-") // replace spaces with -
+        .replace(/-+/g, "-") // remove duplicate -
 }
 
 function createExcerpt(content: string, maxLength = 160) {
-  const plainText = content.replace(/[#_*>\-\n`]/g, " ").trim()
-  return plainText.length > maxLength
-    ? plainText.slice(0, maxLength).trim() + "..."
-    : plainText
+    const plainText = content.replace(/[#_*>\-\n`]/g, " ").trim()
+    return plainText.length > maxLength
+        ? plainText.slice(0, maxLength).trim() + "..."
+        : plainText
 }
 
 export const createBlog = createServerFn({ method: "POST" })
-  .inputValidator(BlogSchema)
-  .middleware([AuthMiddleware])
-  .handler(async ({ data, context }) => {
-    try {
-      const slug = createSlug(data.title)
-      const excerpt = createExcerpt(data.content)
-        console.log("User in context "+context.user)
-      const newData = {
-        ...data,
-        slug,
-        excerpt,
-        userId: context.user?.id!,
-      }
+    .inputValidator(BlogSchema)
+    .middleware([AuthMiddleware])
+    .handler(async ({ data, context }) => {
+        try {
+            const slug = createSlug(data.title)
+            const excerpt = createExcerpt(data.content)
+            console.log("User in context " + context.user)
+            const newData = {
+                ...data,
+                slug,
+                excerpt,
+                userId: context.user?.id!,
+            }
 
-      const result = await db.insert(blog).values(newData).returning()
-      return result
-    } catch (err) {
-      console.error("Create blog failed:", err)
-      throw err
-    }
-  })
+            const result = await db.insert(blog).values(newData).returning()
+            return result
+        } catch (err) {
+            console.error("Create blog failed:", err)
+            throw err
+        }
+    })
 
 export const getAllBlogs = createServerFn()
     .handler(async () => {
@@ -76,75 +77,32 @@ export const getAllBlogs = createServerFn()
         }
     })
 
-// export const getBlogBySlugde = createServerFn()
-//     .middleware([OptionalAuthMiddleware])
-//     .inputValidator((data: { slug: string }) => data)
-//     .handler(async ({ data, context }) => {
-//         try {
-//             // Blog
-//             const blogResult = await db
-//                 .select({
-//                     id: blog.id,
-//                     title: blog.title,
-//                     tags: blog.tags,
-//                     content: blog.content,
-//                     coverImage: blog.coverImage,
-//                     userId: blog.userId,
-//                     authorId: user.id,
-//                     authorName: user.name,
-//                     authorImage: user.image,
-
-//                     createdAt: blog.createdAt,
-//                     updatedAt: blog.updatedAt,
-//                 })
-//                 .from(blog)
-//                 .leftJoin(user, eq(blog.userId, user.id))
-//                 .where(eq(blog.slug, data.slug))
-
-//             const blogData = blogResult[0]
-
-//             if (!blogData) return null
-
-//             // Comments
-//             const comments = await db
-//                 .select({
-//                     id: comment.id,
-//                     parentId: comment.parentId,
-//                     content: comment.content,
-//                     createdAt: comment.createdAt,
-//                     authorId: user.id,
-//                     authorName: user.name,
-//                     authorImage: user.image,
-//                 })
-//                 .from(comment)
-//                 .leftJoin(user, eq(comment.userId, user.id))
-//                 .where(eq(comment.blogId, blogData.id))
-//                 .orderBy(desc(comment.createdAt))
-
-//             // Likes count
-//             const likesResult = await db
-//                 .select({
-//                     likes: sql<number>`count(*)`,
-//                 })
-//                 .from(blogLike)
-//                 .where(eq(blogLike.blogId, blogData.id))
-
-//             const likes = Number(likesResult[0]?.likes ?? 0)
-
-//             // Whether current user has liked this blog
-
-//             return {
-//                 ...blogData,
-//                 likes,
-//                 comments,
-
-
-//             }
-//         } catch (err) {
-//             console.log(err)
-//             throw err
-//         }
-//     })
+export const getBlogBySlugdForUpdate = createServerFn()
+    .middleware([AuthMiddleware])
+    .inputValidator((data: { slug: string }) => data)
+    .handler(async ({ data}) => {
+        try {
+            // Blog
+            const blogResult = await db
+                .select({
+                    id:blog.id,
+                    title: blog.title,
+                    tags: blog.tags,
+                    content: blog.content,
+                    coverImage: blog.coverImage,
+                })
+                .from(blog)
+                .where(eq(blog.slug, data.slug))
+            const blogData = blogResult[0]
+            if (!blogData) return null
+            return {
+                ...blogData,
+            }
+        } catch (err) {
+            console.log(err)
+            throw err
+        }
+    })
 
 export const getBlogBySlug = createServerFn()
     .middleware([OptionalAuthMiddleware])
@@ -163,7 +121,7 @@ export const getBlogBySlug = createServerFn()
                     coverImage: blog.coverImage,
                     userId: blog.userId,
                     authorId: user.id,
-                    slug:blog.slug,
+                    slug: blog.slug,
                     authorName: user.name,
                     authorImage: user.image,
 
@@ -326,3 +284,35 @@ export const getTopBlogs = createServerFn({ method: "GET" })
             throw err
         }
     })
+
+export const updateBlog = createServerFn({ method: "POST" })
+  .inputValidator(BlogUpdateSchema)
+  .middleware([AuthMiddleware])
+  .handler(async ({ data, context }) => {
+    try {
+      const updated = await db
+        .update(blog)
+        .set({
+          title: data.blogSchema.title,
+          content: data.blogSchema.content,
+          coverImage: data.blogSchema.coverImage ?? null,
+          tags: data.blogSchema.tags,
+        })
+        .where(
+          and(
+            eq(blog.slug, data.slug),
+            eq(blog.userId, context.user?.id!)
+          )
+        )
+        .returning()
+
+      if (!updated.length) {
+        throw new Error("Blog not found or you do not have permission to edit it")
+      }
+
+      return updated[0]
+    } catch (err) {
+      console.error("Update blog failed:", err)
+      throw err
+    }
+  })

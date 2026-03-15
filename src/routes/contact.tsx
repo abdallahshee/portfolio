@@ -1,33 +1,34 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router"
 import {
+  Anchor,
+  Avatar,
+  Badge,
+  Button,
+  Card,
   Container,
-  Title,
+  Group,
+  Paper,
+  SimpleGrid,
+  Stack,
   Text,
   TextInput,
   Textarea,
-  Button,
-  Stack,
-  Card,
-  Anchor,
-  Group,
-  SimpleGrid,
-  Avatar,
-  Badge
-} from "@mantine/core";
-
+  ThemeIcon,
+  Title,
+} from "@mantine/core"
 import {
-  Mail,
-  Phone,
   Github,
   Linkedin,
-  Send
-} from "lucide-react";
-
-import { useForm } from "@mantine/form";
+  Mail,
+  MessageSquare,
+  Phone,
+  Send,
+} from "lucide-react"
+import { useForm } from "@mantine/form"
 
 export const Route = createFileRoute("/contact")({
   component: ContactPage,
-});
+})
 
 function ContactPage() {
   const form = useForm({
@@ -36,178 +37,203 @@ function ContactPage() {
       email: "",
       message: "",
     },
-  });
+  })
 
   const handleSubmit = (values: typeof form.values) => {
-    console.log(values);
-  };
+    console.log(values)
+  }
 
   return (
-    <Container size="lg" py={80}>
+    <Container size="lg" className="py-8 md:py-12">
+      <Stack gap="xl">
+        <Paper
+          radius="2xl"
+          p="xl"
+          withBorder
+          className="bg-gradient-to-br from-white to-slate-50 shadow-sm dark:from-slate-900 dark:to-slate-950"
+        >
+          <Group align="center" className="gap-6">
+            <Avatar
+              src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
+              size={100}
+              radius="xl"
+              className="border border-slate-200 shadow-sm"
+            />
 
-      {/* Header Section */}
-      <Card
-        withBorder
-        shadow="md"
-        radius="md"
-        mb={50}
-        p="xl"
-        style={{
-          background: "linear-gradient(135deg,#f8fafc,#eef2ff)"
-        }}
-      >
-        <Group align="center" wrap="wrap">
-
-          <Avatar
-            src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
-            size={100}
-            radius="xl"
-          />
-
-          <Stack gap={4} style={{ flex: 1 }}>
-
-            <Title order={2}>Abdallah Shee</Title>
-
-            <Badge color="blue" variant="light" w="fit-content">
-              Full-Stack Software Developer
-            </Badge>
-
-            <Text c="dimmed">
-              I build scalable web applications using modern technologies
-              like React, TypeScript, Node.js and PostgreSQL.
-              Feel free to reach out for collaborations or project opportunities.
-            </Text>
-
-            <Group mt={6}>
-
-              <Group gap={6}>
-                <Phone size={16} />
-                <Text size="sm">+254 712 345 678</Text>
+            <Stack gap={6} className="flex-1">
+              <Group gap="xs">
+                <Badge color="blue" variant="light" radius="xl">
+                  Full-Stack Software Developer
+                </Badge>
+                <Badge color="green" variant="light" radius="xl">
+                  Available for work
+                </Badge>
               </Group>
 
-              <Group gap={6}>
-                <Mail size={16} />
-                <Text size="sm">developer@email.com</Text>
+              <Title order={1} className="text-3xl md:text-4xl">
+                Abdallah Shee
+              </Title>
+
+              <Text className="max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
+                I build scalable web applications using modern technologies like
+                React, TypeScript, Node.js, and PostgreSQL. Feel free to reach out
+                for collaborations, freelance work, or project opportunities.
+              </Text>
+
+              <Group gap="lg" mt={8} className="flex-wrap">
+                <Group gap={8}>
+                  <ThemeIcon variant="light" color="indigo" radius="xl">
+                    <Phone size={16} />
+                  </ThemeIcon>
+                  <Text size="sm">+254 712 345 678</Text>
+                </Group>
+
+                <Group gap={8}>
+                  <ThemeIcon variant="light" color="indigo" radius="xl">
+                    <Mail size={16} />
+                  </ThemeIcon>
+                  <Text size="sm">developer@email.com</Text>
+                </Group>
+              </Group>
+            </Stack>
+          </Group>
+        </Paper>
+
+        <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
+          <Card radius="2xl" withBorder p="xl" className="shadow-sm">
+            <Stack gap="lg">
+              <Group gap="xs">
+                <ThemeIcon variant="light" color="blue" radius="xl">
+                  <MessageSquare size={16} />
+                </ThemeIcon>
+                <Title order={3}>Send a Message</Title>
               </Group>
 
-            </Group>
+              <Text c="dimmed" size="sm">
+                Have a project in mind or want to collaborate? Send me a message.
+              </Text>
 
+              <form onSubmit={form.onSubmit(handleSubmit)}>
+                <Stack gap="md">
+                  <TextInput
+                    label="Your Name"
+                    placeholder="John Doe"
+                    radius="md"
+                    size="md"
+                    required
+                    {...form.getInputProps("name")}
+                  />
+
+                  <TextInput
+                    label="Email Address"
+                    placeholder="john@email.com"
+                    radius="md"
+                    size="md"
+                    required
+                    {...form.getInputProps("email")}
+                  />
+
+                  <Textarea
+                    label="Message"
+                    placeholder="Write your message here..."
+                    minRows={6}
+                    autosize
+                    radius="md"
+                    size="md"
+                    required
+                    {...form.getInputProps("message")}
+                  />
+
+                  <Button
+                    type="submit"
+                    radius="xl"
+                    size="md"
+                    leftSection={<Send size={18} />}
+                    fullWidth
+                  >
+                    Send Message
+                  </Button>
+                </Stack>
+              </form>
+            </Stack>
+          </Card>
+
+          <Stack gap="lg">
+            <Card radius="2xl" withBorder p="xl" className="shadow-sm">
+              <Stack gap="md">
+                <Title order={4}>Contact Information</Title>
+
+                <Group gap="sm" align="flex-start">
+                  <ThemeIcon variant="light" color="indigo" radius="xl">
+                    <Phone size={16} />
+                  </ThemeIcon>
+                  <div>
+                    <Text fw={600}>Phone</Text>
+                    <Text c="dimmed">+254 712 345 678</Text>
+                  </div>
+                </Group>
+
+                <Group gap="sm" align="flex-start">
+                  <ThemeIcon variant="light" color="indigo" radius="xl">
+                    <Mail size={16} />
+                  </ThemeIcon>
+                  <div>
+                    <Text fw={600}>Email</Text>
+                    <Text c="dimmed">developer@email.com</Text>
+                  </div>
+                </Group>
+              </Stack>
+            </Card>
+
+            <Card radius="2xl" withBorder p="xl" className="shadow-sm">
+              <Stack gap="md">
+                <Title order={4}>Connect with Me</Title>
+
+                <Group gap="sm" align="center">
+                  <ThemeIcon variant="light" color="dark" radius="xl">
+                    <Github size={16} />
+                  </ThemeIcon>
+                  <Anchor
+                    href="https://github.com/yourusername"
+                    target="_blank"
+                    className="font-medium"
+                  >
+                    GitHub Profile
+                  </Anchor>
+                </Group>
+
+                <Group gap="sm" align="center">
+                  <ThemeIcon variant="light" color="blue" radius="xl">
+                    <Linkedin size={16} />
+                  </ThemeIcon>
+                  <Anchor
+                    href="https://linkedin.com/in/yourusername"
+                    target="_blank"
+                    className="font-medium"
+                  >
+                    LinkedIn Profile
+                  </Anchor>
+                </Group>
+              </Stack>
+            </Card>
+
+            <Paper
+              radius="2xl"
+              p="lg"
+              withBorder
+              className="bg-slate-50 shadow-sm dark:bg-slate-900/60"
+            >
+              <Stack gap="xs">
+                <Text fw={700}>Let’s build something great</Text>
+                <Text size="sm" c="dimmed">
+                  I’m open to freelance work, collaborations, and full-time
+                  opportunities.
+                </Text>
+              </Stack>
+            </Paper>
           </Stack>
-
-        </Group>
-      </Card>
-
-      {/* Contact Section */}
-      <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl">
-
-        {/* Contact Form */}
-        <Card shadow="md" padding="lg" radius="md" withBorder>
-
-          <Title order={3} mb="md">
-            Send a Message
-          </Title>
-
-          <form onSubmit={form.onSubmit(handleSubmit)}>
-            <Stack>
-
-              <TextInput
-                label="Your Name"
-                placeholder="John Doe"
-                required
-                {...form.getInputProps("name")}
-              />
-
-              <TextInput
-                label="Email Address"
-                placeholder="john@email.com"
-                required
-                {...form.getInputProps("email")}
-              />
-
-              <Textarea
-                label="Message"
-                placeholder="Write your message here..."
-                minRows={5}
-                required
-                {...form.getInputProps("message")}
-              />
-
-              <Button
-                type="submit"
-                leftSection={<Send size={18} />}
-                fullWidth
-              >
-                Send Message
-              </Button>
-
-            </Stack>
-          </form>
-
-        </Card>
-
-        {/* Contact Information */}
-        <Stack>
-
-          {/* Contact Details */}
-          <Card shadow="md" padding="lg" radius="md" withBorder>
-
-            <Title order={4} mb="sm">
-              Contact Information
-            </Title>
-
-            <Stack gap="sm">
-
-              <Group>
-                <Phone size={18} />
-                <Text>+254 712 345 678</Text>
-              </Group>
-
-              <Group>
-                <Mail size={18} />
-                <Text>developer@email.com</Text>
-              </Group>
-
-            </Stack>
-
-          </Card>
-
-          {/* Social Links */}
-          <Card shadow="md" padding="lg" radius="md" withBorder>
-
-            <Title order={4} mb="sm">
-              Connect with Me
-            </Title>
-
-            <Stack>
-
-              <Group>
-                <Github size={18} />
-                <Anchor
-                  href="https://github.com/yourusername"
-                  target="_blank"
-                >
-                  GitHub Profile
-                </Anchor>
-              </Group>
-
-              <Group>
-                <Linkedin size={18} />
-                <Anchor
-                  href="https://linkedin.com/in/yourusername"
-                  target="_blank"
-                >
-                  LinkedIn Profile
-                </Anchor>
-              </Group>
-
-            </Stack>
-
-          </Card>
-
-        </Stack>
-
-      </SimpleGrid>
-
+        </SimpleGrid>
+      </Stack>
     </Container>
-  );
+  )
 }

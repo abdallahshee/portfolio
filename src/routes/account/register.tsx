@@ -1,24 +1,26 @@
-import { createFileRoute, Link, useRouter, useSearch } from '@tanstack/react-router'
-import { useForm } from '@mantine/form'
+// src/routes/account/register.tsx
+import { createFileRoute, Link, useRouter, useSearch } from "@tanstack/react-router"
+import { useForm } from "@mantine/form"
 import {
-  TextInput,
-  PasswordInput,
-  Button,
-  Paper,
-  Title,
-  Divider,
-  Group,
   Anchor,
-  Stack,
-  FileInput,
   Avatar,
+  Button,
+  Divider,
+  FileInput,
+  Group,
+  Paper,
+  PasswordInput,
+  Stack,
   Text,
-} from '@mantine/core'
-import { notifications } from '@mantine/notifications'
-import { Github, Globe, ImagePlus } from 'lucide-react'
-import { authClient } from '@/lib/auth-client'
-import { uploadImage } from '@/lib/utils'
-import { useState } from 'react'
+  TextInput,
+  ThemeIcon,
+  Title,
+} from "@mantine/core"
+import { notifications } from "@mantine/notifications"
+import { Github, Globe, ImagePlus, UserPlus } from "lucide-react"
+import { authClient } from "@/lib/auth-client"
+import { uploadImage } from "@/lib/utils"
+import { useMemo, useState } from "react"
 
 interface SignUpForm {
   name: string
@@ -28,37 +30,42 @@ interface SignUpForm {
   confirmPassword: string
 }
 
-export const Route = createFileRoute('/account/register')({
+export const Route = createFileRoute("/account/register")({
   validateSearch: (search: Record<string, unknown>) => ({
-    callbackUrl: typeof search.callbackUrl === 'string' ? search.callbackUrl : '/projects',
+    callbackUrl:
+      typeof search.callbackUrl === "string" ? search.callbackUrl : "/projects",
   }),
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { callbackUrl } = useSearch({ from: '/account/register' })
+  const { callbackUrl } = Route.useSearch()
   const router = useRouter()
 
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [oauthProvider, setOauthProvider] = useState<'github' | 'google' | null>(null)
+  const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(
+    null
+  )
 
   const form = useForm<SignUpForm>({
     initialValues: {
-      name: '',
-      email: '',
+      name: "",
+      email: "",
       image: null,
-      password: '',
-      confirmPassword: '',
+      password: "",
+      confirmPassword: "",
     },
     validate: {
       name: (value) =>
-        value.trim().length < 2 ? 'Name must be at least 2 characters' : null,
+        value.trim().length < 2 ? "Name must be at least 2 characters" : null,
       email: (value) =>
-        /^\S+@\S+\.\S+$/.test(value) ? null : 'Please enter a valid email address',
+        /^\S+@\S+\.\S+$/.test(value)
+          ? null
+          : "Please enter a valid email address",
       password: (value) =>
-        value.length < 6 ? 'Password must be at least 6 characters' : null,
+        value.length < 6 ? "Password must be at least 6 characters" : null,
       confirmPassword: (value, values) =>
-        value !== values.password ? 'Passwords do not match' : null,
+        value !== values.password ? "Passwords do not match" : null,
     },
   })
 
@@ -66,13 +73,13 @@ function RouteComponent() {
     try {
       setIsSubmitting(true)
 
-      let imageUrl = ''
+      let imageUrl = ""
       if (values.image) {
         imageUrl = await uploadImage(values.image)
       }
 
       const defaultUrl =
-        'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80'
+        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
 
       const res = await authClient.signUp.email({
         name: values.name.trim(),
@@ -83,37 +90,35 @@ function RouteComponent() {
 
       if (res?.data?.user) {
         notifications.show({
-          title: 'Account created',
-          message: 'Your account has been created successfully 🎉',
-          color: 'green',
+          title: "Account created",
+          message: "Your account has been created successfully 🎉",
+          color: "green",
         })
 
         router.navigate({
-          to: '/account',
-          search: {
-            callbackUrl,
-          },
+          to: "/account",
+          search: { callbackUrl },
         })
         return
       }
 
       notifications.show({
-        title: 'Registration failed',
-        message: 'Account could not be created',
-        color: 'red',
+        title: "Registration failed",
+        message: "Account could not be created",
+        color: "red",
       })
     } catch (err: any) {
       notifications.show({
-        title: 'Registration failed',
-        message: err?.message ?? 'Something went wrong',
-        color: 'red',
+        title: "Registration failed",
+        message: err?.message ?? "Something went wrong",
+        color: "red",
       })
     } finally {
       setIsSubmitting(false)
     }
   }
 
-  const handleOAuthSignUp = async (provider: 'github' | 'google') => {
+  const handleOAuthSignUp = async (provider: "github" | "google") => {
     try {
       setOauthProvider(provider)
 
@@ -123,42 +128,48 @@ function RouteComponent() {
       })
     } catch (err: any) {
       notifications.show({
-        title: 'OAuth sign up failed',
+        title: "OAuth sign up failed",
         message: err?.message ?? `Could not continue with ${provider}`,
-        color: 'red',
+        color: "red",
       })
     } finally {
       setOauthProvider(null)
     }
   }
 
-  const previewUrl = form.values.image
-    ? URL.createObjectURL(form.values.image)
-    : null
+  const previewUrl = useMemo(() => {
+    if (!form.values.image) return null
+    return URL.createObjectURL(form.values.image)
+  }, [form.values.image])
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <Paper
-        className="w-full max-w-xl rounded-xl p-6 shadow-md"
-        radius="md"
-        withBorder
-      >
-        <Stack gap="xs" className="mb-6">
-          <Title order={2} ta="center">
+    <Paper radius="2xl" p="xl" withBorder className="w-full shadow-lg md:p-8">
+      <Stack gap="lg">
+        <div className="text-center">
+          <Group justify="center" mb="sm">
+            <ThemeIcon variant="light" color="indigo" radius="xl" size="xl">
+              <UserPlus size={20} />
+            </ThemeIcon>
+          </Group>
+
+          <Title order={2} className="text-3xl">
             Create Account
           </Title>
-          <Text ta="center" c="dimmed" size="sm">
-            Join and start exploring projects and blogs
-          </Text>
-        </Stack>
 
-        <Stack gap="sm" className="mb-5">
+          <Text c="dimmed" size="sm" mt={6}>
+            Join and start exploring projects and blogs.
+          </Text>
+        </div>
+
+        <Stack gap="sm">
           <Button
             variant="outline"
             color="dark"
             fullWidth
-            loading={oauthProvider === 'github'}
-            onClick={() => handleOAuthSignUp('github')}
+            radius="xl"
+            size="md"
+            loading={oauthProvider === "github"}
+            onClick={() => handleOAuthSignUp("github")}
           >
             <div className="flex items-center justify-center gap-2">
               <Github size={18} />
@@ -170,8 +181,10 @@ function RouteComponent() {
             variant="outline"
             color="gray"
             fullWidth
-            loading={oauthProvider === 'google'}
-            onClick={() => handleOAuthSignUp('google')}
+            radius="xl"
+            size="md"
+            loading={oauthProvider === "google"}
+            onClick={() => handleOAuthSignUp("google")}
           >
             <div className="flex items-center justify-center gap-2">
               <Globe size={18} />
@@ -180,74 +193,92 @@ function RouteComponent() {
           </Button>
         </Stack>
 
-        <Divider label="Or create account with email" labelPosition="center" my="md" />
+        <Divider label="Or create account with email" labelPosition="center" my="xs" />
 
         <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack gap="sm">
+          <Stack gap="md">
             {previewUrl && (
-              <Avatar
-                src={previewUrl}
-                alt="Profile Preview"
-                size={100}
-                radius="xl"
-                className="mx-auto"
-              />
+              <div className="flex justify-center">
+                <Avatar
+                  src={previewUrl}
+                  alt="Profile Preview"
+                  size={96}
+                  radius="xl"
+                  className="border border-slate-200 shadow-sm"
+                />
+              </div>
             )}
 
             <TextInput
               label="Full Name"
               placeholder="John Doe"
-              {...form.getInputProps('name')}
+              radius="md"
+              size="md"
+              {...form.getInputProps("name")}
               required
             />
 
             <TextInput
               label="Email"
               placeholder="you@example.com"
-              {...form.getInputProps('email')}
+              radius="md"
+              size="md"
+              {...form.getInputProps("email")}
               required
             />
 
             <FileInput
               label="Profile Image"
               placeholder="Upload profile image"
+              radius="md"
+              size="md"
               leftSection={<ImagePlus size={16} />}
               accept="image/*"
-              {...form.getInputProps('image')}
+              {...form.getInputProps("image")}
               clearable
             />
 
             <PasswordInput
               label="Password"
               placeholder="Create a password"
-              {...form.getInputProps('password')}
+              radius="md"
+              size="md"
+              {...form.getInputProps("password")}
               required
             />
 
             <PasswordInput
               label="Confirm Password"
               placeholder="Repeat password"
-              {...form.getInputProps('confirmPassword')}
+              radius="md"
+              size="md"
+              {...form.getInputProps("confirmPassword")}
               required
             />
 
-            <Button type="submit" fullWidth mt="sm" loading={isSubmitting}>
+            <Button
+              type="submit"
+              fullWidth
+              mt="sm"
+              radius="xl"
+              size="md"
+              loading={isSubmitting}
+              leftSection={<UserPlus size={18} />}
+            >
               Create Account
             </Button>
           </Stack>
         </form>
 
-        <Group justify="center" mt="md">
-          <Anchor
-            component={Link}
-            to="/account"
-            // search={{ callbackUrl }}
-            size="sm"
-          >
-            Already have an account? Sign In
+        <Divider my="xs" />
+
+        <Text ta="center" size="sm" c="dimmed">
+          Already have an account?{" "}
+          <Anchor component={Link} to="/account">
+            Sign In
           </Anchor>
-        </Group>
-      </Paper>
-    </div>
+        </Text>
+      </Stack>
+    </Paper>
   )
 }

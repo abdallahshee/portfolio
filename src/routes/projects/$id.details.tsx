@@ -21,6 +21,7 @@ import {
   Github,
   Globe,
   Lock,
+  Pencil,
   ShieldCheck,
   Star,
   WandSparkles,
@@ -79,7 +80,7 @@ const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
     if (!session.data?.user || !rating) return
 
     try {
-      const res=await rateMutation.mutateAsync({
+      await rateMutation.mutateAsync({
         projectId: project.id,
         rating,
       })
@@ -119,15 +120,30 @@ const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
               </Text>
             </Stack>
 
-            <Link to="/projects">
-              <Button
-                variant="light"
-                radius="xl"
-                leftSection={<ArrowLeft size={16} />}
-              >
-                Back to Projects
-              </Button>
-            </Link>
+            <Group gap="xs">
+  <Link to="/projects">
+    <Button
+      variant="light"
+      radius="xl"
+      leftSection={<ArrowLeft size={16} />}
+    >
+      Back to Projects
+    </Button>
+  </Link>
+
+  {session.data?.user?.role === "admin" && (
+    <Link to="/projects/$id/edit" params={{ id: project.id }}>
+      <Button
+        variant="light"
+        color="indigo"
+        radius="xl"
+        leftSection={<Pencil size={16} />}
+      >
+        Edit Project
+      </Button>
+    </Link>
+  )}
+</Group>
           </Group>
         </Paper>
 
