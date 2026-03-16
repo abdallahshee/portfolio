@@ -19,8 +19,9 @@ import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
 import { Notifications } from '@mantine/notifications'
-
-import CombinedHeader from '@/components/CombinedHeader'
+import Header from '@/components/Header';
+import HireModeBanner from '@/components/HireModeBanner';
+// import CombinedHeader from '@/components/CombinedHeader'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -64,10 +65,12 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <MantineProvider>
           <TanStackQueryProvider>
 
-            {/* <Header /> */}
+            <Header />
             <main className="pt-20">
-              {/* <HireModeBanner /> */}
-              <CombinedHeader/>
+              <div className="flex justify-center">
+                <HireModeBanner />
+              </div>
+              {/* <CombinedHeader/> */}
               <Notifications />
               {children}
             </main>

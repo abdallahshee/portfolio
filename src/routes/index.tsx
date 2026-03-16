@@ -27,6 +27,7 @@ import {
   FolderKanban,
   Globe,
   FileText,
+  Code2,
 } from 'lucide-react'
 
 export const Route = createFileRoute('/')({
@@ -112,24 +113,30 @@ function App() {
               className="w-80 h-80 lg:w-[25rem] lg:h-[25rem] object-cover rounded-3xl shadow-2xl"
             />
 
-            <Paper
-              shadow="md"
-              radius="xl"
-              withBorder
-              className="absolute -bottom-6 -left-6 px-5 py-4 hidden sm:block bg-white"
-            >
-              <Group gap="md">
-                <ThemeIcon size={44} radius="xl" variant="light" color="indigo">
-                  <FolderKanban size={20} />
-                </ThemeIcon>
-                <div>
-                  <Text fw={700}>Projects & Articles</Text>
-                  <Text size="sm" c="dimmed">
-                    Product work, writing, and engineering insights
-                  </Text>
-                </div>
-              </Group>
-            </Paper>
+         <Paper
+  shadow="md"
+  radius="xl"
+  withBorder
+  className="absolute -bottom-6 -left-6 hidden px-5 py-4 sm:block bg-white dark:bg-slate-900"
+>
+  <Group gap="md">
+    <ThemeIcon size={44} radius="xl" variant="light" color="indigo">
+      <Code2 size={20} />
+    </ThemeIcon>
+    <div>
+      <Group gap="xs" align="center">
+        <Text fw={700}>Full-Stack Developer</Text>
+        <span className="text-base">🇰🇪</span>
+      </Group>
+      <Group gap={4} align="center">
+        <span className="text-sm">⚡</span>
+        <Text size="sm" c="dimmed" className="max-w-[200px] leading-5">
+         Crafting fast, scalable, and maintainable web apps.
+        </Text>
+      </Group>
+    </div>
+  </Group>
+</Paper>
           </div>
         </div>
       </section>
