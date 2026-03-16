@@ -56,9 +56,9 @@ function App() {
       {/* HERO SECTION */}
       <section className="grid lg:grid-cols-2 gap-16 items-center">
         <div className="space-y-8">
-          <Text size="xl" fw={'bold'} variant="light" color="indigo">
+          {/* <Text size="xl" fw={'bold'} variant="light" color="indigo">
             Full-Stack Developer
-          </Text>
+          </Text> */}
 
           <div className="space-y-5">
             <Title className="text-4xl lg:text-6xl font-extrabold leading-tight tracking-tight">
@@ -129,7 +129,7 @@ function App() {
         <span className="text-base">🇰🇪</span>
       </Group>
       <Group gap={4} align="center">
-        <span className="text-sm">⚡</span>
+        {/* <span className="text-sm">⚡</span> */}
         <Text size="sm" c="dimmed" className="max-w-[200px] leading-5">
          Crafting fast, scalable, and maintainable web apps.
         </Text>

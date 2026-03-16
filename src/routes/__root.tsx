@@ -67,7 +67,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
 
             <Header />
             <main className="pt-20">
-              <div className="flex justify-center">
+              <div className="flex justify-center pt-6">
                 <HireModeBanner />
               </div>
               {/* <CombinedHeader/> */}

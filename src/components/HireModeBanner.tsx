@@ -40,7 +40,7 @@ export default function HireModeBanner() {
         <div className="hire-banner-animate flex items-center gap-4 rounded-full border-2 border-green-300 bg-green-100 px-6 py-3 shadow-lg dark:border-green-700 dark:bg-green-900">
           {/* Pulsing dot */}
         
-
+  <span className="text-xl">💡</span>
           {/* Text */}
           <Text
             size="lg"
@@ -51,7 +51,7 @@ export default function HireModeBanner() {
           </Text>
 
           {/* Second emoji */}
-          <span className="text-xl">💡</span>
+        
         </div>
       )}
 
