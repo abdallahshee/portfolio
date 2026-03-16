@@ -37,10 +37,10 @@ export default function HireModeBanner() {
   return (
     <div className="flex items-center gap-2">
       {open && (
-        <div className="hire-banner-animate flex items-center gap-4 rounded-full border-2 border-green-300 bg-green-100 px-6 py-3 shadow-lg dark:border-green-700 dark:bg-green-900">
+        <div className="hire-banner-animate flex items-center gap-4 rounded-full border-2 border-green-300 bg-green-100 px-4 py-2 shadow-lg dark:border-green-700 dark:bg-green-900">
           {/* Pulsing dot */}
-        
-  <span className="text-xl">💡</span>
+
+          <span className="text-xl">💡</span>
           {/* Text */}
           <Text
             size="lg"
@@ -51,7 +51,7 @@ export default function HireModeBanner() {
           </Text>
 
           {/* Second emoji */}
-        
+
         </div>
       )}
 
@@ -59,7 +59,7 @@ export default function HireModeBanner() {
         <button
           onClick={handleToggle}
           disabled={toggleLoading}
-          className={`flex items-center gap-2 rounded-full border px-6 py-3 text-sm font-700 shadow-sm transition disabled:opacity-50 whitespace-nowrap ${open
+          className={`flex items-center gap-2 rounded-full border px-4 py-2  text-lg font-700 shadow-sm transition disabled:opacity-50 whitespace-nowrap ${open
             ? "border-red-300 bg-red-100 text-red-800 hover:bg-red-200 dark:border-red-700 dark:bg-red-900 dark:text-red-200"
             : "border-green-300 bg-green-100 text-green-800 hover:bg-green-200 dark:border-green-700 dark:bg-green-900 dark:text-green-200"
             }`}
