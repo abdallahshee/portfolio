@@ -103,11 +103,19 @@ export const OptionalAuthMiddleware = createMiddleware().server(
     }
 )
 
-export const canEditBlogMiddleware=createMiddleware()
-.middleware([AuthMiddleware])
-.server(async({request,next,context})=>{
-    //imlement logic
+export const canEditBlogMiddleware = createMiddleware()
+  .middleware([AuthMiddleware])
+  .server(async ({ request, next, context }) => {
+
+    const url = new URL(request.url)
+
+    // For /blogs/:slug/edit
+    const match = url.pathname.match(/\/blogs\/([^/]+)\/edit/)
+    const slug = match?.[1]
+
+    console.log("SLUG IS HERE: " + slug)
+
     return next({
-        context:{...context}
+      context: { ...context }
     })
-})
+  })

@@ -3,11 +3,12 @@ import { blog } from './blog.schema';
 import { user } from './user.schema';
 import { relations, type InferInsertModel, type InferSelectModel } from 'drizzle-orm';
 import { createInsertSchema } from 'drizzle-zod';
+import { nanoid } from 'nanoid';
 
 
 
 export const comment = pgTable("comment", {
-  id: text("id").primaryKey(),
+  id: text("id").primaryKey().$default(()=>nanoid()),
 
   blogId: text("blog_id")
     .notNull()
@@ -16,11 +17,6 @@ export const comment = pgTable("comment", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-
-  // 👇 self reference for replies
-  //   parentId: text("parent_id").references(() => comment.id, {
-  //     onDelete: "cascade",
-  //   }),
 
   parentId: text("parent_id").references(
     (): AnyPgColumn => comment.id,

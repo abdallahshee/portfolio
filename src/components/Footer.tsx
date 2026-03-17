@@ -38,7 +38,8 @@ export default function Footer() {
               <div>
                 <Title order={4}>Abdallah Shee</Title>
                 <Text size="sm" c="dimmed">
-                  Full-Stack Developer
+                  Full-Stack Developer{" "}
+                    <span className="text-base">🇰🇪</span>
                 </Text>
               </div>
             </Group>

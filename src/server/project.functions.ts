@@ -158,7 +158,6 @@ export const updateProject = createServerFn({ method: "POST" })
   })
 
 
-
 export const getTopProjects = createServerFn({ method: "GET" })
   .handler(async () => {
     try {

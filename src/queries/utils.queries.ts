@@ -16,3 +16,4 @@ export const hireStatusQueryOptions = (settingId: string) => queryOptions({
   queryKey: ["settings", settingId],
   queryFn: () => getHireStatus({ data: { settingId } }),
 })
+

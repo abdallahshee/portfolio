@@ -49,7 +49,7 @@ export const createComment = createServerFn({ method: 'POST' })
             const inserted = await db
                 .insert(comment)
                 .values({
-                    id: nanoid(16),
+                    // id: nanoid(16),
                     blogId: data.blogId,
                     userId: context.user.id,
                     parentId: normalizedParentId,
