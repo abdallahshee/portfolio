@@ -268,11 +268,11 @@ function RouteComponent() {
               >
                 <Button
                   leftSection={<FolderKanban size={16} />}
-                  variant="filled"
+                  variant="gradient"
                   fullWidth
-                  color={project.isPublic ? "blue" : "green"}
+                  color="blue"
                 >
-                  {project.isPublic ? "View Source Code" : "View Live Website"}
+                  View Project Details
                 </Button>
               </Link>
             </Stack>
@@ -285,7 +285,8 @@ function RouteComponent() {
         <Group justify="center" mt="xl">
           <Pagination
             value={page}
-            color='indigo'
+            variant='gradient'
+            color='blue'
             onChange={handlePageChange}
             total={totalPages}
             radius="md"

@@ -176,7 +176,7 @@ function BlogsPage() {
           >
             <Stack gap="md">
               {/* Cover image */}
-              <div className="flex h-[200px] items-center justify-center overflow-hidden rounded-xl bg-gray-100">
+              <div className="flex h-[200px] items-center justify-center overflow-hidden rounded-sm bg-gray-100">
                 {blog.coverImage ? (
                   <Image
                     src={blog.coverImage}
@@ -185,7 +185,7 @@ function BlogsPage() {
                     className="w-full object-cover"
                   />
                 ) : (
-                  <div className="h-[200px] w-full rounded-xl bg-slate-100 dark:bg-slate-800" />
+                  <div className="h-[200px] w-full rounded-sm bg-slate-100 dark:bg-slate-800" />
                 )}
               </div>
 
@@ -260,8 +260,8 @@ function BlogsPage() {
                 fullWidth
                 mt="md"
                 radius="xl"
-                variant="light"
-                color="grape"
+                variant="gradient"
+                color="blue"
                 rightSection={<ArrowRight size={15} />}
               >
                 Read Article
@@ -277,7 +277,7 @@ function BlogsPage() {
           <Pagination
             value={pagination.page}
             total={totalPages}
-            color="grape"
+            color="green"
             onChange={(p) => navigate({ to: '/blogs', search: { page: p } })}
           />
         </Group>
