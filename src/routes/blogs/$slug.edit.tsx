@@ -25,11 +25,9 @@ import { Save, ImagePlus, FileText } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 
 import { uploadImage } from "@/lib/utils"
-import { useServerFn } from "@tanstack/react-start"
-import { createBlog } from "@/server/blog.functions"
-import { AuthMiddleware } from "@/server/middleware"
-import { getBlogBySlugForUpdateQueryOptions, getBlogBySlugQueryOptions } from "@/queries/blog.queries"
-import type { BlogRequest } from "@/db/blog.schema"
+
+import {  canEditBlogMiddleware } from "@/server/middleware"
+import { getBlogBySlugForUpdateQueryOptions } from "@/queries/blog.queries"
 import { blogUpdateMutation } from "@/queries/blog.mutations"
 
 interface BlogForm {
@@ -42,7 +40,7 @@ interface BlogForm {
 
 export const Route = createFileRoute("/blogs/$slug/edit")({
   server: {
-    middleware: [AuthMiddleware],
+    middleware: [canEditBlogMiddleware],
   },
   loader: async ({ params, context }) => {
     const data = await context.queryClient.ensureQueryData(
