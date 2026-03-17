@@ -43,6 +43,9 @@ export const Route = createFileRoute("/blogs/$slug/edit")({
   server: {
     middleware: [canEditBlogMiddleware],
   },
+//   beforeLoad:({params,context})=>{
+
+// },
   loader: async ({ params, context }) => {
     const data = await context.queryClient.ensureQueryData(
       getBlogBySlugForUpdateQueryOptions(params.slug)
@@ -308,7 +311,7 @@ function RouteComponent() {
                 loading={loading}
                 leftSection={<Save size={16} />}
               >
-                Create Blog
+                Edit Blog
               </Button>
             </Group>
           </Stack>

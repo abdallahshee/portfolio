@@ -144,37 +144,16 @@ function RouteComponent() {
       <div className="mb-12 border-b border-gray-200" />
 
       {/* Filter result count */}
-      {filter !== 'all' && (
-        <Text size="sm" c="dimmed" mb="md">
-          Showing {projects.length} {filter === 'public' ? 'open source' : 'private'}{' '}
-          {projects.length === 1 ? 'project' : 'projects'}
-        </Text>
-      )}
-
+    
       {/* Empty state */}
-      {!isLoading && projects.length === 0 && (
-        <div className="py-24 text-center">
-          <Title order={3} c="dimmed">
-            {isSearching
-              ? `No projects found for "${debouncedSearch}"`
-              : filter !== 'all'
-                ? `No ${filter === 'public' ? 'open source' : 'private'} projects found`
-                : "No projects yet"}
-          </Title>
-          {(isSearching || filter !== 'all') && (
-            <Button
-              variant="subtle"
-              mt="md"
-              onClick={() => {
-                handleSearchChange("")
-                setFilter('all')
-              }}
-            >
-              Clear filters
-            </Button>
-          )}
-        </div>
-      )}
+   {/* Filter result count — show for all filter states */}
+{!isLoading && projects.length > 0 && (
+  <Text size="sm" c="dimmed" mb="md">
+    Showing {projects.length}{' '}
+    {filter === 'public' ? 'open source' : filter === 'private' ? 'private' : ''}{' '}
+    {projects.length === 1 ? 'project' : 'projects'}
+  </Text>
+)}
 
       {/* Projects Grid */}
       <div

@@ -30,7 +30,9 @@ import { getProjectByIdQueryOptions } from "@/db/queries/project.queries"
 import { authClient } from "@/lib/auth-client"
 import { useEffect, useState } from "react"
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
-import { rateProjectMutationOptions } from "@/db/mutations/project-rating.mutations"
+import { useRateProjectMutation } from "@/db/mutations/project-rating.mutations"
+import moment from "moment"
+
 
 
 export const Route = createFileRoute("/projects/$id/details")({
@@ -47,18 +49,9 @@ function ProjectDetails() {
   const { id } = Route.useParams()
   const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
   const session = authClient.useSession()
-  const queryClient = useQueryClient()
   const [rating, setRating] = useState(0)
+  const rateMutation = useRateProjectMutation()
 
-  const rateMutation = useMutation({
-    ...rateProjectMutationOptions(),
-    onSuccess: () => {
-      if (!project) return
-      queryClient.invalidateQueries({
-        queryKey: getProjectByIdQueryOptions(project.id).queryKey,
-      })
-    },
-  })
 
   useEffect(() => {
     if (typeof project?.userRating === "number") {
@@ -81,7 +74,7 @@ function ProjectDetails() {
 
     try {
       await rateMutation.mutateAsync({
-        projectId: project.id,
+        projectId: project?.id!,
         rating,
       })
 
@@ -327,63 +320,41 @@ function ProjectDetails() {
                 <Text fw={700} size="lg">
                   Project Info
                 </Text>
-
-
-
                 <Divider />
 
+                <Group gap="xs">
+                  <CalendarDays size={16} className="text-slate-500" />
+                  <Text size="sm" c="dimmed">
+                    Created: {moment(project.createdAt).fromNow()}
+                  </Text>
+                </Group>
+
+                <Group gap="xs">
+                  <CalendarDays size={16} className="text-slate-500" />
+                  <Text size="sm" c="dimmed">
+                    Updated: {moment(project.updatedAt).fromNow()}
+                  </Text>
+                </Group>
+
+                <Stack gap={4}>
 
 
-                <Group justify="space-between" align="flex-start">
-                  <Group gap="xs">
-                    <Globe size={16} className="mt-1 text-slate-500" />
-                    <Text c="dimmed">{project.isPublic ? "Github" : "Live Project"}</Text>
-                  </Group>
-
-                  <a
+                  <Button
+                    component="a"
                     href={project.url}
                     target="_blank"
-                    rel="noopener noreferrer"
-                    className="max-w-[68%] break-all text-right text-blue-600 hover:underline"
+                    radius="md"
+                    leftSection={<Globe size={16} />}
                   >
-                    {project.url}
-                  </a>
-                </Group>
+                    {project.isPublic ? "View Source Code" : "Live URL"}
+                  </Button>
+                </Stack>
 
-                <Divider />
-
-                <Group gap="xs">
-                  <CalendarDays size={16} className="text-slate-500" />
-                  <Text size="sm" c="dimmed">
-                    Created: {new Date(project.createdAt).toLocaleDateString()}
-                  </Text>
-                </Group>
-
-                <Group gap="xs">
-                  <CalendarDays size={16} className="text-slate-500" />
-                  <Text size="sm" c="dimmed">
-                    Updated: {new Date(project.updatedAt).toLocaleDateString()}
-                  </Text>
-                </Group>
               </Stack>
             </Paper>
 
             <Group grow>
-
-              <Button
-                component="a"
-                href={project.url}
-                target="_blank"
-                radius="xl"
-                leftSection={<Globe size={16} />}
-              >
-                Live Demo
-              </Button>
-
-
-
             </Group>
-
             <Link to="/projects">
               <Button
                 fullWidth

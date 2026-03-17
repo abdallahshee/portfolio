@@ -19,7 +19,7 @@ export default function HireModeBanner() {
   const open = data?.isOpenForHire ?? false
 
   const handleToggle = async () => {
-    console.log("SETTING_ID:", SETTING_ID) // ← add this temporarily
+
     try {
       setToggleLoading(true)
       const result = await toggleHireModeStatus({ data: { settingId: SETTING_ID } })

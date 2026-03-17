@@ -66,22 +66,17 @@ function RouteComponent() {
     },
   })
 
-  const handleSubmit = async (values: ProjectRequest) => {
-    try {
-      setLoading(true)
-      await updateMutation.mutateAsync({ projectId: project?.id!, projectShema: { ...values } })
-      await queryClient.invalidateQueries({ queryKey: ["projects"] })
-      await queryClient.invalidateQueries({
-        queryKey: getProjectByIdQueryOptions(project!.id).queryKey,
-      })
-
-      router.navigate({ to: "/projects" })
-    } catch (error) {
-      console.error(error)
-    } finally {
-      setLoading(false)
-    }
+ const handleSubmit = async (values: ProjectRequest) => {
+  try {
+    setLoading(true)
+    await updateMutation.mutateAsync({ projectId: project?.id!, projectShema: { ...values } })
+    // ✅ remove the invalidateQueries call here — mutation handles it
+  } catch (error) {
+    console.error(error)
+  } finally {
+    setLoading(false)
   }
+}
 
   const addTechnology = () => {
     if (form.values.technologies.length < 4) {
@@ -185,22 +180,14 @@ function RouteComponent() {
                 </Group>
 
                 <TextInput
-                  label="Website URL"
+                  label="URL"
                   placeholder="https://myproject.com"
                   radius="md"
                   size="md"
                   leftSection={<Globe size={16} />}
-                  {...form.getInputProps("websiteUrl")}
+                  {...form.getInputProps("url")}
                 />
 
-                <TextInput
-                  label="GitHub URL"
-                  placeholder="https://github.com/username/project"
-                  radius="md"
-                  size="md"
-                  leftSection={<Github size={16} />}
-                  {...form.getInputProps("githubUrl")}
-                />
               </Stack>
             </Card>
 

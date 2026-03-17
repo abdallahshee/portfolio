@@ -16,10 +16,10 @@ export const blogUpdateMutation = () => {
             })
         },
         onSuccess: async (_, variables) => {
-            await queryClient.invalidateQueries({
-                queryKey: ["blogs", variables.slug]
+            await queryClient.refetchQueries({
+                queryKey: ["blogs", variables.slug],
             })
-            router.navigate({
+            await router.navigate({
                 to: "/blogs/$slug/details",
                 params: { slug: variables.slug }
             })
