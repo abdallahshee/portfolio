@@ -21,6 +21,7 @@ import type { QueryClient } from '@tanstack/react-query'
 import { Notifications } from '@mantine/notifications'
 import Header from '@/components/Header';
 import HireModeBanner from '@/components/HireModeBanner';
+import ScrollToTop from '@/components/ScrollTop';
 // import CombinedHeader from '@/components/CombinedHeader'
 
 interface MyRouterContext {
@@ -73,6 +74,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
               {/* <CombinedHeader/> */}
               <Notifications />
               {children}
+              <ScrollToTop/>
             </main>
 
             <Footer />
