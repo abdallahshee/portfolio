@@ -24,10 +24,14 @@ import {
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { getSessionQueryOptions } from '@/queries/utils.queries'
 import { dislikeBlog, likeBlog } from '@/server/blog-like.functions'
+import { OptionalAuthMiddleware } from '@/server/middleware'
 
 
 
 export const Route = createFileRoute('/blogs/$slug/details')({
+  server: {
+    middleware: [OptionalAuthMiddleware]
+  },
   loader: async ({ context, params }) => {
     await context.queryClient.ensureQueryData(
       getBlogBySlugQueryOptions(params.slug)

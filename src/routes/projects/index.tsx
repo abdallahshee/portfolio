@@ -286,7 +286,7 @@ function RouteComponent() {
           <Pagination
             value={page}
             variant='gradient'
-            color='blue'
+            color='green'
             onChange={handlePageChange}
             total={totalPages}
             radius="md"

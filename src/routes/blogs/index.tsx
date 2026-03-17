@@ -278,6 +278,7 @@ function BlogsPage() {
             value={pagination.page}
             total={totalPages}
             color="green"
+            variant='gradient'
             onChange={(p) => navigate({ to: '/blogs', search: { page: p } })}
           />
         </Group>
