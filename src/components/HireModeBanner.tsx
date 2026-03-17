@@ -1,9 +1,9 @@
 // components/HireModeBanner.tsx
-import { Avatar, Button, Text } from "@mantine/core"
+import { Avatar, Text } from "@mantine/core"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { toggleHireModeStatus } from "@/server/setting.functions"
-import { hireStatusQueryOptions } from "@/queries/utils.queries"
+import { hireStatusQueryOptions } from "@/db/queries/utils.queries"
 import { authClient } from "@/lib/auth-client"
 
 const SETTING_ID = import.meta.env.VITE_HIRE_MODE_ID

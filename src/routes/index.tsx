@@ -1,5 +1,5 @@
-import { getTopBlogsQueryOptions } from '@/queries/blog.queries'
-import { getTopProjectsQueryOptions } from '@/queries/project.queries'
+import { getTopBlogsQueryOptions } from '@/db/queries/blog.queries'
+import { getTopProjectsQueryOptions } from '@/db/queries/project.queries'
 import {
   Badge,
   Button,

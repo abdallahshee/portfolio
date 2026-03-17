@@ -1,10 +1,8 @@
 import { createServerFn } from '@tanstack/react-start'
 import { eq, and } from 'drizzle-orm'
-import { nanoid } from 'nanoid'
-import { blog } from '@/db/blog.schema'
-import { comment, createCommentSchema } from '@/db/comment.schema'
 import { AuthMiddleware } from './middleware'
 import { db } from '../db/index'
+import { blog, comment, createCommentSchema } from '@/db/schema'
 
 
 export const createComment = createServerFn({ method: 'POST' })

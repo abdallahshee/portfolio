@@ -18,7 +18,6 @@ import {
   ArrowLeft,
   CalendarDays,
   ExternalLink,
-  Github,
   Globe,
   Lock,
   Pencil,
@@ -27,11 +26,12 @@ import {
   WandSparkles,
 } from "lucide-react"
 import { createFileRoute, Link } from "@tanstack/react-router"
-import { getProjectByIdQueryOptions } from "@/queries/project.queries"
+import { getProjectByIdQueryOptions } from "@/db/queries/project.queries"
 import { authClient } from "@/lib/auth-client"
 import { useEffect, useState } from "react"
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
-import { rateProjectMutationOptions } from "@/queries/project-rating.queries"
+import { rateProjectMutationOptions } from "@/db/mutations/project-rating.mutations"
+
 
 export const Route = createFileRoute("/projects/$id/details")({
   loader: async ({ context, params }) => {

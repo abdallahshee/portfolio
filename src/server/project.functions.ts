@@ -1,11 +1,9 @@
 
 import { db } from "../db/index";
-import { project, ProjectSchema } from "@/db/project.schema";
-import zod from "zod"
 import { and, avg, count, desc, eq, sql, inArray, ilike, or } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
-import { projectRating } from "@/db/project-rating.schema";
 import { AdminMiddleware, OptionalAuthMiddleware } from "./middleware";
+import { project, projectRating, ProjectSchema, updateProjectSchema } from "@/db/schema";
 
 export const getAllProjects = createServerFn({ method: "GET" })
   .inputValidator((data: { page: number; pageSize: number }) => data)
@@ -139,10 +137,7 @@ export const getProjectById = createServerFn({ method: "GET" })
     }
   })
 
-export const updateProjectSchema = zod.object({
-  projectId: zod.string().nonempty(),
-  projectShema: ProjectSchema
-})
+
 
 export const updateProject = createServerFn({ method: "POST" })
   .middleware([AdminMiddleware])

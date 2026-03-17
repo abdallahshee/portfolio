@@ -1,4 +1,4 @@
-import { getProjectsQueryOptions, searchProjectsQueryOptions } from '@/queries/project.queries'
+import { getProjectsQueryOptions, searchProjectsQueryOptions } from '@/db/queries/project.queries'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import {
   Card,

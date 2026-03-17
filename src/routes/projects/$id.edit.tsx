@@ -17,7 +17,7 @@ import {
   Title,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
-import type { ProjectRequest } from "@/db/project.schema"
+
 import {
   ArrowLeft,
   FolderPen,
@@ -31,11 +31,11 @@ import {
   Wrench,
 } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
-import { useServerFn } from "@tanstack/react-start"
-import { getProjectByIdQueryOptions } from "@/queries/project.queries"
-import { updateProject } from "@/server/project.functions"
+import { getProjectByIdQueryOptions } from "@/db/queries/project.queries"
 import { AdminMiddleware } from "@/server/middleware"
 import { useState } from "react"
+import type { ProjectRequest } from "@/db/schema"
+import { useUpdateProjectMutation } from "@/db/mutations/project.mutations"
 
 export const Route = createFileRoute("/projects/$id/edit")({
   server: {
@@ -56,7 +56,8 @@ function RouteComponent() {
   const project = Route.useLoaderData()
   const router = useRouter()
   const queryClient = useQueryClient()
-  const updateProjectFn = useServerFn(updateProject)
+  const updateMutation = useUpdateProjectMutation()
+
   const [loading, setLoading] = useState(false)
 
   const form = useForm<ProjectRequest>({
@@ -68,14 +69,7 @@ function RouteComponent() {
   const handleSubmit = async (values: ProjectRequest) => {
     try {
       setLoading(true)
-
-      await updateProjectFn({
-        data: {
-          projectId: project?.id!,
-          projectShema: { ...values },
-        },
-      })
-
+      await updateMutation.mutateAsync({ projectId: project?.id!, projectShema: { ...values } })
       await queryClient.invalidateQueries({ queryKey: ["projects"] })
       await queryClient.invalidateQueries({
         queryKey: getProjectByIdQueryOptions(project!.id).queryKey,

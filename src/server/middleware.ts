@@ -2,8 +2,8 @@ import { auth } from "@/lib/auth"
 import { createMiddleware } from "@tanstack/react-start"
 import { db } from "../db/index"
 import { eq } from "drizzle-orm"
-import { blog } from "@/db/blog.schema"
 import { redirect } from "@tanstack/react-router"
+import { blog } from "@/db/schema"
 
 
 export const AuthMiddleware = createMiddleware()

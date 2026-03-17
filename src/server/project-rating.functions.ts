@@ -3,7 +3,8 @@ import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 import { AuthMiddleware } from "@/server/middleware"
 import { db } from "../db/index"
-import { projectRating } from "@/db/project-rating.schema"
+import { projectRating } from "@/db/schema"
+
 
 const RateProjectSchema = z.object({
   projectId: z.string(),

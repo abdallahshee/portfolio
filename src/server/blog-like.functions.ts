@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start"
 import { AuthMiddleware } from "./middleware"
-import { blogLike } from "@/db/blog-like.schema"
 import { db } from "../db/index"
 import { and, eq, sql } from "drizzle-orm"
+import { blogLike } from "@/db/schema"
 
 // ── helper to get fresh likes count ──────────────────────────────
 const getLikesCount = async (blogId: string) => {

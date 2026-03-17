@@ -17,7 +17,7 @@ import { Heart, MessageCircle, Search, X, ArrowRight, PenLine, BookMarked } from
 import {
   getPaginatedBlogsQueryOptions,
   searchBlogsQueryOptions,
-} from '@/queries/blog.queries'
+} from '@/db/queries/blog.queries'
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
 import { useState } from 'react'

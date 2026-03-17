@@ -1,12 +1,11 @@
-import { blog, BlogSchema, BlogUpdateSchema } from "@/db/blog.schema";
+
 import { createServerFn } from "@tanstack/react-start";
 import { db } from "../db/index";
 import { AuthMiddleware, OptionalAuthMiddleware } from "./middleware";
 import { and, desc, eq, ilike, or, sql } from "drizzle-orm";
-import { blogLike } from "@/db/blog-like.schema";
-import { comment } from "@/db/comment.schema";
-import { user } from "@/db/user.schema";
+
 import { z } from "zod"
+import { blog, blogLike, BlogSchema, BlogUpdateSchema, comment, user } from "@/db/schema";
 
 function createSlug(title: string) {
     return title

@@ -4,6 +4,7 @@ import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from 'drizzle-zod';
 import { nanoid } from "nanoid";
 import { projectRating } from "./project-rating.schema";
+import {z} from "zod"
 
 export const project = pgTable('project', {
   id: text("id").primaryKey().$default(() => nanoid(16)),
@@ -30,6 +31,8 @@ export type Project = InferSelectModel<typeof project>
 export type ProjectRequest = Omit<InferInsertModel<typeof project>, "id" | "createdAt" | "updatedAt">
 export const ProjectSchema = createInsertSchema(project).omit({ id: true, createdAt: true, updatedAt: true })
 
-
-
-
+export const updateProjectSchema = z.object({
+  projectId: z.string().nonempty(),
+  projectShema: ProjectSchema
+})
+export type UpdateProject = z.infer<typeof updateProjectSchema>

@@ -27,8 +27,9 @@ import { useEffect, useRef, useState } from "react"
 import { uploadImage } from "@/lib/utils"
 
 import {  canEditBlogMiddleware } from "@/server/middleware"
-import { getBlogBySlugForUpdateQueryOptions } from "@/queries/blog.queries"
-import { blogUpdateMutation } from "@/queries/blog.mutations"
+import { getBlogBySlugForUpdateQueryOptions } from "@/db/queries/blog.queries"
+import { blogUpdateMutation } from "@/db/mutations/blog.mutations"
+
 
 interface BlogForm {
   title: string
