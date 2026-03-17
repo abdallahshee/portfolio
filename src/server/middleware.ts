@@ -102,3 +102,12 @@ export const OptionalAuthMiddleware = createMiddleware().server(
         })
     }
 )
+
+export const canEditBlogMiddleware=createMiddleware()
+.middleware([AuthMiddleware])
+.server(async({request,next,context})=>{
+    //imlement logic
+    return next({
+        context:{...context}
+    })
+})
