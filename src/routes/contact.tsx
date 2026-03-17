@@ -44,7 +44,7 @@ function ContactPage() {
   }
 
   return (
-    <Container size="lg" className="py-8 md:py-12">
+    <Container size="xl" className="space-y-8 py-10">
       <Stack gap="xl">
         <Paper
           radius="2xl"
@@ -71,7 +71,8 @@ function ContactPage() {
               </Group>
 
               <Title order={1} className="text-3xl md:text-4xl">
-                Abdallah Shee
+                Abdallah Shee{" "}
+                <span role="img" aria-label="Kenyan flag">🇰🇪</span>
               </Title>
 
               <Text className="max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">

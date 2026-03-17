@@ -105,7 +105,7 @@ function RouteComponent() {
   const previewImage = form.values.imageUrl?.trim()
 
   return (
-    <Container size="lg" className="py-8 md:py-12">
+    <Container size="xl" className="space-y-8 py-10">
       <Stack gap="xl">
         <Paper
           radius="2xl"

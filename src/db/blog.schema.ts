@@ -39,12 +39,12 @@ export const blogRelations = relations(blog, ({ one, many }) => ({
 
 
 export type Blog = InferSelectModel<typeof blog>
-export type BlogRequest = Pick<InferInsertModel<typeof blog>, "title"|"content" | "coverImage" | "tags" >
-export const BlogSchema = createInsertSchema(blog).pick({title:true, content: true, coverImage: true, tags: true })
+export type BlogRequest = Pick<InferInsertModel<typeof blog>, "title" | "content" | "coverImage" | "tags">
+export const BlogSchema = createInsertSchema(blog).pick({ title: true, content: true, coverImage: true, tags: true })
 
-export const BlogUpdateSchema=z.object({
-  blogSchema:BlogSchema,
-  slug:z.string(),
+export const BlogUpdateSchema = z.object({
+  blogSchema: BlogSchema,
+  slug: z.string(),
 })
 
-export type BlogUpdateForm=z.infer<typeof BlogUpdateSchema>
+export type BlogUpdateForm = z.infer<typeof BlogUpdateSchema>

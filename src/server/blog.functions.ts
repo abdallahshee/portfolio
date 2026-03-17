@@ -6,7 +6,7 @@ import { and, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { blogLike } from "@/db/blog-like.schema";
 import { comment } from "@/db/comment.schema";
 import { user } from "@/db/user.schema";
-import zod, { z } from "zod"
+import { z } from "zod"
 
 function createSlug(title: string) {
     return title
@@ -80,12 +80,12 @@ export const getAllBlogs = createServerFn()
 export const getBlogBySlugdForUpdate = createServerFn()
     .middleware([AuthMiddleware])
     .inputValidator((data: { slug: string }) => data)
-    .handler(async ({ data}) => {
+    .handler(async ({ data }) => {
         try {
             // Blog
             const blogResult = await db
                 .select({
-                    id:blog.id,
+                    id: blog.id,
                     title: blog.title,
                     tags: blog.tags,
                     content: blog.content,
@@ -286,100 +286,192 @@ export const getTopBlogs = createServerFn({ method: "GET" })
     })
 
 export const updateBlog = createServerFn({ method: "POST" })
-  .inputValidator(BlogUpdateSchema)
-  .middleware([AuthMiddleware])
-  .handler(async ({ data, context }) => {
-    try {
-      const updated = await db
-        .update(blog)
-        .set({
-          title: data.blogSchema.title,
-          content: data.blogSchema.content,
-          coverImage: data.blogSchema.coverImage ?? null,
-          tags: data.blogSchema.tags,
-        })
-        .where(
-          and(
-            eq(blog.slug, data.slug),
-            eq(blog.userId, context.user?.id!)
-          )
-        )
-        .returning()
+    .inputValidator(BlogUpdateSchema)
+    .middleware([AuthMiddleware])
+    .handler(async ({ data, context }) => {
+        try {
+            const updated = await db
+                .update(blog)
+                .set({
+                    title: data.blogSchema.title,
+                    content: data.blogSchema.content,
+                    coverImage: data.blogSchema.coverImage ?? null,
+                    tags: data.blogSchema.tags,
+                })
+                .where(
+                    and(
+                        eq(blog.slug, data.slug),
+                        eq(blog.userId, context.user?.id!)
+                    )
+                )
+                .returning()
 
-      if (!updated.length) {
-        throw new Error("Blog not found or you do not have permission to edit it")
-      }
+            if (!updated.length) {
+                throw new Error("Blog not found or you do not have permission to edit it")
+            }
 
-      return updated[0]
-    } catch (err) {
-      console.error("Update blog failed:", err)
-      throw err
-    }
-  })
+            return updated[0]
+        } catch (err) {
+            console.error("Update blog failed:", err)
+            throw err
+        }
+    })
 
-  // server/blog.functions.ts
-// server/blog.functions.ts
-// server/blog.functions.ts
+
 export const searchBlogs = createServerFn({ method: "GET" })
-  .inputValidator((data: { query: string; page: number; pageSize: number }) => data)
-  .handler(async ({ data }) => {
-    const { query, page, pageSize } = data
+    .inputValidator((data: { query: string; page: number; pageSize: number }) => data)
+    .handler(async ({ data }) => {
+        const { query, page, pageSize } = data
 
-    try {
-      const offset = (page - 1) * pageSize
-      const search = `%${query}%`
+        try {
+            const offset = (page - 1) * pageSize
+            const search = `%${query}%`
 
-     const whereClause = query.trim()
-  ? or(
-      ilike(blog.title, search),
-      ilike(blog.excerpt, search),
-      // ✅ Convert array to comma-separated string then search
-      sql`array_to_string(${blog.tags}, ',') ilike ${search}`
-    )
-  : undefined
+            const whereClause = query.trim()
+                ? or(
+                    ilike(blog.title, search),
+                    ilike(blog.excerpt, search),
+                    // ✅ Convert array to comma-separated string then search
+                    sql`array_to_string(${blog.tags}, ',') ilike ${search}`
+                )
+                : undefined
 
-      const [blogRows, totalResult] = await Promise.all([
-        db
-          .select({
-            id: blog.id,
-            title: blog.title,
-            slug: blog.slug,
-            excerpt: blog.excerpt,
-            coverImage: blog.coverImage,
-            tags: blog.tags,
-            createdAt: blog.createdAt,
-            likes: sql<number>`(select count(*) from blog_like where blog_id = ${blog.id})`,
-            comments: sql<number>`(select count(*) from comment where blog_id = ${blog.id})`,
-            authorImage: user.image,
-          })
-          .from(blog)
-          .leftJoin(user, eq(blog.userId, user.id))
-          .where(whereClause)
-          .limit(pageSize)
-          .offset(offset),
+            const [blogRows, totalResult] = await Promise.all([
+                db
+                    .select({
+                        id: blog.id,
+                        title: blog.title,
+                        slug: blog.slug,
+                        excerpt: blog.excerpt,
+                        coverImage: blog.coverImage,
+                        tags: blog.tags,
+                        createdAt: blog.createdAt,
+                        likes: sql<number>`(select count(*) from blog_like where blog_id = ${blog.id})`,
+                        comments: sql<number>`(select count(*) from comment where blog_id = ${blog.id})`,
+                        authorImage: user.image,
+                    })
+                    .from(blog)
+                    .leftJoin(user, eq(blog.userId, user.id))
+                    .where(whereClause)
+                    .limit(pageSize)
+                    .offset(offset),
 
-        db
-          .select({ count: sql<number>`count(*)` })
-          .from(blog)
-          .where(whereClause),
-      ])
+                db
+                    .select({ count: sql<number>`count(*)` })
+                    .from(blog)
+                    .where(whereClause),
+            ])
 
-      const total = Number(totalResult[0].count)
+            const total = Number(totalResult[0].count)
 
-      return {
-        blogs: blogRows,
-        pagination: {
-          total,
-          page,
-          pageSize,
-          totalPages: Math.ceil(total / pageSize),
-        },
-      }
-    } catch (err) {
-      console.error("Error searching blogs:", err)
-      return {
-        blogs: [],
-        pagination: { total: 0, page: 1, pageSize, totalPages: 0 },
-      }
-    }
-  })
+            return {
+                blogs: blogRows,
+                pagination: {
+                    total,
+                    page,
+                    pageSize,
+                    totalPages: Math.ceil(total / pageSize),
+                },
+            }
+        } catch (err) {
+            console.error("Error searching blogs:", err)
+            return {
+                blogs: [],
+                pagination: { total: 0, page: 1, pageSize, totalPages: 0 },
+            }
+        }
+    })
+
+// server/blog.functions.ts
+export const getMyBlogs = createServerFn({ method: "GET" })
+    .middleware([AuthMiddleware])
+    .handler(async ({ context }) => {
+        try {
+            const userId = context.user?.id!
+
+            const blogs = await db
+                .select({
+                    id: blog.id,
+                    title: blog.title,
+                    slug: blog.slug,
+                    excerpt: blog.excerpt,
+                    coverImage: blog.coverImage,
+                    tags: blog.tags,
+                    status: blog.status,
+                    createdAt: blog.createdAt,
+                    likes: sql<number>`(select count(*) from blog_like where blog_id = ${blog.id})`,
+                    comments: sql<number>`(select count(*) from comment where blog_id = ${blog.id})`,
+                })
+                .from(blog)
+                .where(eq(blog.userId, userId))
+                .orderBy(desc(blog.createdAt))
+
+            return blogs
+        } catch (err) {
+            console.error(err)
+            return []
+        }
+    })
+
+export const getMyPaginatedBlogs = createServerFn({ method: 'GET' })
+    .inputValidator((data: { userId: string; page?: number; limit?: number }) => ({
+        userId: data.userId,
+        page: data.page && data.page > 0 ? data.page : 1,
+        limit: data.limit && data.limit > 0 ? data.limit : 6,
+    }))
+    .handler(async ({ data }) => {
+        try {
+            const { userId, page = 1, limit = 6 } = data
+            const offset = (page - 1) * limit
+
+            const [blogs, totalResult] = await Promise.all([
+                db
+                    .select({
+                        id: blog.id,
+                        title: blog.title,
+                        slug: blog.slug,
+                        status: blog.status,
+                        excerpt: blog.excerpt,
+                        coverImage: blog.coverImage,
+                        createdAt: blog.createdAt,
+                        authorImage: user.image,
+                        likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
+                        comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
+                    })
+                    .from(blog)
+                    .where(eq(blog.userId, userId))
+                    .leftJoin(user, eq(blog.userId, user.id))
+                    .leftJoin(blogLike, eq(blog.id, blogLike.blogId))
+                    .leftJoin(comment, eq(blog.id, comment.blogId))
+                    .groupBy(
+                        blog.id,
+                        blog.title,
+                        blog.slug,
+                        blog.excerpt,
+                        blog.coverImage,
+                        blog.createdAt,
+                        user.image
+                    )
+                    .orderBy(desc(blog.createdAt))
+                    .limit(limit)
+                    .offset(offset),
+
+                db
+                    .select({ count: sql<number>`COUNT(*)` })
+                    .from(blog)
+                    .where(eq(blog.userId, userId)),
+            ])
+
+            const total = Number(totalResult[0]?.count ?? 0)
+            const totalPages = Math.ceil(total / limit)
+
+            return {
+                blogs,
+                pagination: { page, limit, total, totalPages },
+            }
+        } catch (err) {
+            console.error(err)
+            throw err
+        }
+    })
+

@@ -20,8 +20,8 @@ import {
 
 export default function Footer() {
   return (
-    <footer style={{ background: "#f8fafc", marginTop: 80 }}>
-      <Container size="lg" py={50}>
+    <footer style={{ background: "#f8fafc", marginTop: 60 }}>
+      <Container size="xl" className="py-20">
 
         <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="xl">
 
@@ -123,7 +123,7 @@ export default function Footer() {
             © {new Date().getFullYear()} Abdallah Shee. All rights reserved.
           </Text>
 
-        
+
         </Group>
 
       </Container>

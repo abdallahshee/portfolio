@@ -8,11 +8,10 @@ import { projectRating } from "./project-rating.schema";
 export const project = pgTable('project', {
   id: text("id").primaryKey().$default(() => nanoid(16)),
   title: text("title").notNull(),
-  websiteUrl: text('website_url').notNull(),
   description: text("description").notNull().unique(),
   imageUrl: text("image_url"),
   isPublic: boolean('is_public').notNull(),
-  githubUrl: text('github_url').notNull(),
+  url: text('url').notNull(),
   technologies: text('technologies').array().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

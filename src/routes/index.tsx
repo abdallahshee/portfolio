@@ -52,7 +52,7 @@ function App() {
   const router = useRouter()
 
   return (
-    <Container size="xl" className="py-8 lg:py-12 space-y-20">
+    <Container size="xl" className="space-y-8 py-10">
       {/* HERO SECTION */}
       <section className="grid lg:grid-cols-2 gap-16 items-center">
         <div className="space-y-8">
@@ -95,7 +95,7 @@ function App() {
               'React',
               'TanStack Start',
               'TypeScript',
-              'PostgreSQL', 
+              'PostgreSQL',
               'Tailwind CSS',
             ].map((tech) => (
               <Badge key={tech} variant="light" color="green" radius="sm">
@@ -113,30 +113,30 @@ function App() {
               className="w-80 h-80 lg:w-[25rem] lg:h-[25rem] object-cover rounded-3xl shadow-2xl"
             />
 
-         <Paper
-  shadow="md"
-  radius="xl"
-  withBorder
-  className="absolute -bottom-6 -left-6 hidden px-5 py-4 sm:block bg-white dark:bg-slate-900"
->
-  <Group gap="md">
-    <ThemeIcon size={44} radius="xl" variant="light" color="indigo">
-      <Code2 size={20} />
-    </ThemeIcon>
-    <div>
-      <Group gap="xs" align="center">
-        <Text fw={700}>Full-Stack Developer</Text>
-        <span className="text-base">🇰🇪</span>
-      </Group>
-      <Group gap={4} align="center">
-        {/* <span className="text-sm">⚡</span> */}
-        <Text size="sm" c="dimmed" className="max-w-[200px] leading-5">
-         Crafting fast, scalable, and maintainable web apps.
-        </Text>
-      </Group>
-    </div>
-  </Group>
-</Paper>
+            <Paper
+              shadow="md"
+              radius="xl"
+              withBorder
+              className="absolute -bottom-6 -left-6 hidden px-5 py-4 sm:block bg-white dark:bg-slate-900"
+            >
+              <Group gap="md">
+                <ThemeIcon size={44} radius="xl" variant="light" color="indigo">
+                  <Code2 size={20} />
+                </ThemeIcon>
+                <div>
+                  <Group gap="xs" align="center">
+                    <Text fw={700}>Full-Stack Developer</Text>
+                    <span className="text-base">🇰🇪</span>
+                  </Group>
+                  <Group gap={4} align="center">
+                    {/* <span className="text-sm">⚡</span> */}
+                    <Text size="sm" c="dimmed" className="max-w-[200px] leading-5">
+                      Crafting fast, scalable, and maintainable web apps.
+                    </Text>
+                  </Group>
+                </div>
+              </Group>
+            </Paper>
           </div>
         </div>
       </section>
@@ -290,7 +290,7 @@ function App() {
                   </Text>
                 </div>
 
-                <Link to="/blogs" search={{page:1}}>
+                <Link to="/blogs" search={{ page: 1 }}>
                   <Button variant="subtle" rightSection={<ArrowRight size={16} />}>
                     View More Articles
                   </Button>
@@ -326,13 +326,13 @@ function App() {
                       <Table.Td>
                         <Group gap="sm" wrap="nowrap">
                           {blog.coverImage ? (
-                               <Image
-                                src={blog.coverImage}
-                                w={46}
-                                h={46}
-                                radius="md"
-                                className="object-cover"
-                              />
+                            <Image
+                              src={blog.coverImage}
+                              w={46}
+                              h={46}
+                              radius="md"
+                              className="object-cover"
+                            />
                           ) : (
                             <ThemeIcon
                               size={40}
@@ -375,18 +375,16 @@ function App() {
       {/* CONTACT */}
       <section id="contact" className="max-w-5xl mx-auto">
         <Paper
-          radius="2xl"
+          radius="xl"
           withBorder
           shadow="sm"
           className="p-8 lg:p-12 text-center bg-white"
         >
           <Stack align="center" gap="md">
-            <Badge variant="light" color="indigo" radius="sm">
-              Contact
-            </Badge>
 
-            <Title order={2} className="text-3xl font-bold">
-              Let&apos;s Build Something Great
+
+            <Title order={2} className="text-3xl font-bold text-blue-700">
+              Let's Build Something Great
             </Title>
 
             <Text c="dimmed" size="lg" className="max-w-2xl leading-8">

@@ -7,30 +7,30 @@ import { redirect } from "@tanstack/react-router"
 
 
 export const AuthMiddleware = createMiddleware()
-  .server(async ({ request, next }) => {
-    const session = await auth.api.getSession({
-      headers: request.headers,
+    .server(async ({ request, next }) => {
+        const session = await auth.api.getSession({
+            headers: request.headers,
+        })
+
+        const user = session?.user ?? null
+        const role = session?.user?.role ?? null
+
+        if (!user) {
+            const redirectTo = new URL(request.url).pathname
+            throw redirect({
+                to: "/account",
+                search: { callbackUrl: redirectTo },
+            })
+        }
+
+        return next({
+            context: {
+                user,
+                session,
+                role,
+            },
+        })
     })
-
-    const user = session?.user ?? null
-    const role = session?.user?.role ?? null
-
-    if (!user) {
-      const redirectTo = new URL(request.url).pathname
-      throw redirect({
-        to: "/account",
-        search: { callbackUrl: redirectTo },
-      })
-    }
-
-    return next({
-      context: {
-        user,
-        session,
-        role,
-      },
-    })
-  })
 
 
 export const EditBlogMiddleware = createMiddleware()

@@ -39,11 +39,11 @@ import { useMemo, useState } from "react"
 
 interface ProjectCreateForm {
   title: string
-  websiteUrl: string
+
   description: string
   imageUrl: File | null
   isPublic: boolean
-  githubUrl: string
+  url: string
   rate: number
   technologies: string[]
 }
@@ -59,8 +59,7 @@ function RouteComponent() {
   const form = useForm<ProjectCreateForm>({
     initialValues: {
       title: "",
-      websiteUrl: "",
-      githubUrl: "",
+      url: "",
       description: "",
       rate: 1,
       imageUrl: null,
@@ -120,7 +119,7 @@ function RouteComponent() {
   }
 
   return (
-    <Container size="lg" className="py-8 md:py-12">
+    <Container size="xl" className="space-y-8 py-10">
       <Stack gap="xl">
         <Paper
           radius="2xl"

@@ -13,13 +13,13 @@ import {
   Rating,
   Pagination,
   TextInput,
+  SegmentedControl,
 } from '@mantine/core'
-import { Globe, Github, ArrowRight, Search, X } from 'lucide-react'
+import { Globe, Github, Search, X, FolderKanban, ListFilter } from 'lucide-react'
 import { authClient } from '@/lib/auth-client'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
-import type { Project } from '@/db/project.schema'
 
 const PAGE_SIZE = 6
 
@@ -30,27 +30,41 @@ export const Route = createFileRoute('/projects/')({
   component: RouteComponent,
 })
 
+type FilterValue = 'all' | 'public' | 'private'
+
 function RouteComponent() {
   const { data: session } = authClient.useSession()
   const [page, setPage] = useState(1)
   const [searchInput, setSearchInput] = useState("")
+  const [filter, setFilter] = useState<FilterValue>('all')
   const [debouncedSearch] = useDebouncedValue(searchInput, 300)
 
   const isSearching = debouncedSearch.trim().length > 0
 
-  // Use search query when there's a search term, otherwise use normal paginated query
   const { data, isLoading, isPlaceholderData } = useQuery(
     isSearching
       ? searchProjectsQueryOptions(debouncedSearch, page, PAGE_SIZE)
       : getProjectsQueryOptions(page, PAGE_SIZE)
   )
 
-  const projects = data?.projects ?? []
+  const allProjects = data?.projects ?? []
   const totalPages = data?.totalPages ?? 1
+
+  // Filter client-side by isPublic
+  const projects = allProjects.filter((project) => {
+    if (filter === 'public') return project.isPublic === true
+    if (filter === 'private') return project.isPublic === false
+    return true
+  })
 
   const handleSearchChange = (value: string) => {
     setSearchInput(value)
-    setPage(1) // reset to page 1 on new search
+    setPage(1)
+  }
+
+  const handleFilterChange = (value: string) => {
+    setFilter(value as FilterValue)
+    setPage(1)
   }
 
   const handlePageChange = (newPage: number) => {
@@ -59,7 +73,7 @@ function RouteComponent() {
   }
 
   return (
-    <Container size="xl" className="py-16">
+    <Container size="xl" className="space-y-8 py-10">
 
       {/* Page Header */}
       <div className="mb-10 max-w-2xl">
@@ -74,47 +88,89 @@ function RouteComponent() {
         </Text>
       </div>
 
-      {/* Search bar */}
-      <div className="mb-8 max-w-lg">
-        <TextInput
-          placeholder="Search by title, technology, or description…"
-          size="md"
-          radius="xl"
-          leftSection={<Search size={16} />}
-          rightSection={
-            searchInput ? (
-              <button onClick={() => handleSearchChange("")}>
-                <X size={15} className="text-slate-400 hover:text-slate-600" />
-              </button>
-            ) : null
-          }
-          value={searchInput}
-          onChange={(e) => handleSearchChange(e.currentTarget.value)}
-        />
-        {isSearching && (
-          <Text size="xs" c="dimmed" mt="xs" ml="xs">
-            {isLoading
-              ? "Searching…"
-              : `${data?.total ?? 0} result${(data?.total ?? 0) !== 1 ? "s" : ""} for "${debouncedSearch}"`}
+      {/* Search + Filter row */}
+      {/* Search + Filter row */}
+      <div className="flex flex-wrap items-end gap-4">
+        <div className="flex-1" style={{ minWidth: 240, maxWidth: 420 }}>
+          <Text size="xs" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
+            Search
           </Text>
-        )}
+          <TextInput
+            placeholder="Search by title, technology, or description…"
+            size="sm"
+            radius="md"
+            leftSection={<Search size={14} />}
+            rightSection={
+              searchInput ? (
+                <button onClick={() => handleSearchChange("")}>
+                  <X size={13} className="text-slate-400 hover:text-slate-600" />
+                </button>
+              ) : null
+            }
+            value={searchInput}
+            onChange={(e) => handleSearchChange(e.currentTarget.value)}
+          />
+          {isSearching && (
+            <Text size="xs" c="dimmed" mt={4}>
+              {isLoading
+                ? "Searching…"
+                : `${data?.total ?? 0} result${(data?.total ?? 0) !== 1 ? "s" : ""} for "${debouncedSearch}"`}
+            </Text>
+          )}
+        </div>
+
+        {/* Filter */}
+        <div>
+          <Group gap="xs" mb={5} align="center">
+            <ListFilter size={12} className="text-slate-400" />
+            <Text size="xs" fw={500} c="dimmed" className="uppercase tracking-widest">
+              Filter by status
+            </Text>
+          </Group>
+          <SegmentedControl
+            value={filter}
+            onChange={handleFilterChange}
+            radius="xl"
+            size="md"
+            data={[
+              { label: 'All', value: 'all' },
+              { label: 'Open Source', value: 'public' },
+              { label: 'Private', value: 'private' },
+            ]}
+          />
+        </div>
       </div>
 
       <div className="mb-12 border-b border-gray-200" />
+
+      {/* Filter result count */}
+      {filter !== 'all' && (
+        <Text size="sm" c="dimmed" mb="md">
+          Showing {projects.length} {filter === 'public' ? 'open source' : 'private'}{' '}
+          {projects.length === 1 ? 'project' : 'projects'}
+        </Text>
+      )}
 
       {/* Empty state */}
       {!isLoading && projects.length === 0 && (
         <div className="py-24 text-center">
           <Title order={3} c="dimmed">
-            {isSearching ? `No projects found for "${debouncedSearch}"` : "No projects yet"}
+            {isSearching
+              ? `No projects found for "${debouncedSearch}"`
+              : filter !== 'all'
+                ? `No ${filter === 'public' ? 'open source' : 'private'} projects found`
+                : "No projects yet"}
           </Title>
-          {isSearching && (
+          {(isSearching || filter !== 'all') && (
             <Button
               variant="subtle"
               mt="md"
-              onClick={() => handleSearchChange("")}
+              onClick={() => {
+                handleSearchChange("")
+                setFilter('all')
+              }}
             >
-              Clear search
+              Clear filters
             </Button>
           )}
         </div>
@@ -122,9 +178,8 @@ function RouteComponent() {
 
       {/* Projects Grid */}
       <div
-        className={`grid gap-10 sm:grid-cols-2 lg:grid-cols-3 transition-opacity duration-200 ${
-          isPlaceholderData ? 'opacity-60' : 'opacity-100'
-        }`}
+        className={`grid gap-10 sm:grid-cols-2 lg:grid-cols-3 transition-opacity duration-200 ${isPlaceholderData ? 'opacity-60' : 'opacity-100'
+          }`}
       >
         {projects.map((project) => (
           <Card
@@ -133,7 +188,7 @@ function RouteComponent() {
             padding="lg"
             radius="lg"
             withBorder
-            className="flex flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+            className="flex h-full flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer"
           >
             <Stack gap="sm">
               {/* Image */}
@@ -164,27 +219,15 @@ function RouteComponent() {
                 </Text>
               </Group>
 
-              {/* Status Badge + GitHub */}
+              {/* Status Badge */}
               <Group gap="sm">
                 <Badge
-                  color={project.isPublic ? "green" : "gray"}
+                  color={project.isPublic ? "blue" : "green"}
                   variant="light"
                   className="w-fit"
                 >
                   {project.isPublic ? "Open Source" : "Private Project"}
                 </Badge>
-                {project.isPublic && project.githubUrl && (
-                  <Button
-                    component="a"
-                    href={project.githubUrl}
-                    target="_blank"
-                    variant="subtle"
-                    leftSection={<Github size={18} />}
-                    size="xs"
-                  >
-                    View Source
-                  </Button>
-                )}
               </Group>
 
               {/* Description */}
@@ -203,10 +246,9 @@ function RouteComponent() {
                       variant="light"
                       color="indigo"
                       radius="md"
-                      // Highlight matched tech when searching
                       style={
                         isSearching &&
-                        tech.toLowerCase().includes(debouncedSearch.toLowerCase())
+                          tech.toLowerCase().includes(debouncedSearch.toLowerCase())
                           ? { outline: "1.5px solid var(--mantine-color-indigo-4)" }
                           : {}
                       }
@@ -218,34 +260,32 @@ function RouteComponent() {
               </Stack>
             </Stack>
 
-            {/* Action Buttons */}
             <Stack mt="md" gap="xs">
-              <Group grow>
+              <Link
+                to="/projects/$id/details"
+                params={{ id: project.id }}
+                className="no-underline"
+              >
                 <Button
-                  component="a"
-                  href={project.websiteUrl}
-                  target="_blank"
-                  leftSection={<Globe size={16} />}
-                  variant="light"
+                  leftSection={<FolderKanban size={16} />}
+                  variant="filled"
+                  fullWidth
+                  color={project.isPublic ? "blue" : "green"}
                 >
-                  Live Demo
+                  {project.isPublic ? "View Source Code" : "View Live Website"}
                 </Button>
-                <Link to="/projects/$id/details" params={{ id: project.id }}>
-                  <Button fullWidth rightSection={<ArrowRight size={16} />}>
-                    Details
-                  </Button>
-                </Link>
-              </Group>
+              </Link>
             </Stack>
           </Card>
         ))}
       </div>
 
-      {/* Pagination */}
-      {totalPages > 1 && (
+      {/* Pagination — hide when filter is active since it's client-side */}
+      {!isSearching && filter === 'all' && totalPages > 1 && (
         <Group justify="center" mt="xl">
           <Pagination
             value={page}
+            color='indigo'
             onChange={handlePageChange}
             total={totalPages}
             radius="md"

@@ -10,10 +10,11 @@ import {
   UnstyledButton,
   Group,
   Skeleton,
+  ThemeIcon,
 } from "@mantine/core"
 import { Link, useRouter } from "@tanstack/react-router"
 import { authClient } from "@/lib/auth-client"
-import { ChevronDown, LogOut } from "lucide-react"
+import { ChevronDown, LogOut, Sun } from "lucide-react"
 
 export default function Header() {
   const [opened, setOpened] = useState(false)
@@ -65,22 +66,17 @@ export default function Header() {
 
           <Menu.Dropdown>
             <Menu.Label>Account</Menu.Label>
-            <Menu.Item
-              leftSection={
-                <Avatar
-                  src={session.data.user.image || "https://i.pravatar.cc/100"}
-                  alt={session.data.user.name}
-                  radius="xl"
-                  size="xs"
-                />
-              }
-            >
-              {session.data.user.name}
-            </Menu.Item>
             <Menu.Divider />
             <Menu.Item
-              color="red"
-              leftSection={<LogOut size={16} />}
+              leftSection={<Sun size={18} className="text-indigo-500" />}
+            >
+              Dark Mode
+            </Menu.Item>
+
+            <Menu.Divider />
+            <Menu.Item
+
+              leftSection={<LogOut size={18} className="text-indigo-500" />}
               onClick={handleLogout}
             >
               Logout

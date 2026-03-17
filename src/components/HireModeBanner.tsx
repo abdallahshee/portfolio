@@ -1,5 +1,5 @@
 // components/HireModeBanner.tsx
-import { Button, Text } from "@mantine/core"
+import { Avatar, Button, Text } from "@mantine/core"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useState } from "react"
 import { toggleHireModeStatus } from "@/server/setting.functions"
@@ -39,17 +39,22 @@ export default function HireModeBanner() {
       {open && (
         <div className="hire-banner-animate flex items-center gap-4 rounded-full border-2 border-green-300 bg-green-100 px-4 py-2 shadow-lg dark:border-green-700 dark:bg-green-900">
           {/* Pulsing dot */}
+          <Avatar
+            src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
+            size={40}
+            radius="xl"
+          />
 
-          <span className="text-xl">💡</span>
           {/* Text */}
           <Text
             size="lg"
             fw={800}
             className=" whitespace-nowrap text-green-800 dark:text-green-200"
           >
+
             Open to Freelance Work
           </Text>
-
+          <span className="text-xl">💡</span>
           {/* Second emoji */}
 
         </div>

@@ -2,10 +2,10 @@
 import { db } from "../db/index";
 import { project, ProjectSchema } from "@/db/project.schema";
 import zod from "zod"
-import { and, avg, count, desc, eq, sql,inArray, ilike, or } from "drizzle-orm";
+import { and, avg, count, desc, eq, sql, inArray, ilike, or } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { projectRating } from "@/db/project-rating.schema";
-import { AdminMiddleware, AuthMiddleware, OptionalAuthMiddleware } from "./middleware";
+import { AdminMiddleware, OptionalAuthMiddleware } from "./middleware";
 
 export const getAllProjects = createServerFn({ method: "GET" })
   .inputValidator((data: { page: number; pageSize: number }) => data)
@@ -24,14 +24,14 @@ export const getAllProjects = createServerFn({ method: "GET" })
 
       const ratingsResult = projectIds.length
         ? await db
-            .select({
-              projectId: projectRating.projectId,
-              averageRating: avg(projectRating.rating),
-              totalRatings: count(projectRating.id),
-            })
-            .from(projectRating)
-            .where(inArray(projectRating.projectId, projectIds))
-            .groupBy(projectRating.projectId)
+          .select({
+            projectId: projectRating.projectId,
+            averageRating: avg(projectRating.rating),
+            totalRatings: count(projectRating.id),
+          })
+          .from(projectRating)
+          .where(inArray(projectRating.projectId, projectIds))
+          .groupBy(projectRating.projectId)
         : []
 
       // Map ratings by projectId for O(1) lookup
@@ -106,16 +106,16 @@ export const getProjectById = createServerFn({ method: "GET" })
 
         userId
           ? db
-              .select({
-                rating: projectRating.rating,
-              })
-              .from(projectRating)
-              .where(
-                and(
-                  eq(projectRating.projectId, data.projectId),
-                  eq(projectRating.userId, userId)
-                )
+            .select({
+              rating: projectRating.rating,
+            })
+            .from(projectRating)
+            .where(
+              and(
+                eq(projectRating.projectId, data.projectId),
+                eq(projectRating.userId, userId)
               )
+            )
           : Promise.resolve([]),
       ])
 
@@ -167,8 +167,8 @@ export const getTopProjects = createServerFn({ method: "GET" })
           id: project.id,
           title: project.title,
           imageUrl: project.imageUrl,
-          websiteUrl: project.websiteUrl,
-          githubUrl: project.githubUrl,
+          isPublic: project.isPublic,
+          url: project.url,
           avgRating: avg(projectRating.rating), // calculate average rating
         })
         .from(project)
@@ -185,7 +185,7 @@ export const getTopProjects = createServerFn({ method: "GET" })
   });
 
 
-  // server/project.functions.ts
+// server/project.functions.ts
 export const searchProjects = createServerFn({ method: "GET" })
   .inputValidator((data: { query: string; page: number; pageSize: number }) => data)
   .handler(async ({ data }) => {
@@ -196,10 +196,10 @@ export const searchProjects = createServerFn({ method: "GET" })
 
       const whereClause = query.trim()
         ? or(
-            ilike(project.title, search),
-            ilike(project.description, search),
-            sql`${project.technologies}::text ilike ${search}`
-          )
+          ilike(project.title, search),
+          ilike(project.description, search),
+          sql`${project.technologies}::text ilike ${search}`
+        )
         : undefined
 
       const [projectRows, totalResult] = await Promise.all([
@@ -211,14 +211,14 @@ export const searchProjects = createServerFn({ method: "GET" })
 
       const ratingsResult = projectIds.length
         ? await db
-            .select({
-              projectId: projectRating.projectId,
-              averageRating: avg(projectRating.rating),
-              totalRatings: count(projectRating.id),
-            })
-            .from(projectRating)
-            .where(inArray(projectRating.projectId, projectIds))
-            .groupBy(projectRating.projectId)
+          .select({
+            projectId: projectRating.projectId,
+            averageRating: avg(projectRating.rating),
+            totalRatings: count(projectRating.id),
+          })
+          .from(projectRating)
+          .where(inArray(projectRating.projectId, projectIds))
+          .groupBy(projectRating.projectId)
         : []
 
       const ratingsMap = new Map(

@@ -22,7 +22,7 @@ export const toggleHireModeStatus = createServerFn({ method: "POST" })
     return { isOpenForHire: next, settingId: data.settingId }
   })
 
-  export const getHireStatus = createServerFn({ method: "GET" })
+export const getHireStatus = createServerFn({ method: "GET" })
   .inputValidator((data: { settingId: string }) => data)
   .handler(async ({ data }) => {
     const current = await db.query.setting.findFirst({

@@ -7,7 +7,7 @@ export const Route = createFileRoute('/projects')({
 function RouteComponent() {
   return (
     <div className="">
-     
+
       <Outlet /> {/* Renders nested child routes */}
     </div>
   )

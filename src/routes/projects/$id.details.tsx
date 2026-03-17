@@ -45,7 +45,7 @@ export const Route = createFileRoute("/projects/$id/details")({
 
 function ProjectDetails() {
   const { id } = Route.useParams()
-const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
+  const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
   const session = authClient.useSession()
   const queryClient = useQueryClient()
   const [rating, setRating] = useState(0)
@@ -84,14 +84,14 @@ const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
         projectId: project.id,
         rating,
       })
-      
+
     } catch (error) {
       console.error(error)
     }
   }
 
   return (
-    <Container size="xl" className="py-8 md:py-12">
+    <Container size="xl" className="space-y-8 py-10">
       <Stack gap="xl">
         <Paper
           radius="2xl"
@@ -121,29 +121,29 @@ const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
             </Stack>
 
             <Group gap="xs">
-  <Link to="/projects">
-    <Button
-      variant="light"
-      radius="xl"
-      leftSection={<ArrowLeft size={16} />}
-    >
-      Back to Projects
-    </Button>
-  </Link>
+              <Link to="/projects">
+                <Button
+                  variant="light"
+                  radius="xl"
+                  leftSection={<ArrowLeft size={16} />}
+                >
+                  Back to Projects
+                </Button>
+              </Link>
 
-  {session.data?.user?.role === "admin" && (
-    <Link to="/projects/$id/edit" params={{ id: project.id }}>
-      <Button
-        variant="light"
-        color="indigo"
-        radius="xl"
-        leftSection={<Pencil size={16} />}
-      >
-        Edit Project
-      </Button>
-    </Link>
-  )}
-</Group>
+              {session.data?.user?.role === "admin" && (
+                <Link to="/projects/$id/edit" params={{ id: project.id }}>
+                  <Button
+                    variant="light"
+                    color="indigo"
+                    radius="xl"
+                    leftSection={<Pencil size={16} />}
+                  >
+                    Edit Project
+                  </Button>
+                </Link>
+              )}
+            </Group>
           </Group>
         </Paper>
 
@@ -328,48 +328,25 @@ const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
                   Project Info
                 </Text>
 
-                <Group justify="space-between" align="center">
-                  <Text c="dimmed">Visibility</Text>
-                  <Badge
-                    color={project.isPublic ? "green" : "gray"}
-                    variant="light"
-                    radius="xl"
-                  >
-                    {project.isPublic ? "Public" : "Private"}
-                  </Badge>
-                </Group>
+
 
                 <Divider />
 
-                <Group justify="space-between" align="flex-start">
-                  <Group gap="xs">
-                    <Github size={16} className="mt-1 text-slate-500" />
-                    <Text c="dimmed">GitHub</Text>
-                  </Group>
 
-                  <a
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="max-w-[68%] break-all text-right text-blue-600 hover:underline"
-                  >
-                    {project.githubUrl}
-                  </a>
-                </Group>
 
                 <Group justify="space-between" align="flex-start">
                   <Group gap="xs">
                     <Globe size={16} className="mt-1 text-slate-500" />
-                    <Text c="dimmed">Website</Text>
+                    <Text c="dimmed">{project.isPublic ? "Github" : "Live Project"}</Text>
                   </Group>
 
                   <a
-                    href={project.websiteUrl}
+                    href={project.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="max-w-[68%] break-all text-right text-blue-600 hover:underline"
                   >
-                    {project.websiteUrl}
+                    {project.url}
                   </a>
                 </Group>
 
@@ -392,30 +369,19 @@ const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
             </Paper>
 
             <Group grow>
-              {project.websiteUrl && (
-                <Button
-                  component="a"
-                  href={project.websiteUrl}
-                  target="_blank"
-                  radius="xl"
-                  leftSection={<Globe size={16} />}
-                >
-                  Live Demo
-                </Button>
-              )}
 
-              {project.githubUrl && (
-                <Button
-                  component="a"
-                  href={project.githubUrl}
-                  target="_blank"
-                  radius="xl"
-                  variant="light"
-                  leftSection={<Github size={16} />}
-                >
-                  GitHub
-                </Button>
-              )}
+              <Button
+                component="a"
+                href={project.url}
+                target="_blank"
+                radius="xl"
+                leftSection={<Globe size={16} />}
+              >
+                Live Demo
+              </Button>
+
+
+
             </Group>
 
             <Link to="/projects">
