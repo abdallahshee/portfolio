@@ -24,27 +24,27 @@ function createExcerpt(content: string, maxLength = 160) {
 }
 
 export const createBlog = createServerFn({ method: "POST" })
-    .inputValidator(BlogSchema)
-    .middleware([AuthMiddleware])
-    .handler(async ({ data, context }) => {
-        try {
-            const slug = createSlug(data.title)
-            const excerpt = createExcerpt(data.content)
-            console.log("User in context " + context.user)
-            const newData = {
-                ...data,
-                slug,
-                excerpt,
-                userId: context.user?.id!,
-            }
+  .inputValidator(BlogSchema)
+  .middleware([AuthMiddleware])
+  .handler(async ({ data, context }) => {
+    try {
+      const slug = createSlug(data.title)
+      const excerpt = createExcerpt(data.content)
 
-            const result = await db.insert(blog).values(newData).returning()
-            return result
-        } catch (err) {
-            console.error("Create blog failed:", err)
-            throw err
-        }
-    })
+      const newData = {
+        ...data,
+        slug,
+        excerpt,
+        userId: context.user?.id!,
+      }
+
+      const result = await db.insert(blog).values(newData).returning()
+      return result[0] // ✅ single object instead of array
+    } catch (err) {
+      console.error("Create blog failed:", err)
+      throw err
+    }
+  })
 
 export const getAllBlogs = createServerFn()
     .handler(async () => {

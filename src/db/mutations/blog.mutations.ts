@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { updateBlog } from '@/server/blog.functions'
+import { createBlog, updateBlog } from '@/server/blog.functions'
 import { useRouter } from '@tanstack/react-router'
-import type { BlogUpdateForm } from '@/db/schema'
+import type { BlogRequest, BlogUpdateForm } from '@/db/schema'
 
 
 
-export const blogUpdateMutation = () => {
+export const blogUpdateMutationOption = () => {
     const queryClient = useQueryClient()
     const router = useRouter()
 
@@ -25,4 +25,42 @@ export const blogUpdateMutation = () => {
             })
         }
     })
+}
+
+// export const blogCreateMutationOption=()=>{
+//         const queryClient = useQueryClient()
+//     const router = useRouter()
+//     return useMutation({
+//         mutationFn:async(form:BlogRequest)=>createBlog({data:form}),
+//         onSuccess:async(data)=>{
+//              router.navigate({
+//         to: "/blogs/$slug/details",
+//         params:{slug:data.}
+//         // search: {
+//         //   callbackUrl: "/projects",
+//         // },
+//       })
+//         }
+//     },
+
+// )
+// }
+
+
+export const useBlogCreateMutation = () => {
+  const queryClient = useQueryClient()
+  const router = useRouter()
+
+  return useMutation({
+    mutationFn: async (form: BlogRequest) =>
+      createBlog({ data: form }),
+    onSuccess: async (data) => {
+      await queryClient.invalidateQueries({ queryKey: ["blogs"] })
+      await router.navigate({
+        to: "/blogs/$slug/details",
+        params: { slug: data.slug }, 
+      })
+    },
+
+  })
 }

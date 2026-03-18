@@ -617,4 +617,3 @@ function RouteComponent() {
   )
 }
 
-export default RouteComponent

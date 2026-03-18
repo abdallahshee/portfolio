@@ -90,7 +90,7 @@ function App() {
             </Button>
           </Group>
 
-          <Group gap="xs">
+          {/* <Group gap="xs">
             {[
               'React',
               'TanStack Start',
@@ -102,7 +102,7 @@ function App() {
                 {tech}
               </Badge>
             ))}
-          </Group>
+          </Group> */}
         </div>
 
         <div className="flex justify-center lg:justify-end">

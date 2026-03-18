@@ -6,7 +6,7 @@ import { toggleHireModeStatus } from "@/server/setting.functions"
 import { hireStatusQueryOptions } from "@/db/queries/utils.queries"
 import { authClient } from "@/lib/auth-client"
 
-const SETTING_ID = import.meta.env.VITE_HIRE_MODE_ID
+const SETTING_ID = import.meta.env.VITE_HIRE_MODE_ID!
 
 export default function HireModeBanner() {
   const session = authClient.useSession()

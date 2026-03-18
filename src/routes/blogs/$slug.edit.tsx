@@ -28,7 +28,7 @@ import { uploadImage } from "@/lib/utils"
 
 import {  canEditBlogMiddleware } from "@/server/middleware"
 import { getBlogBySlugForUpdateQueryOptions } from "@/db/queries/blog.queries"
-import { blogUpdateMutation } from "@/db/mutations/blog.mutations"
+import { blogUpdateMutationOption } from "@/db/mutations/blog.mutations"
 
 
 interface BlogForm {
@@ -121,7 +121,7 @@ function RouteComponent() {
     }
   }, [editor])
 
-  const updateMutation = blogUpdateMutation()
+  const updateMutation = blogUpdateMutationOption()
 
   const handleSubmit = async (values: BlogForm) => {
     try {

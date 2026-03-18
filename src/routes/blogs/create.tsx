@@ -28,6 +28,7 @@ import { uploadImage } from "@/lib/utils"
 import { useServerFn } from "@tanstack/react-start"
 import { createBlog } from "@/server/blog.functions"
 import { AuthMiddleware } from "@/server/middleware"
+import { useBlogCreateMutation } from "@/db/mutations/blog.mutations"
 
 interface BlogForm {
   title: string
@@ -49,9 +50,9 @@ const turndownService = new TurndownService()
 function RouteComponent() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const blogCreate = useServerFn(createBlog)
+ 
   const [tagInput, setTagInput] = useState("")
-
+  const createBlogMutation=useBlogCreateMutation()
   const form = useForm<BlogForm>({
     initialValues: {
       title: "",
@@ -123,22 +124,15 @@ function RouteComponent() {
       const { coverImage, content, ...rest } = values
 
       const markdownContent = turndownService.turndown(content)
-      console.log("Data is here " + JSON.stringify({ ...rest, defaultUrl, markdownContent }))
-      const res = await blogCreate({
-        data: {
+      // console.log("Data is here " + JSON.stringify({ ...rest, defaultUrl, markdownContent }))
+      const inputValues={
           title: rest.title,
           tags: rest.tags,
           content: markdownContent,
           coverImage: defaultUrl,
-        },
-      })
-      console.log("Create Blog Response " + res)
-      router.navigate({
-        to: "/account",
-        search: {
-          callbackUrl: "/projects",
-        },
-      })
+      }
+      await createBlogMutation.mutateAsync(inputValues)
+   
     } catch (err) {
       console.error(err)
     } finally {
