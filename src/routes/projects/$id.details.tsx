@@ -255,42 +255,67 @@ function ProjectDetails() {
                   <Stack gap="sm">
                     <Group justify="space-between" align="center">
                       <Text fw={700}>
-                        {hasRated ? "Update your rating" : "Rate this project"}
+                        {hasRated ? "Your Rating" : "Rate this project"}
                       </Text>
-
                       {hasRated && (
                         <Badge radius="xl" color="green" variant="light">
-                          Your rating: {project.userRating}/10
+                          {project.userRating}/10
                         </Badge>
                       )}
                     </Group>
 
-                    <Text size="sm" c="dimmed">
-                      Give a score from 1 to 10.
-                    </Text>
+                    {hasRated ? (
+                      // ── Already rated ──
+                      <div className="rounded-2xl bg-green-50 p-4 dark:bg-green-950/40 border border-green-200 dark:border-green-800">
+                        <Group gap="sm" align="center">
+                          <Star size={16} className="text-green-600 dark:text-green-400" />
+                          <div>
+                            <Text fw={600} size="sm" c="green">
+                              You rated this project {project.userRating}/10
+                            </Text>
+                            <Text size="xs" c="dimmed">
+                              Thank you for your feedback!
+                            </Text>
+                          </div>
+                        </Group>
+                        <Rating
+                          value={project.userRating ?? 0}
+                          readOnly
+                          count={10}
+                          mt="sm"
+                        />
+                      </div>
+                    ) : (
+                      // ── Not yet rated ──
+                      <Stack gap="sm">
+                        <Text size="sm" c="dimmed">
+                          You haven't rated this project yet. Give it a score from 1 to 10.
+                        </Text>
 
-                    <div className="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
-                      <Rating
-                        count={10}
-                        value={rating}
-                        onChange={setRating}
-                        size="lg"
-                      />
-                    </div>
+                        <div className="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
+                          <Rating
+                            count={10}
+                            value={rating}
+                            onChange={setRating}
+                            size="lg"
+                          />
+                        </div>
 
-                    <Text size="sm" c="dimmed">
-                      Selected rating: {rating || 0}/10
-                    </Text>
+                        <Text size="sm" c="dimmed">
+                          {rating ? `Selected rating: ${rating}/10` : "Tap a star to select your rating"}
+                        </Text>
 
-                    <Button
-                      radius="xl"
-                      onClick={handleSubmitRating}
-                      loading={rateMutation.isPending}
-                      disabled={!rating}
-                      leftSection={<Star size={16} />}
-                    >
-                      {hasRated ? "Update Rating" : "Submit Rating"}
-                    </Button>
+                        <Button
+                          radius="xl"
+                          onClick={handleSubmitRating}
+                          loading={rateMutation.isPending}
+                          disabled={!rating}
+                          leftSection={<Star size={16} />}
+                        >
+                          Submit Rating
+                        </Button>
+                      </Stack>
+                    )}
                   </Stack>
                 ) : (
                   <Paper
@@ -302,7 +327,6 @@ function ProjectDetails() {
                       <ThemeIcon variant="light" color="gray" radius="xl">
                         <Lock size={16} />
                       </ThemeIcon>
-
                       <div>
                         <Text fw={700}>Login required</Text>
                         <Text size="sm" c="dimmed">

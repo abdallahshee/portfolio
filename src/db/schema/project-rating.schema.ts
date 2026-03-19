@@ -1,8 +1,10 @@
-import { pgTable, text, integer, timestamp, unique } from "drizzle-orm/pg-core"
+import { pgTable, text, smallint, timestamp, unique } from "drizzle-orm/pg-core"
 import { nanoid } from "nanoid"
 import { project } from "./project.schema"
 import { user } from "./user.schema"
 import { relations } from "drizzle-orm"
+
+
 
 export const projectRating = pgTable(
   "project_rating",
@@ -17,7 +19,7 @@ export const projectRating = pgTable(
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
 
-    rating: integer("rating").notNull(), // rating from 1 to 10
+    rating: smallint("rating").notNull(),
 
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
@@ -25,15 +27,12 @@ export const projectRating = pgTable(
       .$onUpdate(() => new Date())
       .notNull(),
   },
-  (table) => ({
-    userProjectUnique: unique("project_rating_user_project_unique").on(
-      table.projectId,
-      table.userId
-    ),
-  })
+  // ✅ New signature — callback instead of plain object
+  (table) => [
+    unique("project_rating_user_project_unique").on(table.projectId, table.userId),
+  ]
 )
 
-// Define relations for projectRating
 export const projectRatingRelations = relations(projectRating, ({ one }) => ({
   project: one(project, {
     fields: [projectRating.projectId],

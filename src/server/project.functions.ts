@@ -144,11 +144,39 @@ export const updateProject = createServerFn({ method: "POST" })
   .inputValidator(updateProjectSchema)
   .handler(async ({ data }) => {
     try {
-      await db.update(project)
+      await db
+        .update(project)
         .set({ ...data.projectShema })
-        .where(eq(project.id, data.projectId));
+        .where(eq(project.id, data.projectId))
+
+      // Fetch and return the updated project in the same shape as getProjectById
+      const [projectResult, ratingResult] = await Promise.all([
+        db.select().from(project).where(eq(project.id, data.projectId)),
+        db
+          .select({
+            averageRating: avg(projectRating.rating),
+            totalRatings: count(projectRating.id),
+          })
+          .from(projectRating)
+          .where(eq(projectRating.projectId, data.projectId)),
+      ])
+
+      const theProject = projectResult[0]
+      const rating = ratingResult[0]
+
+      if (!theProject) return null
+
+      return {
+        ...theProject,
+        averageRating: rating?.averageRating
+          ? Number(Number(rating.averageRating).toFixed(1))
+          : 0,
+        totalRatings: rating?.totalRatings ?? 0,
+        userRating: null, // admin context has no user rating
+      }
     } catch (err) {
-      console.log(err)
+      console.error(err)
+      return null
     }
   })
 

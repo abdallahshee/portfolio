@@ -15,8 +15,8 @@ export const useUpdateProjectMutation = () => {
 
   return useMutation({
     mutationFn: (project: UpdateProject) => updateProject({ data: project }),
-    onSuccess: async (_, variables) => {
-      // ✅ Wait for fresh data before navigating
+    onSuccess: async (data, variables) => {
+      // ✅ Wait for fresh data then navigate
       await queryClient.refetchQueries({
         queryKey: getProjectByIdQueryOptions(variables.projectId).queryKey,
       })
@@ -26,7 +26,6 @@ export const useUpdateProjectMutation = () => {
         params: { id: variables.projectId },
       })
 
-      // ✅ Scroll to top after navigation
       window.scrollTo({ top: 0, behavior: 'smooth' })
     },
   })

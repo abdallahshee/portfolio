@@ -123,41 +123,38 @@ function RouteComponent() {
 
   const updateMutation = blogUpdateMutationOption()
 
-  const handleSubmit = async (values: BlogForm) => {
-    try {
-      setLoading(true)
+const handleSubmit = async (values: BlogForm) => {
+  try {
+    setLoading(true)
 
-      let imageUrl = ""
-      if (values.coverImage) {
-        imageUrl = await uploadImage(values.coverImage)
-      }
-
-      const defaultUrl =
-        "https://images.pexels.com/photos/265667/pexels-photo-265667.jpeg"
-
-      const { coverImage, content, ...rest } = values
-      // const markdownContent = turndownService.turndown(content)
-      const markdownContent = turndownService.current.turndown(content)
-      await updateMutation.mutateAsync({
-        blogSchema: {
-          title: rest.title,
-          tags: rest.tags,
-          content: markdownContent,
-          coverImage: imageUrl || defaultUrl,
-        },
-        slug: slug,
-      })
-
-      router.navigate({
-        to: "/blogs/$slug/details",
-        params: { slug: slug }
-      })
-    } catch (err) {
-      console.error(err)
-    } finally {
-      setLoading(false)
+    let imageUrl = ""
+    if (values.coverImage) {
+      imageUrl = await uploadImage(values.coverImage)
     }
+
+    const defaultUrl =
+      "https://images.pexels.com/photos/265667/pexels-photo-265667.jpeg"
+
+    const { coverImage, content, ...rest } = values
+    const markdownContent = turndownService.current.turndown(content)
+
+    await updateMutation.mutateAsync({
+      blogSchema: {
+        title: rest.title,
+        tags: rest.tags,
+        content: markdownContent,
+        coverImage: imageUrl || blog?.coverImage || defaultUrl,
+      },
+      slug: slug,
+    })
+    // ✅ Remove router.navigate here — mutation onSuccess handles it
+
+  } catch (err) {
+    console.error(err)
+  } finally {
+    setLoading(false)
   }
+}
   const previewUrl = form.values.coverImage
     ? URL.createObjectURL(form.values.coverImage)
     : blog?.coverImage || null

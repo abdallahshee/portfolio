@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createBlog, updateBlog } from '@/server/blog.functions'
+import { createBlog, getBlogBySlug, updateBlog } from '@/server/blog.functions'
 import { useRouter } from '@tanstack/react-router'
 import type { BlogRequest, BlogUpdateForm } from '@/db/schema'
+import { getAllBlogsQueryOptions, getBlogBySlugQueryOptions } from '../queries/blog.queries'
 
 
 
@@ -27,40 +28,30 @@ export const blogUpdateMutationOption = () => {
     })
 }
 
-// export const blogCreateMutationOption=()=>{
-//         const queryClient = useQueryClient()
-//     const router = useRouter()
-//     return useMutation({
-//         mutationFn:async(form:BlogRequest)=>createBlog({data:form}),
-//         onSuccess:async(data)=>{
-//              router.navigate({
-//         to: "/blogs/$slug/details",
-//         params:{slug:data.}
-//         // search: {
-//         //   callbackUrl: "/projects",
-//         // },
-//       })
-//         }
-//     },
-
-// )
-// }
 
 
 export const useBlogCreateMutation = () => {
-  const queryClient = useQueryClient()
-  const router = useRouter()
+    const queryClient = useQueryClient()
+    const router = useRouter()
 
-  return useMutation({
-    mutationFn: async (form: BlogRequest) =>
-      createBlog({ data: form }),
-    onSuccess: async (data) => {
-      await queryClient.invalidateQueries({ queryKey: ["blogs"] })
-      await router.navigate({
-        to: "/blogs/$slug/details",
-        params: { slug: data.slug }, 
-      })
-    },
-
-  })
+    return useMutation({
+        mutationFn: async (form: BlogRequest) =>
+            createBlog({ data: form }),
+        onSuccess: async (data) => {
+            queryClient.setQueryData(getBlogBySlugQueryOptions(data.slug).queryKey, {
+                ...data,
+                likes: 0,
+                likedByUser: false,
+                comments: [],
+                authorId: data.userId,
+                authorName: null,
+                authorImage: null,
+            })
+            await queryClient.invalidateQueries({ queryKey: getAllBlogsQueryOptions().queryKey })
+            await router.navigate({
+                to: "/blogs/$slug/details",
+                params: { slug: data.slug },
+            })
+        },
+    })
 }
