@@ -247,7 +247,7 @@ function RouteComponent() {
 
         <Divider my="xs" />
 
-        <Text ta="center" size="sm" c="dimmed">
+        <Text ta="center" size="md" c="dimmed">
           Already have an account?{" "}
           <Anchor component={Link} to="/account">
             Sign In

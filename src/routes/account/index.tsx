@@ -169,7 +169,7 @@ function RouteComponent() {
                 />
                 <Link
                   to="/account/forgot-password"
-                  className="text-xs text-indigo-600 hover:underline dark:text-indigo-400"
+                  className="text-sm text-indigo-600 hover:underline dark:text-indigo-400"
                 >
                   Forgot password?
                 </Link>
@@ -195,7 +195,7 @@ function RouteComponent() {
 
         <Divider my="xs" />
 
-        <Text ta="center" size="sm" c="dimmed">
+        <Text ta="center" size="md" c="dimmed">
           Don't have an account?{" "}
           <Link
             to="/account/register"

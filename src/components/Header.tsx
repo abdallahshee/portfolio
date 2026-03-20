@@ -47,7 +47,7 @@ export default function Header() {
   return (
     <header className="fixed left-0 top-0 z-50 w-full bg-white shadow-md dark:bg-slate-900">
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        <div className="cursor-pointer text-2xl font-bold text-indigo-600">
+        <div className="cursor-pointer text-md font-bold text-indigo-600">
           Abdallah Shee
         </div>
 
