@@ -15,7 +15,7 @@ import {
   TextInput,
   SegmentedControl,
 } from '@mantine/core'
-import { Globe, Github, Search, X, FolderKanban, ListFilter } from 'lucide-react'
+import {  Search, X, FolderKanban, ListFilter } from 'lucide-react'
 import { authClient } from '@/lib/auth-client'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'

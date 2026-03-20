@@ -9,20 +9,24 @@ import {
   Image,
   Pagination,
   Stack,
+  Box,
   Text,
   TextInput,
   Title,
   SegmentedControl,
 } from '@mantine/core'
-import { Heart, MessageCircle, Search, X, ArrowRight, PenLine, Pencil, SlidersHorizontal } from 'lucide-react'
+
 import {
   getMyPaginatedBlogsQueryOptions,
   searchBlogsQueryOptions,
 } from '@/db/queries/blog.queries'
+import { BookMarked, Heart, MessageCircle, Search, X, ArrowRight, PenLine, Pencil, SlidersHorizontal } from "lucide-react"
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
 import { useState } from 'react'
 import { authClient } from '@/lib/auth-client'
+import classes from "../../css/article.module.css"
+import moment from 'moment'
 
 export const Route = createFileRoute('/blogs/$userId')({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -98,7 +102,7 @@ function BlogsPage() {
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-2">
-          <Button variant="filled" color="blue" onClick={() => router.history.back} >Back to All Articles</Button>
+          <Button variant="filled" color="blue" onClick={() => router.navigate({ to: "/blogs", search: { page: 1 } })} >Back to All Articles</Button>
           <Title order={1}>
             {isOwner ? 'My Articles' : 'Articles & Writing'}
           </Title>
@@ -244,90 +248,74 @@ function BlogsPage() {
         className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${isPlaceholderData ? 'opacity-60' : 'opacity-100'
           }`}
       >
-        {blogs.map((blog: any) => (
-          <Card
-            key={blog.id}
-            withBorder
-            radius="xl"
-            shadow="sm"
-            className="flex flex-col justify-between transition hover:-translate-y-1 hover:shadow-lg"
+        {blogs.map((article) => (
+          <Link
+            key={article.id}
+            to="/blogs/$slug/details"
+            params={{ slug: article.slug }}
+            className="no-underline"
           >
-            <Stack gap="md">
-              <div className="flex h-[200px] items-center justify-center overflow-hidden rounded-xl bg-gray-100">
-                {blog.coverImage ? (
-                  <Image src={blog.coverImage} alt={blog.title} h={200} className="w-full object-cover" />
-                ) : (
-                  <div className="h-[200px] w-full rounded-xl bg-slate-100 dark:bg-slate-800" />
-                )}
-              </div>
+            <Card
+              withBorder
+              radius="md"
+              p={0}
+              className={classes.card}
+              style={{ width: "100%", height: 400, display: "flex", flexDirection: "column" }}
+            >
+              <Box style={{ height: 200, overflow: "hidden", flexShrink: 0 }}>
+                <Image
+                  src={article.coverImage!}
+                  alt={article.title}
+                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                />
+              </Box>
 
-              <div className="space-y-2">
-                {/* Title + status badge on same row */}
-                <Group justify="space-between" align="flex-start" gap="xs">
-                  <Title order={4} lineClamp={2} className="flex-1 leading-tight">
-                    {blog.title}
-                  </Title>
-                  {blog.status && (
-                    <Badge
-                      size="sm"
-                      radius="md"
-                      variant="light"
-                      color={getStatusConfig(blog.status).color}
-                      className="flex-shrink-0"
-                    >
-                      {blog.status}
-                    </Badge>
-                  )}
-                </Group>
+              <div
+                className={classes.body}
+                style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", padding: "1rem" }}
+              >
+                <Text tt="uppercase" opacity={0.6} fw={700} size="xs" c="grape" mb={4}>
+                  technology
+                </Text>
 
-                <Text size="sm" c="dimmed" lineClamp={3}>{blog.excerpt}</Text>
+                <Text fw={600} size="sm" lineClamp={2} mb={6}>
+                  {article.title}
+                </Text>
 
-                {blog.tags?.length > 0 && (
-                  <Group gap="xs" mt="xs">
-                    {blog.tags.slice(0, 3).map((tag: string) => (
-                      <Badge key={tag} size="xs" variant="light" color="grape" radius="xl">
-                        {tag}
-                      </Badge>
-                    ))}
+                <Text size="xs" c="dimmed" lineClamp={2} mb="auto">
+                  {article.excerpt}
+                </Text>
+
+                <Group justify="space-between" align="center" mt={12}>
+                  <Group gap={6}>
+                    <Avatar size={22} src={article.authorImage} alt={article.title!} radius="xl" />
+
                   </Group>
-                )}
-              </div>
 
-              <Group justify="space-between" align="center">
-                <Group gap="sm">
-                  <Avatar src={blog.authorImage || undefined} alt={blog.title} radius="xl" size="sm" />
                   <Text size="xs" c="dimmed">
-                    {new Date(blog.createdAt).toLocaleDateString()}
+                    {moment(article.createdAt).format("MMM D, YYYY")}
                   </Text>
                 </Group>
-                <Group gap="md">
+
+                <Group
+                  gap="xs"
+                  mt={8}
+                  pt={8}
+                  style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
+                >
                   <Group gap={4}>
-                    <Heart size={15} />
-                    <Text size="sm">{blog.likes}</Text>
+                    <Heart size={13} opacity={0.5} />
+                    <Text size="xs" c="dimmed">{article.likes}</Text>
                   </Group>
+
                   <Group gap={4}>
-                    <MessageCircle size={15} />
-                    <Text size="sm">{blog.comments}</Text>
+                    <MessageCircle size={13} opacity={0.5} />
+                    <Text size="xs" c="dimmed">{article.comments}</Text>
                   </Group>
                 </Group>
-              </Group>
-            </Stack>
-
-            <Group grow mt="md" gap="xs">
-              <Link to="/blogs/$slug/details" params={{ slug: blog.slug }} className="no-underline">
-                <Button fullWidth radius="xl" variant="light" color="grape" rightSection={<ArrowRight size={15} />}>
-                  Read
-                </Button>
-              </Link>
-              {isOwner && (
-                <Link to="/blogs/$slug/edit" params={{ slug: blog.slug }} className="no-underline">
-                  <Button fullWidth radius="xl" variant="outline" color="grape" leftSection={<Pencil size={14} />}>
-                    Edit
-                  </Button>
-                </Link>
-              )}
-            </Group>
-          </Card>
+              </div>
+            </Card>
+          </Link>
         ))}
       </div>
 

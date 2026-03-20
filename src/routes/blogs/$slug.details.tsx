@@ -19,6 +19,7 @@ import {
   ChevronDown,
   ChevronUp,
   LogIn,
+  Router,
 } from 'lucide-react'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { getSessionQueryOptions } from '@/db/queries/utils.queries'
@@ -118,7 +119,7 @@ function RouteComponent() {
   const commentTree = useMemo<CommentNode[]>(() => {
     const map = new Map<string, CommentNode>()
     const roots: CommentNode[] = []
-    data.comments.forEach((c:any) => map.set(c.id, { ...c, replies: [] }))
+    data.comments.forEach((c: any) => map.set(c.id, { ...c, replies: [] }))
     map.forEach((node) => {
       if (node.parentId) {
         const parent = map.get(node.parentId)
@@ -310,14 +311,18 @@ function RouteComponent() {
             Back to Blogs
           </Link>
           {((userData?.id === data.userId) || (userData?.role === 'admin')) && (
-            <Link
-              to="/blogs/$slug/edit"
-              params={{ slug: data.slug }}
+            <Button
+              variant='filled'
+              onClick={() => router.navigate({
+                to: "/blogs/$slug/edit",
+                params: { slug: data.slug }
+              })}
+
               className="flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:border-indigo-300 hover:text-indigo-600 text-gray-700 text-sm rounded-full transition-colors shadow-sm"
-            >
+            >   Edit Article&nbsp;
               <Edit2Icon size={14} />
-              Edit Article
-            </Link>
+
+            </Button>
           )}
         </div>
 
@@ -344,7 +349,7 @@ function RouteComponent() {
 
             {/* Tags */}
             <div className="flex flex-wrap gap-2">
-              {data.tags.map((tag:string) => (
+              {data.tags.map((tag: string) => (
                 <span
                   key={tag}
                   className="flex items-center gap-1 px-2.5 py-0.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-xs rounded-full cursor-pointer transition-colors"
@@ -598,7 +603,7 @@ function RouteComponent() {
             <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-3 shadow-sm">
               <p className="text-gray-400 text-xs font-medium uppercase tracking-wider">Tags</p>
               <div className="flex flex-wrap gap-2">
-                {data.tags.map((tag:string) => (
+                {data.tags.map((tag: string) => (
                   <span
                     key={tag}
                     className="flex items-center gap-1 px-3 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-600 text-xs rounded-full cursor-pointer transition-colors"

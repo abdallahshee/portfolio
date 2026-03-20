@@ -24,27 +24,27 @@ function createExcerpt(content: string, maxLength = 160) {
 }
 
 export const createBlog = createServerFn({ method: "POST" })
-  .inputValidator(BlogSchema)
-  .middleware([AuthMiddleware])
-  .handler(async ({ data, context }) => {
-    try {
-      const slug = createSlug(data.title)
-      const excerpt = createExcerpt(data.content)
+    .inputValidator(BlogSchema)
+    .middleware([AuthMiddleware])
+    .handler(async ({ data, context }) => {
+        try {
+            const slug = createSlug(data.title)
+            const excerpt = createExcerpt(data.content)
 
-      const newData = {
-        ...data,
-        slug,
-        excerpt,
-        userId: context.user?.id!,
-      }
+            const newData = {
+                ...data,
+                slug,
+                excerpt,
+                userId: context.user?.id!,
+            }
 
-      const result = await db.insert(blog).values(newData).returning()
-      return result[0] // ✅ single object instead of array
-    } catch (err) {
-      console.error("Create blog failed:", err)
-      throw err
-    }
-  })
+            const result = await db.insert(blog).values(newData).returning()
+            return result[0] // ✅ single object instead of array
+        } catch (err) {
+            console.error("Create blog failed:", err)
+            throw err
+        }
+    })
 
 export const getAllBlogs = createServerFn()
     .handler(async () => {
@@ -211,6 +211,7 @@ export const getPaginatedBlogs = createServerFn({ method: 'GET' })
                     coverImage: blog.coverImage,
                     createdAt: blog.createdAt,
                     authorImage: user.image,
+                    authorName: user.name,
                     likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
                     comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
                 })
@@ -225,7 +226,8 @@ export const getPaginatedBlogs = createServerFn({ method: 'GET' })
                     blog.excerpt,
                     blog.coverImage,
                     blog.createdAt,
-                    user.image
+                    user.image,
+                    user.name  // ✅ add this
                 )
                 .orderBy(desc(blog.createdAt))
                 .limit(limit)
@@ -341,6 +343,7 @@ export const searchBlogs = createServerFn({ method: "GET" })
                         id: blog.id,
                         title: blog.title,
                         slug: blog.slug,
+
                         excerpt: blog.excerpt,
                         coverImage: blog.coverImage,
                         tags: blog.tags,
@@ -348,6 +351,7 @@ export const searchBlogs = createServerFn({ method: "GET" })
                         likes: sql<number>`(select count(*) from blog_like where blog_id = ${blog.id})`,
                         comments: sql<number>`(select count(*) from comment where blog_id = ${blog.id})`,
                         authorImage: user.image,
+                        authorName: user.name,
                     })
                     .from(blog)
                     .leftJoin(user, eq(blog.userId, user.id))
