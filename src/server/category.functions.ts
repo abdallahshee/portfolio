@@ -22,8 +22,11 @@ export const createCategory = createServerFn({ method: "POST" })
     .inputValidator(categorySchema)
     .handler(async ({ data }) => {
         try {
-            const newCategory = await db.insert(category).values({ name: data.name })
-            return newCategory
+            const newCategory = await db
+                .insert(category)
+                .values({ name: data.name })
+                .returning()  // ✅ missing this
+            return newCategory[0]
         } catch (err) {
             console.log(err)
             throw err

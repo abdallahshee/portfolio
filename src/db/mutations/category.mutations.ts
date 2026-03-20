@@ -4,17 +4,16 @@ import type { categoryRequest } from "../schema"
 import { createCategory, deleteCategory } from "@/server/category.functions"
 import { getAllCategoriesQueryOption } from "../queries/category.queries"
 
-export const useCategoryCreateMutations = () => {
+export const useCategoryCreateMutations = (onSuccess?: () => void) => {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn:(form: categoryRequest) => createCategory({ data: form }),
-        onSuccess:async (data, variables) => {
-            console.log(data)
-          await queryClient.refetchQueries({ queryKey: getAllCategoriesQueryOption().queryKey})
+        mutationFn: (form: categoryRequest) => createCategory({ data: form }),
+        onSuccess: async () => {
+            await queryClient.refetchQueries({ queryKey: getAllCategoriesQueryOption().queryKey })
+            onSuccess?.()
         }
     })
 }
-
 export const useDeleteCategoryMutation = () => {
     const queryClient = useQueryClient()
     return useMutation({

@@ -217,7 +217,7 @@ function BlogsPage() {
                 style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", padding: "1rem" }}
               >
                 <Text tt="uppercase" opacity={0.6} fw={700} size="xs" c="grape" mb={4}>
-                  technology
+                  {article.categoryName}
                 </Text>
 
                 <Text fw={600} size="sm" lineClamp={2} mb={6}>
