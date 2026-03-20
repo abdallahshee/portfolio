@@ -21,6 +21,8 @@ import { Github, Globe, ImagePlus, UserPlus } from "lucide-react"
 import { authClient } from "@/lib/auth-client"
 import { uploadImage } from "@/lib/utils"
 import { useMemo, useState } from "react"
+import { GoogleButton } from "@/components/GoogleButton"
+import { GithubButton } from "@/components/GIthubButton"
 
 interface SignUpForm {
   name: string
@@ -160,39 +162,12 @@ function RouteComponent() {
             Join and start exploring projects and blogs.
           </Text>
         </div>
-
-        <Stack gap="sm">
-          <Button
-            variant="outline"
-            color="dark"
-            fullWidth
-            radius="xl"
-            size="md"
-            loading={oauthProvider === "github"}
-            onClick={() => handleOAuthSignUp("github")}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <Github size={18} />
-              <span>Sign up with GitHub</span>
-            </div>
-          </Button>
-
-          <Button
-            variant="outline"
-            color="gray"
-            fullWidth
-            radius="xl"
-            size="md"
-            loading={oauthProvider === "google"}
-            onClick={() => handleOAuthSignUp("google")}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <Globe size={18} />
-              <span>Sign up with Google</span>
-            </div>
-          </Button>
-        </Stack>
-
+        <Group grow mb="md" mt="md">
+          <GoogleButton radius="xl" loading={oauthProvider === "google"} onClick={() => handleOAuthSignUp("google")}>Sign up with Google</GoogleButton>
+          <GithubButton radius="xl" loading={oauthProvider === "github"} onClick={() => handleOAuthSignUp("github")}>
+            Sign up with Github
+          </GithubButton>
+        </Group>
         <Divider label="Or create account with email" labelPosition="center" my="xs" />
 
         <form onSubmit={form.onSubmit(handleSubmit)}>

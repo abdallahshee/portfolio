@@ -18,12 +18,14 @@ import "@mantine/core/styles.css"
 import "@mantine/tiptap/styles.css"
 import appCss from '../styles.css?url'
 
+
 import type { QueryClient } from '@tanstack/react-query'
 import { Notifications } from '@mantine/notifications'
 import Header from '@/components/Header';
 import HireModeBanner from '@/components/HireModeBanner';
 import ScrollToTop from '@/components/ScrollTop';
 import ThemeToggle from '@/components/ThemeToggle';
+
 // import CombinedHeader from '@/components/CombinedHeader'
 
 interface MyRouterContext {
@@ -79,6 +81,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <TanStackQueryProvider>
           <ThemeToggle/>
             <Header />
+        
             <main className="pt-20">
               <div className="flex justify-center pt-6">
                 <HireModeBanner />

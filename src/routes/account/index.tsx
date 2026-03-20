@@ -21,6 +21,8 @@ import {
 } from "@tanstack/react-router"
 import { authClient } from "@/lib/auth-client"
 import { useState } from "react"
+import { GoogleButton } from "@/components/GoogleButton"
+import { GithubButton } from "@/components/GIthubButton"
 
 interface LoginForm {
   email: string
@@ -126,38 +128,13 @@ function RouteComponent() {
             Welcome back. Sign in to continue.
           </Text>
         </div>
-
-        {/* OAuth */}
-        <Stack gap="sm">
-          <Button
-            variant="outline"
-            color="dark"
-            fullWidth
-            radius="xl"
-            size="md"
-            loading={oauthProvider === "github"}
-            onClick={() => handleOAuthSignIn("github")}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <Github size={18} />
-              <span>Sign in with GitHub</span>
-            </div>
-          </Button>
-
-          <Button
-            variant="outline"
-            fullWidth
-            radius="xl"
-            size="md"
-            loading={oauthProvider === "google"}
-            onClick={() => handleOAuthSignIn("google")}
-          >
-            <div className="flex items-center justify-center gap-2">
-              <Globe size={18} />
-              <span>Sign in with Google</span>
-            </div>
-          </Button>
-        </Stack>
+        <Group grow mb="md" mt="md">
+          <GoogleButton radius="xl" loading={oauthProvider === "google"} onClick={() => handleOAuthSignIn("google")}>Sign in with Google</GoogleButton>
+          <GithubButton radius="xl" loading={oauthProvider === "github"} onClick={() => handleOAuthSignIn("github")}>
+            Sign in with Github
+          </GithubButton>
+        </Group>
+   
 
         <Divider label="Or continue with email" labelPosition="center" my="xs" />
 

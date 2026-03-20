@@ -40,6 +40,10 @@ export default function Header() {
     router.navigate({ to: "/account", search: { callbackUrl: "/" } })
   }
 
+  const handleSignup = () => {
+    router.navigate({ to: "/account/register", search: { callbackUrl: "/" } })
+  }
+
   return (
     <header className="fixed left-0 top-0 z-50 w-full bg-white shadow-md dark:bg-slate-900">
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
@@ -84,7 +88,7 @@ export default function Header() {
                   <>
                     <Menu.Item
                       leftSection={<LayoutDashboard size={16} className="text-indigo-500" />}
-                      // onClick={() => router.navigate({ to: "/admin" })}
+                    // onClick={() => router.navigate({ to: "/admin" })}
                     >
                       Admin Dashboard
                     </Menu.Item>
@@ -108,15 +112,26 @@ export default function Header() {
               </Menu.Dropdown>
             </Menu>
           ) : (
-            <Button
-              variant="outline"
-              color="blue"
-              size="sm"
-              onClick={handleLogin}
-              className="ml-4"
-            >
-              Login
-            </Button>
+            <span>
+              <Button
+                variant="outline"
+                color="blue"
+                size="sm"
+                onClick={handleLogin}
+                className="ml-4"
+              >
+                Sign in
+              </Button>
+              <Button
+                variant="filled"
+                color="blue"
+                size="sm"
+                onClick={handleSignup}
+                className="ml-4"
+              >
+                Sign up
+              </Button>
+            </span>
           )}
         </nav>
 
