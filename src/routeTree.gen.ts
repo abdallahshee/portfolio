@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as ContactRouteImport } from './routes/contact'
+import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
 import { Route as BlogsRouteRouteImport } from './routes/blogs/route'
 import { Route as AdminRouteRouteImport } from './routes/admin/route'
@@ -35,6 +36,11 @@ import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoriesRoute = CategoriesRouteImport.update({
+  id: '/categories',
+  path: '/categories',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjectsRouteRoute = ProjectsRouteRouteImport.update({
@@ -149,6 +155,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AdminRouteRouteWithChildren
   '/blogs': typeof BlogsRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
+  '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
@@ -169,6 +176,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
@@ -194,6 +202,7 @@ export interface FileRoutesById {
   '/admin': typeof AdminRouteRouteWithChildren
   '/blogs': typeof BlogsRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
+  '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
@@ -220,6 +229,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blogs'
     | '/projects'
+    | '/categories'
     | '/contact'
     | '/account/forgot-password'
     | '/account/register'
@@ -240,6 +250,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/categories'
     | '/contact'
     | '/account/forgot-password'
     | '/account/register'
@@ -264,6 +275,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blogs'
     | '/projects'
+    | '/categories'
     | '/contact'
     | '/account/forgot-password'
     | '/account/register'
@@ -289,6 +301,7 @@ export interface RootRouteChildren {
   AdminRouteRoute: typeof AdminRouteRouteWithChildren
   BlogsRouteRoute: typeof BlogsRouteRouteWithChildren
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
+  CategoriesRoute: typeof CategoriesRoute
   ContactRoute: typeof ContactRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
@@ -300,6 +313,13 @@ declare module '@tanstack/react-router' {
       path: '/contact'
       fullPath: '/contact'
       preLoaderRoute: typeof ContactRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/categories': {
+      id: '/categories'
+      path: '/categories'
+      fullPath: '/categories'
+      preLoaderRoute: typeof CategoriesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projects': {
@@ -528,6 +548,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminRouteRoute: AdminRouteRouteWithChildren,
   BlogsRouteRoute: BlogsRouteRouteWithChildren,
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
+  CategoriesRoute: CategoriesRoute,
   ContactRoute: ContactRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }

@@ -1,8 +1,9 @@
 import { createServerFn } from '@tanstack/react-start'
 import { eq, and } from 'drizzle-orm'
-import { AuthMiddleware } from './middleware'
+import { AdminMiddleware, AuthMiddleware } from './middleware'
 import { db } from '../db/index'
 import { blog, comment, createCommentSchema } from '@/db/schema'
+import { category, categorySchema } from '@/db/schema/category.schema'
 
 
 export const createComment = createServerFn({ method: 'POST' })
@@ -69,3 +70,4 @@ export const createComment = createServerFn({ method: 'POST' })
             throw err
         }
     })
+

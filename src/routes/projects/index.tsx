@@ -15,7 +15,7 @@ import {
   TextInput,
   SegmentedControl,
 } from '@mantine/core'
-import {  Search, X, FolderKanban, ListFilter } from 'lucide-react'
+import { Search, X, FolderKanban, ListFilter } from 'lucide-react'
 import { authClient } from '@/lib/auth-client'
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
@@ -127,33 +127,42 @@ function RouteComponent() {
               Filter by status
             </Text>
           </Group>
-          <SegmentedControl
-            value={filter}
-            onChange={handleFilterChange}
-            radius="xl"
-            size="md"
-            data={[
-              { label: 'All', value: 'all' },
-              { label: 'Open Source', value: 'public' },
-              { label: 'Private', value: 'private' },
-            ]}
-          />
+          <Group gap="xs">
+            {(['all', 'public', 'private'] as const).map((value) => {
+              const label = value === 'all' ? 'All' : value === 'public' ? 'Open Source' : 'Private'
+              const isActive = filter === value
+
+              return (
+                <Badge
+                  key={value}
+                  variant={isActive ? 'filled' : 'light'}
+                  color="blue"
+                  radius="xl"
+                  size="lg"
+                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                  onClick={() => handleFilterChange(value)}
+                >
+                  {label}
+                </Badge>
+              )
+            })}
+          </Group>
         </div>
       </div>
 
       <div className="mb-12 border-b border-gray-200" />
 
       {/* Filter result count */}
-    
+
       {/* Empty state */}
-   {/* Filter result count — show for all filter states */}
-{!isLoading && projects.length > 0 && (
-  <Text size="sm" c="dimmed" mb="md">
-    Showing {projects.length}{' '}
-    {filter === 'public' ? 'open source' : filter === 'private' ? 'private' : ''}{' '}
-    {projects.length === 1 ? 'project' : 'projects'}
-  </Text>
-)}
+      {/* Filter result count — show for all filter states */}
+      {!isLoading && projects.length > 0 && (
+        <Text size="sm" c="dimmed" mb="md">
+          Showing {projects.length}{' '}
+          {filter === 'public' ? 'open source' : filter === 'private' ? 'private' : ''}{' '}
+          {projects.length === 1 ? 'project' : 'projects'}
+        </Text>
+      )}
 
       {/* Projects Grid */}
       <div

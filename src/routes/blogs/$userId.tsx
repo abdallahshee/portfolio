@@ -157,43 +157,38 @@ function BlogsPage() {
 
         {/* Status filter */}
         <div>
-          <Group gap="xs" mb={5} align="center">
-            <SlidersHorizontal size={12} className="text-slate-400" />
-            <Text size="xs" fw={500} c="dimmed" className="uppercase tracking-widest">
-              Filter by status
-            </Text>
-          </Group>
-          <SegmentedControl
-            value={statusFilter}
-            onChange={(v) => setStatusFilter(v as StatusFilter)}
-            radius="md"
-            size="sm"
-            data={[
-              { label: 'All', value: 'all' },
-              { label: 'Published', value: 'published' },
-              { label: 'Pending', value: 'pending' },
-              { label: 'Draft', value: 'draft' },
-            ]}
-          />
-        </div>
 
-        {/* Active filter pill */}
-        {statusFilter !== 'all' && (
-          <Badge
-            variant="light"
-            color={getStatusConfig(statusFilter).color}
-            radius="md"
-            size="lg"
-            className="self-end mb-0.5"
-            rightSection={
-              <button onClick={() => setStatusFilter('all')}>
-                <X size={11} />
-              </button>
-            }
-          >
-            {getStatusConfig(statusFilter).label}: {blogs.length}
-          </Badge>
-        )}
+          <div>
+            <Group gap="xs" mb={5} align="center">
+              <SlidersHorizontal size={12} className="text-slate-400" />
+              <Text size="xs" fw={500} c="dimmed" className="uppercase tracking-widest">
+                Filter by status
+              </Text>
+            </Group>
+            <Group gap="xs">
+              {(['all', 'published', 'pending', 'draft'] as const).map((status) => {
+                const label = status === 'all' ? 'All'
+                  : status === 'published' ? 'Published'
+                    : status === 'pending' ? 'Pending'
+                      : 'Draft'
+
+                return (
+                  <Badge
+                    key={status}
+                    variant={statusFilter === status ? 'filled' : 'light'}
+                    color="blue"
+                    radius="xl"
+                    size="lg"
+                    style={{ cursor: 'pointer', userSelect: 'none' }}
+                    onClick={() => setStatusFilter(status)}
+                  >
+                    {label}
+                  </Badge>
+                )
+              })}
+            </Group>
+          </div>
+        </div>
       </div>
 
       {/* Result count */}

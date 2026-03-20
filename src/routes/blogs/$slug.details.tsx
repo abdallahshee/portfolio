@@ -26,7 +26,7 @@ import { getSessionQueryOptions } from '@/db/queries/utils.queries'
 import { dislikeBlog, likeBlog } from '@/server/blog-like.functions'
 import { OptionalAuthMiddleware } from '@/server/middleware'
 import { useCreateCommentMutation } from '@/db/mutations/comment.mutations'
-import type { Comment } from '@/db/schema'
+
 
 
 

@@ -27,7 +27,7 @@ export const projectRelations = relations(project, ({ many }) => ({
   ratings: many(projectRating), // all ratings associated with this project
 }));
 
-export type Project = InferSelectModel<typeof project>
+// export type Project = InferSelectModel<typeof project>
 export type ProjectRequest = Omit<InferInsertModel<typeof project>, "id" | "createdAt" | "updatedAt">
 export const ProjectSchema = createInsertSchema(project).omit({ id: true, createdAt: true, updatedAt: true })
 

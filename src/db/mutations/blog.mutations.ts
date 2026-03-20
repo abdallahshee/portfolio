@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { createBlog, getBlogBySlug, updateBlog } from '@/server/blog.functions'
+import { createBlog, updateBlog } from '@/server/blog.functions'
 import { useRouter } from '@tanstack/react-router'
 import type { BlogRequest, BlogUpdateForm } from '@/db/schema'
 import { getAllBlogsQueryOptions, getBlogBySlugQueryOptions } from '../queries/blog.queries'
+
 
 
 
@@ -11,11 +12,9 @@ export const blogUpdateMutationOption = () => {
     const router = useRouter()
 
     return useMutation({
-        mutationFn: async (form: BlogUpdateForm) => {
-            return updateBlog({
-                data: { blogSchema: form.blogSchema, slug: form.slug }
-            })
-        },
+        mutationFn:(form: BlogUpdateForm) =>updateBlog({
+            data: { blogSchema: form.blogSchema, slug: form.slug }
+        }),
         onSuccess: async (_, variables) => {
             await queryClient.refetchQueries({
                 queryKey: ["blogs", variables.slug],
@@ -35,7 +34,7 @@ export const useBlogCreateMutation = () => {
     const router = useRouter()
 
     return useMutation({
-        mutationFn: async (form: BlogRequest) =>
+        mutationFn:(form: BlogRequest) =>
             createBlog({ data: form }),
         onSuccess: async (data) => {
             queryClient.setQueryData(getBlogBySlugQueryOptions(data.slug).queryKey, {
@@ -46,6 +45,7 @@ export const useBlogCreateMutation = () => {
                 authorId: data.userId,
                 authorName: null,
                 authorImage: null,
+                categoryName: null
             })
             await queryClient.invalidateQueries({ queryKey: getAllBlogsQueryOptions().queryKey })
             await router.navigate({
@@ -55,3 +55,4 @@ export const useBlogCreateMutation = () => {
         },
     })
 }
+

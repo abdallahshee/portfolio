@@ -12,15 +12,13 @@ export const useCreateCommentMutation = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn: async (data: CreateCommentInput) => {
-            return createComment({
+        mutationFn:(data: CreateCommentInput) => createComment({
                 data: {
                     blogId: data.blogId,
                     content: data.content,
                     parentId: data.parentId ?? null,
                 },
-            })
-        },
+            }),
         onSuccess: (_, variables) => {
             queryClient.invalidateQueries({
                 queryKey: ['blogs', variables.slug],
