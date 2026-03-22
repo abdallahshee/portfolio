@@ -17,7 +17,7 @@ export const useCategoryCreateMutations = (onSuccess?: () => void) => {
 export const useDeleteCategoryMutation = () => {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn:(categoryId: number) => deleteCategory({ data: { categoryId } }),
+        mutationFn:(categoryId: string) => deleteCategory({ data: { categoryId } }),
         onSuccess: async() => {
             await queryClient.refetchQueries({ queryKey: getAllCategoriesQueryOption().queryKey})
         },

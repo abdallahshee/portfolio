@@ -16,6 +16,7 @@ import {
   Divider,
   ThemeIcon,
   SimpleGrid,
+  Select,
 } from "@mantine/core"
 import { RichTextEditor, Link } from "@mantine/tiptap"
 import { useEditor } from "@tiptap/react"
@@ -41,17 +42,17 @@ import { useEffect, useMemo, useState } from "react"
 import { uploadImage } from "@/lib/utils"
 import { AuthMiddleware } from "@/server/middleware"
 import { useBlogCreateMutation } from "@/db/mutations/blog.mutations"
+import type { BlogRequest } from "@/db/schema"
+import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
+import { useQuery } from "@tanstack/react-query"
 
-interface BlogForm {
-  title: string
-  content: string
-  coverImage: File | null
-  tags: string[]
-}
 
 export const Route = createFileRoute("/blogs/create")({
   server: {
     middleware: [AuthMiddleware],
+  },
+  loader: async ({ context }) => {
+    await context.queryClient.prefetchQuery(getAllCategoriesQueryOption())
   },
   component: RouteComponent,
 })
@@ -63,13 +64,15 @@ function RouteComponent() {
   const [loading, setLoading] = useState(false)
   const [tagInput, setTagInput] = useState("")
   const createBlogMutation = useBlogCreateMutation()
-
-  const form = useForm<BlogForm>({
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const { data: categories } = useQuery(getAllCategoriesQueryOption())
+  const form = useForm<BlogRequest>({
     initialValues: {
       title: "",
       content: "",
       coverImage: null,
       tags: [],
+      categoryId: null
     },
   })
 
@@ -121,13 +124,13 @@ function RouteComponent() {
     }
   }, [editor])
 
-  const handleSubmit = async (values: BlogForm) => {
+  const handleSubmit = async (values: BlogRequest) => {
     try {
       setLoading(true)
 
       let imageUrl = ""
-      if (values.coverImage) {
-        imageUrl = await uploadImage(values.coverImage)
+      if (imageFile) {
+        imageUrl = await uploadImage(imageFile)
       }
 
       const defaultUrl =
@@ -141,11 +144,12 @@ function RouteComponent() {
         tags: rest.tags,
         content: markdownContent,
         coverImage: imageUrl || defaultUrl,
+        categoryId: rest.categoryId
       }
 
       await createBlogMutation.mutateAsync(inputValues)
 
-   
+
     } catch (err) {
       console.error(err)
     } finally {
@@ -154,9 +158,9 @@ function RouteComponent() {
   }
 
   const previewUrl = useMemo(() => {
-    if (!form.values.coverImage) return null
-    return URL.createObjectURL(form.values.coverImage)
-  }, [form.values.coverImage])
+    if (!imageFile) return null
+    return URL.createObjectURL(imageFile)
+  }, [imageFile])
 
   return (
     <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
@@ -227,6 +231,7 @@ function RouteComponent() {
                       required
                     />
 
+
                     <FileInput
                       label="Cover Image"
                       placeholder="Upload blog image"
@@ -234,9 +239,23 @@ function RouteComponent() {
                       accept="image/*"
                       radius="md"
                       size="md"
-                      {...form.getInputProps("coverImage")}
+                      onChange={(e) => {
+                        setImageFile(e)
+                      }}
                     />
-
+                    <Select
+                      label="Category"
+                      placeholder="Select a category"
+                      leftSection={<FileText size={16} />}
+                      radius="md"
+                      size="md"
+                      data={categories?.map((cat) => ({
+                        label: cat.name,
+                        value: String(cat.id),
+                      })) ?? []}
+                      {...form.getInputProps("categoryId")}
+                      required
+                    />
                     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/40">
                       {previewUrl ? (
                         <Image

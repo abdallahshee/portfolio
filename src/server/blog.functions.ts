@@ -49,26 +49,26 @@ export const getAllBlogs = createServerFn()
     .handler(async () => {
         try {
             const blogs = await db
-  .select({
-    id: blog.id,
-    title: blog.title,
-    authorImage: user.image,
-    tags: blog.tags,
-    content: blog.content,
-    coverImage: blog.coverImage,
-    slug: blog.slug,
-    createdAt: blog.createdAt,
-    updatedAt: blog.updatedAt,
-    categoryName: category.name,
-    likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
-    comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
-})
-.from(blog)
-.leftJoin(user, eq(blog.userId, user.id))
-.leftJoin(category, eq(blog.categoryId, category.id))
-.leftJoin(blogLike, eq(blog.id, blogLike.blogId))
-.leftJoin(comment, eq(blog.id, comment.blogId))
-.groupBy(blog.id, user.image, category.name)
+                .select({
+                    id: blog.id,
+                    title: blog.title,
+                    authorImage: user.image,
+                    tags: blog.tags,
+                    content: blog.content,
+                    coverImage: blog.coverImage,
+                    slug: blog.slug,
+                    createdAt: blog.createdAt,
+                    updatedAt: blog.updatedAt,
+                    categoryName: category.name,
+                    likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
+                    comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
+                })
+                .from(blog)
+                .leftJoin(user, eq(blog.userId, user.id))
+                .leftJoin(category, eq(blog.categoryId, category.id))
+                .leftJoin(blogLike, eq(blog.id, blogLike.blogId))
+                .leftJoin(comment, eq(blog.id, comment.blogId))
+                .groupBy(blog.id, user.image, category.name)
                 .orderBy(desc(sql`COUNT(DISTINCT ${blogLike.id})`))
 
             return blogs
@@ -113,25 +113,25 @@ export const getBlogBySlug = createServerFn()
 
             // Blog
             const blogResult = await db
-     .select({
-    id: blog.id,
-    title: blog.title,
-    tags: blog.tags,
-    content: blog.content,
-    coverImage: blog.coverImage,
-    userId: blog.userId,
-    authorId: user.id,
-    slug: blog.slug,
-    authorName: user.name,
-    authorImage: user.image,
-    categoryName: category.name,
-    createdAt: blog.createdAt,
-    updatedAt: blog.updatedAt,
-})
-.from(blog)
-.leftJoin(user, eq(blog.userId, user.id))
-.leftJoin(category, eq(blog.categoryId, category.id))
-.where(eq(blog.slug, data.slug))
+                .select({
+                    id: blog.id,
+                    title: blog.title,
+                    tags: blog.tags,
+                    content: blog.content,
+                    coverImage: blog.coverImage,
+                    userId: blog.userId,
+                    authorId: user.id,
+                    slug: blog.slug,
+                    authorName: user.name,
+                    authorImage: user.image,
+                    categoryName: category.name,
+                    createdAt: blog.createdAt,
+                    updatedAt: blog.updatedAt,
+                })
+                .from(blog)
+                .leftJoin(user, eq(blog.userId, user.id))
+                .leftJoin(category, eq(blog.categoryId, category.id))
+                .where(eq(blog.slug, data.slug))
 
             const blogData = blogResult[0]
 
@@ -204,39 +204,39 @@ export const getPaginatedBlogs = createServerFn({ method: 'GET' })
             const limit = data.limit ?? 6
             const offset = (page - 1) * limit
 
-const blogs = await db
-    .select({
-        id: blog.id,
-        title: blog.title,
-        slug: blog.slug,
-        excerpt: blog.excerpt,
-        coverImage: blog.coverImage,
-        createdAt: blog.createdAt,
-        authorImage: user.image,
-        authorName: user.name,
-        categoryName: category.name,
-        likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
-        comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
-    })
-    .from(blog)
-    .leftJoin(user, eq(blog.userId, user.id))
-    .leftJoin(category, eq(blog.categoryId, category.id))
-    .leftJoin(blogLike, eq(blog.id, blogLike.blogId))
-    .leftJoin(comment, eq(blog.id, comment.blogId))
-    .groupBy(
-        blog.id,
-        blog.title,
-        blog.slug,
-        blog.excerpt,
-        blog.coverImage,
-        blog.createdAt,
-        user.image,
-        user.name,
-        category.name,
-    )
-    .orderBy(desc(blog.createdAt))
-    .limit(limit)
-    .offset(offset)
+            const blogs = await db
+                .select({
+                    id: blog.id,
+                    title: blog.title,
+                    slug: blog.slug,
+                    excerpt: blog.excerpt,
+                    coverImage: blog.coverImage,
+                    createdAt: blog.createdAt,
+                    authorImage: user.image,
+                    authorName: user.name,
+                    categoryName: category.name,
+                    likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
+                    comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
+                })
+                .from(blog)
+                .leftJoin(user, eq(blog.userId, user.id))
+                .leftJoin(category, eq(blog.categoryId, category.id))
+                .leftJoin(blogLike, eq(blog.id, blogLike.blogId))
+                .leftJoin(comment, eq(blog.id, comment.blogId))
+                .groupBy(
+                    blog.id,
+                    blog.title,
+                    blog.slug,
+                    blog.excerpt,
+                    blog.coverImage,
+                    blog.createdAt,
+                    user.image,
+                    user.name,
+                    category.name,
+                )
+                .orderBy(desc(blog.createdAt))
+                .limit(limit)
+                .offset(offset)
 
             const totalResult = await db
                 .select({
@@ -267,22 +267,22 @@ export const getTopBlogs = createServerFn({ method: "GET" })
     .handler(async () => {
         try {
             const topBlogs = await db
-.select({
-    id: blog.id,
-    title: blog.title,
-    slug: blog.slug,
-    coverImage: blog.coverImage,
-    authorImage: user.image,
-    categoryName: category.name,
-    likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
-    comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
-})
-.from(blog)
-.leftJoin(user, eq(blog.userId, user.id))
-.leftJoin(category, eq(blog.categoryId, category.id))
-.leftJoin(blogLike, eq(blog.id, blogLike.blogId))
-.leftJoin(comment, eq(blog.id, comment.blogId))
-.groupBy(blog.id, user.image, category.name)
+                .select({
+                    id: blog.id,
+                    title: blog.title,
+                    slug: blog.slug,
+                    coverImage: blog.coverImage,
+                    authorImage: user.image,
+                    categoryName: category.name,
+                    likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
+                    comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
+                })
+                .from(blog)
+                .leftJoin(user, eq(blog.userId, user.id))
+                .leftJoin(category, eq(blog.categoryId, category.id))
+                .leftJoin(blogLike, eq(blog.id, blogLike.blogId))
+                .leftJoin(comment, eq(blog.id, comment.blogId))
+                .groupBy(blog.id, user.image, category.name)
                 .limit(5)
 
             return topBlogs
@@ -399,21 +399,21 @@ export const getMyBlogs = createServerFn({ method: "GET" })
             const userId = context.user?.id!
 
             const blogs = await db
-       .select({
-    id: blog.id,
-    title: blog.title,
-    slug: blog.slug,
-    excerpt: blog.excerpt,
-    coverImage: blog.coverImage,
-    tags: blog.tags,
-    status: blog.status,
-    createdAt: blog.createdAt,
-    categoryName: category.name,
-    likes: sql<number>`(select count(*) from blog_like where blog_id = ${blog.id})`,
-    comments: sql<number>`(select count(*) from comment where blog_id = ${blog.id})`,
-})
-.from(blog)
-.leftJoin(category, eq(blog.categoryId, category.id))
+                .select({
+                    id: blog.id,
+                    title: blog.title,
+                    slug: blog.slug,
+                    excerpt: blog.excerpt,
+                    coverImage: blog.coverImage,
+                    tags: blog.tags,
+                    status: blog.status,
+                    createdAt: blog.createdAt,
+                    categoryName: category.name,
+                    likes: sql<number>`(select count(*) from blog_like where blog_id = ${blog.id})`,
+                    comments: sql<number>`(select count(*) from comment where blog_id = ${blog.id})`,
+                })
+                .from(blog)
+                .leftJoin(category, eq(blog.categoryId, category.id))
                 .where(eq(blog.userId, userId))
                 .orderBy(desc(blog.createdAt))
 
@@ -437,35 +437,35 @@ export const getMyPaginatedBlogs = createServerFn({ method: 'GET' })
 
             const [blogs, totalResult] = await Promise.all([
                 db
-     .select({
-    id: blog.id,
-    title: blog.title,
-    slug: blog.slug,
-    status: blog.status,
-    excerpt: blog.excerpt,
-    coverImage: blog.coverImage,
-    createdAt: blog.createdAt,
-    categoryName: category.name,
-    authorImage: user.image,
-    likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
-    comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
-})
-.from(blog)
-.where(eq(blog.userId, userId))
-.leftJoin(user, eq(blog.userId, user.id))
-.leftJoin(category, eq(blog.categoryId, category.id))
-.leftJoin(blogLike, eq(blog.id, blogLike.blogId))
-.leftJoin(comment, eq(blog.id, comment.blogId))
-.groupBy(
-    blog.id,
-    blog.title,
-    blog.slug,
-    blog.excerpt,
-    blog.coverImage,
-    blog.createdAt,
-    user.image,
-    category.name,
-)
+                    .select({
+                        id: blog.id,
+                        title: blog.title,
+                        slug: blog.slug,
+                        status: blog.status,
+                        excerpt: blog.excerpt,
+                        coverImage: blog.coverImage,
+                        createdAt: blog.createdAt,
+                        categoryName: category.name,
+                        authorImage: user.image,
+                        likes: sql<number>`COUNT(DISTINCT ${blogLike.id})`,
+                        comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
+                    })
+                    .from(blog)
+                    .where(eq(blog.userId, userId))
+                    .leftJoin(user, eq(blog.userId, user.id))
+                    .leftJoin(category, eq(blog.categoryId, category.id))
+                    .leftJoin(blogLike, eq(blog.id, blogLike.blogId))
+                    .leftJoin(comment, eq(blog.id, comment.blogId))
+                    .groupBy(
+                        blog.id,
+                        blog.title,
+                        blog.slug,
+                        blog.excerpt,
+                        blog.coverImage,
+                        blog.createdAt,
+                        user.image,
+                        category.name,
+                    )
                     .orderBy(desc(blog.createdAt))
                     .limit(limit)
                     .offset(offset),

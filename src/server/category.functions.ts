@@ -5,6 +5,7 @@ import { AdminMiddleware } from "./middleware"
 import { eq } from "drizzle-orm"
 
 export const getAllCategories = createServerFn({ method: "GET" })
+.middleware([AdminMiddleware])
     .handler(async () => {
         const results= await db.select().from(category).orderBy(category.name)
         return results
@@ -12,7 +13,7 @@ export const getAllCategories = createServerFn({ method: "GET" })
 
 export const deleteCategory = createServerFn({ method: "POST" })
     .middleware([AdminMiddleware])
-    .inputValidator((data: { categoryId: number }) => data)
+    .inputValidator((data: { categoryId: string }) => data)
     .handler(async ({ data }) => {
         await db.delete(category).where(eq(category.id, data.categoryId))
     })

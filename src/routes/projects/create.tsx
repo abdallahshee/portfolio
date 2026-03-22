@@ -39,7 +39,6 @@ import { useMemo, useState } from "react"
 
 interface ProjectCreateForm {
   title: string
-
   description: string
   imageUrl: File | null
   isPublic: boolean

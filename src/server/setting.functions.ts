@@ -1,11 +1,11 @@
 import { createServerFn } from "@tanstack/react-start"
 import { eq } from "drizzle-orm"
 import { db } from "../db/index"
-
 import { AdminMiddleware } from "./middleware"
 import { setting } from "@/db/schema"
 
 export const toggleHireModeStatus = createServerFn({ method: "POST" })
+  .middleware([AdminMiddleware])
   .inputValidator((data: { settingId: string }) => data)
   .handler(async ({ data }) => {
     const current = await db.query.setting.findFirst({

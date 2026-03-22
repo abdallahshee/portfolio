@@ -203,14 +203,7 @@ function App() {
                 verticalSpacing="md"
                 horizontalSpacing="md"
               >
-                <Table.Thead>
-                  {/* <Table.Tr>
-                    <Table.Th>Project</Table.Th>
-                    <Table.Th>Rating</Table.Th>
-                    <Table.Th>Action</Table.Th>
-                  </Table.Tr> */}
-                </Table.Thead>
-
+             
                 <Table.Tbody>
                   {projects?.map((project) => {
                     const rating = Number(project.avgRating ?? 0)

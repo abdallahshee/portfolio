@@ -73,7 +73,6 @@ function BlogsPage() {
   const data = isSearching ? searchData : paginatedData
   const isLoading = isSearching ? searchLoading : paginatedLoading
 
-  // Filter client-side by status
   const allBlogs = data?.blogs ?? []
   const blogs = allBlogs.filter((blog: any) => {
     if (statusFilter === 'all') return true
@@ -102,7 +101,13 @@ function BlogsPage() {
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-2">
-          <Button variant="filled" color="blue" onClick={() => router.navigate({ to: "/blogs", search: { page: 1 } })} >Back to All Articles</Button>
+          <Button
+            variant="filled"
+            color="blue"
+            onClick={() => router.navigate({ to: "/blogs", search: { page: 1 } })}
+          >
+            Back to All Articles
+          </Button>
           <Title order={1}>
             {isOwner ? 'My Articles' : 'Articles & Writing'}
           </Title>
@@ -112,18 +117,10 @@ function BlogsPage() {
               : 'Thoughts, tutorials, and practical notes on building modern web applications.'}
           </Text>
         </div>
-
-        {isOwner && (
-          <Link to="/blogs/create" className="no-underline self-end">
-            <Button variant="filled" color="grape" radius="xl" leftSection={<PenLine size={15} />}>
-              Write Article
-            </Button>
-          </Link>
-        )}
       </div>
 
       {/* Search + Filter toolbar */}
-      <div className="flex flex-wrap items-end gap-4">
+      <div className="flex flex-wrap items-end justify-between gap-4">
 
         {/* Search */}
         <div className="flex-1" style={{ minWidth: 220, maxWidth: 400 }}>
@@ -152,43 +149,54 @@ function BlogsPage() {
           )}
         </div>
 
-        {/* Divider */}
-        <div className="hidden h-10 w-px bg-slate-200 dark:bg-slate-700 sm:block" />
-
-        {/* Status filter */}
+        {/* Filter pills + Write Article button */}
         <div>
-
-          <div>
-            <Group gap="xs" mb={5} align="center">
-              <SlidersHorizontal size={12} className="text-slate-400" />
-              <Text size="xs" fw={500} c="dimmed" className="uppercase tracking-widest">
-                Filter by status
-              </Text>
-            </Group>
-            <Group gap="xs">
-              {(['all', 'published', 'pending', 'draft'] as const).map((status) => {
-                const label = status === 'all' ? 'All'
+          <Group gap="xs" mb={5} align="center">
+            <SlidersHorizontal size={12} className="text-slate-400" />
+            <Text size="xs" fw={500} c="dimmed" className="uppercase tracking-widest">
+              Filter by status
+            </Text>
+          </Group>
+          <Group gap="xs">
+            {(['all', 'published', 'pending', 'draft'] as const).map((status) => {
+              const label =
+                status === 'all' ? 'All'
                   : status === 'published' ? 'Published'
                     : status === 'pending' ? 'Pending'
                       : 'Draft'
 
-                return (
-                  <Badge
-                    key={status}
-                    variant={statusFilter === status ? 'filled' : 'light'}
-                    color="blue"
-                    radius="xl"
-                    size="lg"
-                    style={{ cursor: 'pointer', userSelect: 'none' }}
-                    onClick={() => setStatusFilter(status)}
-                  >
-                    {label}
-                  </Badge>
-                )
-              })}
-            </Group>
-          </div>
+              return (
+                <Badge
+                  key={status}
+                  variant={statusFilter === status ? 'filled' : 'light'}
+                  color="blue"
+                  radius="xl"
+                  size="lg"
+                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                  onClick={() => setStatusFilter(status)}
+                >
+                  {label}
+                </Badge>
+              )
+            })}
+
+            {/* Write Article button in the same row as pills */}
+            {isOwner && (
+              <Link to="/blogs/create" className="no-underline">
+                <Button
+                  size="xs"
+                  radius="xl"
+                  variant="filled"
+                  color="grape"
+                  leftSection={<PenLine size={14} />}
+                >
+                  Write Article
+                </Button>
+              </Link>
+            )}
+          </Group>
         </div>
+
       </div>
 
       {/* Result count */}
@@ -284,7 +292,6 @@ function BlogsPage() {
                 <Group justify="space-between" align="center" mt={12}>
                   <Group gap={6}>
                     <Avatar size={22} src={article.authorImage} alt={article.title!} radius="xl" />
-
                   </Group>
 
                   <Text size="xs" c="dimmed">
@@ -314,7 +321,7 @@ function BlogsPage() {
         ))}
       </div>
 
-      {/* Pagination — hide when filter or search is active */}
+      {/* Pagination */}
       {!isSearching && statusFilter === 'all' && totalPages > 1 && (
         <Group justify="center" mt="xl">
           <Pagination

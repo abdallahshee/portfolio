@@ -1,4 +1,4 @@
-import { relations, type InferInsertModel } from "drizzle-orm";
+import { relations,type InferSelectModel } from "drizzle-orm";
 import { pgTable, text, timestamp, pgEnum, integer } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 import { user } from "./user.schema";
@@ -22,7 +22,7 @@ export const blog = pgTable("blog", {
   status: blogStatusEnum("status").notNull().$default(() => "draft"),
   tags: text("tags").array().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
-  categoryId:integer('category_id').references(() => category.id, { onDelete: 'set null' }),
+  categoryId:text('category_id').references(() => category.id, { onDelete: 'set null' }),
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date())
@@ -45,7 +45,7 @@ export const blogRelations = relations(blog, ({ one, many }) => ({
 
 
 // export type Blog = InferSelectModel<typeof blog>
-export type BlogRequest = Pick<InferInsertModel<typeof blog>, "categoryId"|"title" | "content" | "coverImage" | "tags">
+export type BlogRequest = Pick<InferSelectModel<typeof blog>, "categoryId"|"title" | "content" | "coverImage" | "tags">
 export const BlogSchema = createInsertSchema(blog).pick({ categoryId:true, title: true, content: true, coverImage: true, tags: true })
 
 export const BlogUpdateSchema = z.object({

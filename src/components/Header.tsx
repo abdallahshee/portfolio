@@ -1,28 +1,53 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
-  Burger,
-  Drawer,
-  ScrollArea,
-  Button,
-  Avatar,
-  Text,
-  Menu,
-  UnstyledButton,
-  Group,
-  Skeleton,
+  Burger, Drawer, ScrollArea, Button, Avatar,
+  Text, Menu, UnstyledButton, Group, Skeleton,
 } from "@mantine/core"
 import { Link, useRouter } from "@tanstack/react-router"
 import { authClient } from "@/lib/auth-client"
-import { ChevronDown, LogOut, Sun, LayoutDashboard } from "lucide-react"
+import { ChevronDown, LogOut, Sun, LayoutDashboard, Briefcase } from "lucide-react"
+import HireModeBanner from "./HireModeBanner"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { hireStatusQueryOptions } from "@/db/queries/utils.queries"
+import { toggleHireModeStatus } from "@/server/setting.functions"
+
+const SETTING_ID = import.meta.env.VITE_HIRE_MODE_ID!
 
 export default function Header() {
   const [opened, setOpened] = useState(false)
   const session = authClient.useSession()
   const router = useRouter()
+  const queryClient = useQueryClient()
 
   const isSessionLoading = session.isPending
   const isAdmin = session.data?.user?.role === "admin"
   const user = session.data?.user
+
+  // Read initial value from the prefetched query
+  const { data } = useQuery(hireStatusQueryOptions(SETTING_ID))
+
+  // Initialize state from query, sync when query data arrives
+  const [hireOpen, setHireOpen] = useState(false)
+  useEffect(() => {
+    if (data?.isOpenForHire !== undefined) {
+      setHireOpen(data.isOpenForHire)
+    }
+  }, [data?.isOpenForHire])
+
+  const [toggleLoading, setToggleLoading] = useState(false)
+
+  const handleHireToggle = async () => {
+    try {
+      setToggleLoading(true)
+      const result = await toggleHireModeStatus({ data: { settingId: SETTING_ID } })
+      setHireOpen(result.isOpenForHire)
+      queryClient.setQueryData(hireStatusQueryOptions(SETTING_ID).queryKey, {
+        isOpenForHire: result.isOpenForHire,
+      })
+    } finally {
+      setToggleLoading(false)
+    }
+  }
 
   const links = [
     { label: "Home", to: "/" },
@@ -47,25 +72,25 @@ export default function Header() {
   return (
     <header className="fixed left-0 top-0 z-50 w-full bg-white shadow-md dark:bg-slate-900">
       <div className="container mx-auto flex items-center justify-between px-6 py-4">
-        <div className="cursor-pointer text-md font-bold text-indigo-600">
-          Abdallah Shee
+
+        <div className="flex-shrink-0">
+          <HireModeBanner open={hireOpen} />
         </div>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center space-x-6 md:flex">
+        <nav className="hidden min-w-0 items-center space-x-6 md:flex">
           {links.map((link) => (
-            <Link key={link.label} to={link.to}>
+            <Link key={link.label} to={link.to} className="whitespace-nowrap">
               {link.label}
             </Link>
           ))}
 
-          {/* ✅ Auth inline — no nested component */}
           {isSessionLoading ? (
-            <Skeleton height={34} width={120} radius="xl" className="ml-4" />
+            <Skeleton height={34} width={120} radius="xl" className="ml-4 flex-shrink-0" />
           ) : user ? (
             <Menu shadow="md" width={220} position="bottom-end" radius="md">
               <Menu.Target>
-                <UnstyledButton className="ml-4 rounded-full transition hover:bg-slate-100 dark:hover:bg-slate-800">
+                <UnstyledButton className="ml-4 flex-shrink-0 rounded-full transition hover:bg-slate-100 dark:hover:bg-slate-800">
                   <Group gap="sm" className="px-2 py-1.5">
                     <Avatar
                       src={user.image || "https://i.pravatar.cc/100"}
@@ -73,7 +98,7 @@ export default function Header() {
                       radius="xl"
                       size="sm"
                     />
-                    <Text size="sm" fw={600} className="leading-tight">
+                    <Text size="sm" fw={600} className="whitespace-nowrap leading-tight">
                       {user.name}
                     </Text>
                     <ChevronDown size={16} className="text-slate-500" />
@@ -88,10 +113,25 @@ export default function Header() {
                   <>
                     <Menu.Item
                       leftSection={<LayoutDashboard size={16} className="text-indigo-500" />}
-                    // onClick={() => router.navigate({ to: "/admin" })}
+                      onClick={() => router.navigate({ to: "/admin" })}
                     >
                       Admin Dashboard
                     </Menu.Item>
+
+                    {/* Hire mode toggle */}
+                    <Menu.Item
+                      leftSection={
+                        toggleLoading
+                          ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
+                          : <Briefcase size={16} className={hireOpen ? "text-red-500" : "text-green-500"} />
+                      }
+                      color={hireOpen ? "red" : "green"}
+                      disabled={toggleLoading}
+                      onClick={handleHireToggle}
+                    >
+                      {toggleLoading ? "Updating…" : hireOpen ? "Disable Hire Mode" : "Enable Hire Mode"}
+                    </Menu.Item>
+
                     <Menu.Divider />
                   </>
                 )}
@@ -112,23 +152,11 @@ export default function Header() {
               </Menu.Dropdown>
             </Menu>
           ) : (
-            <span>
-              <Button
-                variant="outline"
-                color="blue"
-                size="sm"
-                onClick={handleLogin}
-                className="ml-4"
-              >
+            <span className="flex flex-shrink-0 gap-2">
+              <Button variant="outline" color="blue" size="sm" onClick={handleLogin} className="ml-4">
                 Sign in
               </Button>
-              <Button
-                variant="filled"
-                color="blue"
-                size="sm"
-                onClick={handleSignup}
-                className="ml-4"
-              >
+              <Button variant="filled" color="blue" size="sm" onClick={handleSignup} className="ml-4">
                 Sign up
               </Button>
             </span>
@@ -189,19 +217,34 @@ export default function Header() {
                   </div>
 
                   {isAdmin && (
-                    <Button
-                      variant="light"
-                      color="indigo"
-                      radius="xl"
-                      fullWidth
-                      leftSection={<LayoutDashboard size={15} />}
-                      onClick={() => {
-                        // router.navigate({ to: "/admin" })
-                        setOpened(false)
-                      }}
-                    >
-                      Admin Dashboard
-                    </Button>
+                    <>
+                      <Button
+                        variant="light"
+                        color="indigo"
+                        radius="xl"
+                        fullWidth
+                        leftSection={<LayoutDashboard size={15} />}
+                        onClick={() => {
+                          router.navigate({ to: "/admin" })
+                          setOpened(false)
+                        }}
+                      >
+                        Admin Dashboard
+                      </Button>
+
+                      {/* Hire mode toggle in mobile drawer */}
+                      <Button
+                        variant="light"
+                        color={hireOpen ? "red" : "green"}
+                        radius="xl"
+                        fullWidth
+                        loading={toggleLoading}
+                        leftSection={<Briefcase size={15} />}
+                        onClick={handleHireToggle}
+                      >
+                        {hireOpen ? "Disable Hire Mode" : "Enable Hire Mode"}
+                      </Button>
+                    </>
                   )}
 
                   <Button

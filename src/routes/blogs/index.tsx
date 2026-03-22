@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Card,
-  Center,
   Container,
   Group,
   Image,
@@ -94,15 +93,49 @@ function BlogsPage() {
 
   return (
     <Container size="xl" className="space-y-8 py-10">
-      <div className="flex flex-wrap items-start justify-between gap-4">
-        <div className="space-y-2">
-          <Badge variant="light" color="grape">
-            Blog
-          </Badge>
-          <Title order={1}>Articles & Writing</Title>
-          <Text c="dimmed" className="max-w-2xl">
-            Thoughts, tutorials, and practical notes on building modern web applications.
+
+      {/* Header */}
+      <div className="space-y-2">
+        <Badge variant="light" color="grape">
+          Blog
+        </Badge>
+        <Title order={1}>Articles & Writing</Title>
+        <Text c="dimmed" className="max-w-2xl">
+          Thoughts, tutorials, and practical notes on building modern web applications.
+        </Text>
+      </div>
+
+      {/* Search + Buttons row */}
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex-1" style={{ minWidth: 220, maxWidth: 400 }}>
+          <Text size="xs" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
+            Search
           </Text>
+
+          <TextInput
+            size="sm"
+            radius="md"
+            placeholder="Search by title, tag, or excerpt…"
+            leftSection={<Search size={16} />}
+            rightSection={
+              searchInput ? (
+                <button type="button" onClick={() => handleSearchChange("")}>
+                  <X size={13} className="text-slate-400 hover:text-slate-600" />
+                </button>
+              ) : null
+            }
+            value={searchInput}
+            onChange={(e) => handleSearchChange(e.currentTarget.value)}
+          />
+
+          {hasSearch && (
+            <Text size="xs" c="dimmed" mt={4}>
+              {isFetching
+                ? "Searching…"
+                : `${pagination.total ?? 0} result${(pagination.total ?? 0) !== 1 ? "s" : ""
+                } for "${debouncedSearch}"`}
+            </Text>
+          )}
         </div>
 
         {isAuthenticated && (
@@ -137,39 +170,7 @@ function BlogsPage() {
         )}
       </div>
 
-      <div className="flex flex-wrap items-end gap-4">
-        <div className="flex-1" style={{ minWidth: 220, maxWidth: 400 }}>
-          <Text size="xs" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
-            Search
-          </Text>
-
-          <TextInput
-            size="sm"
-            radius="md"
-            placeholder="Search by title, tag, or excerpt…"
-            leftSection={<Search size={16} />}
-            rightSection={
-              searchInput ? (
-                <button type="button" onClick={() => handleSearchChange("")}>
-                  <X size={13} className="text-slate-400 hover:text-slate-600" />
-                </button>
-              ) : null
-            }
-            value={searchInput}
-            onChange={(e) => handleSearchChange(e.currentTarget.value)}
-          />
-
-          {hasSearch && (
-            <Text size="xs" c="dimmed" mt={4}>
-              {isFetching
-                ? "Searching…"
-                : `${pagination.total ?? 0} result${(pagination.total ?? 0) !== 1 ? "s" : ""
-                } for "${debouncedSearch}"`}
-            </Text>
-          )}
-        </div>
-      </div>
-
+      {/* Empty state */}
       {!isLoading && blogs.length === 0 && (
         <div className="py-24 text-center">
           <Title order={3} c="dimmed">
@@ -186,6 +187,7 @@ function BlogsPage() {
         </div>
       )}
 
+      {/* Grid */}
       <div
         className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
           }`}
@@ -263,6 +265,7 @@ function BlogsPage() {
         ))}
       </div>
 
+      {/* Pagination */}
       {!hasSearch && totalPages > 1 && (
         <Group justify="center" mt="xl">
           <Pagination
