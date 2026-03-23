@@ -20,7 +20,7 @@ import {
   getMyPaginatedBlogsQueryOptions,
   searchBlogsQueryOptions,
 } from '@/db/queries/blog.queries'
-import { BookMarked, Heart, MessageCircle, Search, X,PenLine, SlidersHorizontal } from "lucide-react"
+import {  Heart, MessageCircle, Search, X,PenLine, SlidersHorizontal } from "lucide-react"
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
 import { useState } from 'react'
