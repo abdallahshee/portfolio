@@ -148,7 +148,7 @@ function RouteComponent() {
     </Group>
   </div>
 
-  {/* Create Project Button */}
+  {/* Create Project Button
   {session && (
     <Link to="/projects/create" className="no-underline self-end">
       <Button
@@ -161,7 +161,7 @@ function RouteComponent() {
         New Project
       </Button>
     </Link>
-  )}
+  )} */}
 
 </div>
 

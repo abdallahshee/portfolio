@@ -1,10 +1,11 @@
 import { getHireStatus, toggleHireModeStatus } from "@/server/setting.functions";
-import { getSession } from "@/server/utils.function";
+import { getUserSession } from "@/server/utils.function";
+
 import { queryOptions } from "@tanstack/react-query";
 
 export const getSessionQueryOptions = () => queryOptions({
     queryKey: ["session"],
-    queryFn: () => getSession()
+    queryFn: () => getUserSession()
 })
 
 export const toggleSettingQueyOptions=(settingId:string)=>queryOptions({

@@ -69,7 +69,7 @@ function RouteComponent() {
         callbackURL: callbackUrl,
       })
 
-      if (res?.data?.user) {
+      if (res?.data?.user ) {
         notifications.show({
           title: "Login successful",
           message: "Welcome back 👋",

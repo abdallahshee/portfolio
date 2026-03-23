@@ -47,7 +47,7 @@ interface ProjectCreateForm {
   technologies: string[]
 }
 
-export const Route = createFileRoute("/projects/create")({
+export const Route = createFileRoute("/admin/projects/create")({
   server: {
     middleware: [AdminMiddleware],
   },

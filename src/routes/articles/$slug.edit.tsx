@@ -16,7 +16,6 @@ import {
   Divider,
   ThemeIcon,
   SimpleGrid,
-  Select,
 } from "@mantine/core"
 import { RichTextEditor, Link } from "@mantine/tiptap"
 import { useEditor } from "@tiptap/react"
@@ -26,7 +25,6 @@ import Superscript from "@tiptap/extension-superscript"
 import SubScript from "@tiptap/extension-subscript"
 import Highlight from "@tiptap/extension-highlight"
 import TextAlign from "@tiptap/extension-text-align"
-import TurndownService from "turndown"
 import {
   Save,
   ImagePlus,
@@ -35,44 +33,51 @@ import {
   Tags,
   Sparkles,
   ArrowLeft,
-  NotebookPen,
+  PencilLine,
+  Clock3,
 } from "lucide-react"
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import TurndownService from "turndown"
 
 import { uploadImage } from "@/lib/utils"
-import { AuthMiddleware } from "@/server/middleware"
-import { useBlogCreateMutation } from "@/db/mutations/blog.mutations"
-import type { BlogRequest } from "@/db/schema"
-import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
-import { useQuery } from "@tanstack/react-query"
+import { canEditBlogMiddleware } from "@/server/middleware"
+import { getBlogBySlugForUpdateQueryOptions } from "@/db/queries/blog.queries"
+import { blogUpdateMutationOption } from "@/db/mutations/blog.mutations"
 
+interface BlogForm {
+  title: string
+  content: string
+  coverImage: File | null
+  tags: string[]
+}
 
-export const Route = createFileRoute("/blogs/create")({
+export const Route = createFileRoute("/articles/$slug/edit")({
   server: {
-    middleware: [AuthMiddleware],
+    middleware: [canEditBlogMiddleware],
   },
-  loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(getAllCategoriesQueryOption())
+  loader: async ({ params, context }) => {
+    const data = await context.queryClient.ensureQueryData(
+      getBlogBySlugForUpdateQueryOptions(params.slug)
+    )
+    return data
   },
   component: RouteComponent,
 })
 
-const turndownService = new TurndownService()
-
 function RouteComponent() {
   const router = useRouter()
+  const turndownService = useRef(new TurndownService())
   const [loading, setLoading] = useState(false)
   const [tagInput, setTagInput] = useState("")
-  const createBlogMutation = useBlogCreateMutation()
-  const [imageFile, setImageFile] = useState<File | null>(null)
-  const { data: categories } = useQuery(getAllCategoriesQueryOption())
-  const form = useForm<BlogRequest>({
+  const blog = Route.useLoaderData()
+  const { slug } = Route.useParams()
+
+  const form = useForm<BlogForm>({
     initialValues: {
-      title: "",
-      content: "",
+      title: blog?.title ?? "",
+      content: blog?.content ?? "",
       coverImage: null,
-      tags: [],
-      categoryId: null
+      tags: blog?.tags ?? [],
     },
   })
 
@@ -124,32 +129,32 @@ function RouteComponent() {
     }
   }, [editor])
 
-  const handleSubmit = async (values: BlogRequest) => {
+  const updateMutation = blogUpdateMutationOption()
+
+  const handleSubmit = async (values: BlogForm) => {
     try {
       setLoading(true)
 
       let imageUrl = ""
-      if (imageFile) {
-        imageUrl = await uploadImage(imageFile)
+      if (values.coverImage) {
+        imageUrl = await uploadImage(values.coverImage)
       }
 
       const defaultUrl =
         "https://images.pexels.com/photos/265667/pexels-photo-265667.jpeg"
 
       const { coverImage, content, ...rest } = values
-      const markdownContent = turndownService.turndown(content)
+      const markdownContent = turndownService.current.turndown(content)
 
-      const inputValues = {
-        title: rest.title,
-        tags: rest.tags,
-        content: markdownContent,
-        coverImage: imageUrl || defaultUrl,
-        categoryId: rest.categoryId
-      }
-
-      await createBlogMutation.mutateAsync(inputValues)
-
-
+      await updateMutation.mutateAsync({
+        blogSchema: {
+          title: rest.title,
+          tags: rest.tags,
+          content: markdownContent,
+          coverImage: imageUrl || blog?.coverImage || defaultUrl,
+        },
+        slug,
+      })
     } catch (err) {
       console.error(err)
     } finally {
@@ -158,9 +163,11 @@ function RouteComponent() {
   }
 
   const previewUrl = useMemo(() => {
-    if (!imageFile) return null
-    return URL.createObjectURL(imageFile)
-  }, [imageFile])
+    if (form.values.coverImage) {
+      return URL.createObjectURL(form.values.coverImage)
+    }
+    return blog?.coverImage || null
+  }, [form.values.coverImage, blog?.coverImage])
 
   return (
     <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
@@ -176,20 +183,20 @@ function RouteComponent() {
               <Stack gap={8}>
                 <Group gap="xs">
                   <ThemeIcon variant="light" color="indigo" radius="xl" size="lg">
-                    <NotebookPen size={18} />
+                    <PencilLine size={18} />
                   </ThemeIcon>
                   <Text fw={600} c="dimmed" size="sm">
-                    Blog Studio
+                    Blog Editor
                   </Text>
                 </Group>
 
                 <Title order={1} className="text-3xl md:text-5xl">
-                  Create a New Blog Post
+                  Edit Blog Post
                 </Title>
 
                 <Text className="max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
-                  Write, format, and publish a professional article with a cover
-                  image, rich text content, and organized tags.
+                  Refine your article, update the cover image, improve the content,
+                  and keep your tags organized before publishing changes.
                 </Text>
               </Stack>
 
@@ -217,7 +224,7 @@ function RouteComponent() {
                         <Title order={3}>Post Details</Title>
                       </Group>
                       <Text size="sm" c="dimmed">
-                        Add the main details for your article.
+                        Update the core details of your blog post.
                       </Text>
                     </div>
 
@@ -231,31 +238,16 @@ function RouteComponent() {
                       required
                     />
 
-
                     <FileInput
-                      label="Cover Image"
-                      placeholder="Upload blog image"
+                      label="Blog Image"
+                      placeholder="Update blog image"
                       leftSection={<ImagePlus size={16} />}
                       accept="image/*"
                       radius="md"
                       size="md"
-                      onChange={(e) => {
-                        setImageFile(e)
-                      }}
+                      {...form.getInputProps("coverImage")}
                     />
-                    <Select
-                      label="Category"
-                      placeholder="Select a category"
-                      leftSection={<FileText size={16} />}
-                      radius="md"
-                      size="md"
-                      data={categories?.map((cat) => ({
-                        label: cat.name,
-                        value: String(cat.id),
-                      })) ?? []}
-                      {...form.getInputProps("categoryId")}
-                      required
-                    />
+
                     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/40">
                       {previewUrl ? (
                         <Image
@@ -267,7 +259,7 @@ function RouteComponent() {
                         />
                       ) : (
                         <div className="flex h-[220px] items-center justify-center rounded-xl border border-dashed border-slate-300 text-slate-500 dark:border-slate-700">
-                          No cover image selected
+                          No cover image available
                         </div>
                       )}
                     </div>
@@ -282,7 +274,7 @@ function RouteComponent() {
                         <Title order={3}>Content</Title>
                       </Group>
                       <Text size="sm" c="dimmed">
-                        Use the editor below to write and format your post.
+                        Edit and format your article content below.
                       </Text>
                     </div>
 
@@ -347,7 +339,7 @@ function RouteComponent() {
                         <Title order={3}>Tags</Title>
                       </Group>
                       <Text size="sm" c="dimmed">
-                        Add relevant tags to make your article easier to discover.
+                        Update tags to better organize and surface your article.
                       </Text>
                     </div>
 
@@ -409,7 +401,7 @@ function RouteComponent() {
                         loading={loading}
                         leftSection={<Save size={16} />}
                       >
-                        Create Blog
+                        Save Changes
                       </Button>
                     </Group>
                   </Stack>
@@ -423,42 +415,46 @@ function RouteComponent() {
                   <ThemeIcon variant="light" color="yellow" radius="xl">
                     <Sparkles size={16} />
                   </ThemeIcon>
-                  <Title order={4}>Writing Tips</Title>
+                  <Title order={4}>Editing Tips</Title>
                 </Group>
 
                 <Stack gap="sm">
                   <Text size="sm" c="dimmed">
-                    Use a clear, attention-grabbing title.
+                    Refresh the title to make it clearer and more engaging.
                   </Text>
                   <Text size="sm" c="dimmed">
-                    Add a strong cover image to improve presentation.
+                    Replace the cover image if you want a stronger visual first impression.
                   </Text>
                   <Text size="sm" c="dimmed">
-                    Break content into short sections with headings.
+                    Break long sections with headings for easier reading.
                   </Text>
                   <Text size="sm" c="dimmed">
-                    Use tags that match the main topic of your article.
+                    Update tags to match the final direction of the article.
                   </Text>
                 </Stack>
               </Card>
 
               <Card radius="2xl" withBorder p="xl" className="shadow-sm">
-                <Title order={4} mb="sm">
-                  Publishing Checklist
-                </Title>
+                <Group gap="xs" mb="sm">
+                  <ThemeIcon variant="light" color="gray" radius="xl">
+                    <Clock3 size={16} />
+                  </ThemeIcon>
+                  <Title order={4}>Edit Summary</Title>
+                </Group>
 
                 <Stack gap="xs">
                   <Text size="sm" c="dimmed">
-                    • Title added
+                    Current title:
+                  </Text>
+                  <Text fw={600}>{form.values.title || "Untitled post"}</Text>
+
+                  <Divider my="xs" />
+
+                  <Text size="sm" c="dimmed">
+                    Total tags: {form.values.tags.length}
                   </Text>
                   <Text size="sm" c="dimmed">
-                    • Cover image selected
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    • Content formatted
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    • Tags attached
+                    Cover image: {previewUrl ? "Available" : "Not set"}
                   </Text>
                 </Stack>
               </Card>
@@ -470,11 +466,12 @@ function RouteComponent() {
 
                 <Stack gap="xs">
                   <Text fw={600}>
-                    {form.values.title || "Your blog title will appear here"}
+                    {form.values.title || "Your edited blog title will appear here"}
                   </Text>
+
                   <Text size="sm" c="dimmed" lineClamp={4}>
                     {editor?.getText() ||
-                      "Start writing to see a quick text preview of your article."}
+                      "Edit your content to see a short text preview here."}
                   </Text>
 
                   {form.values.tags.length > 0 && (

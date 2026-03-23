@@ -25,7 +25,7 @@ import { useState } from "react"
 import classes from "../../css/article.module.css"
 import moment from "moment"
 
-export const Route = createFileRoute("/blogs/")({
+export const Route = createFileRoute("/articles/")({
   validateSearch: (search: Record<string, unknown>) => ({
     page:
       typeof search.page === "number"
@@ -141,7 +141,7 @@ function BlogsPage() {
         {isAuthenticated && (
           <Group gap="sm" className="flex-shrink-0 self-end">
             <Link
-              to="/blogs/$userId"
+              to="/articles/$userId"
               search={{ page: 1 }}
               params={{ userId: session.user.id }}
               className="no-underline"
@@ -156,7 +156,7 @@ function BlogsPage() {
               </Button>
             </Link>
 
-            <Link to="/blogs/create" className="no-underline">
+            <Link to="/articles/create" className="no-underline">
               <Button
                 variant="filled"
                 color="grape"
@@ -178,7 +178,7 @@ function BlogsPage() {
           </Title>
 
           {isAuthenticated && !hasSearch && (
-            <Link to="/blogs/create" className="no-underline">
+            <Link to="/articles/create" className="no-underline">
               <Button mt="lg" variant="light" color="grape" leftSection={<PenLine size={15} />}>
                 Write the first article
               </Button>
@@ -195,7 +195,7 @@ function BlogsPage() {
         {blogs.map((article) => (
           <Link
             key={article.id}
-            to="/blogs/$slug/details"
+            to="/articles/$slug/details"
             params={{ slug: article.slug }}
             className="no-underline"
           >
@@ -273,7 +273,7 @@ function BlogsPage() {
             total={totalPages}
             color="green"
             variant="gradient"
-            onChange={(p) => navigate({ to: "/blogs", search: { page: p } })}
+            onChange={(p) => navigate({ to: "/articles", search: { page: p } })}
           />
         </Group>
       )}

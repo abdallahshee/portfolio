@@ -5,13 +5,38 @@ import {
 } from "@mantine/core"
 import { Link, useRouter } from "@tanstack/react-router"
 import { authClient } from "@/lib/auth-client"
-import { ChevronDown, LogOut, Sun, LayoutDashboard, Briefcase } from "lucide-react"
+import { ChevronDown, LogOut, Sun, Moon, LayoutDashboard, Briefcase } from "lucide-react"
 import HireModeBanner from "./HireModeBanner"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { hireStatusQueryOptions } from "@/db/queries/utils.queries"
 import { toggleHireModeStatus } from "@/server/setting.functions"
 
 const SETTING_ID = import.meta.env.VITE_HIRE_MODE_ID!
+
+type ThemeMode = 'light' | 'dark'
+
+function getInitialMode(): ThemeMode {
+  if (typeof window === 'undefined') return 'light'
+  const stored = window.localStorage.getItem('theme')
+  if (stored === 'dark') return 'dark'
+  // treat 'auto' and anything else as 'light'
+  return 'light'
+}
+
+function applyThemeMode(mode: ThemeMode) {
+  const root = document.documentElement
+  root.classList.remove('light', 'dark')
+  root.classList.add(mode)
+  root.style.colorScheme = mode
+  root.setAttribute('data-mantine-color-scheme', mode)
+  root.setAttribute('data-theme', mode)
+
+  // Force Mantine to re-read the color scheme
+  window.dispatchEvent(new StorageEvent('storage', {
+    key: 'theme',
+    newValue: mode,
+  }))
+}
 
 export default function Header() {
   const [opened, setOpened] = useState(false)
@@ -23,18 +48,33 @@ export default function Header() {
   const isAdmin = session.data?.user?.role === "admin"
   const user = session.data?.user
 
-  // Read initial value from the prefetched query
   const { data } = useQuery(hireStatusQueryOptions(SETTING_ID))
-
-  // Initialize state from query, sync when query data arrives
   const [hireOpen, setHireOpen] = useState(false)
+  const [toggleLoading, setToggleLoading] = useState(false)
+  const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+
+useEffect(() => {
+  const initial = getInitialMode()
+  setThemeMode(initial)
+  applyThemeMode(initial)
+
+  // Re-apply after a tick to override any Mantine hydration reset
+  const timeout = setTimeout(() => applyThemeMode(initial), 50)
+  return () => clearTimeout(timeout)
+}, [])
+
+  const handleThemeChange = () => {
+    const next: ThemeMode = themeMode === 'light' ? 'dark' : 'light'
+    setThemeMode(next)
+    applyThemeMode(next)
+    window.localStorage.setItem('theme', next)
+  }
+
   useEffect(() => {
     if (data?.isOpenForHire !== undefined) {
       setHireOpen(data.isOpenForHire)
     }
   }, [data?.isOpenForHire])
-
-  const [toggleLoading, setToggleLoading] = useState(false)
 
   const handleHireToggle = async () => {
     try {
@@ -69,16 +109,35 @@ export default function Header() {
     router.navigate({ to: "/account/register", search: { callbackUrl: "/" } })
   }
 
+  // Theme toggle button — reused in both desktop and mobile
+  const ThemeButton = (
+    <UnstyledButton
+      onClick={handleThemeChange}
+      title={themeMode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+      className="flex items-center justify-center rounded-full p-2 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+    >
+      {themeMode === 'dark'
+        ? <Moon size={18} className="text-indigo-400" />
+        : <Sun size={18} className="text-indigo-500" />
+      }
+    </UnstyledButton>
+  )
+
   return (
     <header className="fixed left-0 top-0 z-50 w-full bg-white shadow-md dark:bg-slate-900">
-      <div className="container mx-auto flex items-center justify-between px-6 py-4">
+      <div className="container mx-auto flex items-center justify-between p-4">
 
+        {/* Left — hire mode banner */}
         <div className="flex-shrink-0">
           <HireModeBanner open={hireOpen} />
         </div>
 
         {/* Desktop nav */}
         <nav className="hidden min-w-0 items-center space-x-6 md:flex">
+
+          {/* Theme toggle — sits before the links */}
+          {ThemeButton}
+
           {links.map((link) => (
             <Link key={link.label} to={link.to} className="whitespace-nowrap">
               {link.label}
@@ -118,29 +177,9 @@ export default function Header() {
                       Admin Dashboard
                     </Menu.Item>
 
-                    {/* Hire mode toggle */}
-                    <Menu.Item
-                      leftSection={
-                        toggleLoading
-                          ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                          : <Briefcase size={16} className={hireOpen ? "text-red-500" : "text-green-500"} />
-                      }
-                      color={hireOpen ? "red" : "green"}
-                      disabled={toggleLoading}
-                      onClick={handleHireToggle}
-                    >
-                      {toggleLoading ? "Updating…" : hireOpen ? "Disable Hire Mode" : "Enable Hire Mode"}
-                    </Menu.Item>
-
                     <Menu.Divider />
                   </>
                 )}
-
-                <Menu.Item leftSection={<Sun size={16} className="text-indigo-500" />}>
-                  Dark Mode
-                </Menu.Item>
-
-                <Menu.Divider />
 
                 <Menu.Item
                   color="red"
@@ -152,19 +191,20 @@ export default function Header() {
               </Menu.Dropdown>
             </Menu>
           ) : (
-            <span className="flex flex-shrink-0 gap-2">
-              <Button variant="outline" color="blue" size="sm" onClick={handleLogin} className="ml-4">
+            <span className="flex flex-shrink-0 items-center gap-2">
+              <Button variant="outline" color="blue" size="sm" onClick={handleLogin}>
                 Sign in
               </Button>
-              <Button variant="filled" color="blue" size="sm" onClick={handleSignup} className="ml-4">
+              <Button variant="filled" color="blue" size="sm" onClick={handleSignup}>
                 Sign up
               </Button>
             </span>
           )}
         </nav>
 
-        {/* Mobile burger */}
-        <div className="md:hidden">
+        {/* Mobile — theme toggle + burger */}
+        <div className="flex items-center gap-2 md:hidden">
+          {ThemeButton}
           <Burger
             opened={opened}
             onClick={() => setOpened(!opened)}
@@ -217,7 +257,6 @@ export default function Header() {
                   </div>
 
                   {isAdmin && (
-                    <>
                       <Button
                         variant="light"
                         color="indigo"
@@ -231,20 +270,6 @@ export default function Header() {
                       >
                         Admin Dashboard
                       </Button>
-
-                      {/* Hire mode toggle in mobile drawer */}
-                      <Button
-                        variant="light"
-                        color={hireOpen ? "red" : "green"}
-                        radius="xl"
-                        fullWidth
-                        loading={toggleLoading}
-                        leftSection={<Briefcase size={15} />}
-                        onClick={handleHireToggle}
-                      >
-                        {hireOpen ? "Disable Hire Mode" : "Enable Hire Mode"}
-                      </Button>
-                    </>
                   )}
 
                   <Button
@@ -259,9 +284,11 @@ export default function Header() {
                   </Button>
                 </div>
               ) : (
-                <Button variant="outline" color="blue" size="md" fullWidth onClick={handleLogin}>
-                  Login
-                </Button>
+                <div className="flex flex-col gap-3">
+                  <Button variant="outline" color="blue" size="md" fullWidth onClick={handleLogin}>
+                    Login
+                  </Button>
+                </div>
               )}
             </div>
           </div>

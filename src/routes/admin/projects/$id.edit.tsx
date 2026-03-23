@@ -40,7 +40,7 @@ import { useState } from "react"
 import type { ProjectRequest } from "@/db/schema"
 import { useUpdateProjectMutation } from "@/db/mutations/project.mutations"
 
-export const Route = createFileRoute("/projects/$id/edit")({
+export const Route = createFileRoute("/admin/projects/$id/edit")({
   server: {
     middleware: [AdminMiddleware],
   },

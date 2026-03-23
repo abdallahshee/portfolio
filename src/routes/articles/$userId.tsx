@@ -28,7 +28,7 @@ import { authClient } from '@/lib/auth-client'
 import classes from "../../css/article.module.css"
 import moment from 'moment'
 
-export const Route = createFileRoute('/blogs/$userId')({
+export const Route = createFileRoute('/articles/$userId')({
   validateSearch: (search: Record<string, unknown>) => ({
     page:
       typeof search.page === 'number'
@@ -104,7 +104,7 @@ function BlogsPage() {
           <Button
             variant="filled"
             color="blue"
-            onClick={() => router.navigate({ to: "/blogs", search: { page: 1 } })}
+            onClick={() => router.navigate({ to: "/articles", search: { page: 1 } })}
           >
             Back to All Articles
           </Button>
@@ -182,7 +182,7 @@ function BlogsPage() {
 
             {/* Write Article button in the same row as pills */}
             {isOwner && (
-              <Link to="/blogs/create" className="no-underline">
+              <Link to="/articles/create" className="no-underline">
                 <Button
                   size="xs"
                   radius="xl"
@@ -237,7 +237,7 @@ function BlogsPage() {
             </Button>
           )}
           {isOwner && !isSearching && statusFilter === 'all' && (
-            <Link to="/blogs/create" className="no-underline">
+            <Link to="/articles/create" className="no-underline">
               <Button variant="light" color="grape" leftSection={<PenLine size={15} />}>
                 Write your first article
               </Button>
@@ -254,7 +254,7 @@ function BlogsPage() {
         {blogs.map((article) => (
           <Link
             key={article.id}
-            to="/blogs/$slug/details"
+            to="/articles/$slug/details"
             params={{ slug: article.slug }}
             className="no-underline"
           >
@@ -328,7 +328,7 @@ function BlogsPage() {
             value={pagination.page}
             total={totalPages}
             color="grape"
-            onChange={(p) => navigate({ to: '/blogs/$userId', params: { userId }, search: { page: p } })}
+            onChange={(p) => navigate({ to: '/articles/$userId', params: { userId }, search: { page: p } })}
           />
         </Group>
       )}

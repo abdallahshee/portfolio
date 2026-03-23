@@ -22,10 +22,9 @@ import {
   Mail,
   Github,
   Linkedin,
-  Heart,
-  MessageCircle,
+
   FolderKanban,
-  Globe,
+
   FileText,
   Code2,
 } from 'lucide-react'
@@ -283,7 +282,7 @@ function App() {
                   </Text>
                 </div>
 
-                <Link to="/blogs" search={{ page: 1 }}>
+                <Link to="/articles" search={{ page: 1 }}>
                   <Button variant="subtle" rightSection={<ArrowRight size={16} />}>
                     View More Articles
                   </Button>
@@ -310,7 +309,7 @@ function App() {
                       key={blog.id}
                       onClick={() =>
                         router.navigate({
-                          to: '/blogs/$slug/details',
+                          to: '/articles/$slug/details',
                           params: { slug: blog.slug },
                         })
                       }
