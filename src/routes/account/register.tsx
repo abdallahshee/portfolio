@@ -1,5 +1,5 @@
 // src/routes/account/register.tsx
-import { createFileRoute, Link, useRouter, useSearch } from "@tanstack/react-router"
+import { createFileRoute, Link, useRouter } from "@tanstack/react-router"
 import { useForm } from "@mantine/form"
 import {
   Anchor,
@@ -17,12 +17,13 @@ import {
   Title,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
-import { Github, Globe, ImagePlus, UserPlus } from "lucide-react"
-import { authClient } from "@/lib/auth-client"
+import {  ImagePlus, UserPlus } from "lucide-react"
+
 import { uploadImage } from "@/lib/utils"
 import { useMemo, useState } from "react"
 import { GoogleButton } from "@/components/GoogleButton"
 import { GithubButton } from "@/components/GIthubButton"
+import { authClient } from "@/lib/auth-client"
 
 interface SignUpForm {
   name: string
@@ -74,21 +75,20 @@ function RouteComponent() {
   const handleSubmit = async (values: SignUpForm) => {
     try {
       setIsSubmitting(true)
-
-      let imageUrl = ""
-      if (values.image) {
-        imageUrl = await uploadImage(values.image)
-      }
+      console.log("1. Starting sign up...")
 
       const defaultUrl =
         "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
 
+      console.log("2. Calling authClient.signUp.email...")
       const res = await authClient.signUp.email({
         name: values.name.trim(),
         email: values.email.trim().toLowerCase(),
         password: values.password,
-        image: imageUrl || defaultUrl,
+        image: defaultUrl,
       })
+
+      console.log("3. Response received:", JSON.stringify(res, null, 2))
 
       if (res?.data?.user) {
         notifications.show({
@@ -96,7 +96,6 @@ function RouteComponent() {
           message: "Your account has been created successfully 🎉",
           color: "green",
         })
-
         router.navigate({
           to: "/account",
           search: { callbackUrl },
@@ -104,21 +103,26 @@ function RouteComponent() {
         return
       }
 
+      console.log("4. No user in response, error:", res?.error)
       notifications.show({
         title: "Registration failed",
-        message: "Account could not be created",
+        message: res?.error?.message ?? "Account could not be created",
         color: "red",
       })
     } catch (err: any) {
+      console.error("5. Exception caught:", err)
       notifications.show({
         title: "Registration failed",
         message: err?.message ?? "Something went wrong",
         color: "red",
       })
     } finally {
+      console.log("6. Finally block — setIsSubmitting(false)")
       setIsSubmitting(false)
     }
   }
+
+
 
   const handleOAuthSignUp = async (provider: "github" | "google") => {
     try {
@@ -162,12 +166,24 @@ function RouteComponent() {
             Join and start exploring projects and blogs.
           </Text>
         </div>
-        <Group grow mb="md" mt="md">
-          <GoogleButton radius="xl" loading={oauthProvider === "google"} onClick={() => handleOAuthSignUp("google")}>Sign up with Google</GoogleButton>
-          <GithubButton radius="xl" loading={oauthProvider === "github"} onClick={() => handleOAuthSignUp("github")}>
+        <div className="flex flex-col gap-3">
+          <GoogleButton
+            radius="xl"
+            size="md"
+            loading={oauthProvider === "google"}
+            onClick={() => handleOAuthSignUp("google")}
+          >
+            Sign up with Google
+          </GoogleButton>
+          <GithubButton
+            size="md"
+            radius="xl"
+            loading={oauthProvider === "github"}
+            onClick={() => handleOAuthSignUp("github")}
+          >
             Sign up with Github
           </GithubButton>
-        </Group>
+        </div>
         <Divider label="Or create account with email" labelPosition="center" my="xs" />
 
         <form onSubmit={form.onSubmit(handleSubmit)}>

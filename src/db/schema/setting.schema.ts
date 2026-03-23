@@ -1,4 +1,4 @@
-import { pgTable, boolean, text, timestamp } from "drizzle-orm/pg-core"
+import { pgTable, boolean, text} from "drizzle-orm/pg-core"
 import { nanoid } from "nanoid"
 
 export const setting = pgTable("site_setting", {
@@ -8,11 +8,4 @@ export const setting = pgTable("site_setting", {
     .notNull()
     .default(false),
 
-  createdAt: timestamp("created_at")
-    .defaultNow()
-    .notNull(),
-
-  updatedAt: timestamp("updated_at")
-    .defaultNow()
-    .notNull(),
 })

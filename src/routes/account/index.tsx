@@ -13,16 +13,17 @@ import {
   Title,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
-import { Github, Globe, LogIn } from "lucide-react"
+import { LogIn } from "lucide-react"
 import {
   Link,
   createFileRoute,
   useRouter,
 } from "@tanstack/react-router"
-import { authClient } from "@/lib/auth-client"
+
 import { useState } from "react"
 import { GoogleButton } from "@/components/GoogleButton"
 import { GithubButton } from "@/components/GIthubButton"
+import { authClient } from "@/lib/auth-client"
 
 interface LoginForm {
   email: string
@@ -40,6 +41,8 @@ export const Route = createFileRoute("/account/")({
 function RouteComponent() {
   const { callbackUrl } = Route.useSearch()
   const router = useRouter()
+
+  const redirectTo = callbackUrl === "/" ? "/projects" : callbackUrl
 
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(null)
@@ -59,6 +62,8 @@ function RouteComponent() {
   })
 
   const handleSubmit = async (values: LoginForm) => {
+
+    console.log(values)
     try {
       setIsSubmitting(true)
 
@@ -66,16 +71,16 @@ function RouteComponent() {
         email: values.email.trim().toLowerCase(),
         password: values.password,
         rememberMe: values.rememberMe,
-        callbackURL: callbackUrl,
+        callbackURL: redirectTo,
       })
 
-      if (res?.data?.user ) {
+      if (res?.data?.user) {
         notifications.show({
           title: "Login successful",
           message: "Welcome back 👋",
           color: "green",
         })
-        router.navigate({ to: callbackUrl })
+        router.navigate({ to: redirectTo })
         return
       }
 
@@ -95,10 +100,21 @@ function RouteComponent() {
     }
   }
 
+  //   const handleSubmit=async(values:LoginForm)=>{
+  //     const res = await authClient.signIn.email({
+  //   email: values.email.trim().toLowerCase(),
+  //   password: values.password,
+  //   rememberMe: values.rememberMe,
+  //   callbackURL: redirectTo,
+  // })
+
+  // console.log("Better Auth response:", JSON.stringify(res, null, 2))  // 
+  //   }
+
   const handleOAuthSignIn = async (provider: "github" | "google") => {
     try {
       setOauthProvider(provider)
-      await authClient.signIn.social({ provider, callbackURL: callbackUrl })
+      await authClient.signIn.social({ provider, callbackURL: redirectTo })
     } catch (err: any) {
       notifications.show({
         title: "OAuth login failed",
@@ -128,13 +144,25 @@ function RouteComponent() {
             Welcome back. Sign in to continue.
           </Text>
         </div>
-        <Group grow mb="md" mt="md">
-          <GoogleButton radius="xl" loading={oauthProvider === "google"} onClick={() => handleOAuthSignIn("google")}>Sign in with Google</GoogleButton>
-          <GithubButton radius="xl" loading={oauthProvider === "github"} onClick={() => handleOAuthSignIn("github")}>
+
+        <div className="flex flex-col gap-3">
+          <GoogleButton
+            radius="xl"
+            size="md"
+            loading={oauthProvider === "google"}
+            onClick={() => handleOAuthSignIn("google")}
+          >
+            Sign in with Google
+          </GoogleButton>
+          <GithubButton
+            size="md"
+            radius="xl"
+            loading={oauthProvider === "github"}
+            onClick={() => handleOAuthSignIn("github")}
+          >
             Sign in with Github
           </GithubButton>
-        </Group>
-   
+        </div>
 
         <Divider label="Or continue with email" labelPosition="center" my="xs" />
 
@@ -150,7 +178,6 @@ function RouteComponent() {
               required
             />
 
-            {/* Password + Forgot + Remember me row */}
             <div>
               <PasswordInput
                 label="Password"
@@ -175,9 +202,6 @@ function RouteComponent() {
                 </Link>
               </Group>
             </div>
-
-            {/* Remember me */}
-
 
             <Button
               type="submit"

@@ -21,7 +21,7 @@ import {
 export default function Footer() {
   return (
     <footer
-      className="mt-16 bg-slate-50 dark:bg-slate-900 border-t border-slate-200 dark:border-slate-800"
+      className="mt-16 bg-slate-50 dark:bg-slate-700 border-b-2 border-blue-500"
     >
       <Container size="xl" className="py-20">
 

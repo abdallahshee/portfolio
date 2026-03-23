@@ -54,3 +54,7 @@ export const BlogUpdateSchema = z.object({
 })
 
 export type BlogUpdateForm = z.infer<typeof BlogUpdateSchema>
+
+export type Role="admin"|"user"
+
+

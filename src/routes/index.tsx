@@ -295,13 +295,6 @@ function App() {
                 verticalSpacing="md"
                 horizontalSpacing="md"
               >
-                <Table.Thead>
-                  {/* <Table.Tr>
-                    <Table.Th>Article</Table.Th>
-                  
-                    <Table.Th>Action</Table.Th>
-                  </Table.Tr> */}
-                </Table.Thead>
 
                 <Table.Tbody>
                   {blogs?.map((blog) => (
@@ -309,7 +302,7 @@ function App() {
                       key={blog.id}
                       onClick={() =>
                         router.navigate({
-                          to: '/articles/$slug/details',
+                          to: '/articles/$slug',
                           params: { slug: blog.slug },
                         })
                       }

@@ -4,12 +4,13 @@ import {
   Text, Menu, UnstyledButton, Group, Skeleton,
 } from "@mantine/core"
 import { Link, useRouter } from "@tanstack/react-router"
-import { authClient } from "@/lib/auth-client"
-import { ChevronDown, LogOut, Sun, Moon, LayoutDashboard, Briefcase } from "lucide-react"
+
+import { ChevronDown, LogOut, Sun, Moon, LayoutDashboard } from "lucide-react"
 import HireModeBanner from "./HireModeBanner"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { hireStatusQueryOptions } from "@/db/queries/utils.queries"
-import { toggleHireModeStatus } from "@/server/setting.functions"
+
+import { authClient } from "@/lib/auth-client"
 
 const SETTING_ID = import.meta.env.VITE_HIRE_MODE_ID!
 
@@ -19,7 +20,6 @@ function getInitialMode(): ThemeMode {
   if (typeof window === 'undefined') return 'light'
   const stored = window.localStorage.getItem('theme')
   if (stored === 'dark') return 'dark'
-  // treat 'auto' and anything else as 'light'
   return 'light'
 }
 
@@ -30,38 +30,48 @@ function applyThemeMode(mode: ThemeMode) {
   root.style.colorScheme = mode
   root.setAttribute('data-mantine-color-scheme', mode)
   root.setAttribute('data-theme', mode)
-
-  // Force Mantine to re-read the color scheme
-  window.dispatchEvent(new StorageEvent('storage', {
-    key: 'theme',
-    newValue: mode,
-  }))
 }
 
 export default function Header() {
   const [opened, setOpened] = useState(false)
-  const session = authClient.useSession()
   const router = useRouter()
   const queryClient = useQueryClient()
 
-  const isSessionLoading = session.isPending
-  const isAdmin = session.data?.user?.role === "admin"
-  const user = session.data?.user
+  // Use server-prefetched data as initial, authClient for reactivity
+  // const { data: prefetchedSession } = useQuery({
+  //   ...getSessionQueryOptions(),
+  //   staleTime: Infinity,
+  // })
 
-  const { data } = useQuery(hireStatusQueryOptions(SETTING_ID))
+  const session = authClient.useSession()
+
+  // const user = clientSession.data?.user ?? prefetchedSession?.user ?? null
+  // const isSessionLoading = clientSession.isPending && !prefetchedSession && !clientSession.data
+  // const isAdmin = user?.role === "admin"
+
+  // Don't show skeleton at all — just show login buttons while loading
+// This prevents the infinite skeleton problem
+const user = session.data?.user ?? null
+const isAdmin = user?.role === "admin"
+const isSessionLoading = false // disable skeleton entirely for now
+
+  const { data: hireData } = useQuery(hireStatusQueryOptions(SETTING_ID))
   const [hireOpen, setHireOpen] = useState(false)
-  const [toggleLoading, setToggleLoading] = useState(false)
   const [themeMode, setThemeMode] = useState<ThemeMode>('light')
 
-useEffect(() => {
-  const initial = getInitialMode()
-  setThemeMode(initial)
-  applyThemeMode(initial)
+  useEffect(() => {
+    const initial = getInitialMode()
+    setThemeMode(initial)
+    applyThemeMode(initial)
+    const timeout = setTimeout(() => applyThemeMode(initial), 50)
+    return () => clearTimeout(timeout)
+  }, [])
 
-  // Re-apply after a tick to override any Mantine hydration reset
-  const timeout = setTimeout(() => applyThemeMode(initial), 50)
-  return () => clearTimeout(timeout)
-}, [])
+  useEffect(() => {
+    if (hireData?.isOpenForHire !== undefined) {
+      setHireOpen(hireData.isOpenForHire)
+    }
+  }, [hireData?.isOpenForHire])
 
   const handleThemeChange = () => {
     const next: ThemeMode = themeMode === 'light' ? 'dark' : 'light'
@@ -70,61 +80,48 @@ useEffect(() => {
     window.localStorage.setItem('theme', next)
   }
 
-  useEffect(() => {
-    if (data?.isOpenForHire !== undefined) {
-      setHireOpen(data.isOpenForHire)
-    }
-  }, [data?.isOpenForHire])
-
-  const handleHireToggle = async () => {
-    try {
-      setToggleLoading(true)
-      const result = await toggleHireModeStatus({ data: { settingId: SETTING_ID } })
-      setHireOpen(result.isOpenForHire)
-      queryClient.setQueryData(hireStatusQueryOptions(SETTING_ID).queryKey, {
-        isOpenForHire: result.isOpenForHire,
-      })
-    } finally {
-      setToggleLoading(false)
-    }
+  const handleLogout = async () => {
+    await authClient.signOut()
+    await queryClient.invalidateQueries({ queryKey: ["session"] })
+    await router.navigate({ to: "/" })
   }
+
+const handleLogin = () => {
+  window.location.href = '/account/?callbackUrl=/'
+}
+
+const handleSignup = () => {
+  router.navigate({
+    to: "/account/register",
+    search: { callbackUrl: "/" },
+  })
+}
 
   const links = [
     { label: "Home", to: "/" },
     { label: "Projects", to: "/projects" },
-    { label: "Blog", to: "/blogs" },
+    { label: "Articles", to: "/articles" },
     { label: "Contact", to: "/contact" },
   ]
 
-  const handleLogout = async () => {
-    await authClient.signOut()
-    await router.navigate({ to: "/" })
-  }
-
-  const handleLogin = () => {
-    router.navigate({ to: "/account", search: { callbackUrl: "/" } })
-  }
-
-  const handleSignup = () => {
-    router.navigate({ to: "/account/register", search: { callbackUrl: "/" } })
-  }
-
-  // Theme toggle button — reused in both desktop and mobile
   const ThemeButton = (
     <UnstyledButton
       onClick={handleThemeChange}
       title={themeMode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-      className="flex items-center justify-center rounded-full p-2 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+      className="flex items-center justify-center rounded-full px-4 py-1 transition hover:bg-slate-100 dark:hover:bg-slate-800"
     >
       {themeMode === 'dark'
-        ? <Moon size={18} className="text-indigo-400" />
-        : <Sun size={18} className="text-indigo-500" />
+        ? <Moon size={28} className="text-indigo-400" />
+        : <Sun size={28} className="text-indigo-500" />
       }
     </UnstyledButton>
   )
 
   return (
-    <header className="fixed left-0 top-0 z-50 w-full bg-white shadow-md dark:bg-slate-900">
+    // <header className="fixed left-0 top-0 z-[100] w-full border-b-2 border-b-blue-600 shadow-lg ">
+          <header className="fixed left-0 top-0 z-[100] w-full bg-slate-50 dark:bg-slate-700 border-b-2 border-blue-500 shadow-lg ">
+
+      
       <div className="container mx-auto flex items-center justify-between p-4">
 
         {/* Left — hire mode banner */}
@@ -135,7 +132,6 @@ useEffect(() => {
         {/* Desktop nav */}
         <nav className="hidden min-w-0 items-center space-x-6 md:flex">
 
-          {/* Theme toggle — sits before the links */}
           {ThemeButton}
 
           {links.map((link) => (
@@ -147,7 +143,7 @@ useEffect(() => {
           {isSessionLoading ? (
             <Skeleton height={34} width={120} radius="xl" className="ml-4 flex-shrink-0" />
           ) : user ? (
-            <Menu shadow="md" width={220} position="bottom-end" radius="md">
+            <Menu shadow="md" width={220} position="bottom-end" radius="md" zIndex={9999}>
               <Menu.Target>
                 <UnstyledButton className="ml-4 flex-shrink-0 rounded-full transition hover:bg-slate-100 dark:hover:bg-slate-800">
                   <Group gap="sm" className="px-2 py-1.5">
@@ -176,7 +172,6 @@ useEffect(() => {
                     >
                       Admin Dashboard
                     </Menu.Item>
-
                     <Menu.Divider />
                   </>
                 )}
@@ -192,12 +187,16 @@ useEffect(() => {
             </Menu>
           ) : (
             <span className="flex flex-shrink-0 items-center gap-2">
+              <Link to="/account" search={{callbackUrl:"/"}}>
               <Button variant="outline" color="blue" size="sm" onClick={handleLogin}>
                 Sign in
               </Button>
+              </Link>
+             <Link to="/account/register" search={{callbackUrl:"/"}}>
               <Button variant="filled" color="blue" size="sm" onClick={handleSignup}>
                 Sign up
               </Button>
+              </Link>
             </span>
           )}
         </nav>
@@ -256,21 +255,21 @@ useEffect(() => {
                     </div>
                   </div>
 
-                  {isAdmin && (
-                      <Button
-                        variant="light"
-                        color="indigo"
-                        radius="xl"
-                        fullWidth
-                        leftSection={<LayoutDashboard size={15} />}
-                        onClick={() => {
-                          router.navigate({ to: "/admin" })
-                          setOpened(false)
-                        }}
-                      >
-                        Admin Dashboard
-                      </Button>
-                  )}
+                  {/* {isAdmin && ( */}
+                    <Button
+                      variant="light"
+                      color="indigo"
+                      radius="xl"
+                      fullWidth
+                      leftSection={<LayoutDashboard size={15} />}
+                      onClick={() => {
+                        router.navigate({ to: "/admin" })
+                        setOpened(false)
+                      }}
+                    >
+                      Admin Dashboard
+                    </Button>
+                  {/* )} */}
 
                   <Button
                     variant="outline"

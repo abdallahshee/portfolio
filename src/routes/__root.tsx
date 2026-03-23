@@ -20,8 +20,8 @@ import { Notifications } from '@mantine/notifications'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollTop'
 import NotFound from "../components/NotFound"
-import { getSessionQueryOptions } from '@/server/utils.function'
 import { useRouterState } from '@tanstack/react-router';
+import { getSessionQueryOption } from '@/lib/auth.functions';
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -58,7 +58,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     links: [{ rel: 'stylesheet', href: appCss }],
   }),
   loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(getSessionQueryOptions())
+    await context.queryClient.prefetchQuery(getSessionQueryOption())
   },
   shellComponent: RootDocument,
   notFoundComponent: NotFound,
@@ -66,7 +66,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 // ✅ This component is INSIDE the providers — useQuery works here
 function AppShell({ children }: { children: React.ReactNode }) {
-  const { data: session,isLoading } = useQuery(getSessionQueryOptions())
+  const { data: session,isLoading } = useQuery(getSessionQueryOption())
  
 
   const isAdminRoute = useRouterState({

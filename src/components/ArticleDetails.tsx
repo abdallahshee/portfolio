@@ -23,7 +23,7 @@ interface Props {
   isAdmin?: boolean
 }
 
-export default function BlogDetails({ slug, data, userData, isAdmin = false }: Props) {
+export default function ArticleDetails({ slug, data, userData, isAdmin = false }: Props) {
   const createCommentMutation = useCreateCommentMutation()
   const router = useRouter()
 
@@ -272,11 +272,11 @@ export default function BlogDetails({ slug, data, userData, isAdmin = false }: P
             className="flex items-center gap-2 text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 text-sm transition-colors"
           >
             <ArrowLeft size={16} />
-            {isAdmin ? 'Back to Articles' : 'Back to Blogs'}
+            Back to Articles'
           </Link>
 
           {/* Edit button — shown to author OR admin */}
-          {(userData?.id === data.userId || userData?.role === 'admin') && (
+          {(userData?.id === data.userId) && (
             <Button
               variant="filled"
               onClick={() => router.navigate({
@@ -420,7 +420,7 @@ export default function BlogDetails({ slug, data, userData, isAdmin = false }: P
                     <textarea
                       placeholder="Add a comment..."
                       rows={1}
-                      className="w-full text-sm border-b border-gray-300 dark:border-slate-600 focus:border-indigo-500 outline-none resize-none bg-transparent text-gray-800 dark:text-gray-200 py-1 placeholder-gray-400"
+                      className="w-full text-sm border-b border-gray-300 dark:border-slate-600 focus:border-indigo-500 outline-none resize-none bg-transparent text-gray-800 dark:text-gray-200 py-0.5 placeholder-gray-400"
                       onFocus={() => { if (!userData) setAuthModalOpen(true) }}
                       {...commentForm.getInputProps('content')}
                     />

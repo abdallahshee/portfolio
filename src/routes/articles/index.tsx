@@ -15,7 +15,7 @@ import {
 } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { useQuery } from "@tanstack/react-query"
-import { authClient } from "@/lib/auth-client"
+
 import {
   getPaginatedBlogsQueryOptions,
   searchBlogsQueryOptions,
@@ -24,6 +24,7 @@ import { BookMarked, Heart, MessageCircle, PenLine, Search, X } from "lucide-rea
 import { useState } from "react"
 import classes from "../../css/article.module.css"
 import moment from "moment"
+import { authClient } from "@/lib/auth-client"
 
 export const Route = createFileRoute("/articles/")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -195,7 +196,7 @@ function BlogsPage() {
         {blogs.map((article) => (
           <Link
             key={article.id}
-            to="/articles/$slug/details"
+            to="/articles/$slug"
             params={{ slug: article.slug }}
             className="no-underline"
           >

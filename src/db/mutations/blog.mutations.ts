@@ -1,40 +1,48 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createBlog, updateBlog } from '@/server/blog.functions'
 import { useRouter } from '@tanstack/react-router'
-import type { BlogRequest, BlogUpdateForm } from '@/db/schema'
+import {  type BlogRequest, type BlogUpdateForm, type Role} from '@/db/schema'
 import { getAllBlogsQueryOptions, getBlogBySlugQueryOptions } from '../queries/blog.queries'
 
 
 
 
-export const blogUpdateMutationOption = () => {
+export const blogUpdateMutationOption = (role: Role) => {
     const queryClient = useQueryClient()
     const router = useRouter()
 
     return useMutation({
-        mutationFn:(form: BlogUpdateForm) =>updateBlog({
+        mutationFn: (form: BlogUpdateForm) => updateBlog({
             data: { blogSchema: form.blogSchema, slug: form.slug }
         }),
         onSuccess: async (_, variables) => {
             await queryClient.refetchQueries({
-                queryKey: ["blogs", variables.slug],
+                queryKey: getAllBlogsQueryOptions().queryKey,
             })
-            await router.navigate({
-                to: "/blogs/$slug/details",
-                params: { slug: variables.slug }
-            })
-        }
+
+            if (role ==="admin" ) {
+                await router.navigate({
+                    to: "/admin/articles/$slug",
+                    params: { slug: variables.slug },
+                })
+            } else {
+                await router.navigate({
+                    to: "/articles/$slug",
+                    params: { slug: variables.slug },
+                })
+            }
+        },
     })
 }
 
 
 
-export const useBlogCreateMutation = () => {
+export const useBlogCreateMutation = (role: Role) => {
     const queryClient = useQueryClient()
     const router = useRouter()
 
     return useMutation({
-        mutationFn:(form: BlogRequest) =>
+        mutationFn: (form: BlogRequest) =>
             createBlog({ data: form }),
         onSuccess: async (data) => {
             queryClient.setQueryData(getBlogBySlugQueryOptions(data.slug).queryKey, {
@@ -48,10 +56,18 @@ export const useBlogCreateMutation = () => {
                 categoryName: null
             })
             await queryClient.invalidateQueries({ queryKey: getAllBlogsQueryOptions().queryKey })
-            await router.navigate({
-                to: "/blogs/$slug/details",
-                params: { slug: data.slug },
-            })
+            if (role ==="admin") {
+                await router.navigate({
+                    to: "/admin/articles/$slug",
+                    params: { slug: data.slug },
+                })
+            } else {
+                await router.navigate({
+                    to: "/articles/$slug",
+                    params: { slug: data.slug },
+                })
+            }
+
         },
     })
 }

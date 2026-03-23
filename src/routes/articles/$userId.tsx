@@ -20,13 +20,13 @@ import {
   getMyPaginatedBlogsQueryOptions,
   searchBlogsQueryOptions,
 } from '@/db/queries/blog.queries'
-import { BookMarked, Heart, MessageCircle, Search, X, ArrowRight, PenLine, Pencil, SlidersHorizontal } from "lucide-react"
+import { BookMarked, Heart, MessageCircle, Search, X,PenLine, SlidersHorizontal } from "lucide-react"
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
 import { useState } from 'react'
-import { authClient } from '@/lib/auth-client'
 import classes from "../../css/article.module.css"
 import moment from 'moment'
+import { authClient } from '@/lib/auth-client'
 
 export const Route = createFileRoute('/articles/$userId')({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -254,7 +254,7 @@ function BlogsPage() {
         {blogs.map((article) => (
           <Link
             key={article.id}
-            to="/articles/$slug/details"
+            to="/articles/$slug"
             params={{ slug: article.slug }}
             className="no-underline"
           >
