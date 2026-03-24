@@ -27,8 +27,8 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
   const createCommentMutation = useCreateCommentMutation()
   const router = useRouter()
 
-  const [likes, setLikes] = useState(data.likes ?? 0)
-  const [likedByUser, setLikedByUser] = useState(data.likedByUser ?? false)
+  const [likes, setLikes] = useState(data?.likes ?? 0)
+  const [likedByUser, setLikedByUser] = useState(data?.likedByUser ?? false)
   const [isLikePending, setIsLikePending] = useState(false)
   const [showAllComments, setShowAllComments] = useState(false)
   const [authModalOpen, setAuthModalOpen] = useState(false)
@@ -66,7 +66,7 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
   const commentTree = useMemo<CommentNode[]>(() => {
     const map = new Map<string, CommentNode>()
     const roots: CommentNode[] = []
-    data.comments.forEach((c: any) => map.set(c.id, { ...c, replies: [] }))
+    data?.comments.forEach((c: any) => map.set(c.id, { ...c, replies: [] }))
     map.forEach((node) => {
       if (node.parentId) {
         const parent = map.get(node.parentId)
@@ -82,7 +82,7 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
     if (!requireAuth()) return
     try {
       await createCommentMutation.mutateAsync({
-        blogId: data.id, slug, content: values.content, parentId: null,
+        blogId: data?.id, slug, content: values.content, parentId: null,
       })
       notifications.show({ title: 'Comment posted', message: 'Your comment was added.', color: 'green' })
       commentForm.reset()
@@ -95,7 +95,7 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
     if (!replyingTo || !requireAuth()) return
     try {
       await createCommentMutation.mutateAsync({
-        blogId: data.id, slug, content: values.content, parentId: replyingTo.id,
+        blogId: data?.id, slug, content: values.content, parentId: replyingTo.id,
       })
       notifications.show({ title: 'Reply posted', message: 'Your reply was added.', color: 'green' })
       replyForm.reset()

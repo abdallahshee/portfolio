@@ -14,6 +14,4 @@ export const category = pgTable('category', {
 export const categoryRelations = relations(category, ({ many }) => ({
   blogs: many(blog),
 }))
-export type Category=InferSelectModel<typeof category>
-export const categorySchema=createSelectSchema(category).pick({name:true})
-export type categoryRequest=z.infer<typeof categorySchema>
+

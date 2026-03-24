@@ -35,7 +35,7 @@ import moment from "moment"
 
 
 
-export const Route = createFileRoute("/projects/$id/details")({
+export const Route = createFileRoute("/projects/$id")({
   loader: async ({ context, params }) => {
     const data = await context.queryClient.fetchQuery(
       getProjectByIdQueryOptions(params.id)
@@ -242,7 +242,8 @@ function ProjectDetails() {
                   </Group>
 
                   <Rating
-                    value={Math.round(project.averageRating)}
+                  fractions={2}
+                    value={project.averageRating}
                     readOnly
                     count={10}
                     mt="md"
@@ -266,7 +267,7 @@ function ProjectDetails() {
 
                     {hasRated ? (
                       // ── Already rated ──
-                      <div className="rounded-2xl bg-green-50 p-4 dark:bg-green-950/40 border border-green-200 dark:border-green-800">
+                      (<div className="rounded-2xl bg-green-50 p-4 dark:bg-green-950/40 border border-green-200 dark:border-green-800">
                         <Group gap="sm" align="center">
                           <Star size={16} className="text-green-600 dark:text-green-400" />
                           <div>
@@ -284,14 +285,13 @@ function ProjectDetails() {
                           count={10}
                           mt="sm"
                         />
-                      </div>
+                      </div>)
                     ) : (
                       // ── Not yet rated ──
-                      <Stack gap="sm">
+                      (<Stack gap="sm">
                         <Text size="sm" c="dimmed">
                           You haven't rated this project yet. Give it a score from 1 to 10.
                         </Text>
-
                         <div className="rounded-2xl border border-slate-200 p-4 dark:border-slate-700">
                           <Rating
                             count={10}
@@ -300,11 +300,9 @@ function ProjectDetails() {
                             size="lg"
                           />
                         </div>
-
                         <Text size="sm" c="dimmed">
                           {rating ? `Selected rating: ${rating}/10` : "Tap a star to select your rating"}
                         </Text>
-
                         <Button
                           radius="xl"
                           onClick={handleSubmitRating}
@@ -314,7 +312,7 @@ function ProjectDetails() {
                         >
                           Submit Rating
                         </Button>
-                      </Stack>
+                      </Stack>)
                     )}
                   </Stack>
                 ) : (

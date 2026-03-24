@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TestRouteImport } from './routes/test'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
@@ -21,6 +20,7 @@ import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
+import { Route as ProjectsIdRouteImport } from './routes/projects/$id'
 import { Route as ArticlesCreateRouteImport } from './routes/articles/create'
 import { Route as ArticlesUserIdRouteImport } from './routes/articles/$userId'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
@@ -32,7 +32,7 @@ import { Route as AdminProjectsRouteRouteImport } from './routes/admin/projects/
 import { Route as AdminArticlesRouteRouteImport } from './routes/admin/articles/route'
 import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects/index'
 import { Route as AdminArticlesIndexRouteImport } from './routes/admin/articles/index'
-import { Route as ProjectsIdDetailsRouteImport } from './routes/projects/$id.details'
+import { Route as ProjectsIdEditRouteImport } from './routes/projects/$id.edit'
 import { Route as ArticlesSlugEditRouteImport } from './routes/articles/$slug.edit'
 import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AdminProjectsCreateRouteImport } from './routes/admin/projects/create'
@@ -40,11 +40,6 @@ import { Route as AdminArticlesSlugRouteImport } from './routes/admin/articles/$
 import { Route as AdminProjectsIdEditRouteImport } from './routes/admin/projects/$id.edit'
 import { Route as AdminArticlesLugEditRouteImport } from './routes/admin/articles/$lug.edit'
 
-const TestRoute = TestRouteImport.update({
-  id: '/test',
-  path: '/test',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -99,6 +94,11 @@ const AccountIndexRoute = AccountIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => AccountRouteRoute,
+} as any)
+const ProjectsIdRoute = ProjectsIdRouteImport.update({
+  id: '/$id',
+  path: '/$id',
+  getParentRoute: () => ProjectsRouteRoute,
 } as any)
 const ArticlesCreateRoute = ArticlesCreateRouteImport.update({
   id: '/create',
@@ -155,10 +155,10 @@ const AdminArticlesIndexRoute = AdminArticlesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminArticlesRouteRoute,
 } as any)
-const ProjectsIdDetailsRoute = ProjectsIdDetailsRouteImport.update({
-  id: '/$id/details',
-  path: '/$id/details',
-  getParentRoute: () => ProjectsRouteRoute,
+const ProjectsIdEditRoute = ProjectsIdEditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => ProjectsIdRoute,
 } as any)
 const ArticlesSlugEditRoute = ArticlesSlugEditRouteImport.update({
   id: '/edit',
@@ -199,7 +199,6 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
-  '/test': typeof TestRoute
   '/admin/articles': typeof AdminArticlesRouteRouteWithChildren
   '/admin/projects': typeof AdminProjectsRouteRouteWithChildren
   '/account/forgot-password': typeof AccountForgotPasswordRoute
@@ -209,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/articles/$slug': typeof ArticlesSlugRouteWithChildren
   '/articles/$userId': typeof ArticlesUserIdRoute
   '/articles/create': typeof ArticlesCreateRoute
+  '/projects/$id': typeof ProjectsIdRouteWithChildren
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/articles/': typeof ArticlesIndexRoute
@@ -217,7 +217,7 @@ export interface FileRoutesByFullPath {
   '/admin/projects/create': typeof AdminProjectsCreateRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/articles/$slug/edit': typeof ArticlesSlugEditRoute
-  '/projects/$id/details': typeof ProjectsIdDetailsRoute
+  '/projects/$id/edit': typeof ProjectsIdEditRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/articles/$lug/edit': typeof AdminArticlesLugEditRoute
@@ -227,7 +227,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
-  '/test': typeof TestRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
@@ -235,6 +234,7 @@ export interface FileRoutesByTo {
   '/articles/$slug': typeof ArticlesSlugRouteWithChildren
   '/articles/$userId': typeof ArticlesUserIdRoute
   '/articles/create': typeof ArticlesCreateRoute
+  '/projects/$id': typeof ProjectsIdRouteWithChildren
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
   '/articles': typeof ArticlesIndexRoute
@@ -243,7 +243,7 @@ export interface FileRoutesByTo {
   '/admin/projects/create': typeof AdminProjectsCreateRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/articles/$slug/edit': typeof ArticlesSlugEditRoute
-  '/projects/$id/details': typeof ProjectsIdDetailsRoute
+  '/projects/$id/edit': typeof ProjectsIdEditRoute
   '/admin/articles': typeof AdminArticlesIndexRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
   '/admin/articles/$lug/edit': typeof AdminArticlesLugEditRoute
@@ -258,7 +258,6 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
-  '/test': typeof TestRoute
   '/admin/articles': typeof AdminArticlesRouteRouteWithChildren
   '/admin/projects': typeof AdminProjectsRouteRouteWithChildren
   '/account/forgot-password': typeof AccountForgotPasswordRoute
@@ -268,6 +267,7 @@ export interface FileRoutesById {
   '/articles/$slug': typeof ArticlesSlugRouteWithChildren
   '/articles/$userId': typeof ArticlesUserIdRoute
   '/articles/create': typeof ArticlesCreateRoute
+  '/projects/$id': typeof ProjectsIdRouteWithChildren
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/articles/': typeof ArticlesIndexRoute
@@ -276,7 +276,7 @@ export interface FileRoutesById {
   '/admin/projects/create': typeof AdminProjectsCreateRoute
   '/api/auth/$': typeof ApiAuthSplatRoute
   '/articles/$slug/edit': typeof ArticlesSlugEditRoute
-  '/projects/$id/details': typeof ProjectsIdDetailsRoute
+  '/projects/$id/edit': typeof ProjectsIdEditRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/articles/$lug/edit': typeof AdminArticlesLugEditRoute
@@ -292,7 +292,6 @@ export interface FileRouteTypes {
     | '/projects'
     | '/categories'
     | '/contact'
-    | '/test'
     | '/admin/articles'
     | '/admin/projects'
     | '/account/forgot-password'
@@ -302,6 +301,7 @@ export interface FileRouteTypes {
     | '/articles/$slug'
     | '/articles/$userId'
     | '/articles/create'
+    | '/projects/$id'
     | '/account/'
     | '/admin/'
     | '/articles/'
@@ -310,7 +310,7 @@ export interface FileRouteTypes {
     | '/admin/projects/create'
     | '/api/auth/$'
     | '/articles/$slug/edit'
-    | '/projects/$id/details'
+    | '/projects/$id/edit'
     | '/admin/articles/'
     | '/admin/projects/'
     | '/admin/articles/$lug/edit'
@@ -320,7 +320,6 @@ export interface FileRouteTypes {
     | '/'
     | '/categories'
     | '/contact'
-    | '/test'
     | '/account/forgot-password'
     | '/account/register'
     | '/account/reset-password'
@@ -328,6 +327,7 @@ export interface FileRouteTypes {
     | '/articles/$slug'
     | '/articles/$userId'
     | '/articles/create'
+    | '/projects/$id'
     | '/account'
     | '/admin'
     | '/articles'
@@ -336,7 +336,7 @@ export interface FileRouteTypes {
     | '/admin/projects/create'
     | '/api/auth/$'
     | '/articles/$slug/edit'
-    | '/projects/$id/details'
+    | '/projects/$id/edit'
     | '/admin/articles'
     | '/admin/projects'
     | '/admin/articles/$lug/edit'
@@ -350,7 +350,6 @@ export interface FileRouteTypes {
     | '/projects'
     | '/categories'
     | '/contact'
-    | '/test'
     | '/admin/articles'
     | '/admin/projects'
     | '/account/forgot-password'
@@ -360,6 +359,7 @@ export interface FileRouteTypes {
     | '/articles/$slug'
     | '/articles/$userId'
     | '/articles/create'
+    | '/projects/$id'
     | '/account/'
     | '/admin/'
     | '/articles/'
@@ -368,7 +368,7 @@ export interface FileRouteTypes {
     | '/admin/projects/create'
     | '/api/auth/$'
     | '/articles/$slug/edit'
-    | '/projects/$id/details'
+    | '/projects/$id/edit'
     | '/admin/articles/'
     | '/admin/projects/'
     | '/admin/articles/$lug/edit'
@@ -383,19 +383,11 @@ export interface RootRouteChildren {
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
   CategoriesRoute: typeof CategoriesRoute
   ContactRoute: typeof ContactRoute
-  TestRoute: typeof TestRoute
   ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/test': {
-      id: '/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof TestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -472,6 +464,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/account/'
       preLoaderRoute: typeof AccountIndexRouteImport
       parentRoute: typeof AccountRouteRoute
+    }
+    '/projects/$id': {
+      id: '/projects/$id'
+      path: '/$id'
+      fullPath: '/projects/$id'
+      preLoaderRoute: typeof ProjectsIdRouteImport
+      parentRoute: typeof ProjectsRouteRoute
     }
     '/articles/create': {
       id: '/articles/create'
@@ -550,12 +549,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminArticlesIndexRouteImport
       parentRoute: typeof AdminArticlesRouteRoute
     }
-    '/projects/$id/details': {
-      id: '/projects/$id/details'
-      path: '/$id/details'
-      fullPath: '/projects/$id/details'
-      preLoaderRoute: typeof ProjectsIdDetailsRouteImport
-      parentRoute: typeof ProjectsRouteRoute
+    '/projects/$id/edit': {
+      id: '/projects/$id/edit'
+      path: '/edit'
+      fullPath: '/projects/$id/edit'
+      preLoaderRoute: typeof ProjectsIdEditRouteImport
+      parentRoute: typeof ProjectsIdRoute
     }
     '/articles/$slug/edit': {
       id: '/articles/$slug/edit'
@@ -698,14 +697,26 @@ const ArticlesRouteRouteWithChildren = ArticlesRouteRoute._addFileChildren(
   ArticlesRouteRouteChildren,
 )
 
+interface ProjectsIdRouteChildren {
+  ProjectsIdEditRoute: typeof ProjectsIdEditRoute
+}
+
+const ProjectsIdRouteChildren: ProjectsIdRouteChildren = {
+  ProjectsIdEditRoute: ProjectsIdEditRoute,
+}
+
+const ProjectsIdRouteWithChildren = ProjectsIdRoute._addFileChildren(
+  ProjectsIdRouteChildren,
+)
+
 interface ProjectsRouteRouteChildren {
+  ProjectsIdRoute: typeof ProjectsIdRouteWithChildren
   ProjectsIndexRoute: typeof ProjectsIndexRoute
-  ProjectsIdDetailsRoute: typeof ProjectsIdDetailsRoute
 }
 
 const ProjectsRouteRouteChildren: ProjectsRouteRouteChildren = {
+  ProjectsIdRoute: ProjectsIdRouteWithChildren,
   ProjectsIndexRoute: ProjectsIndexRoute,
-  ProjectsIdDetailsRoute: ProjectsIdDetailsRoute,
 }
 
 const ProjectsRouteRouteWithChildren = ProjectsRouteRoute._addFileChildren(
@@ -720,7 +731,6 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
   CategoriesRoute: CategoriesRoute,
   ContactRoute: ContactRoute,
-  TestRoute: TestRoute,
   ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport

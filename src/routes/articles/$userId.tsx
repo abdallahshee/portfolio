@@ -73,7 +73,7 @@ function BlogsPage() {
   const data = isSearching ? searchData : paginatedData
   const isLoading = isSearching ? searchLoading : paginatedLoading
 
-  const allBlogs = data?.blogs ?? []
+  const allBlogs = (data?.blogs ?? []).filter(Boolean)
   const blogs = allBlogs.filter((blog: any) => {
     if (statusFilter === 'all') return true
     return blog.status === statusFilter

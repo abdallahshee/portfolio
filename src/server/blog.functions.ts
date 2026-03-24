@@ -350,6 +350,7 @@ export const searchBlogs = createServerFn({ method: "GET" })
                         id: blog.id,
                         title: blog.title,
                         slug: blog.slug,
+                        status: blog.status,
                         excerpt: blog.excerpt,
                         coverImage: blog.coverImage,
                         tags: blog.tags,

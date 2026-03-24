@@ -22,12 +22,6 @@ import { uploadImage } from "@/lib/utils"
 import type { BlogRequest, Category } from "@/db/schema"
 
 
-
-// interface Category {
-//   id: string
-//   name: string
-// }
-
 interface BlogEditorProps {
   mode: 'create' | 'edit'
   initialValues?: Partial<BlogRequest>

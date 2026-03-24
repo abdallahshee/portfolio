@@ -1,5 +1,5 @@
 
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { relations, type InferInsertModel } from "drizzle-orm";
 import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 import { createInsertSchema } from 'drizzle-zod';
 import { nanoid } from "nanoid";
@@ -28,11 +28,3 @@ export const projectRelations = relations(project, ({ many }) => ({
 }));
 
 // export type Project = InferSelectModel<typeof project>
-export type ProjectRequest = Omit<InferInsertModel<typeof project>, "id" | "createdAt" | "updatedAt">
-export const ProjectSchema = createInsertSchema(project).omit({ id: true, createdAt: true, updatedAt: true })
-
-export const updateProjectSchema = z.object({
-  projectId: z.string().nonempty(),
-  projectShema: ProjectSchema
-})
-export type UpdateProject = z.infer<typeof updateProjectSchema>

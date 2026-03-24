@@ -21,7 +21,7 @@ import {
 export default function Footer() {
   return (
     <footer
-      className="mt-16 bg-slate-50 dark:bg-slate-700 border-b-2 border-blue-500"
+      className="mt-16 bg-slate-50 dark:bg-slate-700"
     >
       <Container size="xl" className="py-20">
 
@@ -37,26 +37,26 @@ export default function Footer() {
               />
               <div>
                 <Title order={4}>Abdallah Shee</Title>
-                <Text size="sm" c="dimmed">
+                <Text size="md" c="dimmed">
                   Full-Stack Developer{" "}
                   <span className="text-base">🇰🇪</span>
                 </Text>
               </div>
             </Group>
 
-            <Text c="dimmed" size="sm">
+            <Text c="dimmed" size="md">
               I build modern and scalable web applications using
               React, TypeScript, Node.js and PostgreSQL.
             </Text>
 
             <Group gap={6}>
               <Phone size={16} className="text-slate-500 dark:text-slate-400" />
-              <Text size="sm">+254 712 345 678</Text>
+              <Text size="md">+254 712 345 678</Text>
             </Group>
 
             <Group gap={6}>
               <Mail size={16} className="text-slate-500 dark:text-slate-400" />
-              <Text size="sm">developer@email.com</Text>
+              <Text size="md">developer@email.com</Text>
             </Group>
           </Stack>
 

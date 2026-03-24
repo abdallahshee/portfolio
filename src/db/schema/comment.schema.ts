@@ -55,6 +55,8 @@ export const commentRelations = relations(comment, ({ one, many }) => ({
 
 // export type Comment = InferSelectModel<typeof comment>
 export type CommentRequest = Omit<InferInsertModel<typeof comment>, "id" | "createdAt" | "updatedAt">
-export const CommentSchema = createInsertSchema(comment).omit({ id: true, createdAt: true, updatedAt: true })
+export const CommentSchema = createInsertSchema(comment,{
+  content:(schema)=>schema.max(500,"Too long for a comment")
+}).pick({ blogId:true, content:true,parentId:true })
 
-export const createCommentSchema = createInsertSchema(comment).pick({ blogId: true, content: true, parentId: true })
+// export const createCommentSchema = createInsertSchema(comment).pick({ blogId: true, content: true, parentId: true })
