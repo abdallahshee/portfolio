@@ -22,7 +22,7 @@ import { FolderPlus, Trash2, Tag, Hash, LayoutList } from "lucide-react"
 import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
 import { useQuery } from "@tanstack/react-query"
 import { useCategoryCreateMutations, useDeleteCategoryMutation } from "@/db/mutations/category.mutations"
-import { categorySchema, type categoryRequest } from "@/db/validations/category.types"
+import { CategorySchema, type CategoryRequest } from "@/db/validations/category.types"
 import { ProjectSchema } from "@/db/validations/project.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 
@@ -41,14 +41,14 @@ function CategoriesPage() {
     close()
   })
   const deleteCategoryMutation = useDeleteCategoryMutation()
-  const form = useForm<categoryRequest>({
+  const form = useForm<CategoryRequest>({
     initialValues: { name: "" },
-    validate: zod4Resolver(categorySchema),
+    validate: zod4Resolver(CategorySchema),
     validateInputOnBlur:true,
     validateInputOnChange:true
   })
 
-  const handleSubmit = (values: categoryRequest) => {
+  const handleSubmit = (values: CategoryRequest) => {
     createCategoryMutation.mutate(values)
   }
 

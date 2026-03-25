@@ -16,7 +16,7 @@ export const ProjectSchema = createInsertSchema(project, {
 }).omit({ id: true, createdAt: true, updatedAt: true })
 
 
-export const updateProjectSchema=ProjectSchema.extend({
+export const UpdateProjectSchema=ProjectSchema.extend({
     projectId:z.string().nonempty()
 })
-export type UpdateProjectRequest = z.infer<typeof updateProjectSchema>
+export type UpdateProjectRequest = z.infer<typeof UpdateProjectSchema>

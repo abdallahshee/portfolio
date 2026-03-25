@@ -4,7 +4,7 @@ import { and, avg, count, desc, eq, sql, inArray, ilike, or } from "drizzle-orm"
 import { createServerFn } from "@tanstack/react-start";
 import { AdminMiddleware, OptionalAuthMiddleware } from "./middleware";
 import { project, projectRating } from "@/db/schema";
-import { ProjectSchema, updateProjectSchema } from "@/db/validations/project.types";
+import { ProjectSchema, UpdateProjectSchema } from "@/db/validations/project.types";
 
 
 export const getAllProjects = createServerFn({ method: "GET" })
@@ -139,7 +139,7 @@ export const getProjectById = createServerFn({ method: "GET" })
 
 export const updateProject = createServerFn({ method: "POST" })
   .middleware([AdminMiddleware])
-  .inputValidator(updateProjectSchema)
+  .inputValidator(UpdateProjectSchema)
   .handler(async ({ data }) => {
     try {
       await db

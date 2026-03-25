@@ -58,7 +58,6 @@ function RouteComponent() {
     },
     validate:zod4Resolver(ProjectSchema),
     validateInputOnBlur:true,
-    validateInputOnChange:true
   })
 
   const [file,setFile]=useState<File|null>(null)

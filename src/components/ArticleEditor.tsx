@@ -18,12 +18,10 @@ import {
 } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
 import { uploadImage } from "@/lib/utils"
-import type { ArticleRequest } from "@/db/validations/article.types"
+import { ArticleSchema, type ArticleRequest } from "@/db/validations/article.types"
+import type { Category } from "@/db/validations/category.types"
+import { zod4Resolver } from "mantine-form-zod-resolver"
 
-interface Category {
-  id: string
-  name: string
-}
 
 interface ArticleEditorProps {
   mode: "create" | "edit"
@@ -66,6 +64,8 @@ export default function ArticleEditor({
       tags: initialValues?.tags ?? [],
       categoryId: initialValues?.categoryId ?? "",
     },
+    validate:zod4Resolver(ArticleSchema),
+    validateInputOnBlur:true
   })
 
   const editor = useEditor({

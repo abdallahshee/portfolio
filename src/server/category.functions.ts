@@ -3,7 +3,7 @@ import { db } from "../db/index"
 import { category} from "@/db/schema"
 import { AdminMiddleware } from "./middleware"
 import { eq } from "drizzle-orm"
-import { categorySchema } from "@/db/validations/category.types"
+import { CategorySchema } from "@/db/validations/category.types"
 
 export const getAllCategories = createServerFn({ method: "GET" })
 .middleware([AdminMiddleware])
@@ -21,7 +21,7 @@ export const deleteCategory = createServerFn({ method: "POST" })
 
 export const createCategory = createServerFn({ method: "POST" })
     .middleware([AdminMiddleware])
-    .inputValidator(categorySchema)
+    .inputValidator(CategorySchema)
     .handler(async ({ data }) => {
         try {
             const newCategory = await db
