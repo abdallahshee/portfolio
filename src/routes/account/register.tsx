@@ -2,6 +2,7 @@
 import { createFileRoute, Link, useRouter } from "@tanstack/react-router"
 import { useForm } from "@mantine/form"
 import {
+  Alert,
   Anchor,
   Avatar,
   Button,
@@ -17,9 +18,9 @@ import {
   Title,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
-import { ImagePlus, UserPlus } from "lucide-react"
+import { AlertCircle, ImagePlus, UserPlus } from "lucide-react"
 
-import { uploadImage } from "@/lib/utils"
+import { getAuthError, uploadImage } from "@/lib/utils"
 import { useMemo, useState } from "react"
 import { authClient } from "@/lib/auth-client"
 import { GithubButton, GoogleButton } from "@/components/Buttons"
@@ -50,7 +51,7 @@ function RouteComponent() {
   const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(
     null
   )
-
+  const [formError, setFormError] = useState<string | null>(null) // ← new
   const form = useForm<SignUpRequest>({
     initialValues: {
       name: "",
@@ -59,9 +60,8 @@ function RouteComponent() {
       password: "",
       confirmPassword: "",
     },
-    validate:zod4Resolver(SignUpSchema),
-    validateInputOnBlur:true,
-    validateInputOnChange:true
+    validate: zod4Resolver(SignUpSchema),
+    validateInputOnBlur: true,
 
   })
   const previewUrl = useMemo(() => {
@@ -70,23 +70,21 @@ function RouteComponent() {
   }, [file])
 
   const handleSubmit = async (values: SignUpRequest) => {
+    setFormError(null)
     try {
       setIsSubmitting(true)
-      console.log("1. Starting sign up...")
       let url = ""
-      // if (file) {
-      //   url = await uploadImage(file)
-      // } else {
-      //   url = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
-      // }
+      if (file) {
+        url = await uploadImage(file)
+      } else {
+        url = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
+      }
       const res = await authClient.signUp.email({
         name: values.name.trim(),
         email: values.email.trim().toLowerCase(),
         password: values.password,
         image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80",
       })
-
-      console.log("3. Response received:", JSON.stringify(res, null, 2))
 
       if (res?.data?.user) {
         notifications.show({
@@ -101,21 +99,15 @@ function RouteComponent() {
         return
       }
 
-      console.log("4. No user in response, error:", res?.error)
-      notifications.show({
-        title: "Registration failed",
-        message: res?.error?.message ?? "Account could not be created",
-        color: "red",
-      })
+      const code = res?.error?.code
+      const message = getAuthError(code, res?.error?.message)
+      setFormError(message)
+
     } catch (err: any) {
-      console.error("5. Exception caught:", err)
-      notifications.show({
-        title: "Registration failed",
-        message: err?.message ?? "Something went wrong",
-        color: "red",
-      })
+      const code = err?.code
+      const message = getAuthError(code, err?.code.message)
+      setFormError(message)
     } finally {
-      console.log("6. Finally block — setIsSubmitting(false)")
       setIsSubmitting(false)
     }
   }
@@ -125,7 +117,6 @@ function RouteComponent() {
   const handleOAuthSignUp = async (provider: "github" | "google") => {
     try {
       setOauthProvider(provider)
-
       await authClient.signIn.social({
         provider,
         callbackURL: callbackUrl,
@@ -179,7 +170,19 @@ function RouteComponent() {
           </GithubButton>
         </div>
         <Divider label="Or create account with email" labelPosition="center" my="xs" />
-
+        {/* ← Error alert shown above the form fields */}
+        {formError && (
+          <Alert
+            color="red"
+            radius="md"
+            icon={<AlertCircle size={24} />}
+            title="Sign in failed"
+            withCloseButton
+            onClose={() => setFormError(null)} // ← allow user to dismiss it
+          >
+            {formError}
+          </Alert>
+        )}
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="md">
             {previewUrl && (

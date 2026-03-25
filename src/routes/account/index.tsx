@@ -1,5 +1,6 @@
 import { useForm } from "@mantine/form"
 import {
+  Alert,
   Button,
   Checkbox,
   Divider,
@@ -13,7 +14,7 @@ import {
   Title,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
-import { LogIn } from "lucide-react"
+import { AlertCircle, LogIn } from "lucide-react"
 import {
   Link,
   createFileRoute,
@@ -24,8 +25,8 @@ import { useState } from "react"
 import { authClient } from "@/lib/auth-client"
 import { SignInSchema, type SignInRequest } from "@/db/validations/user.types"
 import { GithubButton, GoogleButton } from "@/components/Buttons"
-import { zod4Resolver, zodResolver } from 'mantine-form-zod-resolver';
-
+import { zod4Resolver } from 'mantine-form-zod-resolver'
+import { getAuthError } from "@/lib/utils"
 
 export const Route = createFileRoute("/account/")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -37,11 +38,10 @@ export const Route = createFileRoute("/account/")({
 function RouteComponent() {
   const { callbackUrl } = Route.useSearch()
   const router = useRouter()
-
   const redirectTo = callbackUrl === "/" ? "/projects" : callbackUrl
-
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(null)
+  const [formError, setFormError] = useState<string | null>(null) // ← new
 
   const form = useForm<SignInRequest>({
     initialValues: {
@@ -50,14 +50,12 @@ function RouteComponent() {
       rememberMe: false,
     },
     validate: zod4Resolver(SignInSchema),
-    validateInputOnBlur:true,
-    validateInputOnChange:true
-  
+    validateInputOnBlur: true,
   })
 
-  const handleSubmit = async (values:SignInRequest) => {
 
-    console.log(values)
+  const handleSubmit = async (values: SignInRequest) => {
+    setFormError(null)
     try {
       setIsSubmitting(true)
 
@@ -78,32 +76,18 @@ function RouteComponent() {
         return
       }
 
-      notifications.show({
-        title: "Login failed",
-        message: "Could not sign you in. Please try again.",
-        color: "red",
-      })
+      const code = res?.error?.code
+      const message = getAuthError(code, res?.error?.message)
+      setFormError(message)
+
     } catch (err: any) {
-      notifications.show({
-        title: "Login failed",
-        message: err?.message ?? "Invalid email or password",
-        color: "red",
-      })
+      const code = err?.code
+      const message = getAuthError(code, err?.code.message)
+      setFormError(message)
     } finally {
       setIsSubmitting(false)
     }
   }
-
-  //   const handleSubmit=async(values:LoginForm)=>{
-  //     const res = await authClient.signIn.email({
-  //   email: values.email.trim().toLowerCase(),
-  //   password: values.password,
-  //   rememberMe: values.rememberMe,
-  //   callbackURL: redirectTo,
-  // })
-
-  // console.log("Better Auth response:", JSON.stringify(res, null, 2))  // 
-  //   }
 
   const handleOAuthSignIn = async (provider: "github" | "google") => {
     try {
@@ -131,9 +115,7 @@ function RouteComponent() {
               <LogIn size={20} />
             </ThemeIcon>
           </Group>
-          <Title order={2} className="text-3xl">
-            Sign In
-          </Title>
+          <Title order={2} className="text-3xl">Sign In</Title>
           <Text c="dimmed" size="sm" mt={6}>
             Welcome back. Sign in to continue.
           </Text>
@@ -160,6 +142,20 @@ function RouteComponent() {
 
         <Divider label="Or continue with email" labelPosition="center" my="xs" />
 
+        {/* ← Error alert shown above the form fields */}
+        {formError && (
+          <Alert
+            color="red"
+            radius="md"
+            icon={<AlertCircle size={24} />}
+            title="Sign in failed"
+            withCloseButton
+            onClose={() => setFormError(null)} // ← allow user to dismiss it
+          >
+            {formError}
+          </Alert>
+        )}
+
         {/* Email form */}
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="md">
@@ -181,7 +177,6 @@ function RouteComponent() {
                 {...form.getInputProps("password")}
                 required
               />
-
               <Group justify="space-between" mt="xs">
                 <Checkbox
                   label="Remember me"
