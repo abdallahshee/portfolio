@@ -23,20 +23,28 @@ import {
   MessageSquare,
   Phone,
   Send,
+  X,
 } from "lucide-react"
 import { useForm } from "@mantine/form"
+import { authClient } from "@/lib/auth-client"
+import { ContactMeSchema, type ContactMeRequest } from "@/db/validations/contact.types"
+import { zod4Resolver } from "mantine-form-zod-resolver"
 
 export const Route = createFileRoute("/contact")({
   component: ContactPage,
 })
 
 function ContactPage() {
-  const form = useForm({
+  const session = authClient.useSession()
+  const form = useForm<ContactMeRequest>({
     initialValues: {
-      name: "",
-      email: "",
+      subject: "",
+      name: session?.data?.user.name ?? "",
+      email: session?.data?.user.email ?? "",
       message: "",
     },
+    validate: zod4Resolver(ContactMeSchema),
+    validateInputOnBlur: true
   })
 
   const handleSubmit = (values: typeof form.values) => {
@@ -62,12 +70,9 @@ function ContactPage() {
 
             <Stack gap={6} className="flex-1">
               <Group gap="xs">
-                <Badge color="blue" variant="light" radius="xl">
+                <Text color="blue" variant="text" fw={700} size="xl">
                   Full-Stack Software Developer
-                </Badge>
-                <Badge color="green" variant="light" radius="xl">
-                  Available for work
-                </Badge>
+                </Text>
               </Group>
 
               <Title order={1} className="text-3xl md:text-4xl">
@@ -107,7 +112,7 @@ function ContactPage() {
                 <ThemeIcon variant="light" color="blue" radius="xl">
                   <MessageSquare size={16} />
                 </ThemeIcon>
-                <Title order={3}>Send a Message</Title>
+                <Title order={3}>Contact Me via Email</Title>
               </Group>
 
               <Text c="dimmed" size="sm">
@@ -134,26 +139,47 @@ function ContactPage() {
                     {...form.getInputProps("email")}
                   />
 
+                  <TextInput
+                    label="Subject"
+                    placeholder="Write your main Subject"
+                    radius="md"
+                    size="md"
+                    required
+                    {...form.getInputProps("subject")}
+                  />
+
                   <Textarea
                     label="Message"
                     placeholder="Write your message here..."
-                    minRows={6}
-                    autosize
+                    rows={6}
+                    h={200}
+                    styles={{ input: { height: '100%', overflowY: 'auto', resize: 'none' } }}
                     radius="md"
                     size="md"
                     required
                     {...form.getInputProps("message")}
                   />
 
-                  <Button
-                    type="submit"
-                    radius="xl"
-                    size="md"
-                    leftSection={<Send size={18} />}
-                    fullWidth
-                  >
-                    Send Message
-                  </Button>
+                  <Group justify="space-between" mt="xs">
+                    <Button
+                      type="button"
+                      variant="default"
+                      radius="xl"
+                      size="md"
+                        leftSection={<X size={18} />}
+                      onClick={() => form.reset()}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      radius="xl"
+                      size="md"
+                      leftSection={<Send size={18} />}
+                    >
+                      Send Message
+                    </Button>
+                  </Group>
                 </Stack>
               </form>
             </Stack>

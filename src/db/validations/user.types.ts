@@ -29,9 +29,11 @@ export const SignInSchema = createSelectSchema(user, {
     email: z.string().regex(
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         "Must be a valid email address"
-    )
+    ),
+    name:z.string().nonempty("Username is required")
 }).pick({
-    email: true
+    email: true,
+    name:true
 }).extend({
         password: z.string()
             .min(8, "Password must be at least 8 characters")
@@ -49,3 +51,4 @@ export type SignInRequest = z.infer<typeof SignInSchema>
 export type User = InferSelectModel<typeof user>
 
 export type Role = Pick<InferSelectModel<typeof user>, "role">
+

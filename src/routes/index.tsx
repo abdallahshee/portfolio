@@ -53,13 +53,15 @@ function App() {
   return (
     <Container size="xl" className="space-y-8 py-10">
       {/* HERO SECTION */}
-      <section className="grid lg:grid-cols-2 gap-16 items-center">
+      <section className="grid lg:grid-cols-2 gap-6 items-center">
         <div className="space-y-8">
-          {/* <Text size="xl" fw={'bold'} variant="light" color="indigo">
-            Full-Stack Developer
-          </Text> */}
-
-          <div className="space-y-5">
+      <Title className="text-4xl lg:text-6xl font-extrabold tracking-tight">
+  <span className="relative inline-block bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+    Full-Stack Developer
+    <span className="absolute -bottom-1 left-0 h-1 w-3/4 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 opacity-60" />
+  </span>
+</Title>
+          <div>
             <Title className="text-4xl lg:text-6xl font-extrabold leading-tight tracking-tight">
               Building modern
               <span className="text-indigo-500"> web products </span>
@@ -110,7 +112,7 @@ function App() {
                 </ThemeIcon>
                 <div>
                   <Group gap="xs" align="center">
-                    <Text fw={700}>Full-Stack Developer</Text>
+                    <Text fw={700}>Abdallah Shee</Text>
                     <span className="text-base">🇰🇪</span>
                   </Group>
                   <Group gap={4} align="center">
@@ -188,7 +190,7 @@ function App() {
                 verticalSpacing="md"
                 horizontalSpacing="md"
               >
-             
+
                 <Table.Tbody>
                   {projects?.map((project) => {
                     const rating = Number(project.avgRating ?? 0)
@@ -354,7 +356,7 @@ function App() {
           <Stack align="center" gap="md">
 
 
-            <Title order={2} className="text-3xl font-bold text-blue-700">
+            <Title order={2} className="text-3xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
               Let's Build Something Great
             </Title>
 

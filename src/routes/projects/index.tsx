@@ -77,7 +77,7 @@ function RouteComponent() {
 
       {/* Page Header */}
       <div className="mb-10 max-w-2xl">
-        <Title order={1} className="mb-4 text-4xl font-bold">
+        <Title order={1} className="mb-4 text-4xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
           Projects I've Built
         </Title>
         <Text size="lg" c="dimmed">
@@ -89,90 +89,67 @@ function RouteComponent() {
       </div>
 
 
-  <div className="flex flex-wrap items-end justify-between gap-4">
-  <div className="flex-1" style={{ minWidth: 240, maxWidth: 420 }}>
-    <Text size="xs" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
-      Search
-    </Text>
-    <TextInput
-      placeholder="Search by title, technology, or description…"
-      size="sm"
-      radius="md"
-      leftSection={<Search size={14} />}
-      rightSection={
-        searchInput ? (
-          <button onClick={() => handleSearchChange("")}>
-            <X size={13} className="text-slate-400 hover:text-slate-600" />
-          </button>
-        ) : null
-      }
-      value={searchInput}
-      onChange={(e) => handleSearchChange(e.currentTarget.value)}
-    />
-    {isSearching && (
-      <Text size="xs" c="dimmed" mt={4}>
-        {isLoading
-          ? "Searching…"
-          : `${data?.total ?? 0} result${(data?.total ?? 0) !== 1 ? "s" : ""} for "${debouncedSearch}"`}
-      </Text>
-    )}
-  </div>
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="flex-1" style={{ minWidth: 240, maxWidth: 420 }}>
+          <Text size="xs" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
+            Search
+          </Text>
+          <TextInput
+            placeholder="Search by title, technology, or description…"
+            size="sm"
+            radius="md"
+            leftSection={<Search size={14} />}
+            rightSection={
+              searchInput ? (
+                <button onClick={() => handleSearchChange("")}>
+                  <X size={13} className="text-slate-400 hover:text-slate-600" />
+                </button>
+              ) : null
+            }
+            value={searchInput}
+            onChange={(e) => handleSearchChange(e.currentTarget.value)}
+          />
+          {isSearching && (
+            <Text size="xs" c="dimmed" mt={4}>
+              {isLoading
+                ? "Searching…"
+                : `${data?.total ?? 0} result${(data?.total ?? 0) !== 1 ? "s" : ""} for "${debouncedSearch}"`}
+            </Text>
+          )}
+        </div>
 
-  {/* Filter */}
-  <div>
-    <Group gap="xs" mb={5} align="center">
-      <ListFilter size={12} className="text-slate-400" />
-      <Text size="xs" fw={500} c="dimmed" className="uppercase tracking-widest">
-        Filter by status
-      </Text>
-    </Group>
-    <Group gap="xs">
-      {(['all', 'public', 'private'] as const).map((value) => {
-        const label = value === 'all' ? 'All' : value === 'public' ? 'Open Source' : 'Private'
-        const isActive = filter === value
+        {/* Filter */}
+        <div>
+          <Group gap="xs" mb={5} align="center">
+            <ListFilter size={12} className="text-slate-400" />
+            <Text size="xs" fw={500} c="dimmed" className="uppercase tracking-widest">
+              Filter by status
+            </Text>
+          </Group>
+          <Group gap="xs">
+            {(['all', 'public', 'private'] as const).map((value) => {
+              const label = value === 'all' ? 'All' : value === 'public' ? 'Open Source' : 'Private'
+              const isActive = filter === value
 
-        return (
-          <Badge
-            key={value}
-            variant={isActive ? 'filled' : 'light'}
-            color="blue"
-            radius="xl"
-            size="lg"
-            style={{ cursor: 'pointer', userSelect: 'none' }}
-            onClick={() => handleFilterChange(value)}
-          >
-            {label}
-          </Badge>
-        )
-      })}
-    </Group>
-  </div>
-
-  {/* Create Project Button
-  {session && (
-    <Link to="/projects/create" className="no-underline self-end">
-      <Button
-        size="sm"
-        radius="xl"
-        variant="gradient"
-        gradient={{ from: 'indigo', to: 'blue' }}
-        leftSection={<FolderKanban size={14} />}
-      >
-        New Project
-      </Button>
-    </Link>
-  )} */}
-
-</div>
-
-
-      
-
+              return (
+                <Badge
+                  key={value}
+                  variant={isActive ? 'filled' : 'light'}
+                  color="blue"
+                  radius="xl"
+                  size="lg"
+                  style={{ cursor: 'pointer', userSelect: 'none' }}
+                  onClick={() => handleFilterChange(value)}
+                >
+                  {label}
+                </Badge>
+              )
+            })}
+          </Group>
+        </div>
+      </div>
       <div className="mb-12 border-b border-gray-200" />
 
-      {/* Filter result count */}
-
-      {/* Empty state */}
       {/* Filter result count — show for all filter states */}
       {!isLoading && projects.length > 0 && (
         <Text size="sm" c="dimmed" mb="md">
@@ -268,7 +245,7 @@ function RouteComponent() {
 
             <Stack mt="md" gap="xs">
               <Link
-                to="/projects/$id/details"
+                to="/projects/$id"
                 params={{ id: project.id }}
                 className="no-underline"
               >
