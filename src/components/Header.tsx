@@ -109,7 +109,7 @@ const handleSignup = () => {
     <UnstyledButton
       onClick={handleThemeChange}
       title={themeMode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-      className="flex items-center justify-center rounded-full px-4 py-1 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+      className="flex items-center justify-center rounded-full px-4 pt-1 transition hover:bg-slate-100 dark:hover:bg-slate-800"
     >
       {themeMode === 'dark'
         ? <Moon size={28} className="text-indigo-400" />

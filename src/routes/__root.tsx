@@ -82,7 +82,7 @@ function AppShell({ children }: { children: React.ReactNode }) {
        <Skeleton height={34} width={120} radius="xl" className="ml-4 flex-shrink-0" />
       } */}
       {showHeader && <Header />}
-       <main className={showHeader || isLoading ? "pt-20" : ""}>
+       <main className={showHeader || isLoading ? "pt-10" : ""}>
         <Notifications />
         {children}
         <ScrollToTop />
