@@ -21,4 +21,4 @@ export const ArticleUpdateSchema=ArticleSchema
 .extend({slug:z.string()})
 export type ArticleUpdateRequest = z.infer<typeof ArticleUpdateSchema>
 
-
+export const PublishArticleSchema=createSelectSchema(article).pick({id:true, status:true})

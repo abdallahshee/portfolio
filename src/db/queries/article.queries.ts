@@ -45,7 +45,7 @@ export const getMyPaginatedBlogsQueryOptions = (userId:string,page: number, limi
         queryKey: ['articles', userId,page, limit],
         queryFn: () =>
             getMyPaginatedArticles({
-                data: {userId ,page, limit},
+                data: {page, limit},
             }),
     })
 

@@ -7,15 +7,12 @@ import {
 } from '@mantine/core'
 import { useDebouncedValue } from '@mantine/hooks'
 import {
-  Search, X, Eye, Heart, MessageCircle,
+  Search, X, Heart, MessageCircle,
   FileText, Calendar, Trash2,
 } from 'lucide-react'
 import moment from 'moment'
-import { queryOptions, useQuery } from '@tanstack/react-query'
-import { getPaginatedArticles } from '@/server/blog.functions'
-import { getPaginatedArticlesQueryOptions } from '@/db/queries/blog.queries'
-
-
+import { useQuery } from '@tanstack/react-query'
+import { getPaginatedArticlesQueryOptions } from '@/db/queries/article.queries'
 
 export const Route = createFileRoute('/admin/articles/')({
   loader: async ({ context }) => {
@@ -30,10 +27,13 @@ function RouteComponent() {
   const [page, setPage] = useState(1)
   const [searchInput, setSearchInput] = useState('')
   const [debouncedSearch] = useDebouncedValue(searchInput, 300)
-  const router=useRouter()
+  const router = useRouter()
+
   const { data, isLoading } = useQuery(getPaginatedArticlesQueryOptions(page, PAGE_SIZE))
 
-  const allBlogs = data?.blogs ?? []
+  // ✅ safely extract blogs array and pagination
+  const rawBlogs = data?.blogs
+  const allBlogs = Array.isArray(rawBlogs) ? rawBlogs : []
   const pagination = data?.pagination
 
   const filtered = debouncedSearch.trim()
@@ -55,7 +55,6 @@ function RouteComponent() {
             {pagination?.total ?? 0} total articles
           </Text>
         </div>
-
         <Link to="/articles/create" className="no-underline">
           <button className="flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700">
             <FileText size={15} />
@@ -88,7 +87,7 @@ function RouteComponent() {
 
       {/* Table */}
       <Paper withBorder radius="xl" className="overflow-hidden overflow-x-auto">
-  <Table highlightOnHover verticalSpacing="md" horizontalSpacing="lg" style={{ minWidth: 800 }}>
+        <Table highlightOnHover verticalSpacing="md" horizontalSpacing="lg" style={{ minWidth: 800 }}>
           <Table.Thead>
             <Table.Tr>
               <Table.Th>Article</Table.Th>
@@ -118,112 +117,114 @@ function RouteComponent() {
                   <div className="flex flex-col items-center justify-center py-16 text-center">
                     <FileText size={40} className="mb-3 text-slate-300" />
                     <Text fw={500} c="dimmed">
-                      {debouncedSearch ? `No articles matching "${debouncedSearch}"` : 'No articles yet'}
+                      {debouncedSearch
+                        ? `No articles matching "${debouncedSearch}"`
+                        : 'No articles yet'
+                      }
                     </Text>
                   </div>
                 </Table.Td>
               </Table.Tr>
             ) : (
-      filtered.map((article) => (
-  <Table.Tr
-    key={article.id}
-    onClick={() => router.navigate({
-      to: '/admin/articles/$slug',
-      params: { slug: article.slug },
-    })}
-    className="cursor-pointer"
-  >
-    {/* Title + cover */}
-    <Table.Td>
-      <Group gap="sm" wrap="nowrap" style={{ maxWidth: 320 }}>
-        {article.coverImage ? (
-          <img
-            src={article.coverImage}
-            alt={article.title}
-            className="h-10 w-16 flex-shrink-0 rounded-lg object-cover"
-          />
-        ) : (
-          <div className="flex h-10 w-16 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800">
-            <FileText size={16} className="text-slate-400" />
-          </div>
-        )}
-        <Text size="sm" fw={500} lineClamp={2} className="min-w-0">
-          {article.title}
-        </Text>
-      </Group>
-    </Table.Td>
+              filtered.map((article) => (
+                <Table.Tr
+                  key={article.id}
+                  onClick={() => router.navigate({
+                    to: '/admin/articles/$slug',
+                    params: { slug: article.slug },
+                  })}
+                  className="cursor-pointer"
+                >
+                  {/* Title + cover */}
+                  <Table.Td>
+                    <Group gap="sm" wrap="nowrap" style={{ maxWidth: 320 }}>
+                      {article.coverImage ? (
+                        <img
+                          src={article.coverImage}
+                          alt={article.title}
+                          className="h-10 w-16 flex-shrink-0 rounded-lg object-cover"
+                        />
+                      ) : (
+                        <div className="flex h-10 w-16 flex-shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-800">
+                          <FileText size={16} className="text-slate-400" />
+                        </div>
+                      )}
+                      <Text size="sm" fw={500} lineClamp={2} className="min-w-0">
+                        {article.title}
+                      </Text>
+                    </Group>
+                  </Table.Td>
 
-    {/* Author */}
-    <Table.Td>
-      <Group gap="xs" wrap="nowrap">
-        <Avatar
-          src={article.authorImage || undefined}
-          alt={article.authorName || 'Author'}
-          size={28}
-          radius="xl"
-        />
-        <Text size="sm" className="whitespace-nowrap">
-          {article.authorName ?? '—'}
-        </Text>
-      </Group>
-    </Table.Td>
+                  {/* Author */}
+                  <Table.Td>
+                    <Group gap="xs" wrap="nowrap">
+                      <Avatar
+                        src={article.authorImage || undefined}
+                        alt={article.authorName || 'Author'}
+                        size={28}
+                        radius="xl"
+                      />
+                      <Text size="sm" className="whitespace-nowrap">
+                        {article.authorName ?? '—'}
+                      </Text>
+                    </Group>
+                  </Table.Td>
 
-    {/* Category */}
-    <Table.Td>
-      {article.categoryName ? (
-        <Badge variant="light" color="grape" radius="xl" size="sm">
-          {article.categoryName}
-        </Badge>
-      ) : (
-        <Text size="sm" c="dimmed">—</Text>
-      )}
-    </Table.Td>
+                  {/* Category */}
+                  <Table.Td>
+                    {article.categoryName ? (
+                      <Badge variant="light" color="grape" radius="xl" size="sm">
+                        {article.categoryName}
+                      </Badge>
+                    ) : (
+                      <Text size="sm" c="dimmed">—</Text>
+                    )}
+                  </Table.Td>
 
-    {/* Engagement */}
-    <Table.Td>
-      <Group gap="sm">
-        <Group gap={4}>
-          <Heart size={13} className="text-rose-400" />
-          <Text size="xs" c="dimmed">{article.likes}</Text>
-        </Group>
-        <Group gap={4}>
-          <MessageCircle size={13} className="text-indigo-400" />
-          <Text size="xs" c="dimmed">{article.comments}</Text>
-        </Group>
-      </Group>
-    </Table.Td>
+                  {/* Engagement */}
+                  <Table.Td>
+                    <Group gap="sm">
+                      <Group gap={4}>
+                        <Heart size={13} className="text-rose-400" />
+                        <Text size="xs" c="dimmed">{article.likes}</Text>
+                      </Group>
+                      <Group gap={4}>
+                        <MessageCircle size={13} className="text-indigo-400" />
+                        <Text size="xs" c="dimmed">{article.comments}</Text>
+                      </Group>
+                    </Group>
+                  </Table.Td>
 
-    {/* Date */}
-    <Table.Td>
-      <Group gap={6}>
-        <Calendar size={13} className="text-slate-400" />
-        <Text size="xs" c="dimmed" className="whitespace-nowrap">
-          {moment(article.createdAt).format('MMM D, YYYY')}
-        </Text>
-      </Group>
-    </Table.Td>
+                  {/* Date */}
+                  <Table.Td>
+                    <Group gap={6}>
+                      <Calendar size={13} className="text-slate-400" />
+                      <Text size="xs" c="dimmed" className="whitespace-nowrap">
+                        {moment(article.createdAt).format('MMM D, YYYY')}
+                      </Text>
+                    </Group>
+                  </Table.Td>
 
-    {/* Actions — stop propagation so delete doesn't also navigate */}
-    <Table.Td onClick={(e) => e.stopPropagation()}>
-      <Group gap="xs">
-        <Tooltip label="Delete article" position="top">
-          <ActionIcon
-            variant="light"
-            color="red"
-            radius="lg"
-            size="md"
-            onClick={() => {
-              // wire up delete mutation here
-            }}
-          >
-            <Trash2 size={15} />
-          </ActionIcon>
-        </Tooltip>
-      </Group>
-    </Table.Td>
-
-  </Table.Tr>
-))
+                  {/* Actions */}
+                  <Table.Td onClick={(e) => e.stopPropagation()}>
+                    <Group gap="xs">
+                      <Tooltip label="Delete article" position="top">
+                        <ActionIcon
+                          variant="light"
+                          color="red"
+                          radius="lg"
+                          size="md"
+                          onClick={() => {
+                            // wire up delete mutation here
+                          }}
+                        >
+                          <Trash2 size={15} />
+                        </ActionIcon>
+                      </Tooltip>
+                    </Group>
+                  </Table.Td>
+                </Table.Tr>
+              ))
             )}
           </Table.Tbody>
         </Table>

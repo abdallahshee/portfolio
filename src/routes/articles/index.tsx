@@ -1,25 +1,14 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
 import {
-  Avatar,
-  Badge,
-  Box,
-  Button,
-  Card,
-  Container,
-  Group,
-  Image,
-  Pagination,
-  Text,
-  TextInput,
-  Title,
+  Avatar, Badge, Box, Button, Card, Container, Group,
+  Image, Pagination, Text, TextInput, Title,
 } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { useQuery } from "@tanstack/react-query"
-
 import {
   getPaginatedArticlesQueryOptions,
   searchArticlesQueryOptions,
-} from "@/db/queries/blog.queries"
+} from "@/db/queries/article.queries"
 import { BookMarked, Heart, MessageCircle, PenLine, Search, X } from "lucide-react"
 import { useState } from "react"
 import classes from "../../css/article.module.css"
@@ -80,7 +69,10 @@ function BlogsPage() {
   const isLoading = hasSearch ? searchLoading : paginatedLoading
   const isFetching = hasSearch ? searchFetching : paginatedFetching
 
-  const blogs = data?.articles || paginatedData?.blogs || []
+  // ✅ fixed — was data?.pagination before which is the metadata object, not the array
+  const rawBlogs = data?.blogs ?? paginatedData?.blogs
+  const blogs = Array.isArray(rawBlogs) ? rawBlogs : []
+
   const pagination = data?.pagination ?? paginatedData?.pagination ?? {
     page: 1,
     totalPages: 1,
@@ -97,9 +89,7 @@ function BlogsPage() {
 
       {/* Header */}
       <div className="space-y-2">
-        <Badge variant="light" color="grape">
-          Blog
-        </Badge>
+        <Badge variant="light" color="grape">Blog</Badge>
         <Title order={1}>Articles & Writing</Title>
         <Text c="dimmed" className="max-w-2xl">
           Thoughts, tutorials, and practical notes on building modern web applications.
@@ -112,7 +102,6 @@ function BlogsPage() {
           <Text size="xs" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
             Search
           </Text>
-
           <TextInput
             size="sm"
             radius="md"
@@ -128,13 +117,12 @@ function BlogsPage() {
             value={searchInput}
             onChange={(e) => handleSearchChange(e.currentTarget.value)}
           />
-
           {hasSearch && (
             <Text size="xs" c="dimmed" mt={4}>
               {isFetching
                 ? "Searching…"
-                : `${pagination.total ?? 0} result${(pagination.total ?? 0) !== 1 ? "s" : ""
-                } for "${debouncedSearch}"`}
+                : `${pagination.total ?? 0} result${(pagination.total ?? 0) !== 1 ? "s" : ""} for "${debouncedSearch}"`
+              }
             </Text>
           )}
         </div>
@@ -147,23 +135,12 @@ function BlogsPage() {
               params={{ userId: session.user.id }}
               className="no-underline"
             >
-              <Button
-                variant="light"
-                color="grape"
-                radius="xl"
-                leftSection={<BookMarked size={15} />}
-              >
+              <Button variant="light" color="grape" radius="xl" leftSection={<BookMarked size={15} />}>
                 My Articles
               </Button>
             </Link>
-
             <Link to="/articles/create" className="no-underline">
-              <Button
-                variant="filled"
-                color="grape"
-                radius="xl"
-                leftSection={<PenLine size={15} />}
-              >
+              <Button variant="filled" color="grape" radius="xl" leftSection={<PenLine size={15} />}>
                 Write Article
               </Button>
             </Link>
@@ -177,7 +154,6 @@ function BlogsPage() {
           <Title order={3} c="dimmed">
             {hasSearch ? `No articles found for "${debouncedSearch}"` : "No articles yet"}
           </Title>
-
           {isAuthenticated && !hasSearch && (
             <Link to="/articles/create" className="no-underline">
               <Button mt="lg" variant="light" color="grape" leftSection={<PenLine size={15} />}>
@@ -189,10 +165,9 @@ function BlogsPage() {
       )}
 
       {/* Grid */}
-      <div
-        className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
-          }`}
-      >
+      <div className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${
+        isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
+      }`}>
         {blogs.map((article) => (
           <Link
             key={article.id}
@@ -222,11 +197,9 @@ function BlogsPage() {
                 <Text tt="uppercase" opacity={0.6} fw={700} size="xs" c="grape" mb={4}>
                   {article.categoryName}
                 </Text>
-
                 <Text fw={600} size="sm" lineClamp={2} mb={6}>
                   {article.title}
                 </Text>
-
                 <Text size="xs" c="dimmed" lineClamp={2} mb="auto">
                   {article.excerpt}
                 </Text>
@@ -234,27 +207,21 @@ function BlogsPage() {
                 <Group justify="space-between" align="center" mt={12}>
                   <Group gap={6}>
                     <Avatar size={22} src={article.authorImage} alt={article.authorName!} radius="xl" />
-                    <Text size="xs" fw={500}>
-                      {article.authorName}
-                    </Text>
+                    <Text size="xs" fw={500}>{article.authorName}</Text>
                   </Group>
-
                   <Text size="xs" c="dimmed">
                     {moment(article.createdAt).format("MMM D, YYYY")}
                   </Text>
                 </Group>
 
                 <Group
-                  gap="xs"
-                  mt={8}
-                  pt={8}
+                  gap="xs" mt={8} pt={8}
                   style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
                 >
                   <Group gap={4}>
                     <Heart size={13} opacity={0.5} />
                     <Text size="xs" c="dimmed">{article.likes}</Text>
                   </Group>
-
                   <Group gap={4}>
                     <MessageCircle size={13} opacity={0.5} />
                     <Text size="xs" c="dimmed">{article.comments}</Text>

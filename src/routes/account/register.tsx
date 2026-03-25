@@ -74,16 +74,16 @@ function RouteComponent() {
       setIsSubmitting(true)
       console.log("1. Starting sign up...")
       let url = ""
-      if (file) {
-        url = await uploadImage(file)
-      } else {
-        url = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
-      }
+      // if (file) {
+      //   url = await uploadImage(file)
+      // } else {
+      //   url = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
+      // }
       const res = await authClient.signUp.email({
         name: values.name.trim(),
         email: values.email.trim().toLowerCase(),
         password: values.password,
-        image: url,
+        image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80",
       })
 
       console.log("3. Response received:", JSON.stringify(res, null, 2))

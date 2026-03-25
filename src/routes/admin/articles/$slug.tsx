@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { getArticleBySlugQueryOptions } from '@/db/queries/blog.queries'
+import { getArticleBySlugQueryOptions } from '@/db/queries/article.queries'
 import { getSessionQueryOptions } from '@/db/queries/utils.queries'
 import ArticleDetails from '@/components/ArticleDetails'
 

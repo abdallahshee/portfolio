@@ -5,7 +5,7 @@ import { getAllArticlesQueryOptions, getArticleBySlugQueryOptions } from '../que
 import type { Role } from '../validations/user.types'
 import type { ArticleRequest, ArticleUpdateRequest } from '../validations/article.types'
 
-export const articleUpdateMutationOption = (role: Role) => {
+export const useArticleUpdateMutationOption = (role: Role) => {
     const queryClient = useQueryClient()
     const router = useRouter()
 
@@ -35,7 +35,7 @@ export const articleUpdateMutationOption = (role: Role) => {
 
 
 
-export const useBlogCreateMutation = (role: Role) => {
+export const useArticleCreateMutation = (role: Role) => {
     const queryClient = useQueryClient()
     const router = useRouter()
 

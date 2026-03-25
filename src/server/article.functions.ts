@@ -1,10 +1,10 @@
 
 import { createServerFn } from "@tanstack/react-start";
 import { db } from "../db/index";
-import { AuthMiddleware, OptionalAuthMiddleware } from "./middleware";
+import { AdminMiddleware, AuthMiddleware, OptionalAuthMiddleware } from "./middleware";
 import { and, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { category, comment, user } from "@/db/schema";
-import { ArticleSchema, ArticleUpdateSchema } from "@/db/validations/article.types";
+import { ArticleSchema, ArticleUpdateSchema, PublishArticleSchema } from "@/db/validations/article.types";
 import { article } from "@/db/schema/article.schema";
 import { articleLike } from "@/db/schema/article-like.schema";
 
@@ -216,7 +216,7 @@ export const getPaginatedArticles = createServerFn({ method: 'GET' })
                     excerpt: article.excerpt,
                     coverImage: article.coverImage,
                     createdAt: article.createdAt,
-                    userId:user.id,
+                    userId: user.id,
                     authorImage: user.image,
                     authorName: user.name,
                     categoryName: category.name,
@@ -381,7 +381,7 @@ export const searchArticles = createServerFn({ method: "GET" })
             const total = Number(totalResult[0].count)
 
             return {
-                articles: articleRows,
+                blogs:articleRows,
                 pagination: {
                     total,
                     page,
@@ -432,14 +432,15 @@ export const getMyArticles = createServerFn({ method: "GET" })
     })
 
 export const getMyPaginatedArticles = createServerFn({ method: 'GET' })
-    .inputValidator((data: { userId: string; page?: number; limit?: number }) => ({
-        userId: data.userId,
+    .middleware([AuthMiddleware])
+    .inputValidator((data: { page?: number; limit?: number }) => ({
         page: data.page && data.page > 0 ? data.page : 1,
         limit: data.limit && data.limit > 0 ? data.limit : 6,
     }))
-    .handler(async ({ data }) => {
+    .handler(async ({ data, context }) => {
         try {
-            const { userId, page = 1, limit = 6 } = data
+            const userId = context.user.id
+            const { page = 1, limit = 6 } = data
             const offset = (page - 1) * limit
 
             const [articles, totalResult] = await Promise.all([
@@ -496,3 +497,15 @@ export const getMyPaginatedArticles = createServerFn({ method: 'GET' })
         }
     })
 
+export const publishArticle = createServerFn({ method: "POST" })
+    .middleware([AdminMiddleware])
+    .inputValidator(PublishArticleSchema)
+    .handler(async ({ data }) => {
+        try {
+            const [theArticle] = await db.update(article).set({ status: data.status })
+                .where(eq(article.id, data.id)).returning({articleId:article.id,articleStatus:article.status})
+            return theArticle
+        } catch (err) {
+            throw err
+        }
+    })

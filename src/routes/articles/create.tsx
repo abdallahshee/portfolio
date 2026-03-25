@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useRef } from "react"
 import TurndownService from "turndown"
 import { AuthMiddleware } from "@/server/middleware"
-import { useBlogCreateMutation } from "@/db/mutations/article.mutations"
+import { useArticleCreateMutation } from "@/db/mutations/article.mutations"
 import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
 import { useQuery } from "@tanstack/react-query"
 
@@ -23,7 +23,7 @@ function RouteComponent() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const turndownService = useRef(new TurndownService())
-  const createBlogMutation = useBlogCreateMutation({role:"user"})
+  const createBlogMutation = useArticleCreateMutation({role:"user"})
   const { data: categories } = useQuery(getAllCategoriesQueryOption())
 
   return (

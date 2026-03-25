@@ -1,13 +1,10 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 import { getArticleBySlugForUpdateQueryOptions } from "@/db/queries/article.queries"
-import { articleUpdateMutationOption } from "@/db/mutations/article.mutations"
-import TurndownService from "turndown"
-import { useRef } from "react"
+import { useArticleUpdateMutationOption } from "@/db/mutations/article.mutations"
 import ArticleEditor from "@/components/ArticleEditor"
 import { UserEditArticleMiddleware } from "@/server/middleware"
 import type { ArticleRequest } from "@/db/validations/article.types"
-
 
 export const Route = createFileRoute("/articles/$slug/edit")({
   server: { middleware: [UserEditArticleMiddleware] },
@@ -21,27 +18,31 @@ export const Route = createFileRoute("/articles/$slug/edit")({
 
 function RouteComponent() {
   const router = useRouter()
-  const blog = Route.useLoaderData()
+  const article = Route.useLoaderData()
   const { slug } = Route.useParams()
   const [loading, setLoading] = useState(false)
-  const turndownService = useRef(new TurndownService())
-  const updateMutation = articleUpdateMutationOption({role:"user"})
+  const updateMutation = useArticleUpdateMutationOption({ role: "user" })
 
   return (
     <ArticleEditor
       mode="edit"
       initialValues={{
-        title: blog?.title ?? "",
-        content: blog?.content ?? "",
-        tags: blog?.tags ?? [],
+        title: article?.title!,
+        content: article?.content!,
+        tags: article?.tags!,
+        coverImage: article?.coverImage!,
+        categoryId: article?.id!,
+        slug, // ← passed so onSubmit can send it to the server fn
       }}
-      existingCoverImage={blog?.coverImage}
       loading={loading}
-      onSubmit={async (values:ArticleRequest, imageUrl) => {
+      onSubmit={async (values: ArticleRequest, imageUrl: string) => {
         try {
           setLoading(true)
-          const markdownContent = turndownService.current.turndown(values.content)
-          await updateMutation.mutateAsync({ })
+          await updateMutation.mutateAsync({
+            ...values,
+            coverImage: imageUrl || values.coverImage, // prefer freshly uploaded url
+            slug, // ← required by ArticleUpdateSchema
+          })
         } catch (err) {
           console.error(err)
         } finally {

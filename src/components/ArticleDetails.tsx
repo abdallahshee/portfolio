@@ -289,6 +289,17 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
               <Edit2Icon size={14} />
             </Button>
           )}
+
+          {isAdmin && (
+            <Button
+              variant="filled"
+              // onClick={()=>publish(data.)}
+              className="flex items-center gap-2"
+            >
+              Publish Article&nbsp;
+              <Edit2Icon size={14} />
+            </Button>
+          )}
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px] gap-6">
