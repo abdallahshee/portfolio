@@ -3,12 +3,10 @@ import { pgTable, text, timestamp} from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 import { user } from "./user.schema";
 import { comment } from "./comment.schema";
-
-import { blogLike } from "./blog-like.schema";
-
+import { articleLike } from "./article-like.schema";
 import { category } from "./category.schema";
 
-export const blog = pgTable("blog", {
+export const article = pgTable("article", {
   id: text("id").primaryKey().$default(() => nanoid(16)),
   title: text("title").notNull(),
   slug: text("slug").notNull().unique(),
@@ -26,18 +24,17 @@ export const blog = pgTable("blog", {
     .notNull(),
 })
 
-export const blogRelations = relations(blog, ({ one, many }) => ({
+export const articleRelations = relations(article, ({ one, many }) => ({
   author: one(user, {
-    fields: [blog.userId],
+    fields: [article.userId],
     references: [user.id],
   }),
   category: one(category, {
-    fields: [blog.categoryId],
+    fields: [article.categoryId],
     references: [category.id],
   }),
   comments: many(comment),
-
-  likes: many(blogLike),
+  likes: many(articleLike),
 }))
 
 

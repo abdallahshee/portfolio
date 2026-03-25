@@ -19,25 +19,18 @@ import {
 import { useEffect, useMemo, useRef, useState } from "react"
 import TurndownService from "turndown"
 import { uploadImage } from "@/lib/utils"
-import type { BlogRequest, Category } from "@/db/schema"
-
+import type { ArticleRequest } from "@/db/validations/article.types"
 
 interface BlogEditorProps {
   mode: 'create' | 'edit'
-  initialValues?: Partial<BlogRequest>
-  existingCoverImage?: string | null
-  categories?: Category[]
-  loading: boolean
-  onSubmit: (values: BlogRequest, imageUrl: string) => Promise<void>
+  initialValues?: ArticleRequest
+  onSubmit: (values: ArticleRequest) => Promise<void>
   onCancel: () => void
 }
 
 export default function ArticleEditor({
   mode,
   initialValues,
-  existingCoverImage,
-  categories = [],
-  loading,
   onSubmit,
   onCancel,
 }: BlogEditorProps) {
@@ -45,11 +38,11 @@ export default function ArticleEditor({
   const [tagInput, setTagInput] = useState("")
   const [imageFile, setImageFile] = useState<File | null>(null)
 
-  const form = useForm<BlogRequest>({
+  const form = useForm<ArticleRequest>({
     initialValues: {
       title: initialValues?.title ?? "",
       content: initialValues?.content ?? "",
-      coverImage: null,
+      coverImage: initialValues?.coverImage??"",
       tags: initialValues?.tags ?? [],
       categoryId: initialValues?.categoryId ?? null,
     },
@@ -95,8 +88,16 @@ export default function ArticleEditor({
       form.values.tags.filter((tag) => tag !== tagToRemove)
     )
   }
+  const previewUrl = useMemo(() => {
+    let imageUrl=null
+    if (!imageFile){
+      return imageUrl
+    }
+    imageUrl=await uploadImage(imageFile)
+    return initialValues?.coverImage
+  }, [imageFile,initialValues?.coverImage])
 
-  const handleSubmit = async (values: BlogRequest) => {
+  const handleSubmit = async (values: ArticleRequest) => {
     let imageUrl = ""
     if (imageFile) {
       imageUrl = await uploadImage(imageFile)
@@ -104,10 +105,7 @@ export default function ArticleEditor({
     await onSubmit(values, imageUrl)
   }
 
-  const previewUrl = useMemo(() => {
-    if (imageFile) return URL.createObjectURL(imageFile)
-    return existingCoverImage || null
-  }, [imageFile, existingCoverImage])
+
 
   const isEdit = mode === 'edit'
 

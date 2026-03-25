@@ -17,8 +17,8 @@ import { useDebouncedValue } from "@mantine/hooks"
 import { useQuery } from "@tanstack/react-query"
 
 import {
-  getPaginatedBlogsQueryOptions,
-  searchBlogsQueryOptions,
+  getPaginatedArticlesQueryOptions,
+  searchArticlesQueryOptions,
 } from "@/db/queries/blog.queries"
 import { BookMarked, Heart, MessageCircle, PenLine, Search, X } from "lucide-react"
 import { useState } from "react"
@@ -38,7 +38,7 @@ export const Route = createFileRoute("/articles/")({
   loaderDeps: ({ search }) => ({ page: search.page }),
   loader: async ({ context, deps }) => {
     await context.queryClient.prefetchQuery(
-      getPaginatedBlogsQueryOptions(deps.page, 6)
+      getPaginatedArticlesQueryOptions(deps.page, 6)
     )
   },
   component: BlogsPage,
@@ -62,7 +62,7 @@ function BlogsPage() {
     isFetching: paginatedFetching,
     isPlaceholderData,
   } = useQuery({
-    ...getPaginatedBlogsQueryOptions(page, PAGE_SIZE),
+    ...getPaginatedArticlesQueryOptions(page, PAGE_SIZE),
     placeholderData: (previousData) => previousData,
   })
 
@@ -71,7 +71,7 @@ function BlogsPage() {
     isLoading: searchLoading,
     isFetching: searchFetching,
   } = useQuery({
-    ...searchBlogsQueryOptions(debouncedSearch, 1, PAGE_SIZE),
+    ...searchArticlesQueryOptions(debouncedSearch, 1, PAGE_SIZE),
     enabled: hasSearch,
     placeholderData: (previousData) => previousData,
   })
@@ -80,7 +80,7 @@ function BlogsPage() {
   const isLoading = hasSearch ? searchLoading : paginatedLoading
   const isFetching = hasSearch ? searchFetching : paginatedFetching
 
-  const blogs = data?.blogs || paginatedData?.blogs || []
+  const blogs = data?.articles || paginatedData?.blogs || []
   const pagination = data?.pagination ?? paginatedData?.pagination ?? {
     page: 1,
     totalPages: 1,

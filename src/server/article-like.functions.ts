@@ -2,21 +2,22 @@ import { createServerFn } from "@tanstack/react-start"
 import { AuthMiddleware } from "./middleware"
 import { db } from "../db/index"
 import { and, eq, sql } from "drizzle-orm"
-import { blogLike } from "@/db/schema"
+import { articleLike } from "@/db/schema/article-like.schema"
+
 
 // ── helper to get fresh likes count ──────────────────────────────
-const getLikesCount = async (blogId: string) => {
+const getLikesCount = async (articleId: string) => {
     const result = await db
         .select({ likes: sql<number>`count(*)` })
-        .from(blogLike)
-        .where(eq(blogLike.blogId, blogId))
+        .from(articleLike)
+        .where(eq(articleLike.articleId, articleId))
     return Number(result[0]?.likes ?? 0)
 }
 
 // ── Like a blog ───────────────────────────────────────────────────
 export const likeBlog = createServerFn()
     .middleware([AuthMiddleware])
-    .inputValidator((data: { blogId: string }) => data)
+    .inputValidator((data: { articleId: string }) => data)
     .handler(async ({ data, context }) => {
         const currentUserId = context.user?.id
 
@@ -26,12 +27,12 @@ export const likeBlog = createServerFn()
 
         // Check if already liked — prevent duplicates
         const existingLike = await db
-            .select({ id: blogLike.id })
-            .from(blogLike)
+            .select({ id: articleLike.id })
+            .from(articleLike)
             .where(
                 and(
-                    eq(blogLike.blogId, data.blogId),
-                    eq(blogLike.userId, currentUserId)
+                    eq(articleLike.articleId, data.articleId),
+                    eq(articleLike.userId, currentUserId)
                 )
             )
             .limit(1)
@@ -40,21 +41,21 @@ export const likeBlog = createServerFn()
             throw new Error("You have already liked this blog")
         }
 
-        await db.insert(blogLike).values({
-            blogId: data.blogId,
+        await db.insert(articleLike).values({
+            articleId: data.articleId,
             userId: currentUserId,
         })
 
         return {
-            likes: await getLikesCount(data.blogId),
+            likes: await getLikesCount(data.articleId),
             likedByUser: true,
         }
     })
 
 // ── Dislike (unlike) a blog ───────────────────────────────────────
-export const dislikeBlog = createServerFn()
+export const dislikeArticle = createServerFn()
     .middleware([AuthMiddleware])
-    .inputValidator((data: { blogId: string }) => data)
+    .inputValidator((data: { articleId: string }) => data)
     .handler(async ({ data, context }) => {
         const currentUserId = context.user?.id
 
@@ -64,12 +65,12 @@ export const dislikeBlog = createServerFn()
 
         // Check if the like exists before trying to delete
         const existingLike = await db
-            .select({ id: blogLike.id })
-            .from(blogLike)
+            .select({ id: articleLike.id })
+            .from(articleLike)
             .where(
                 and(
-                    eq(blogLike.blogId, data.blogId),
-                    eq(blogLike.userId, currentUserId)
+                    eq(articleLike.articleId, data.articleId),
+                    eq(articleLike.userId, currentUserId)
                 )
             )
             .limit(1)
@@ -79,16 +80,16 @@ export const dislikeBlog = createServerFn()
         }
 
         await db
-            .delete(blogLike)
+            .delete(articleLike)
             .where(
                 and(
-                    eq(blogLike.blogId, data.blogId),
-                    eq(blogLike.userId, currentUserId)
+                    eq(articleLike.articleId, data.articleId),
+                    eq(articleLike.userId, currentUserId)
                 )
             )
 
         return {
-            likes: await getLikesCount(data.blogId),
+            likes: await getLikesCount(data.articleId),
             likedByUser: false,
         }
     })

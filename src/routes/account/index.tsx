@@ -21,15 +21,11 @@ import {
 } from "@tanstack/react-router"
 
 import { useState } from "react"
-import { GoogleButton } from "@/components/GoogleButton"
-import { GithubButton } from "@/components/GIthubButton"
 import { authClient } from "@/lib/auth-client"
+import { SignInSchema, type SignInRequest } from "@/db/validations/user.types"
+import { GithubButton, GoogleButton } from "@/components/Buttons"
+import { zod4Resolver, zodResolver } from 'mantine-form-zod-resolver';
 
-interface LoginForm {
-  email: string
-  password: string
-  rememberMe: boolean
-}
 
 export const Route = createFileRoute("/account/")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -47,21 +43,19 @@ function RouteComponent() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(null)
 
-  const form = useForm<LoginForm>({
+  const form = useForm<SignInRequest>({
     initialValues: {
       email: "",
       password: "",
       rememberMe: false,
     },
-    validate: {
-      email: (value) =>
-        /^\S+@\S+\.\S+$/.test(value) ? null : "Please enter a valid email",
-      password: (value) =>
-        value.length < 6 ? "Password must be at least 6 characters" : null,
-    },
+    validate: zod4Resolver(SignInSchema),
+    validateInputOnBlur:true,
+    validateInputOnChange:true
+  
   })
 
-  const handleSubmit = async (values: LoginForm) => {
+  const handleSubmit = async (values:SignInRequest) => {
 
     console.log(values)
     try {

@@ -2,7 +2,7 @@ import { getAllProjects, getProjectById, getTopProjects, searchProjects } from "
 import { queryOptions } from "@tanstack/react-query"
 
 //Geting all projects
-export const getProjectsQueryOptions = (page: number, pageSize = 6) =>
+export const getAllProjectsQueryOptions = (page: number, pageSize = 6) =>
   queryOptions({
     queryKey: ['projects', page, pageSize],
     queryFn: () => getAllProjects({ data: { page, pageSize } }),

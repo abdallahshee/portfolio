@@ -2,26 +2,25 @@ import { createServerFn } from '@tanstack/react-start'
 import { eq, and } from 'drizzle-orm'
 import {  AuthMiddleware } from './middleware'
 import { db } from '../db/index'
-import { blog, comment, createCommentSchema } from '@/db/schema'
-
-
+import { CommentSchema } from '@/db/validations/comment.types'
+import { article } from '@/db/schema/article.schema'
+import { comment } from '@/db/schema'
 
 export const createComment = createServerFn({ method: 'POST' })
     .middleware([AuthMiddleware])
-    .inputValidator(createCommentSchema)
+    .inputValidator(CommentSchema)
     .handler(async ({ data, context }) => {
         try {
             if (!context.user?.id) {
                 throw new Error('Unauthorized')
             }
-
             const existingBlog = await db
-                .select({ id: blog.id })
-                .from(blog)
-                .where(eq(blog.id, data.blogId))
+                .select({ id: article.id })
+                .from(article)
+                .where(eq(article.id, data.articleId))
 
             if (!existingBlog[0]) {
-                throw new Error('Blog not found')
+                throw new Error('Article not found')
             }
 
             const normalizedParentId = data.parentId ?? null
@@ -30,13 +29,13 @@ export const createComment = createServerFn({ method: 'POST' })
                 const existingParent = await db
                     .select({
                         id: comment.id,
-                        blogId: comment.blogId,
+                        articleId: comment.articleId,
                     })
                     .from(comment)
                     .where(
                         and(
                             eq(comment.id, normalizedParentId),
-                            eq(comment.blogId, data.blogId)
+                            eq(comment.articleId, data.articleId)
                         )
                     )
 
@@ -49,14 +48,14 @@ export const createComment = createServerFn({ method: 'POST' })
                 .insert(comment)
                 .values({
                     // id: nanoid(16),
-                    blogId: data.blogId,
+                    articleId: data.articleId,
                     userId: context.user.id,
                     parentId: normalizedParentId,
                     content: data.content.trim(),
                 })
                 .returning({
                     id: comment.id,
-                    blogId: comment.blogId,
+                    articleId: comment.articleId,
                     userId: comment.userId,
                     parentId: comment.parentId,
                     content: comment.content,

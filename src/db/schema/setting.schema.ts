@@ -7,5 +7,4 @@ export const setting = pgTable("site_setting", {
   settings: boolean("settings")
     .notNull()
     .default(false),
-
 })

@@ -9,7 +9,7 @@ import {
   ChevronDown, ChevronUp, LogIn,
 } from 'lucide-react'
 import { Link, useRouter } from '@tanstack/react-router'
-import { dislikeBlog, likeBlog } from '@/server/blog-like.functions'
+import { dislikeArticle, likeBlog } from '@/server/article-like.functions'
 import { useCreateCommentMutation } from '@/db/mutations/comment.mutations'
 
 interface CommentForm {
@@ -339,7 +339,7 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
                       setLikes((p: number) => p + 1)
                       setIsLikePending(true)
                       try {
-                        const result = await likeBlog({ data: { blogId: data.id } })
+                        const result = await likeBlog({ data: { articleId: data.id } })
                         setLikes(result.likes)
                         setLikedByUser(result.likedByUser)
                       } catch (err: any) {
@@ -367,7 +367,7 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
                       setLikes((p: number) => p - 1)
                       setIsLikePending(true)
                       try {
-                        const result = await dislikeBlog({ data: { blogId: data.id } })
+                        const result = await dislikeArticle({ data: { articleId: data.id } })
                         setLikes(result.likes)
                         setLikedByUser(result.likedByUser)
                       } catch (err: any) {

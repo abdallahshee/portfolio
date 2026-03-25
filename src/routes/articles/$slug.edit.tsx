@@ -1,18 +1,19 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 import { useState } from "react"
-import { canEditBlogMiddleware } from "@/server/middleware"
-import { getBlogBySlugForUpdateQueryOptions } from "@/db/queries/blog.queries"
-import { blogUpdateMutationOption } from "@/db/mutations/blog.mutations"
+import { getArticleBySlugForUpdateQueryOptions } from "@/db/queries/article.queries"
+import { articleUpdateMutationOption } from "@/db/mutations/article.mutations"
 import TurndownService from "turndown"
 import { useRef } from "react"
 import ArticleEditor from "@/components/ArticleEditor"
-import type { BlogRequest } from "@/db/schema"
+import { UserEditArticleMiddleware } from "@/server/middleware"
+import type { ArticleRequest } from "@/db/validations/article.types"
+
 
 export const Route = createFileRoute("/articles/$slug/edit")({
-  server: { middleware: [canEditBlogMiddleware] },
+  server: { middleware: [UserEditArticleMiddleware] },
   loader: async ({ params, context }) => {
     return context.queryClient.ensureQueryData(
-      getBlogBySlugForUpdateQueryOptions(params.slug)
+      getArticleBySlugForUpdateQueryOptions(params.slug)
     )
   },
   component: RouteComponent,
@@ -24,7 +25,7 @@ function RouteComponent() {
   const { slug } = Route.useParams()
   const [loading, setLoading] = useState(false)
   const turndownService = useRef(new TurndownService())
-  const updateMutation = blogUpdateMutationOption("user")
+  const updateMutation = articleUpdateMutationOption({role:"user"})
 
   return (
     <ArticleEditor
@@ -36,19 +37,11 @@ function RouteComponent() {
       }}
       existingCoverImage={blog?.coverImage}
       loading={loading}
-      onSubmit={async (values:BlogRequest, imageUrl) => {
+      onSubmit={async (values:ArticleRequest, imageUrl) => {
         try {
           setLoading(true)
           const markdownContent = turndownService.current.turndown(values.content)
-          await updateMutation.mutateAsync({
-            blogSchema: {
-              title: values.title,
-              tags: values.tags,
-              content: markdownContent,
-              coverImage: imageUrl || blog?.coverImage || "",
-            },
-            slug,
-          })
+          await updateMutation.mutateAsync({ })
         } catch (err) {
           console.error(err)
         } finally {

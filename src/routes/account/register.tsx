@@ -17,13 +17,14 @@ import {
   Title,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
-import {  ImagePlus, UserPlus } from "lucide-react"
+import { ImagePlus, UserPlus } from "lucide-react"
 
 import { uploadImage } from "@/lib/utils"
 import { useMemo, useState } from "react"
-import { GoogleButton } from "@/components/GoogleButton"
-import { GithubButton } from "@/components/GIthubButton"
 import { authClient } from "@/lib/auth-client"
+import { GithubButton, GoogleButton } from "@/components/Buttons"
+import { SignUpSchema, type SignUpRequest } from "@/db/validations/user.types"
+import { zod4Resolver } from "mantine-form-zod-resolver"
 
 interface SignUpForm {
   name: string
@@ -44,13 +45,13 @@ export const Route = createFileRoute("/account/register")({
 function RouteComponent() {
   const { callbackUrl } = Route.useSearch()
   const router = useRouter()
-
+  const [file, setFile] = useState<File | null>()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(
     null
   )
 
-  const form = useForm<SignUpForm>({
+  const form = useForm<SignUpRequest>({
     initialValues: {
       name: "",
       email: "",
@@ -58,34 +59,31 @@ function RouteComponent() {
       password: "",
       confirmPassword: "",
     },
-    validate: {
-      name: (value) =>
-        value.trim().length < 2 ? "Name must be at least 2 characters" : null,
-      email: (value) =>
-        /^\S+@\S+\.\S+$/.test(value)
-          ? null
-          : "Please enter a valid email address",
-      password: (value) =>
-        value.length < 6 ? "Password must be at least 6 characters" : null,
-      confirmPassword: (value, values) =>
-        value !== values.password ? "Passwords do not match" : null,
-    },
-  })
+    validate:zod4Resolver(SignUpSchema),
+    validateInputOnBlur:true,
+    validateInputOnChange:true
 
-  const handleSubmit = async (values: SignUpForm) => {
+  })
+  const previewUrl = useMemo(() => {
+    if (!file) return null
+    return URL.createObjectURL(file)
+  }, [file])
+
+  const handleSubmit = async (values: SignUpRequest) => {
     try {
       setIsSubmitting(true)
       console.log("1. Starting sign up...")
-
-      const defaultUrl =
-        "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
-
-      console.log("2. Calling authClient.signUp.email...")
+      let url = ""
+      if (file) {
+        url = await uploadImage(file)
+      } else {
+        url = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
+      }
       const res = await authClient.signUp.email({
         name: values.name.trim(),
         email: values.email.trim().toLowerCase(),
         password: values.password,
-        image: defaultUrl,
+        image: url,
       })
 
       console.log("3. Response received:", JSON.stringify(res, null, 2))
@@ -143,10 +141,6 @@ function RouteComponent() {
     }
   }
 
-  const previewUrl = useMemo(() => {
-    if (!form.values.image) return null
-    return URL.createObjectURL(form.values.image)
-  }, [form.values.image])
 
   return (
     <Paper radius="2xl" p="xl" withBorder className="w-full shadow-lg md:p-8">
@@ -225,7 +219,7 @@ function RouteComponent() {
               size="md"
               leftSection={<ImagePlus size={16} />}
               accept="image/*"
-              {...form.getInputProps("image")}
+              onChange={(e) => setFile(e)}
               clearable
             />
 

@@ -12,14 +12,14 @@ import {
 } from 'lucide-react'
 import moment from 'moment'
 import { queryOptions, useQuery } from '@tanstack/react-query'
-import { getPaginatedBlogs } from '@/server/blog.functions'
-import { getPaginatedBlogsQueryOptions } from '@/db/queries/blog.queries'
+import { getPaginatedArticles } from '@/server/blog.functions'
+import { getPaginatedArticlesQueryOptions } from '@/db/queries/blog.queries'
 
 
 
 export const Route = createFileRoute('/admin/articles/')({
   loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(getPaginatedBlogsQueryOptions(1, 10))
+    await context.queryClient.prefetchQuery(getPaginatedArticlesQueryOptions(1, 10))
   },
   component: RouteComponent,
 })
@@ -31,7 +31,7 @@ function RouteComponent() {
   const [searchInput, setSearchInput] = useState('')
   const [debouncedSearch] = useDebouncedValue(searchInput, 300)
   const router=useRouter()
-  const { data, isLoading } = useQuery(getPaginatedBlogsQueryOptions(page, PAGE_SIZE))
+  const { data, isLoading } = useQuery(getPaginatedArticlesQueryOptions(page, PAGE_SIZE))
 
   const allBlogs = data?.blogs ?? []
   const pagination = data?.pagination

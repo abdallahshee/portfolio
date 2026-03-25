@@ -1,30 +1,24 @@
 import { pgTable, text, timestamp, type AnyPgColumn } from 'drizzle-orm/pg-core';
-import { blog } from './blog.schema';
+import { article } from './article.schema';
 import { user } from './user.schema';
-import { relations, type InferInsertModel,} from 'drizzle-orm';
-import { createInsertSchema } from 'drizzle-zod';
+import { relations} from 'drizzle-orm';
 import { nanoid } from 'nanoid';
-
-
 
 export const comment = pgTable("comment", {
   id: text("id").primaryKey().$default(()=>nanoid()),
 
-  blogId: text("blog_id")
+  articleId: text("article_id")
     .notNull()
-    .references(() => blog.id, { onDelete: "cascade" }),
-
+    .references(() => article.id, { onDelete: "cascade" }),
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-
   parentId: text("parent_id").references(
     (): AnyPgColumn => comment.id,
     { onDelete: "cascade" }
   ),
 
   content: text("content").notNull(),
-
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -33,9 +27,9 @@ export const comment = pgTable("comment", {
 });
 
 export const commentRelations = relations(comment, ({ one, many }) => ({
-  blog: one(blog, {
-    fields: [comment.blogId],
-    references: [blog.id],
+  article: one(article, {
+    fields: [comment.articleId],
+    references: [article.id],
   }),
 
   author: one(user, {
@@ -53,10 +47,3 @@ export const commentRelations = relations(comment, ({ one, many }) => ({
   replies: many(comment),
 }));
 
-// export type Comment = InferSelectModel<typeof comment>
-export type CommentRequest = Omit<InferInsertModel<typeof comment>, "id" | "createdAt" | "updatedAt">
-export const CommentSchema = createInsertSchema(comment,{
-  content:(schema)=>schema.max(500,"Too long for a comment")
-}).pick({ blogId:true, content:true,parentId:true })
-
-// export const createCommentSchema = createInsertSchema(comment).pick({ blogId: true, content: true, parentId: true })

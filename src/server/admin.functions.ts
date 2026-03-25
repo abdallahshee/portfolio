@@ -2,7 +2,7 @@
 import { createServerFn } from "@tanstack/react-start"
 import { AdminMiddleware } from "@/server/middleware"
 
-import { blog, project, user, session } from "@/db/schema"
+import { article, project, user, session } from "@/db/schema"
 import { eq, desc, sql, count } from "drizzle-orm"
 import { auth } from "@/lib/auth"
 import { db } from "../db/index"
@@ -13,7 +13,7 @@ export const getAdminStats = createServerFn({ method: "GET" })
   .handler(async () => {
     const [projectCount, blogCount, userCount] = await Promise.all([
       db.select({ count: count() }).from(project),
-      db.select({ count: count() }).from(blog),
+      db.select({ count: count() }).from(article),
       db.select({ count: count() }).from(user),
     ])
     return {
@@ -45,25 +45,25 @@ export const getAdminBlogs = createServerFn({ method: "GET" })
   .handler(async () => {
     const blogs = await db
       .select({
-        id: blog.id,
-        title: blog.title,
-        slug: blog.slug,
-        status: blog.status,
-        createdAt: blog.createdAt,
-        updatedAt: blog.updatedAt,
-        userId: blog.userId,
+        id: article.id,
+        title: article.title,
+        slug: article.slug,
+        status: article.status,
+        createdAt: article.createdAt,
+        updatedAt: article.updatedAt,
+        userId: article.userId,
         authorName: user.name,
         authorImage: user.image,
         authorEmail: user.email,
         likes: sql<number>`COUNT(DISTINCT blog_like.id)`,
         comments: sql<number>`COUNT(DISTINCT comment.id)`,
       })
-      .from(blog)
-      .leftJoin(user, eq(blog.userId, user.id))
+      .from(article)
+      .leftJoin(user, eq(article.userId, user.id))
       .leftJoin(sql`blog_like`, sql`blog.id = blog_like.blog_id`)
       .leftJoin(sql`comment`, sql`blog.id = comment.blog_id`)
-      .groupBy(blog.id, user.name, user.image, user.email)
-      .orderBy(desc(blog.createdAt))
+      .groupBy(article.id, user.name, user.image, user.email)
+      .orderBy(desc(article.createdAt))
     return blogs
   })
 
@@ -71,7 +71,7 @@ export const deleteBlog = createServerFn({ method: "POST" })
   .inputValidator((data: { blogId: string }) => data)
   .middleware([AdminMiddleware])
   .handler(async ({ data }) => {
-    await db.delete(blog).where(eq(blog.id, data.blogId))
+    await db.delete(article).where(eq(article.id, data.blogId))
     return { success: true }
   })
 
@@ -80,9 +80,9 @@ export const updateBlogStatus = createServerFn({ method: "POST" })
   .middleware([AdminMiddleware])
   .handler(async ({ data }) => {
     await db
-      .update(blog)
+      .update(article)
       .set({ status: data.status, updatedAt: new Date() })
-      .where(eq(blog.id, data.blogId))
+      .where(eq(article.id, data.blogId))
     return { success: true }
   })
 
@@ -98,11 +98,11 @@ export const getAdminUsers = createServerFn({ method: "GET" })
         image: user.image,
         role: user.role,
         createdAt: user.createdAt,
-        blogCount: sql<number>`COUNT(DISTINCT ${blog.id})`,
+        blogCount: sql<number>`COUNT(DISTINCT ${article.id})`,
         lastSignIn: sql<Date>`MAX(${session.createdAt})`,
       })
       .from(user)
-      .leftJoin(blog, eq(user.id, blog.userId))
+      .leftJoin(article, eq(user.id, article.userId))
       .leftJoin(session, eq(user.id, session.userId))
       .groupBy(user.id)
       .orderBy(desc(user.createdAt))

@@ -3,7 +3,9 @@ import { db } from "../db/index";
 import { and, avg, count, desc, eq, sql, inArray, ilike, or } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { AdminMiddleware, OptionalAuthMiddleware } from "./middleware";
-import { project, projectRating, ProjectSchema, updateProjectSchema } from "@/db/schema";
+import { project, projectRating } from "@/db/schema";
+import { ProjectSchema, updateProjectSchema } from "@/db/validations/project.types";
+
 
 export const getAllProjects = createServerFn({ method: "GET" })
   .inputValidator((data: { page: number; pageSize: number }) => data)
@@ -72,17 +74,14 @@ export const createProject = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     try {
       // Insert the project into the database
-      await db.insert(project).values({ ...data });
-      return { success: true, message: 'Project created successfully' };
+      const [theProjectId]=await db.insert(project).values({ ...data }).returning({projectId:project.id});
+      
+      return { success: true, projectId: theProjectId.projectId};
     } catch (err) {
       console.error('Error creating project:', err);
-      return { success: false, message: 'Failed to create project' };
+      return { success: false, projectId:null };
     }
   });
-
-
-
-
 
 export const getProjectById = createServerFn({ method: "GET" })
   .inputValidator((data: { projectId: string }) => data)
@@ -106,6 +105,7 @@ export const getProjectById = createServerFn({ method: "GET" })
           ? db
             .select({
               rating: projectRating.rating,
+              projectId:projectRating.projectId
             })
             .from(projectRating)
             .where(
@@ -137,8 +137,6 @@ export const getProjectById = createServerFn({ method: "GET" })
     }
   })
 
-
-
 export const updateProject = createServerFn({ method: "POST" })
   .middleware([AdminMiddleware])
   .inputValidator(updateProjectSchema)
@@ -146,7 +144,7 @@ export const updateProject = createServerFn({ method: "POST" })
     try {
       await db
         .update(project)
-        .set({ ...data.projectShema })
+        .set({ ...data })
         .where(eq(project.id, data.projectId))
 
       // Fetch and return the updated project in the same shape as getProjectById
@@ -205,7 +203,6 @@ export const getTopProjects = createServerFn({ method: "GET" })
       throw err;
     }
   });
-
 
 // server/project.functions.ts
 export const searchProjects = createServerFn({ method: "GET" })

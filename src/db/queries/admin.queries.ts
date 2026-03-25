@@ -18,7 +18,7 @@ export const adminProjectsQueryOptions = queryOptions({
 })
 
 export const adminBlogsQueryOptions = queryOptions({
-  queryKey: ["admin", "blogs"],
+  queryKey: ["admin", "articles"],
   queryFn: () => getAdminBlogs(),
 })
 

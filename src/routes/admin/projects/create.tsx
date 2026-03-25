@@ -21,8 +21,8 @@ import { useForm } from "@mantine/form"
 import {
   ArrowLeft,
   FolderPlus,
-  Globe,
   Github,
+  Globe,
   ImagePlus,
   Plus,
   Save,
@@ -30,22 +30,14 @@ import {
   Trash,
   Wrench,
 } from "lucide-react"
-import { useQueryClient } from "@tanstack/react-query"
-import { useServerFn } from "@tanstack/react-start"
 import { uploadImage } from "@/lib/utils"
-import { createProject } from "@/server/project.functions"
 import { AdminMiddleware } from "@/server/middleware"
 import { useMemo, useState } from "react"
+import { ProjectSchema, type ProjectRequest } from "@/db/validations/project.types"
+import { useProjectCreateMutation } from "@/db/mutations/project.mutations"
+import { zod4Resolver } from "mantine-form-zod-resolver"
 
-interface ProjectCreateForm {
-  title: string
-  description: string
-  imageUrl: File | null
-  isPublic: boolean
-  url: string
-  rate: number
-  technologies: string[]
-}
+
 
 export const Route = createFileRoute("/admin/projects/create")({
   server: {
@@ -55,48 +47,43 @@ export const Route = createFileRoute("/admin/projects/create")({
 })
 
 function RouteComponent() {
-  const form = useForm<ProjectCreateForm>({
+  const form = useForm<ProjectRequest>({
     initialValues: {
       title: "",
       url: "",
       description: "",
-      rate: 1,
       imageUrl: null,
       isPublic: true,
       technologies: ["React"],
     },
+    validate:zod4Resolver(ProjectSchema),
+    validateInputOnBlur:true,
+    validateInputOnChange:true
   })
 
-  const createProjectFn = useServerFn(createProject)
-  const queryClient = useQueryClient()
+  const [file,setFile]=useState<File|null>(null)
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-
+  const createProject=useProjectCreateMutation()
   const previewUrl = useMemo(() => {
-    if (!form.values.imageUrl) return null
-    return URL.createObjectURL(form.values.imageUrl)
-  }, [form.values.imageUrl])
+    if (!file) return null
+    return URL.createObjectURL(file)
+  }, [file])
 
-  const handleSubmit = async (values: ProjectCreateForm) => {
+  const handleSubmit = async (values: ProjectRequest) => {
     try {
       setLoading(true)
 
-      let url = ""
-      if (values.imageUrl) {
-        url = await uploadImage(values.imageUrl)
+      let url = null
+      if (!file) {
+        return url
       }
-
+       url = await uploadImage(file)
       const { imageUrl, ...datas } = values
-
-      await createProjectFn({
-        data: {
-          imageUrl: "DEFAULT",
-          ...datas,
-        },
+      await createProject.mutateAsync({
+        ...datas,
+        imageUrl:url
       })
-
-      await queryClient.invalidateQueries({ queryKey: ["projects"] })
-      router.navigate({ to: "/projects" })
     } catch (err) {
       console.error(err)
     } finally {
@@ -239,7 +226,7 @@ function RouteComponent() {
                   size="md"
                   leftSection={<ImagePlus size={16} />}
                   accept="image/*"
-                  {...form.getInputProps("imageUrl")}
+                  onChange={(e)=>setFile(e)}
                 />
 
                 {previewUrl ? (

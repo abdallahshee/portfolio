@@ -3,13 +3,13 @@ import { useState } from "react"
 import { useRef } from "react"
 import TurndownService from "turndown"
 import { AuthMiddleware } from "@/server/middleware"
-import { useBlogCreateMutation } from "@/db/mutations/blog.mutations"
+import { useBlogCreateMutation } from "@/db/mutations/article.mutations"
 import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
 import { useQuery } from "@tanstack/react-query"
 
-import type { BlogRequest } from "@/db/schema"
 import ArticleEditor from "@/components/ArticleEditor"
-import { role } from "better-auth/plugins"
+import type { ArticleRequest } from "@/db/validations/article.types"
+
 
 export const Route = createFileRoute("/articles/create")({
   server: { middleware: [AuthMiddleware] },
@@ -23,7 +23,7 @@ function RouteComponent() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const turndownService = useRef(new TurndownService())
-  const createBlogMutation = useBlogCreateMutation("user")
+  const createBlogMutation = useBlogCreateMutation({role:"user"})
   const { data: categories } = useQuery(getAllCategoriesQueryOption())
 
   return (
@@ -31,7 +31,7 @@ function RouteComponent() {
       mode="create"
       categories={categories ?? []}
       loading={loading}
-      onSubmit={async (values:BlogRequest, imageUrl:string) => {
+      onSubmit={async (values:ArticleRequest, imageUrl:string) => {
         try {
           setLoading(true)
           const markdownContent = turndownService.current.turndown(values.content)

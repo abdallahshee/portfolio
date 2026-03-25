@@ -4,8 +4,6 @@ import { project } from "./project.schema"
 import { user } from "./user.schema"
 import { relations } from "drizzle-orm"
 
-
-
 export const projectRating = pgTable(
   "project_rating",
   {
@@ -27,7 +25,7 @@ export const projectRating = pgTable(
       .$onUpdate(() => new Date())
       .notNull(),
   },
-  // ✅ New signature — callback instead of plain object
+  
   (table) => [
     unique("project_rating_user_project_unique").on(table.projectId, table.userId),
   ]

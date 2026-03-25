@@ -21,8 +21,10 @@ import { useForm } from "@mantine/form"
 import { FolderPlus, Trash2, Tag, Hash, LayoutList } from "lucide-react"
 import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
 import { useQuery } from "@tanstack/react-query"
-import type { categoryRequest } from "@/db/schema"
 import { useCategoryCreateMutations, useDeleteCategoryMutation } from "@/db/mutations/category.mutations"
+import { categorySchema, type categoryRequest } from "@/db/validations/category.types"
+import { ProjectSchema } from "@/db/validations/project.types"
+import { zod4Resolver } from "mantine-form-zod-resolver"
 
 export const Route = createFileRoute("/categories")({
   loader: async ({ context }) => {
@@ -41,10 +43,9 @@ function CategoriesPage() {
   const deleteCategoryMutation = useDeleteCategoryMutation()
   const form = useForm<categoryRequest>({
     initialValues: { name: "" },
-    validate: {
-      name: (value) =>
-        value.trim().length < 2 ? "Name must be at least 2 characters" : null,
-    },
+    validate: zod4Resolver(categorySchema),
+    validateInputOnBlur:true,
+    validateInputOnChange:true
   })
 
   const handleSubmit = (values: categoryRequest) => {

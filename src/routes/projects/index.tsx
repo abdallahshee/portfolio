@@ -1,4 +1,4 @@
-import { getProjectsQueryOptions, searchProjectsQueryOptions } from '@/db/queries/project.queries'
+import { getAllProjectsQueryOptions, searchProjectsQueryOptions } from '@/db/queries/project.queries'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import {
   Card,
@@ -25,7 +25,7 @@ const PAGE_SIZE = 6
 
 export const Route = createFileRoute('/projects/')({
   loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(getProjectsQueryOptions(1, PAGE_SIZE))
+    await context.queryClient.prefetchQuery(getAllProjectsQueryOptions(1, PAGE_SIZE))
   },
   component: RouteComponent,
 })
@@ -44,7 +44,7 @@ function RouteComponent() {
   const { data, isLoading, isPlaceholderData } = useQuery(
     isSearching
       ? searchProjectsQueryOptions(debouncedSearch, page, PAGE_SIZE)
-      : getProjectsQueryOptions(page, PAGE_SIZE)
+      : getAllProjectsQueryOptions(page, PAGE_SIZE)
   )
 
   const allProjects = data?.projects ?? []

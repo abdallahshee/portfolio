@@ -1,8 +1,9 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import type { categoryRequest } from "../schema"
 import { createCategory, deleteCategory } from "@/server/category.functions"
 import { getAllCategoriesQueryOption } from "../queries/category.queries"
+import type { categoryRequest } from "../validations/category.types"
+
 
 export const useCategoryCreateMutations = (onSuccess?: () => void) => {
     const queryClient = useQueryClient()

@@ -11,6 +11,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { hireStatusQueryOptions } from "@/db/queries/utils.queries"
 
 import { authClient } from "@/lib/auth-client"
+import { getSessionQueryOption } from "@/lib/auth.functions"
 
 const SETTING_ID = import.meta.env.VITE_HIRE_MODE_ID!
 
@@ -82,7 +83,7 @@ const isSessionLoading = false // disable skeleton entirely for now
 
   const handleLogout = async () => {
     await authClient.signOut()
-    await queryClient.invalidateQueries({ queryKey: ["session"] })
+    await queryClient.invalidateQueries({ queryKey: getSessionQueryOption().queryKey })
     await router.navigate({ to: "/" })
   }
 

@@ -1,4 +1,4 @@
-import { getTopBlogsQueryOptions } from '@/db/queries/blog.queries'
+import { getTopArticlesQueryOptions } from '@/db/queries/article.queries'
 import { getTopProjectsQueryOptions } from '@/db/queries/project.queries'
 import {
   Badge,
@@ -35,7 +35,7 @@ export const Route = createFileRoute('/')({
       getTopProjectsQueryOptions()
     )
     const top5Blogs = await context.queryClient.fetchQuery(
-      getTopBlogsQueryOptions()
+      getTopArticlesQueryOptions()
     )
 
     return {
@@ -88,20 +88,6 @@ function App() {
               Contact Me
             </Button>
           </Group>
-
-          {/* <Group gap="xs">
-            {[
-              'React',
-              'TanStack Start',
-              'TypeScript',
-              'PostgreSQL',
-              'Tailwind CSS',
-            ].map((tech) => (
-              <Badge key={tech} variant="light" color="green" radius="sm">
-                {tech}
-              </Badge>
-            ))}
-          </Group> */}
         </div>
 
         <div className="flex justify-center lg:justify-end">
@@ -212,7 +198,7 @@ function App() {
                         key={project.id}
                         onClick={() =>
                           router.navigate({
-                            to: '/projects/$id/details',
+                            to: '/projects/$id',
                             params: { id: project.id },
                           })
                         }

@@ -1,9 +1,7 @@
 
-import { relations, type InferSelectModel } from "drizzle-orm"
+import { relations } from "drizzle-orm"
 import {  pgTable, text } from "drizzle-orm/pg-core"
-import { blog } from "./blog.schema"
-import { createSelectSchema } from "drizzle-zod"
-import z from "zod"
+import { article } from "./article.schema"
 import { nanoid } from "nanoid"
 
 export const category = pgTable('category', {
@@ -12,6 +10,6 @@ export const category = pgTable('category', {
 })
 
 export const categoryRelations = relations(category, ({ many }) => ({
-  blogs: many(blog),
+  articles: many(article),
 }))
 

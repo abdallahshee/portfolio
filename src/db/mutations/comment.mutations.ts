@@ -14,7 +14,7 @@ export const useCreateCommentMutation = () => {
     return useMutation({
         mutationFn:(data: CreateCommentInput) => createComment({
                 data: {
-                    blogId: data.blogId,
+                    articleId: data.blogId,
                     content: data.content,
                     parentId: data.parentId ?? null,
                 },

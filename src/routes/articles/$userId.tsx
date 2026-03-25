@@ -18,8 +18,8 @@ import {
 
 import {
   getMyPaginatedBlogsQueryOptions,
-  searchBlogsQueryOptions,
-} from '@/db/queries/blog.queries'
+  searchArticlesQueryOptions,
+} from '@/db/queries/article.queries'
 import {  Heart, MessageCircle, Search, X,PenLine, SlidersHorizontal } from "lucide-react"
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
@@ -66,15 +66,15 @@ function BlogsPage() {
   )
 
   const { data: searchData, isLoading: searchLoading } = useQuery({
-    ...searchBlogsQueryOptions(debouncedSearch, 1, PAGE_SIZE),
+    ...searchArticlesQueryOptions(debouncedSearch, 1, PAGE_SIZE),
     enabled: isSearching,
   })
 
   const data = isSearching ? searchData : paginatedData
   const isLoading = isSearching ? searchLoading : paginatedLoading
 
-  const allBlogs = (data?.blogs ?? []).filter(Boolean)
-  const blogs = allBlogs.filter((blog: any) => {
+  const Allarticles = (data?.articles ?? []).filter(Boolean)
+  const articles = Allarticles.filter((blog: any) => {
     if (statusFilter === 'all') return true
     return blog.status === statusFilter
   })
@@ -113,7 +113,7 @@ function BlogsPage() {
           </Title>
           <Text c="dimmed" className="max-w-2xl">
             {isOwner
-              ? `You have written ${allBlogs.length} article${allBlogs.length !== 1 ? 's' : ''}.`
+              ? `You have written ${Allarticles.length} article${Allarticles.length !== 1 ? 's' : ''}.`
               : 'Thoughts, tutorials, and practical notes on building modern web applications.'}
           </Text>
         </div>
@@ -144,7 +144,7 @@ function BlogsPage() {
           />
           {isSearching && !isLoading && (
             <Text size="xs" c="dimmed" mt={4}>
-              {blogs.length} result{blogs.length !== 1 ? 's' : ''} for &quot;{debouncedSearch}&quot;
+              {articles.length} result{articles.length !== 1 ? 's' : ''} for &quot;{debouncedSearch}&quot;
             </Text>
           )}
         </div>
@@ -200,16 +200,16 @@ function BlogsPage() {
       </div>
 
       {/* Result count */}
-      {!isLoading && blogs.length > 0 && (
+      {!isLoading && articles.length > 0 && (
         <Text size="sm" c="dimmed">
-          Showing <strong>{blogs.length}</strong>
-          {statusFilter !== 'all' ? ` ${getStatusConfig(statusFilter).label}` : ''} article{blogs.length !== 1 ? 's' : ''}
+          Showing <strong>{articles.length}</strong>
+          {statusFilter !== 'all' ? ` ${getStatusConfig(statusFilter).label}` : ''} article{articles.length !== 1 ? 's' : ''}
           {isSearching ? ` for "${debouncedSearch}"` : ''}
         </Text>
       )}
 
       {/* Empty state */}
-      {!isLoading && blogs.length === 0 && (
+      {!isLoading && articles.length === 0 && (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 py-24 text-center dark:border-slate-700">
           <Title order={3} c="dimmed" mb="xs">
             {isSearching
@@ -251,7 +251,7 @@ function BlogsPage() {
         className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${isPlaceholderData ? 'opacity-60' : 'opacity-100'
           }`}
       >
-        {blogs.map((article) => (
+        {articles.map((article) => (
           <Link
             key={article.id}
             to="/articles/$slug"

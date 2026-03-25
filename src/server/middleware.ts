@@ -3,13 +3,12 @@ import { createMiddleware } from "@tanstack/react-start"
 import { db } from "../db/index"
 import { eq } from "drizzle-orm"
 import { redirect } from "@tanstack/react-router"
-import { blog } from "@/db/schema"
-
+import { article } from "@/db/schema/article.schema"
 
 export const AuthMiddleware = createMiddleware()
     .server(async ({ request, next }) => {
         const session = await auth.api.getSession({
-            headers: request.headers,
+            headers: request.headers
         })
 
         const user = session?.user ?? null
@@ -33,16 +32,16 @@ export const AuthMiddleware = createMiddleware()
     })
 
 
-export const EditBlogMiddleware = createMiddleware()
+export const UserEditArticleMiddleware = createMiddleware()
     .middleware([AuthMiddleware])
     .server(async ({ request, context, next }) => {
         const user = context.user
         const url = new URL(request.url)
-        const slug = url.searchParams.get('slug')
-        const isAdmin = user.role === "admin"
+        // const slug = url.searchParams.get('slug')
+         const slug = url.pathname.split("/").filter(Boolean)[1]
         const redirectTo = encodeURIComponent(url.pathname + url.search)
 
-        if (!user || !slug || !isAdmin) {
+        if (!user || !slug ) {
             return Response.redirect(
                 new URL(`/account?redirect=${redirectTo}`, request.url),
                 302
@@ -51,9 +50,9 @@ export const EditBlogMiddleware = createMiddleware()
 
         const foundBlog = (
             await db
-                .select({ userId: blog.userId })
-                .from(blog)
-                .where(eq(blog.slug, slug))
+                .select({ userId: article.userId })
+                .from(article)
+                .where(eq(article.slug, slug))
                 .limit(1)
         )[0]
 
@@ -61,7 +60,7 @@ export const EditBlogMiddleware = createMiddleware()
             return new Response("Blog not found", { status: 404 })
         }
 
-        if (foundBlog.userId !== user.id || !isAdmin) {
+        if (foundBlog.userId !== user.id) {
             return new Response("Forbidden", { status: 403 })
         }
 
@@ -103,19 +102,3 @@ export const OptionalAuthMiddleware = createMiddleware().server(
     }
 )
 
-export const canEditBlogMiddleware = createMiddleware()
-  .middleware([AuthMiddleware])
-  .server(async ({ request, next, context }) => {
-
-    const url = new URL(request.url)
-
-    // For /blogs/:slug/edit
-    const match = url.pathname.match(/\/blogs\/([^/]+)\/edit/)
-    const slug = match?.[1]
-
-    console.log("SLUG IS HERE: " + slug)
-
-    return next({
-      context: { ...context }
-    })
-  })

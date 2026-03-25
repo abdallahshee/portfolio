@@ -18,7 +18,7 @@ export const toggleHireModeStatus = createServerFn({ method: "POST" })
 
     await db
       .update(setting)
-      .set({ settings: next, updatedAt: new Date() })
+      .set({ settings: next })
       .where(eq(setting.id, data.settingId))
 
     return { isOpenForHire: next, settingId: data.settingId }

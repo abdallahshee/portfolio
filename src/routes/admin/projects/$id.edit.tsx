@@ -37,8 +37,8 @@ import {
 import { getProjectByIdQueryOptions } from "@/db/queries/project.queries"
 import { AdminMiddleware } from "@/server/middleware"
 import { useState } from "react"
-import type { ProjectRequest } from "@/db/schema"
 import { useUpdateProjectMutation } from "@/db/mutations/project.mutations"
+import type { UpdateProjectRequest } from "@/db/validations/project.types"
 
 export const Route = createFileRoute("/admin/projects/$id/edit")({
   server: {
@@ -55,23 +55,24 @@ export const Route = createFileRoute("/admin/projects/$id/edit")({
 
 function RouteComponent() {
   const project = Route.useLoaderData()
+  const param=Route.useParams()
   const router = useRouter()
   const updateMutation = useUpdateProjectMutation()
   const [loading, setLoading] = useState(false)
 
-  const form = useForm<ProjectRequest>({
+  const form = useForm<UpdateProjectRequest>({
     initialValues: {
+      projectId:param.id,
       ...project!,
     },
   })
 
-  const handleSubmit = async (values: ProjectRequest) => {
+  const handleSubmit = async (values: UpdateProjectRequest) => {
     try {
       setLoading(true)
-      await updateMutation.mutateAsync({
-        projectId: project?.id!,
-        projectShema: { ...values },
-      })
+      await updateMutation.mutateAsync(
+       values
+      )
     } catch (error) {
       console.error(error)
     } finally {

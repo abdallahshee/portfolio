@@ -1,12 +1,10 @@
-import { relations, type InferInsertModel, type InferSelectModel } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp, boolean, } from "drizzle-orm/pg-core";
 import { account, session } from "./auth.schema";
 import { comment } from "./comment.schema";
-import { blog } from "./blog.schema";
-import { blogLike } from "./blog-like.schema";
+import { article } from "./article.schema";
+import { articleLike } from "./article-like.schema";
 import { projectRating } from "./project-rating.schema";
-import { createSelectSchema } from "drizzle-zod";
-import z from "zod";
 
 export const user = pgTable("user", {
   id: text("id").primaryKey(),
@@ -18,7 +16,7 @@ export const user = pgTable("user", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .$onUpdate(() => new Date())
     .notNull(),
 });
 
@@ -26,8 +24,8 @@ export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
   comments: many(comment),
-  blogs: many(blog),
-  blogLikes: many(blogLike),
+  articles: many(article),
+  articleLikes: many(articleLike),
   projectRatings: many(projectRating),
 }));
 
