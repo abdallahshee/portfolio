@@ -3,7 +3,8 @@ import { getRequestHeaders } from "@tanstack/react-start/server";
 import { auth } from "@/lib/auth";
 import { queryOptions } from "@tanstack/react-query";
 import { SendEmailWitHtmlSchema } from "@/db/validations/contact.types"
-import { sendEmail } from "./utils";
+import { sendEmail } from "@/lib/utils";
+
 
 export const getSession = createServerFn({ method: "GET" }).handler(async () => {
     const headers = getRequestHeaders();
@@ -31,15 +32,9 @@ export const getSessionQueryOption=()=>queryOptions({
 export const sendEmailFn = createServerFn({ method: "POST" })
   .inputValidator(SendEmailWitHtmlSchema)
   .handler(async ({ data }) => {
-    console.log("Below is the complete messsage "+JSON.stringify(data))
     try {
-      await sendEmail({
-        name: data.name,
-        email: data.email,
-        subject: data.subject,
-        message: data.message,
-        html:data.html
-      })
+      console.log("Sending email to:", process.env.CONTACT_RECEIVER_EMAIL)
+      await sendEmail(data)
       return { success: true }
     } catch (err) {
       console.error("Resend error:", err)

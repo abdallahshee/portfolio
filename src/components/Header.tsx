@@ -11,7 +11,8 @@ import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { hireStatusQueryOptions } from "@/db/queries/utils.queries"
 
 import { authClient } from "@/lib/auth-client"
-import { getSessionQueryOption } from "@/lib/auth.functions"
+import { getSessionQueryOption } from "@/server/auth.functions"
+
 
 const SETTING_ID = import.meta.env.VITE_HIRE_MODE_ID!
 

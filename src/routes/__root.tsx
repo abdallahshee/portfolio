@@ -22,7 +22,8 @@ import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollTop'
 import NotFound from "../components/NotFound"
 import { useRouterState } from '@tanstack/react-router';
-import { getSessionQueryOption } from '@/lib/auth.functions';
+import { getSessionQueryOption } from '@/server/auth.functions';
+
 
 interface MyRouterContext {
   queryClient: QueryClient

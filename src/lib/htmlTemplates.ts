@@ -21,7 +21,9 @@ export const ContactMeEmailTemplate = (data: EmailTemplateRequest): string => `
 
     <div style="background: #f8fafc; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
       <p style="color: #64748b; margin: 0 0 8px;">Message</p>
-      <p style="white-space: pre-wrap; margin: 0;">${data.message}</p>
+      <p style="margin: 0; line-height: 1.6;">
+        ${data.message.replace(/\n/g, "<br/>")} 
+      </p>
     </div>
 
     <p style="color: #94a3b8; font-size: 12px; margin: 0;">

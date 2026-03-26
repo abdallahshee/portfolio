@@ -11,7 +11,7 @@ export const SendEmailWitHtmlSchema = createSelectSchema(user, {
 }).pick({ email: true, name: true })
   .extend({
     subject: z.string()
-      .min(3, "Too short for a subject")
+      .min(3, "Please insert a subject matter")
       .max(25, "Subject should not exceed 25 characters"),
     message: z.string()
       .min(25, "Please provide a detailed message")

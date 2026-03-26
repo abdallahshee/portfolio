@@ -1,4 +1,5 @@
-import { getSession } from "@/lib/auth.functions";
+
+import { getSession } from "@/server/auth.functions";
 import { getHireStatus, toggleHireModeStatus } from "@/server/setting.functions";
 
 

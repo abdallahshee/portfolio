@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router"
 import {
-  Anchor, Avatar, Badge, Button, Card, Container,
-  Group, Paper, SimpleGrid, Stack, Text, TextInput,
+  Anchor, Avatar, Button, Card, Container,
+  Group, Paper, Select, SimpleGrid, Stack, Text, TextInput,
   Textarea, ThemeIcon, Title,
 } from "@mantine/core"
 import {
@@ -12,19 +12,30 @@ import { notifications } from "@mantine/notifications"
 import { authClient } from "@/lib/auth-client"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { useState } from "react"
-import { sendEmailFn } from "@/lib/auth.functions"
 import { ContactMeEmailTemplate } from "@/lib/htmlTemplates"
-import {EmailTemplateSchema, type EmailTemplateRequest} from "@/db/validations/contact.types"
+import { EmailTemplateSchema, type EmailTemplateRequest } from "@/db/validations/contact.types"
 import { useServerFn } from "@tanstack/react-start"
+import { sendEmailFn } from "@/server/auth.functions"
 
 export const Route = createFileRoute("/contact")({
   component: ContactPage,
 })
 
+const SUBJECT_OPTIONS = [
+  { value: "Freelance", label: "💼 Freelance Project" },
+  { value: "Fulltime", label: "🏢 Full-Time Job Opportunity" },
+  { value: "Collaboration", label: "🤝 Collaboration Opportunity" },
+  { value: "Consulting", label: "🧠 Technical Consulting" },
+  { value: "Feedback", label: "💬 Feedback on Work" },
+  { value: "Other", label: "📩 Other" },
+]
+
 function ContactPage() {
   const session = authClient.useSession()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const sendEmailFunction=useServerFn(sendEmailFn)
+  const sendEmailFunction = useServerFn(sendEmailFn)
+  const [selectedSubject, setSelectedSubject] = useState<string | null>(null)
+  const isOther = selectedSubject === "Other"
   const form = useForm<EmailTemplateRequest>({
     initialValues: {
       subject: "",
@@ -36,11 +47,11 @@ function ContactPage() {
     validateInputOnBlur: true,
   })
 
-  const handleSubmit = async (values:EmailTemplateRequest) => {
+  const handleSubmit = async (values: EmailTemplateRequest) => {
     try {
       setIsSubmitting(true)
-      console.log("Values are "+JSON.stringify(values))
-      await sendEmailFunction({ data: {...values,html:ContactMeEmailTemplate(values)} })
+      await sendEmailFunction({ data: { ...values, html: ContactMeEmailTemplate(values) } })
+      console.log(JSON.stringify(values))
       notifications.show({
         title: "Message sent!",
         message: "Thanks for reaching out. I'll get back to you soon. 👋",
@@ -74,25 +85,21 @@ function ContactPage() {
               radius="xl"
               className="border border-slate-200 shadow-sm"
             />
-
             <Stack gap={6} className="flex-1">
               <Group gap="xs">
                 <Text c="blue" fw={700} size="xl">
                   Full-Stack Software Developer
                 </Text>
               </Group>
-
               <Title order={1} className="text-3xl md:text-4xl">
                 Abdallah Shee{" "}
                 <span role="img" aria-label="Kenyan flag">🇰🇪</span>
               </Title>
-
               <Text className="max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
                 I build scalable web applications using modern technologies like
                 React, TypeScript, Node.js, and PostgreSQL. Feel free to reach out
                 for collaborations, freelance work, or project opportunities.
               </Text>
-
               <Group gap="lg" mt={8} className="flex-wrap">
                 <Group gap={8}>
                   <ThemeIcon variant="light" color="indigo" radius="xl">
@@ -145,14 +152,35 @@ function ContactPage() {
                     {...form.getInputProps("email")}
                   />
 
-                  <TextInput
-                    label="Subject"
-                    placeholder="Write your main Subject"
-                    radius="md"
-                    size="md"
-                    required
-                    {...form.getInputProps("subject")}
-                  />
+                  {/* ← Select instead of TextInput */}
+    
+
+                  <Select
+  label="Subject"
+  placeholder="Select a subject"
+  data={SUBJECT_OPTIONS}
+  radius="md"
+  size="md"
+  required
+  value={selectedSubject}
+  onChange={(value) => {
+    setSelectedSubject(value)
+    // clear subject field when switching options
+    form.setFieldValue("subject", value === "Other" ? "" : value ?? "")
+  }}
+/>
+
+{/* ← only shown when Other is selected */}
+{isOther && (
+  <TextInput
+    label="Please specify"
+    placeholder="Tell me what this is about..."
+    radius="md"
+    size="md"
+    required
+    {...form.getInputProps("subject")}
+  />
+)}
 
                   <Textarea
                     label="Message"
