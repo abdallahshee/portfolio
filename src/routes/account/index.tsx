@@ -64,7 +64,8 @@ function RouteComponent() {
         password: values.password,
         rememberMe: values.rememberMe,
         callbackURL: redirectTo,
-      })
+      }
+    )
 
       if (res?.data?.user) {
         notifications.show({

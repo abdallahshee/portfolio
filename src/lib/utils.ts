@@ -61,17 +61,3 @@ export const getAuthError = (
 }
 
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
-export const sendEmail = async (data: SendEmailRequest) => {
-  const result = await resend.emails.send({
-    from: "onboarding@resend.dev",
-    to: process.env.CONTACT_RECEIVER_EMAIL!,
-    replyTo: data.email,
-    subject: `[Portfolio Contact] ${data.subject}`,
-    html: data.html,
-  })
-
-  console.log("Resend result:", result) // ← log the result to see if it succeeded
-  return result
-}

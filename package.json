@@ -22,7 +22,6 @@
     "@mantine/hooks": "^8.3.16",
     "@mantine/notifications": "^8.3.16",
     "@mantine/tiptap": "^8.3.16",
-    "@neondatabase/serverless": "^1.0.2",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-query": "latest",

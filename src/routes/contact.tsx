@@ -1,10 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router"
 import {
+  Alert,
   Anchor, Avatar, Button, Card, Container,
+  Divider,
   Group, Paper, Select, SimpleGrid, Stack, Text, TextInput,
   Textarea, ThemeIcon, Title,
 } from "@mantine/core"
 import {
+  AlertCircle,
   Github, Linkedin, Mail, MessageSquare, Phone, Send, X,
 } from "lucide-react"
 import { useForm } from "@mantine/form"
@@ -16,8 +19,12 @@ import { ContactMeEmailTemplate } from "@/lib/htmlTemplates"
 import { EmailTemplateSchema, type EmailTemplateRequest } from "@/db/validations/contact.types"
 import { useServerFn } from "@tanstack/react-start"
 import { sendEmailFn } from "@/server/auth.functions"
+import { AuthMiddleware } from "@/server/middleware"
 
 export const Route = createFileRoute("/contact")({
+  server:{
+    middleware:[AuthMiddleware]
+  },
   component: ContactPage,
 })
 
@@ -35,7 +42,10 @@ function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const sendEmailFunction = useServerFn(sendEmailFn)
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null)
+  const [formError, setFormError] = useState<string | null>(null)
   const isOther = selectedSubject === "Other"
+
+
   const form = useForm<EmailTemplateRequest>({
     initialValues: {
       subject: "",
@@ -59,11 +69,9 @@ function ContactPage() {
       })
       form.reset()
     } catch (err: any) {
-      notifications.show({
-        title: "Failed to send",
-        message: err?.message ?? "Something went wrong. Please try again.",
-        color: "red",
-      })
+      const themessage = err?.message ?? "Something went wrong. Please try again."
+      setFormError(themessage)
+
     } finally {
       setIsSubmitting(false)
     }
@@ -131,7 +139,19 @@ function ContactPage() {
               <Text c="dimmed" size="sm">
                 Have a project in mind or want to collaborate? Send me a message.
               </Text>
-
+              <Divider label="Let's make it digital" labelPosition="center" my="xs" />
+              {formError && (
+                <Alert
+                  color="red"
+                  radius="md"
+                  icon={<AlertCircle size={24} />}
+                  title="Sign in failed"
+                  withCloseButton
+                  onClose={() => setFormError(null)} // ← allow user to dismiss it
+                >
+                  {formError}
+                </Alert>
+              )}
               <form onSubmit={form.onSubmit(handleSubmit)}>
                 <Stack gap="md">
                   <TextInput
@@ -153,34 +173,32 @@ function ContactPage() {
                   />
 
                   {/* ← Select instead of TextInput */}
-    
-
                   <Select
-  label="Subject"
-  placeholder="Select a subject"
-  data={SUBJECT_OPTIONS}
-  radius="md"
-  size="md"
-  required
-  value={selectedSubject}
-  onChange={(value) => {
-    setSelectedSubject(value)
-    // clear subject field when switching options
-    form.setFieldValue("subject", value === "Other" ? "" : value ?? "")
-  }}
-/>
+                    label="Subject"
+                    placeholder="Select a subject"
+                    data={SUBJECT_OPTIONS}
+                    radius="md"
+                    size="md"
+                    required
+                    value={selectedSubject}
+                    onChange={(value) => {
+                      setSelectedSubject(value)
+                      // clear subject field when switching options
+                      form.setFieldValue("subject", value === "Other" ? "" : value ?? "")
+                    }}
+                  />
 
-{/* ← only shown when Other is selected */}
-{isOther && (
-  <TextInput
-    label="Please specify"
-    placeholder="Tell me what this is about..."
-    radius="md"
-    size="md"
-    required
-    {...form.getInputProps("subject")}
-  />
-)}
+                  {/* ← only shown when Other is selected */}
+                  {isOther && (
+                    <TextInput
+                      label="Please specify"
+                      placeholder="Tell me what this is about..."
+                      radius="md"
+                      size="md"
+                      required
+                      {...form.getInputProps("subject")}
+                    />
+                  )}
 
                   <Textarea
                     label="Message"

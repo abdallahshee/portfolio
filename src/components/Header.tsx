@@ -10,7 +10,7 @@ import HireModeBanner from "./HireModeBanner"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { hireStatusQueryOptions } from "@/db/queries/utils.queries"
 
-import { authClient } from "@/lib/auth-client"
+
 import { getSessionQueryOption } from "@/server/auth.functions"
 
 
@@ -52,10 +52,10 @@ export default function Header() {
   // const isAdmin = user?.role === "admin"
 
   // Don't show skeleton at all — just show login buttons while loading
-// This prevents the infinite skeleton problem
-const user = session.data?.user ?? null
-const isAdmin = user?.role === "admin"
-const isSessionLoading = false // disable skeleton entirely for now
+  // This prevents the infinite skeleton problem
+  const user = session.data?.user ?? null
+  const isAdmin = user?.role === "admin"
+  const isSessionLoading = false // disable skeleton entirely for now
 
   const { data: hireData } = useQuery(hireStatusQueryOptions(SETTING_ID))
   const [hireOpen, setHireOpen] = useState(false)
@@ -83,21 +83,28 @@ const isSessionLoading = false // disable skeleton entirely for now
   }
 
   const handleLogout = async () => {
-    await authClient.signOut()
-    await queryClient.invalidateQueries({ queryKey: getSessionQueryOption().queryKey })
-    await router.navigate({ to: "/" })
+    await authClient.signOut({
+      fetchOptions: {
+        onSuccess: async () => {
+          await router.navigate({ to: "/account", search: { callbackUrl: "/" }, })// redirect to login page
+          await queryClient.invalidateQueries({ queryKey: getSessionQueryOption().queryKey })
+        },
+      },
+    });
+
+
   }
 
-const handleLogin = () => {
-  window.location.href = '/account/?callbackUrl=/'
-}
+  const handleLogin = async () => {
+    await router.navigate({ to: "/account", search: { callbackUrl: "/" }, })
+  }
 
-const handleSignup = () => {
-  router.navigate({
-    to: "/account/register",
-    search: { callbackUrl: "/" },
-  })
-}
+  const handleSignup = () => {
+    router.navigate({
+      to: "/account/register",
+      search: { callbackUrl: "/" },
+    })
+  }
 
   const links = [
     { label: "Home", to: "/" },
@@ -121,9 +128,9 @@ const handleSignup = () => {
 
   return (
     // <header className="fixed left-0 top-0 z-[100] w-full border-b-2 border-b-blue-600 shadow-lg ">
-          <header className="fixed left-0 top-0 z-[100] w-full bg-slate-50 dark:bg-slate-700 border-b-2 border-blue-500 shadow-lg ">
+    <header className="fixed left-0 top-0 z-[100] w-full bg-slate-50 dark:bg-slate-700 border-b-2 border-blue-500 shadow-lg ">
 
-      
+
       <div className="container mx-auto flex items-center justify-between p-4">
 
         {/* Left — hire mode banner */}
@@ -189,15 +196,15 @@ const handleSignup = () => {
             </Menu>
           ) : (
             <span className="flex flex-shrink-0 items-center gap-2">
-              <Link to="/account" search={{callbackUrl:"/"}}>
-              <Button variant="outline" color="blue" size="sm" onClick={handleLogin}>
-                Sign in
-              </Button>
+              <Link to="/account" search={{ callbackUrl: "/" }}>
+                <Button variant="outline" color="blue" size="sm" onClick={handleLogin}>
+                  Sign in
+                </Button>
               </Link>
-             <Link to="/account/register" search={{callbackUrl:"/"}}>
-              <Button variant="filled" color="blue" size="sm" onClick={handleSignup}>
-                Sign up
-              </Button>
+              <Link to="/account/register" search={{ callbackUrl: "/" }}>
+                <Button variant="filled" color="blue" size="sm" onClick={handleSignup}>
+                  Sign up
+                </Button>
               </Link>
             </span>
           )}
@@ -258,19 +265,19 @@ const handleSignup = () => {
                   </div>
 
                   {/* {isAdmin && ( */}
-                    <Button
-                      variant="light"
-                      color="indigo"
-                      radius="xl"
-                      fullWidth
-                      leftSection={<LayoutDashboard size={15} />}
-                      onClick={() => {
-                        router.navigate({ to: "/admin" })
-                        setOpened(false)
-                      }}
-                    >
-                      Admin Dashboard
-                    </Button>
+                  <Button
+                    variant="light"
+                    color="indigo"
+                    radius="xl"
+                    fullWidth
+                    leftSection={<LayoutDashboard size={15} />}
+                    onClick={() => {
+                      router.navigate({ to: "/admin" })
+                      setOpened(false)
+                    }}
+                  >
+                    Admin Dashboard
+                  </Button>
                   {/* )} */}
 
                   <Button
