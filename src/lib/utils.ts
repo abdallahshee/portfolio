@@ -1,6 +1,8 @@
 import type { ClassValue } from 'clsx'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { Resend } from "resend"
+import type { SendEmailRequest } from '@/db/validations/contact.types'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
@@ -56,4 +58,17 @@ export const getAuthError = (
     fallbackMessage ??
     "Something went wrong. Please try again."
   )
+}
+
+
+const resend = new Resend(process.env.RESEND_API_KEY)
+
+export const sendEmail = async (data: SendEmailRequest) => {
+  await resend.emails.send({
+    from: "onboarding@resend.dev",
+    to: process.env.CONTACT_RECEIVER_EMAIL!,
+    replyTo: data.email,
+    subject: `[Portfolio Contact] ${data.subject}`,
+    html: data.html, // ← from the schema
+  })
 }

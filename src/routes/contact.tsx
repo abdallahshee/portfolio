@@ -1,34 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router"
 import {
-  Anchor,
-  Avatar,
-  Badge,
-  Button,
-  Card,
-  Container,
-  Group,
-  Paper,
-  SimpleGrid,
-  Stack,
-  Text,
-  TextInput,
-  Textarea,
-  ThemeIcon,
-  Title,
+  Anchor, Avatar, Badge, Button, Card, Container,
+  Group, Paper, SimpleGrid, Stack, Text, TextInput,
+  Textarea, ThemeIcon, Title,
 } from "@mantine/core"
 import {
-  Github,
-  Linkedin,
-  Mail,
-  MessageSquare,
-  Phone,
-  Send,
-  X,
+  Github, Linkedin, Mail, MessageSquare, Phone, Send, X,
 } from "lucide-react"
 import { useForm } from "@mantine/form"
+import { notifications } from "@mantine/notifications"
 import { authClient } from "@/lib/auth-client"
-import { ContactMeSchema, type ContactMeRequest } from "@/db/validations/contact.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
+import { useState } from "react"
+import { sendEmailFn } from "@/lib/auth.functions"
+import { ContactMeEmailTemplate } from "@/lib/htmlTemplates"
+import {EmailTemplateSchema, type EmailTemplateRequest} from "@/db/validations/contact.types"
+import { useServerFn } from "@tanstack/react-start"
 
 export const Route = createFileRoute("/contact")({
   component: ContactPage,
@@ -36,19 +23,39 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const session = authClient.useSession()
-  const form = useForm<ContactMeRequest>({
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const sendEmailFunction=useServerFn(sendEmailFn)
+  const form = useForm<EmailTemplateRequest>({
     initialValues: {
       subject: "",
       name: session?.data?.user.name ?? "",
       email: session?.data?.user.email ?? "",
       message: "",
     },
-    validate: zod4Resolver(ContactMeSchema),
-    validateInputOnBlur: true
+    validate: zod4Resolver(EmailTemplateSchema),
+    validateInputOnBlur: true,
   })
 
-  const handleSubmit = (values: typeof form.values) => {
-    console.log(values)
+  const handleSubmit = async (values:EmailTemplateRequest) => {
+    try {
+      setIsSubmitting(true)
+      console.log("Values are "+JSON.stringify(values))
+      await sendEmailFunction({ data: {...values,html:ContactMeEmailTemplate(values)} })
+      notifications.show({
+        title: "Message sent!",
+        message: "Thanks for reaching out. I'll get back to you soon. 👋",
+        color: "green",
+      })
+      form.reset()
+    } catch (err: any) {
+      notifications.show({
+        title: "Failed to send",
+        message: err?.message ?? "Something went wrong. Please try again.",
+        color: "red",
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -70,7 +77,7 @@ function ContactPage() {
 
             <Stack gap={6} className="flex-1">
               <Group gap="xs">
-                <Text color="blue" variant="text" fw={700} size="xl">
+                <Text c="blue" fw={700} size="xl">
                   Full-Stack Software Developer
                 </Text>
               </Group>
@@ -93,7 +100,6 @@ function ContactPage() {
                   </ThemeIcon>
                   <Text size="sm">+254 712 345 678</Text>
                 </Group>
-
                 <Group gap={8}>
                   <ThemeIcon variant="light" color="indigo" radius="xl">
                     <Mail size={16} />
@@ -166,16 +172,18 @@ function ContactPage() {
                       variant="default"
                       radius="xl"
                       size="md"
-                        leftSection={<X size={18} />}
+                      leftSection={<X size={18} />}
                       onClick={() => form.reset()}
+                      disabled={isSubmitting}
                     >
-                      Cancel
+                      Clear
                     </Button>
                     <Button
                       type="submit"
                       radius="xl"
                       size="md"
                       leftSection={<Send size={18} />}
+                      loading={isSubmitting}
                     >
                       Send Message
                     </Button>
@@ -189,7 +197,6 @@ function ContactPage() {
             <Card radius="2xl" withBorder p="xl" className="shadow-sm">
               <Stack gap="md">
                 <Title order={4}>Contact Information</Title>
-
                 <Group gap="sm" align="flex-start">
                   <ThemeIcon variant="light" color="indigo" radius="xl">
                     <Phone size={16} />
@@ -199,7 +206,6 @@ function ContactPage() {
                     <Text c="dimmed">+254 712 345 678</Text>
                   </div>
                 </Group>
-
                 <Group gap="sm" align="flex-start">
                   <ThemeIcon variant="light" color="indigo" radius="xl">
                     <Mail size={16} />
@@ -215,29 +221,19 @@ function ContactPage() {
             <Card radius="2xl" withBorder p="xl" className="shadow-sm">
               <Stack gap="md">
                 <Title order={4}>Connect with Me</Title>
-
                 <Group gap="sm" align="center">
                   <ThemeIcon variant="light" color="dark" radius="xl">
                     <Github size={16} />
                   </ThemeIcon>
-                  <Anchor
-                    href="https://github.com/yourusername"
-                    target="_blank"
-                    className="font-medium"
-                  >
+                  <Anchor href="https://github.com/yourusername" target="_blank" className="font-medium">
                     GitHub Profile
                   </Anchor>
                 </Group>
-
                 <Group gap="sm" align="center">
                   <ThemeIcon variant="light" color="blue" radius="xl">
                     <Linkedin size={16} />
                   </ThemeIcon>
-                  <Anchor
-                    href="https://linkedin.com/in/yourusername"
-                    target="_blank"
-                    className="font-medium"
-                  >
+                  <Anchor href="https://linkedin.com/in/yourusername" target="_blank" className="font-medium">
                     LinkedIn Profile
                   </Anchor>
                 </Group>
@@ -251,10 +247,9 @@ function ContactPage() {
               className="bg-slate-50 shadow-sm dark:bg-slate-900/60"
             >
               <Stack gap="xs">
-                <Text fw={700}>Let’s build something great</Text>
+                <Text fw={700}>Let's build something great</Text>
                 <Text size="sm" c="dimmed">
-                  I’m open to freelance work, collaborations, and full-time
-                  opportunities.
+                  I'm open to freelance work, collaborations, and full-time opportunities.
                 </Text>
               </Stack>
             </Paper>

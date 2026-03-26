@@ -1,4 +1,5 @@
 import {
+  ErrorComponent,
   HeadContent,
   Scripts,
   createRootRouteWithContext,
@@ -62,6 +63,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   },
   shellComponent: RootDocument,
   notFoundComponent: NotFound,
+  errorComponent:ErrorComponent
 })
 
 // ✅ This component is INSIDE the providers — useQuery works here
