@@ -10,10 +10,12 @@ import {
   searchArticlesQueryOptions,
 } from "@/db/queries/article.queries"
 import { BookMarked, Heart, MessageCircle, PenLine, Search, X } from "lucide-react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import classes from "../../css/article.module.css"
 import moment from "moment"
-import { authClient } from "@/lib/auth-client"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
+
 
 export const Route = createFileRoute("/articles/")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -40,7 +42,24 @@ function BlogsPage() {
   const { page } = Route.useSearch()
   const [searchInput, setSearchInput] = useState("")
   const [debouncedSearch] = useDebouncedValue(searchInput, 300)
-  const { data: session } = authClient.useSession()
+  const supabase = getSupabaseBrowserClient()
+    const [session, setSession] = useState<Session | null>(null) // ✅ typed
+  const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => { // ✅ typed
+      setSession(data?.session ?? null)
+      setIsSessionLoading(false)
+    })
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event: AuthChangeEvent, session: Session | null) => { // ✅ typed
+        setSession(session)
+      }
+    )
+
+    return () => listener.subscription.unsubscribe()
+  }, [])
 
   const hasSearch = debouncedSearch.trim().length > 0
   const isAuthenticated = !!session?.user

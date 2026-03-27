@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start"
 import { eq } from "drizzle-orm"
 import { db } from "../db/index"
-import { AdminMiddleware } from "./middleware"
 import { setting } from "@/db/schema"
+import { AdminMiddleware } from "./middleware/auth.middleware"
 
 export const toggleHireModeStatus = createServerFn({ method: "POST" })
   .middleware([AdminMiddleware])

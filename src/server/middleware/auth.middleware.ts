@@ -1,31 +1,46 @@
-import { auth } from "@/lib/auth"
 import { createMiddleware } from "@tanstack/react-start"
-import { db } from "../db/index"
 import { eq } from "drizzle-orm"
 import { redirect } from "@tanstack/react-router"
 import { article } from "@/db/schema/article.schema"
+import {  getDbUser, getSupabaseUser } from "@/lib/supabase/utils"
+import { db } from "@/db"
 
-export const AuthMiddleware = createMiddleware()
-    .server(async ({ request, next }) => {
-        const session = await auth.api.getSession({
-            headers: request.headers
+
+export const AuthenticatedMiddleware = createMiddleware()
+    .server(async ({ next,request }) => {
+        const supabaseUser = await getSupabaseUser()
+        if (!supabaseUser) {
+              const redirectTo = new URL(request.url).pathname
+        throw redirect({
+            to: "/account",
+            search: { callbackUrl: redirectTo },
         })
-
-        const user = session?.user ?? null
-        const role = session?.user?.role ?? null
-
-        if (!user) {
-            const redirectTo = new URL(request.url).pathname
-            throw redirect({
-                to: "/account",
-                search: { callbackUrl: redirectTo },
-            })
         }
-
         return next({
             context: {
-                user,
-                session,
+                superbaseUser: supabaseUser,
+            },
+        })
+    })
+
+    export const UserMiddleware = createMiddleware()
+    .middleware([AuthenticatedMiddleware])
+    .server(async ({ next,request,context }) => {
+        const dbUserId=context?.superbaseUser.id
+        const dbUser=await db.query.user.findFirst({where: (person, { eq }) => eq(person.id, dbUserId)})
+        if (!dbUser) {
+              const redirectTo = new URL(request.url).pathname
+        throw redirect({
+            to: "/account",
+            search: { callbackUrl: redirectTo },
+        })
+        }
+
+       const role=dbUser.role
+        return next({
+            context: {
+                ...context,
+                dbUser: dbUser,
                 role,
             },
         })
@@ -33,15 +48,14 @@ export const AuthMiddleware = createMiddleware()
 
 
 export const UserEditArticleMiddleware = createMiddleware()
-    .middleware([AuthMiddleware])
+    .middleware([UserMiddleware])
     .server(async ({ request, context, next }) => {
-        const user = context.user
+        const user = context.superbaseUser
         const url = new URL(request.url)
-        // const slug = url.searchParams.get('slug')
-         const slug = url.pathname.split("/").filter(Boolean)[1]
+        const slug = url.pathname.split("/").filter(Boolean)[1]
         const redirectTo = encodeURIComponent(url.pathname + url.search)
 
-        if (!user || !slug ) {
+        if (!user || !slug) {
             return Response.redirect(
                 new URL(`/account?redirect=${redirectTo}`, request.url),
                 302
@@ -73,7 +87,7 @@ export const UserEditArticleMiddleware = createMiddleware()
 
 
 export const AdminMiddleware = createMiddleware()
-    .middleware([AuthMiddleware])
+    .middleware([UserMiddleware])
     .server(async ({ context, request, next }) => {
         const isAdmin = context.role === "admin"
         const url = new URL(request.url)
@@ -89,16 +103,15 @@ export const AdminMiddleware = createMiddleware()
     })
 
 export const OptionalAuthMiddleware = createMiddleware().server(
-    async ({ next, request }) => {
-        const session = await auth.api.getSession({
-            headers: request.headers
-        })
+    async ({ next}) => {
+        const dbUser = await getDbUser()
 
         return next({
             context: {
-                user: session?.user ?? null, // null if not logged in, no error thrown
-            },
+                dbUser
+            }
         })
     }
 )
+
 

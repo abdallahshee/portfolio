@@ -1,34 +1,19 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getRequestHeaders } from "@tanstack/react-start/server";
-import { auth } from "@/lib/auth";
-import { queryOptions } from "@tanstack/react-query";
 import { SendEmailWitHtmlSchema, type SendEmailRequest } from "@/db/validations/contact.types"
-import { AuthMiddleware } from "./middleware";
 import { Resend } from "resend";
+import { UserMiddleware } from "./middleware/auth.middleware";
+import { getServerSession } from "@/lib/supabase/server";
 
 
-export const getSession = createServerFn({ method: "GET" }).handler(async () => {
-  const headers = getRequestHeaders();
-  const session = await auth.api.getSession({ headers });
-  return session;
-});
-
-
-export const ensureSession = createServerFn({ method: "GET" })
-
-  .handler(async () => {
-    const headers = getRequestHeaders();
-    const session = await auth.api.getSession({ headers });
-    if (!session) {
-      throw new Error("Unauthorized");
-    }
-    return session;
-  });
-
-export const getSessionQueryOption = () => queryOptions({
-  queryKey: ["theSession"],
-  queryFn: () => getSession()
+export const getSessionFn = createServerFn({ method: "GET" }).handler(async () => {
+ const session=await getServerSession()
+  if (!session) {
+    return null
+  }
+  return session
 })
+
+
 
 const resend = new Resend(process.env.RESEND_API_KEY!)
 
@@ -46,7 +31,7 @@ export const sendEmail = async (data: SendEmailRequest) => {
 }
 // src/server/contact.functions.ts
 export const sendEmailFn = createServerFn({ method: "POST" })
-  .middleware([AuthMiddleware])
+  .middleware([UserMiddleware])
   .inputValidator(SendEmailWitHtmlSchema)
   .handler(async ({ data }) => {
     try {

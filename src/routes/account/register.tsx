@@ -19,21 +19,12 @@ import {
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { AlertCircle, ImagePlus, UserPlus } from "lucide-react"
-
-import { getAuthError, uploadImage } from "@/lib/utils"
 import { useMemo, useState } from "react"
-import { authClient } from "@/lib/auth-client"
 import { GithubButton, GoogleButton } from "@/components/Buttons"
 import { SignUpSchema, type SignUpRequest } from "@/db/validations/user.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
-
-interface SignUpForm {
-  name: string
-  email: string
-  image: File | null
-  password: string
-  confirmPassword: string
-}
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import { uploadImage } from "@/lib/utils"
 
 export const Route = createFileRoute("/account/register")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -46,6 +37,7 @@ export const Route = createFileRoute("/account/register")({
 function RouteComponent() {
   const { callbackUrl } = Route.useSearch()
   const router = useRouter()
+  const client=getSupabaseBrowserClient()
   const [file, setFile] = useState<File | null>()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(
@@ -79,13 +71,11 @@ function RouteComponent() {
       } else {
         url = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
       }
-      const res = await authClient.signUp.email({
-        name: values.name.trim(),
+      const res = await client.auth.signUp({
         email: values.email.trim().toLowerCase(),
-        password: values.password,
-        image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80",
+        password: values.password
       })
-
+    
       if (res?.data?.user) {
         notifications.show({
           title: "Account created",
@@ -98,14 +88,10 @@ function RouteComponent() {
         })
         return
       }
-
-      const code = res?.error?.code
-      const message = getAuthError(code, res?.error?.message)
+      const message = res?.error?.message
       setFormError(message)
-
     } catch (err: any) {
-      const code = err?.code
-      const message = getAuthError(code, err?.code.message)
+      const message = err?.code.message
       setFormError(message)
     } finally {
       setIsSubmitting(false)
@@ -117,10 +103,10 @@ function RouteComponent() {
   const handleOAuthSignUp = async (provider: "github" | "google") => {
     try {
       setOauthProvider(provider)
-      await authClient.signIn.social({
-        provider,
-        callbackURL: callbackUrl,
-      })
+      // await client.auth.signInWithPassword({
+      //   provider,
+      //   callbackURL: callbackUrl,
+      // })
     } catch (err: any) {
       notifications.show({
         title: "OAuth sign up failed",

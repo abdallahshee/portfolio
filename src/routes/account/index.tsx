@@ -22,11 +22,10 @@ import {
 } from "@tanstack/react-router"
 
 import { useState } from "react"
-import { authClient } from "@/lib/auth-client"
 import { SignInSchema, type SignInRequest } from "@/db/validations/user.types"
 import { GithubButton, GoogleButton } from "@/components/Buttons"
 import { zod4Resolver } from 'mantine-form-zod-resolver'
-import { getAuthError } from "@/lib/utils"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 
 export const Route = createFileRoute("/account/")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -42,7 +41,7 @@ function RouteComponent() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(null)
   const [formError, setFormError] = useState<string | null>(null) // ← new
-
+  const client = getSupabaseBrowserClient()
   const form = useForm<SignInRequest>({
     initialValues: {
       email: "",
@@ -58,32 +57,20 @@ function RouteComponent() {
     setFormError(null)
     try {
       setIsSubmitting(true)
+      const { data, error } = await client.auth.signUp({
+        email: values.email,
+        password: values.password
+      })
 
-      const res = await authClient.signIn.email({
-        email: values.email.trim().toLowerCase(),
-        password: values.password,
-        rememberMe: values.rememberMe,
-        callbackURL: redirectTo,
-      }
-    )
-
-      if (res?.data?.user) {
-        notifications.show({
-          title: "Login successful",
-          message: "Welcome back 👋",
-          color: "green",
-        })
+      if (error) {
+        setFormError(error.message)
         router.navigate({ to: redirectTo })
-        return
+        return data
       }
 
-      const code = res?.error?.code
-      const message = getAuthError(code, res?.error?.message)
-      setFormError(message)
-
+      return data
     } catch (err: any) {
-      const code = err?.code
-      const message = getAuthError(code, err?.code.message)
+      const message = err?.message
       setFormError(message)
     } finally {
       setIsSubmitting(false)
@@ -93,7 +80,7 @@ function RouteComponent() {
   const handleOAuthSignIn = async (provider: "github" | "google") => {
     try {
       setOauthProvider(provider)
-      await authClient.signIn.social({ provider, callbackURL: redirectTo })
+      // await getSupabaseBrowserClient.signIn.social({ provider, callbackURL: redirectTo })
     } catch (err: any) {
       notifications.show({
         title: "OAuth login failed",

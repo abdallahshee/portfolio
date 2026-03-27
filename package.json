@@ -22,6 +22,8 @@
     "@mantine/hooks": "^8.3.16",
     "@mantine/notifications": "^8.3.16",
     "@mantine/tiptap": "^8.3.16",
+    "@supabase/ssr": "^0.9.0",
+    "@supabase/supabase-js": "^2.100.1",
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",
     "@tanstack/react-query": "latest",

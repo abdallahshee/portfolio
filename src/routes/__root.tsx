@@ -22,7 +22,8 @@ import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollTop'
 import NotFound from "../components/NotFound"
 import { useRouterState } from '@tanstack/react-router';
-import { getSessionQueryOption } from '@/server/auth.functions';
+import { getSessionQueryOptions } from '@/db/queries/utils.queries';
+
 
 
 interface MyRouterContext {
@@ -60,7 +61,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     links: [{ rel: 'stylesheet', href: appCss }],
   }),
   loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(getSessionQueryOption())
+    await context.queryClient.prefetchQuery(getSessionQueryOptions())
   },
   shellComponent: RootDocument,
   notFoundComponent: NotFound,
@@ -69,7 +70,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 // ✅ This component is INSIDE the providers — useQuery works here
 function AppShell({ children }: { children: React.ReactNode }) {
-  const { data: session,isLoading } = useQuery(getSessionQueryOption())
+  const { data: session,isLoading } = useQuery(getSessionQueryOptions())
  
 
   const isAdminRoute = useRouterState({

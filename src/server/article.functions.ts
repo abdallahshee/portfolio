@@ -1,12 +1,12 @@
 
 import { createServerFn } from "@tanstack/react-start";
 import { db } from "../db/index";
-import { AdminMiddleware, AuthMiddleware, OptionalAuthMiddleware } from "./middleware";
 import { and, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { category, comment, user } from "@/db/schema";
-import { ArticleSchema, ArticleUpdateSchema, PublishArticleSchema } from "@/db/validations/article.types";
+import { ArticleSchema, ArticleUpdateSchema } from "@/db/validations/article.types";
 import { article } from "@/db/schema/article.schema";
 import { articleLike } from "@/db/schema/article-like.schema";
+import { UserMiddleware, AuthenticatedMiddleware, OptionalAuthMiddleware } from "./middleware/auth.middleware";
 
 
 
@@ -28,7 +28,7 @@ function createExcerpt(content: string, maxLength = 160) {
 
 export const createArticle = createServerFn({ method: "POST" })
     .inputValidator(ArticleSchema)
-    .middleware([AuthMiddleware])
+    .middleware([UserMiddleware])
     .handler(async ({ data, context }) => {
         try {
             const slug = createSlug(data.title)
@@ -38,7 +38,7 @@ export const createArticle = createServerFn({ method: "POST" })
                 ...data,
                 slug,
                 excerpt,
-                userId: context.user?.id!,
+                userId: context.superbaseUser?.id!,
             }
 
             const result = await db.insert(article).values(newData).returning()
@@ -82,7 +82,7 @@ export const getAllArticles = createServerFn()
     })
 
 export const getArticleBySlugdForUpdate = createServerFn()
-    .middleware([AuthMiddleware])
+    .middleware([AuthenticatedMiddleware])
     .inputValidator((data: { slug: string }) => data)
     .handler(async ({ data }) => {
         try {
@@ -113,7 +113,7 @@ export const getArticleBySlug = createServerFn()
     .inputValidator((data: { slug: string }) => data)
     .handler(async ({ data, context }) => {
         try {
-            const currentUserId = context.user?.id ?? null
+            const currentUserId = context.dbUser?.id ?? null
 
             // Blog
             const articleResult = await db
@@ -300,7 +300,7 @@ export const getTopArticles = createServerFn({ method: "GET" })
 
 export const updateArticle = createServerFn({ method: "POST" })
     .inputValidator(ArticleUpdateSchema)
-    .middleware([AuthMiddleware])
+    .middleware([UserMiddleware])
     .handler(async ({ data, context }) => {
         try {
             const updated = await db
@@ -314,7 +314,7 @@ export const updateArticle = createServerFn({ method: "POST" })
                 .where(
                     and(
                         eq(article.slug, data.slug),
-                        eq(article.userId, context.user?.id!)
+                        eq(article.userId, context.superbaseUser?.id!)
                     )
                 )
                 .returning()
@@ -400,10 +400,10 @@ export const searchArticles = createServerFn({ method: "GET" })
 
 // server/blog.functions.ts
 export const getMyArticles = createServerFn({ method: "GET" })
-    .middleware([AuthMiddleware])
+    .middleware([UserMiddleware])
     .handler(async ({ context }) => {
         try {
-            const userId = context.user?.id!
+            const userId = context.dbUser?.id!
 
             const articles = await db
                 .select({
@@ -416,8 +416,8 @@ export const getMyArticles = createServerFn({ method: "GET" })
                     status: article.status,
                     createdAt: article.createdAt,
                     categoryName: category.name,
-                    likes: sql<number>`(select count(*) from blog_like where blog_id = ${article.id})`,
-                    comments: sql<number>`(select count(*) from comment where blog_id = ${article.id})`,
+                    likes: sql<number>`(select count(*) from article_like where article_id = ${article.id})`,
+                    comments: sql<number>`(select count(*) from comment where article_id = ${article.id})`,
                 })
                 .from(article)
                 .leftJoin(category, eq(article.categoryId, category.id))
@@ -432,14 +432,14 @@ export const getMyArticles = createServerFn({ method: "GET" })
     })
 
 export const getMyPaginatedArticles = createServerFn({ method: 'GET' })
-    .middleware([AuthMiddleware])
+    .middleware([UserMiddleware])
     .inputValidator((data: { page?: number; limit?: number }) => ({
         page: data.page && data.page > 0 ? data.page : 1,
         limit: data.limit && data.limit > 0 ? data.limit : 6,
     }))
     .handler(async ({ data, context }) => {
         try {
-            const userId = context.user.id
+            const userId = context.dbUser.id
             const { page = 1, limit = 6 } = data
             const offset = (page - 1) * limit
 
@@ -497,15 +497,3 @@ export const getMyPaginatedArticles = createServerFn({ method: 'GET' })
         }
     })
 
-export const publishArticle = createServerFn({ method: "POST" })
-    .middleware([AdminMiddleware])
-    .inputValidator(PublishArticleSchema)
-    .handler(async ({ data }) => {
-        try {
-            const [theArticle] = await db.update(article).set({ status: data.status })
-                .where(eq(article.id, data.id)).returning({articleId:article.id,articleStatus:article.status})
-            return theArticle
-        } catch (err) {
-            throw err
-        }
-    })

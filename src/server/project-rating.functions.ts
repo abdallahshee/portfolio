@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/react-start"
 import { and, eq } from "drizzle-orm"
 import { z } from "zod"
-import { AuthMiddleware } from "@/server/middleware"
 import { db } from "../db/index"
 import { projectRating } from "@/db/schema"
+import { UserMiddleware } from "./middleware/auth.middleware"
 
 const RateProjectSchema = z.object({
   projectId: z.string(),
@@ -12,9 +12,9 @@ const RateProjectSchema = z.object({
 
 export const rateProject = createServerFn({ method: "POST" })
   .inputValidator(RateProjectSchema)
-  .middleware([AuthMiddleware])
+  .middleware([UserMiddleware])
   .handler(async ({ data, context }) => {
-    const userId = context.user!.id
+    const userId = context.dbUser!.id
 
     // Block if already rated
     const existing = await db.query.projectRating.findFirst({

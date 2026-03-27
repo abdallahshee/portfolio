@@ -16,10 +16,11 @@ import {
   SegmentedControl,
 } from '@mantine/core'
 import { Search, X, FolderKanban, ListFilter } from 'lucide-react'
-import { authClient } from '@/lib/auth-client'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
+import { getSupabaseBrowserClient } from '@/lib/supabase/client'
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 
 const PAGE_SIZE = 6
 
@@ -33,7 +34,24 @@ export const Route = createFileRoute('/projects/')({
 type FilterValue = 'all' | 'public' | 'private'
 
 function RouteComponent() {
-  const { data: session } = authClient.useSession()
+  const supabase = getSupabaseBrowserClient()
+    const [session, setSession] = useState<Session | null>(null) // ✅ typed
+  const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => { // ✅ typed
+      setSession(data?.session ?? null)
+      setIsSessionLoading(false)
+    })
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event: AuthChangeEvent, session: Session | null) => { // ✅ typed
+        setSession(session)
+      }
+    )
+
+    return () => listener.subscription.unsubscribe()
+  }, [])
   const [page, setPage] = useState(1)
   const [searchInput, setSearchInput] = useState("")
   const [filter, setFilter] = useState<FilterValue>('all')

@@ -1,8 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { getArticleBySlugQueryOptions } from '@/db/queries/article.queries'
-import { getSessionQueryOptions } from '@/db/queries/utils.queries'
 import ArticleDetails from '@/components/ArticleDetails'
+import { getSessionQueryOptions } from '@/db/queries/utils.queries'
 
 export const Route = createFileRoute('/admin/articles/$slug')({
   loader: async ({ context, params }) => {

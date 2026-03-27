@@ -23,7 +23,6 @@ import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
 import { useQuery } from "@tanstack/react-query"
 import { useCategoryCreateMutations, useDeleteCategoryMutation } from "@/db/mutations/category.mutations"
 import { CategorySchema, type CategoryRequest } from "@/db/validations/category.types"
-import { ProjectSchema } from "@/db/validations/project.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 
 export const Route = createFileRoute("/categories")({

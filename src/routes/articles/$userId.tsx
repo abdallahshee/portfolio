@@ -23,10 +23,12 @@ import {
 import {  Heart, MessageCircle, Search, X,PenLine, SlidersHorizontal } from "lucide-react"
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import classes from "../../css/article.module.css"
 import moment from 'moment'
-import { authClient } from '@/lib/auth-client'
+import { getSupabaseBrowserClient } from '@/lib/supabase/client'
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
+
 
 export const Route = createFileRoute('/articles/$userId')({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -56,7 +58,24 @@ function BlogsPage() {
   const [searchInput, setSearchInput] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [debouncedSearch] = useDebouncedValue(searchInput, 300)
-  const { data: session } = authClient.useSession()
+  const [session, setSession] = useState<Session | null>(null) 
+  const supabase = getSupabaseBrowserClient()
+   const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => { // ✅ typed
+      setSession(data?.session ?? null)
+      setIsSessionLoading(false)
+    })
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event: AuthChangeEvent, session: Session | null) => { // ✅ typed
+        setSession(session)
+      }
+    )
+
+    return () => listener.subscription.unsubscribe()
+  }, [])
   const router = useRouter()
   const isSearching = debouncedSearch.trim().length > 0
   const isOwner = session?.user?.id === userId

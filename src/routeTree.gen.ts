@@ -34,7 +34,6 @@ import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects/
 import { Route as AdminArticlesIndexRouteImport } from './routes/admin/articles/index'
 import { Route as ProjectsIdEditRouteImport } from './routes/projects/$id.edit'
 import { Route as ArticlesSlugEditRouteImport } from './routes/articles/$slug.edit'
-import { Route as ApiAuthSplatRouteImport } from './routes/api/auth/$'
 import { Route as AdminProjectsCreateRouteImport } from './routes/admin/projects/create'
 import { Route as AdminArticlesSlugRouteImport } from './routes/admin/articles/$slug'
 import { Route as AdminProjectsIdEditRouteImport } from './routes/admin/projects/$id.edit'
@@ -165,11 +164,6 @@ const ArticlesSlugEditRoute = ArticlesSlugEditRouteImport.update({
   path: '/edit',
   getParentRoute: () => ArticlesSlugRoute,
 } as any)
-const ApiAuthSplatRoute = ApiAuthSplatRouteImport.update({
-  id: '/api/auth/$',
-  path: '/api/auth/$',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AdminProjectsCreateRoute = AdminProjectsCreateRouteImport.update({
   id: '/create',
   path: '/create',
@@ -215,7 +209,6 @@ export interface FileRoutesByFullPath {
   '/projects/': typeof ProjectsIndexRoute
   '/admin/articles/$slug': typeof AdminArticlesSlugRoute
   '/admin/projects/create': typeof AdminProjectsCreateRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
   '/articles/$slug/edit': typeof ArticlesSlugEditRoute
   '/projects/$id/edit': typeof ProjectsIdEditRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
@@ -241,7 +234,6 @@ export interface FileRoutesByTo {
   '/projects': typeof ProjectsIndexRoute
   '/admin/articles/$slug': typeof AdminArticlesSlugRoute
   '/admin/projects/create': typeof AdminProjectsCreateRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
   '/articles/$slug/edit': typeof ArticlesSlugEditRoute
   '/projects/$id/edit': typeof ProjectsIdEditRoute
   '/admin/articles': typeof AdminArticlesIndexRoute
@@ -274,7 +266,6 @@ export interface FileRoutesById {
   '/projects/': typeof ProjectsIndexRoute
   '/admin/articles/$slug': typeof AdminArticlesSlugRoute
   '/admin/projects/create': typeof AdminProjectsCreateRoute
-  '/api/auth/$': typeof ApiAuthSplatRoute
   '/articles/$slug/edit': typeof ArticlesSlugEditRoute
   '/projects/$id/edit': typeof ProjectsIdEditRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
@@ -308,7 +299,6 @@ export interface FileRouteTypes {
     | '/projects/'
     | '/admin/articles/$slug'
     | '/admin/projects/create'
-    | '/api/auth/$'
     | '/articles/$slug/edit'
     | '/projects/$id/edit'
     | '/admin/articles/'
@@ -334,7 +324,6 @@ export interface FileRouteTypes {
     | '/projects'
     | '/admin/articles/$slug'
     | '/admin/projects/create'
-    | '/api/auth/$'
     | '/articles/$slug/edit'
     | '/projects/$id/edit'
     | '/admin/articles'
@@ -366,7 +355,6 @@ export interface FileRouteTypes {
     | '/projects/'
     | '/admin/articles/$slug'
     | '/admin/projects/create'
-    | '/api/auth/$'
     | '/articles/$slug/edit'
     | '/projects/$id/edit'
     | '/admin/articles/'
@@ -383,7 +371,6 @@ export interface RootRouteChildren {
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
   CategoriesRoute: typeof CategoriesRoute
   ContactRoute: typeof ContactRoute
-  ApiAuthSplatRoute: typeof ApiAuthSplatRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -563,13 +550,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesSlugEditRouteImport
       parentRoute: typeof ArticlesSlugRoute
     }
-    '/api/auth/$': {
-      id: '/api/auth/$'
-      path: '/api/auth/$'
-      fullPath: '/api/auth/$'
-      preLoaderRoute: typeof ApiAuthSplatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/admin/projects/create': {
       id: '/admin/projects/create'
       path: '/create'
@@ -731,7 +711,6 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
   CategoriesRoute: CategoriesRoute,
   ContactRoute: ContactRoute,
-  ApiAuthSplatRoute: ApiAuthSplatRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

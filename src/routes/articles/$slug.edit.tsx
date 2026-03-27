@@ -3,8 +3,8 @@ import { useState } from "react"
 import { getArticleBySlugForUpdateQueryOptions } from "@/db/queries/article.queries"
 import { useArticleUpdateMutationOption } from "@/db/mutations/article.mutations"
 import ArticleEditor from "@/components/ArticleEditor"
-import { UserEditArticleMiddleware } from "@/server/middleware"
 import type { ArticleRequest } from "@/db/validations/article.types"
+import { UserEditArticleMiddleware } from "@/server/middleware/auth.middleware"
 
 export const Route = createFileRoute("/articles/$slug/edit")({
   server: { middleware: [UserEditArticleMiddleware] },

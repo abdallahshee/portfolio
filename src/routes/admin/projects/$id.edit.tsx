@@ -35,10 +35,10 @@ import {
   LayoutPanelTop,
 } from "lucide-react"
 import { getProjectByIdQueryOptions } from "@/db/queries/project.queries"
-import { AdminMiddleware } from "@/server/middleware"
 import { useState } from "react"
 import { useUpdateProjectMutation } from "@/db/mutations/project.mutations"
 import type { UpdateProjectRequest } from "@/db/validations/project.types"
+import { AdminMiddleware } from "@/server/middleware/auth.middleware"
 
 export const Route = createFileRoute("/admin/projects/$id/edit")({
   server: {

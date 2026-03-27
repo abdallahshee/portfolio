@@ -31,11 +31,11 @@ import {
   Wrench,
 } from "lucide-react"
 import { uploadImage } from "@/lib/utils"
-import { AdminMiddleware } from "@/server/middleware"
 import { useMemo, useState } from "react"
 import { ProjectSchema, type ProjectRequest } from "@/db/validations/project.types"
 import { useProjectCreateMutation } from "@/db/mutations/project.mutations"
 import { zod4Resolver } from "mantine-form-zod-resolver"
+import { AdminMiddleware } from "@/server/middleware/auth.middleware"
 
 
 

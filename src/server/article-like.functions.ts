@@ -1,8 +1,8 @@
 import { createServerFn } from "@tanstack/react-start"
-import { AuthMiddleware } from "./middleware"
 import { db } from "../db/index"
 import { and, eq, sql } from "drizzle-orm"
 import { articleLike } from "@/db/schema/article-like.schema"
+import {  UserMiddleware } from "./middleware/auth.middleware"
 
 
 // ── helper to get fresh likes count ──────────────────────────────
@@ -16,10 +16,10 @@ const getLikesCount = async (articleId: string) => {
 
 // ── Like a blog ───────────────────────────────────────────────────
 export const likeBlog = createServerFn()
-    .middleware([AuthMiddleware])
+    .middleware([UserMiddleware])
     .inputValidator((data: { articleId: string }) => data)
     .handler(async ({ data, context }) => {
-        const currentUserId = context.user?.id
+        const currentUserId = context.dbUser?.id
 
         if (!currentUserId) {
             throw new Error("You must be logged in to like a blog")
@@ -54,10 +54,10 @@ export const likeBlog = createServerFn()
 
 // ── Dislike (unlike) a blog ───────────────────────────────────────
 export const dislikeArticle = createServerFn()
-    .middleware([AuthMiddleware])
+    .middleware([UserMiddleware])
     .inputValidator((data: { articleId: string }) => data)
     .handler(async ({ data, context }) => {
-        const currentUserId = context.user?.id
+        const currentUserId = context.dbUser?.id
 
         if (!currentUserId) {
             throw new Error("You must be logged in to dislike a blog")

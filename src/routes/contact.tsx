@@ -12,18 +12,20 @@ import {
 } from "lucide-react"
 import { useForm } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
-import { authClient } from "@/lib/auth-client"
 import { zod4Resolver } from "mantine-form-zod-resolver"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { ContactMeEmailTemplate } from "@/lib/htmlTemplates"
 import { EmailTemplateSchema, type EmailTemplateRequest } from "@/db/validations/contact.types"
 import { useServerFn } from "@tanstack/react-start"
 import { sendEmailFn } from "@/server/auth.functions"
-import { AuthMiddleware } from "@/server/middleware"
+import { AuthenticatedMiddleware } from "@/server/middleware/auth.middleware"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
+
 
 export const Route = createFileRoute("/contact")({
   server:{
-    middleware:[AuthMiddleware]
+    middleware:[AuthenticatedMiddleware]
   },
   component: ContactPage,
 })
@@ -38,7 +40,24 @@ const SUBJECT_OPTIONS = [
 ]
 
 function ContactPage() {
-  const session = authClient.useSession()
+  const supabase = getSupabaseBrowserClient()
+    const [session, setSession] = useState<Session | null>(null) // ✅ typed
+  const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => { // ✅ typed
+      setSession(data?.session ?? null)
+      setIsSessionLoading(false)
+    })
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event: AuthChangeEvent, session: Session | null) => { // ✅ typed
+        setSession(session)
+      }
+    )
+
+    return () => listener.subscription.unsubscribe()
+  }, [])
   const [isSubmitting, setIsSubmitting] = useState(false)
   const sendEmailFunction = useServerFn(sendEmailFn)
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null)
@@ -49,8 +68,8 @@ function ContactPage() {
   const form = useForm<EmailTemplateRequest>({
     initialValues: {
       subject: "",
-      name: session?.data?.user.name ?? "",
-      email: session?.data?.user.email ?? "",
+      name: "",
+      email: session?.user.email ?? "",
       message: "",
     },
     validate: zod4Resolver(EmailTemplateSchema),

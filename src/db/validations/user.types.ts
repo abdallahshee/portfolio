@@ -1,6 +1,7 @@
 import type { InferSelectModel } from "drizzle-orm";
 import { user } from "../schema";
 import { createSelectSchema } from "drizzle-zod";
+import type { User } from '@supabase/supabase-js'
 import z from "zod"
 
 export const SignUpSchema = createSelectSchema(user, {
@@ -51,4 +52,15 @@ export type SignInRequest = z.infer<typeof SignInSchema>
 // export type User = InferSelectModel<typeof user>
 
 export type Role = Pick<InferSelectModel<typeof user>, "role">
+
+// src/features/auth/auth.types.ts
+
+export type DbUser = InferSelectModel<typeof user>
+
+export type SupabaseUser =User
+
+// export type CurrentUser={
+//     DbUser:DbUser,
+//     SupabaseUser:SupabaseUser
+// }
 

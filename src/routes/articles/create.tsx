@@ -2,17 +2,17 @@ import { createFileRoute, useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 import { useRef } from "react"
 import TurndownService from "turndown"
-import { AuthMiddleware } from "@/server/middleware"
 import { useArticleCreateMutation } from "@/db/mutations/article.mutations"
 import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
 import { useQuery } from "@tanstack/react-query"
 
 import ArticleEditor from "@/components/ArticleEditor"
 import type { ArticleRequest } from "@/db/validations/article.types"
+import { AuthenticatedMiddleware } from "@/server/middleware/auth.middleware"
 
 
 export const Route = createFileRoute("/articles/create")({
-  server: { middleware: [AuthMiddleware] },
+  server: { middleware: [AuthenticatedMiddleware] },
   loader: async ({ context }) => {
     await context.queryClient.prefetchQuery(getAllCategoriesQueryOption())
   },

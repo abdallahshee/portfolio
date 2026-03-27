@@ -1,11 +1,10 @@
 // server/admin.functions.ts
 import { createServerFn } from "@tanstack/react-start"
-import { AdminMiddleware } from "@/server/middleware"
-
-import { article, project, user, session } from "@/db/schema"
+import { article, project, user} from "@/db/schema"
 import { eq, desc, sql, count } from "drizzle-orm"
-import { auth } from "@/lib/auth"
-import { db } from "../db/index"
+import { db } from "@/db"
+import { AdminMiddleware } from "./middleware/auth.middleware"
+import { PublishArticleSchema } from "@/db/validations/article.types"
 
 // ── Dashboard stats ──
 export const getAdminStats = createServerFn({ method: "GET" })
@@ -90,7 +89,7 @@ export const updateBlogStatus = createServerFn({ method: "POST" })
 export const getAdminUsers = createServerFn({ method: "GET" })
   .middleware([AdminMiddleware])
   .handler(async () => {
-    const users = await db
+    const tuser = await db
       .select({
         id: user.id,
         name: user.name,
@@ -99,23 +98,25 @@ export const getAdminUsers = createServerFn({ method: "GET" })
         role: user.role,
         createdAt: user.createdAt,
         blogCount: sql<number>`COUNT(DISTINCT ${article.id})`,
-        lastSignIn: sql<Date>`MAX(${session.createdAt})`,
+        // lastSignIn: sql<Date>`MAX(${session.createdAt})`,
       })
       .from(user)
       .leftJoin(article, eq(user.id, article.userId))
-      .leftJoin(session, eq(user.id, session.userId))
+      // .leftJoin(session, eq(user.id, session.userId))
       .groupBy(user.id)
       .orderBy(desc(user.createdAt))
-    return users
+    return tuser
   })
 
-// export const impersonateUser = createServerFn({ method: "POST" })
-//   .inputValidator((data: { userId: string }) => data)
-//   .middleware([AdminMiddleware])
-//   .handler(async ({ data, context }) => {
-//     const impersonated = await auth.api.impersonateUser({
-//       body: { userId: data.userId },
-//       headers: context.request?.headers ?? new Headers(),
-//     })
-//     return impersonated
-//   })
+export const publishArticle = createServerFn({ method: "POST" })
+    .middleware([AdminMiddleware])
+    .inputValidator(PublishArticleSchema)
+    .handler(async ({ data }) => {
+        try {
+            const [theArticle] = await db.update(article).set({ status: data.status })
+                .where(eq(article.id, data.id)).returning({articleId:article.id,articleStatus:article.status})
+            return theArticle
+        } catch (err) {
+            throw err
+        }
+    })

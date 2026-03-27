@@ -1,17 +1,17 @@
 import { createServerFn } from '@tanstack/react-start'
 import { eq, and } from 'drizzle-orm'
-import {  AuthMiddleware } from './middleware'
 import { db } from '../db/index'
 import { CommentSchema } from '@/db/validations/comment.types'
 import { article } from '@/db/schema/article.schema'
 import { comment } from '@/db/schema'
+import { UserMiddleware } from './middleware/auth.middleware'
 
 export const createComment = createServerFn({ method: 'POST' })
-    .middleware([AuthMiddleware])
+    .middleware([UserMiddleware])
     .inputValidator(CommentSchema)
     .handler(async ({ data, context }) => {
         try {
-            if (!context.user?.id) {
+            if (!context.dbUser?.id) {
                 throw new Error('Unauthorized')
             }
             const existingBlog = await db
@@ -49,7 +49,7 @@ export const createComment = createServerFn({ method: 'POST' })
                 .values({
                     // id: nanoid(16),
                     articleId: data.articleId,
-                    userId: context.user.id,
+                    userId: context.dbUser.id,
                     parentId: normalizedParentId,
                     content: data.content.trim(),
                 })

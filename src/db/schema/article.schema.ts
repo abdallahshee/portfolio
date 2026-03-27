@@ -5,13 +5,14 @@ import { user } from "./user.schema";
 import { comment } from "./comment.schema";
 import { articleLike } from "./article-like.schema";
 import { category } from "./category.schema";
+import { uuid } from "drizzle-orm/pg-core";
 
 export const article = pgTable("article", {
   id: text("id").primaryKey().$default(() => nanoid(16)),
   title: text("title").notNull(),
   slug: text("slug").notNull().unique(),
   excerpt: text("excerpt").notNull(),
-  userId: text("userId").notNull().references(() => user.id),
+  userId: uuid("userId").notNull().references(() => user.id),
   content: text("content").notNull(), // markdown
   coverImage: text("cover_image"),
   status: text("status", { enum: ['draft', 'pending', 'published'] }),

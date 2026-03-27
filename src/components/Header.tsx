@@ -4,15 +4,12 @@ import {
   Text, Menu, UnstyledButton, Group, Skeleton,
 } from "@mantine/core"
 import { Link, useRouter } from "@tanstack/react-router"
-
 import { ChevronDown, LogOut, Sun, Moon, LayoutDashboard } from "lucide-react"
 import HireModeBanner from "./HireModeBanner"
 import { useQuery, useQueryClient } from "@tanstack/react-query"
-import { hireStatusQueryOptions } from "@/db/queries/utils.queries"
-
-
-import { getSessionQueryOption } from "@/server/auth.functions"
-
+import {  getSessionQueryOptions, hireStatusQueryOptions } from "@/db/queries/utils.queries"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import type { Session, AuthChangeEvent } from "@supabase/supabase-js" // ✅ import Supabase types
 
 const SETTING_ID = import.meta.env.VITE_HIRE_MODE_ID!
 
@@ -38,24 +35,29 @@ export default function Header() {
   const [opened, setOpened] = useState(false)
   const router = useRouter()
   const queryClient = useQueryClient()
+  const supabase = getSupabaseBrowserClient()
 
-  // Use server-prefetched data as initial, authClient for reactivity
-  // const { data: prefetchedSession } = useQuery({
-  //   ...getSessionQueryOptions(),
-  //   staleTime: Infinity,
-  // })
+  const [session, setSession] = useState<Session | null>(null) // ✅ typed
+  const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below
 
-  const session = authClient.useSession()
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => { // ✅ typed
+      setSession(data?.session ?? null)
+      setIsSessionLoading(false)
+    })
 
-  // const user = clientSession.data?.user ?? prefetchedSession?.user ?? null
-  // const isSessionLoading = clientSession.isPending && !prefetchedSession && !clientSession.data
-  // const isAdmin = user?.role === "admin"
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event: AuthChangeEvent, session: Session | null) => { // ✅ typed
+        setSession(session)
+      }
+    )
 
-  // Don't show skeleton at all — just show login buttons while loading
-  // This prevents the infinite skeleton problem
-  const user = session.data?.user ?? null
+    return () => listener.subscription.unsubscribe()
+  }, [])
+
+  const user = session?.user ?? null // ✅ was session.data?.user which is wrong shape
   const isAdmin = user?.role === "admin"
-  const isSessionLoading = false // disable skeleton entirely for now
+  // ✅ removed: const isSessionLoading = false  (was a duplicate that shadowed the state above)
 
   const { data: hireData } = useQuery(hireStatusQueryOptions(SETTING_ID))
   const [hireOpen, setHireOpen] = useState(false)
@@ -82,28 +84,18 @@ export default function Header() {
     window.localStorage.setItem('theme', next)
   }
 
-  const handleLogout = async () => {
-    await authClient.signOut({
-      fetchOptions: {
-        onSuccess: async () => {
-          await router.navigate({ to: "/account", search: { callbackUrl: "/" }, })// redirect to login page
-          await queryClient.invalidateQueries({ queryKey: getSessionQueryOption().queryKey })
-        },
-      },
-    });
-
-
+  const handleLogout = async () => { // ✅ replaced authClient (not imported) with supabase
+    await supabase.auth.signOut()
+    await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
+    await queryClient.invalidateQueries({ queryKey: getSessionQueryOptions().queryKey })
   }
 
   const handleLogin = async () => {
-    await router.navigate({ to: "/account", search: { callbackUrl: "/" }, })
+    await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
   }
 
   const handleSignup = () => {
-    router.navigate({
-      to: "/account/register",
-      search: { callbackUrl: "/" },
-    })
+    router.navigate({ to: "/account/register", search: { callbackUrl: "/" } })
   }
 
   const links = [
@@ -127,22 +119,14 @@ export default function Header() {
   )
 
   return (
-    // <header className="fixed left-0 top-0 z-[100] w-full border-b-2 border-b-blue-600 shadow-lg ">
-    <header className="fixed left-0 top-0 z-[100] w-full bg-slate-50 dark:bg-slate-700 border-b-2 border-blue-500 shadow-lg ">
-
-
+    <header className="fixed left-0 top-0 z-[100] w-full bg-slate-50 dark:bg-slate-700 border-b-2 border-blue-500 shadow-lg">
       <div className="container mx-auto flex items-center justify-between p-4">
-
-        {/* Left — hire mode banner */}
         <div className="flex-shrink-0">
           <HireModeBanner open={hireOpen} />
         </div>
 
-        {/* Desktop nav */}
         <nav className="hidden min-w-0 items-center space-x-6 md:flex">
-
           {ThemeButton}
-
           {links.map((link) => (
             <Link key={link.label} to={link.to} className="whitespace-nowrap">
               {link.label}
@@ -157,13 +141,13 @@ export default function Header() {
                 <UnstyledButton className="ml-4 flex-shrink-0 rounded-full transition hover:bg-slate-100 dark:hover:bg-slate-800">
                   <Group gap="sm" className="px-2 py-1.5">
                     <Avatar
-                      src={user.image || "https://i.pravatar.cc/100"}
-                      alt={user.name}
+                      src={user.user_metadata?.avatar_url || "https://i.pravatar.cc/100"}
+                      alt={user.user_metadata?.full_name}
                       radius="xl"
                       size="sm"
                     />
                     <Text size="sm" fw={600} className="whitespace-nowrap leading-tight">
-                      {user.name}
+                      {user.user_metadata?.full_name}
                     </Text>
                     <ChevronDown size={16} className="text-slate-500" />
                   </Group>
@@ -172,7 +156,6 @@ export default function Header() {
 
               <Menu.Dropdown>
                 <Menu.Label>Account</Menu.Label>
-
                 {isAdmin && (
                   <>
                     <Menu.Item
@@ -184,12 +167,7 @@ export default function Header() {
                     <Menu.Divider />
                   </>
                 )}
-
-                <Menu.Item
-                  color="red"
-                  leftSection={<LogOut size={16} />}
-                  onClick={handleLogout}
-                >
+                <Menu.Item color="red" leftSection={<LogOut size={16} />} onClick={handleLogout}>
                   Logout
                 </Menu.Item>
               </Menu.Dropdown>
@@ -197,40 +175,22 @@ export default function Header() {
           ) : (
             <span className="flex flex-shrink-0 items-center gap-2">
               <Link to="/account" search={{ callbackUrl: "/" }}>
-                <Button variant="outline" color="blue" size="sm" onClick={handleLogin}>
-                  Sign in
-                </Button>
+                <Button variant="outline" color="blue" size="sm" onClick={handleLogin}>Sign in</Button>
               </Link>
               <Link to="/account/register" search={{ callbackUrl: "/" }}>
-                <Button variant="filled" color="blue" size="sm" onClick={handleSignup}>
-                  Sign up
-                </Button>
+                <Button variant="filled" color="blue" size="sm" onClick={handleSignup}>Sign up</Button>
               </Link>
             </span>
           )}
         </nav>
 
-        {/* Mobile — theme toggle + burger */}
         <div className="flex items-center gap-2 md:hidden">
           {ThemeButton}
-          <Burger
-            opened={opened}
-            onClick={() => setOpened(!opened)}
-            size="sm"
-            color="#6366f1"
-          />
+          <Burger opened={opened} onClick={() => setOpened(!opened)} size="sm" color="#6366f1" />
         </div>
       </div>
 
-      {/* Mobile drawer */}
-      <Drawer
-        opened={opened}
-        onClose={() => setOpened(false)}
-        size="100%"
-        padding="md"
-        title="Menu"
-        className="md:hidden"
-      >
+      <Drawer opened={opened} onClose={() => setOpened(false)} size="100%" padding="md" title="Menu" className="md:hidden">
         <ScrollArea style={{ height: "100%" }}>
           <div className="mt-4 flex flex-col space-y-4 text-lg">
             {links.map((link) => (
@@ -251,40 +211,25 @@ export default function Header() {
                 <div className="flex flex-col space-y-3">
                   <div className="flex items-center space-x-3">
                     <Avatar
-                      src={user.image || "https://i.pravatar.cc/100"}
-                      alt={user.name}
+                      src={user.user_metadata?.avatar_url || "https://i.pravatar.cc/100"}
+                      alt={user.user_metadata?.full_name}
                       radius="xl"
                       size="sm"
                     />
                     <div className="flex-1">
-                      <Text fw={600} size="sm">{user.name}</Text>
-                      {isAdmin && (
-                        <Text size="xs" c="indigo" fw={500}>Administrator</Text>
-                      )}
+                      <Text fw={600} size="sm">{user.user_metadata?.full_name}</Text>
+                      {isAdmin && <Text size="xs" c="indigo" fw={500}>Administrator</Text>}
                     </div>
                   </div>
-
-                  {/* {isAdmin && ( */}
                   <Button
-                    variant="light"
-                    color="indigo"
-                    radius="xl"
-                    fullWidth
+                    variant="light" color="indigo" radius="xl" fullWidth
                     leftSection={<LayoutDashboard size={15} />}
-                    onClick={() => {
-                      router.navigate({ to: "/admin" })
-                      setOpened(false)
-                    }}
+                    onClick={() => { router.navigate({ to: "/admin" }); setOpened(false) }}
                   >
                     Admin Dashboard
                   </Button>
-                  {/* )} */}
-
                   <Button
-                    variant="outline"
-                    color="red"
-                    radius="xl"
-                    fullWidth
+                    variant="outline" color="red" radius="xl" fullWidth
                     leftSection={<LogOut size={15} />}
                     onClick={handleLogout}
                   >

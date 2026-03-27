@@ -27,11 +27,12 @@ import {
 } from "lucide-react"
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { getProjectByIdQueryOptions } from "@/db/queries/project.queries"
-import { authClient } from "@/lib/auth-client"
 import { useEffect, useState } from "react"
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
 import { useRateProjectMutation } from "@/db/mutations/project-rating.mutations"
 import moment from "moment"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
 
 
 
@@ -48,7 +49,24 @@ export const Route = createFileRoute("/projects/$id")({
 function ProjectDetails() {
   const { id } = Route.useParams()
   const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
-  const session = authClient.useSession()
+  const supabase=getSupabaseBrowserClient()
+    const [session, setSession] = useState<Session | null>(null) // ✅ typed
+  const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => { // ✅ typed
+      setSession(data?.session ?? null)
+      setIsSessionLoading(false)
+    })
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event: AuthChangeEvent, session: Session | null) => { // ✅ typed
+        setSession(session)
+      }
+    )
+
+    return () => listener.subscription.unsubscribe()
+  }, [])
   const [rating, setRating] = useState(0)
   const rateMutation = useRateProjectMutation()
 
@@ -70,7 +88,7 @@ function ProjectDetails() {
   const hasRated = project.userRating !== null
 
   const handleSubmitRating = async () => {
-    if (!session.data?.user || !rating) return
+    if (!session?.user || !rating) return
 
     try {
       await rateMutation.mutateAsync({
@@ -124,7 +142,7 @@ function ProjectDetails() {
                 </Button>
               </Link>
 
-              {session.data?.user?.role === "admin" && (
+              {session?.user?.role === "admin" && (
                 <Link to="/projects/$id/edit" params={{ id: project.id }}>
                   <Button
                     variant="light"
@@ -252,7 +270,7 @@ function ProjectDetails() {
 
                 <Divider />
 
-                {session.data?.user ? (
+                {session?.user ? (
                   <Stack gap="sm">
                     <Group justify="space-between" align="center">
                       <Text fw={700}>

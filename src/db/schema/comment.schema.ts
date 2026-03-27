@@ -3,6 +3,7 @@ import { article } from './article.schema';
 import { user } from './user.schema';
 import { relations} from 'drizzle-orm';
 import { nanoid } from 'nanoid';
+import { uuid } from 'drizzle-orm/pg-core';
 
 export const comment = pgTable("comment", {
   id: text("id").primaryKey().$default(()=>nanoid()),
@@ -10,7 +11,7 @@ export const comment = pgTable("comment", {
   articleId: text("article_id")
     .notNull()
     .references(() => article.id, { onDelete: "cascade" }),
-  userId: text("user_id")
+  userId: uuid("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
   parentId: text("parent_id").references(

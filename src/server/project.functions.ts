@@ -2,9 +2,9 @@
 import { db } from "../db/index";
 import { and, avg, count, desc, eq, sql, inArray, ilike, or } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
-import { AdminMiddleware, OptionalAuthMiddleware } from "./middleware";
 import { project, projectRating } from "@/db/schema";
 import { ProjectSchema, UpdateProjectSchema } from "@/db/validations/project.types";
+import { AdminMiddleware, OptionalAuthMiddleware } from "./middleware/auth.middleware";
 
 
 export const getAllProjects = createServerFn({ method: "GET" })
@@ -88,7 +88,7 @@ export const getProjectById = createServerFn({ method: "GET" })
   .middleware([OptionalAuthMiddleware])
   .handler(async ({ data, context }) => {
     try {
-      const userId = context.user?.id
+      const userId = context.dbUser?.id
 
       const [projectResult, ratingResult, userRatingResult] = await Promise.all([
         db.select().from(project).where(eq(project.id, data.projectId)),

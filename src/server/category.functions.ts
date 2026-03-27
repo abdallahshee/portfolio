@@ -1,9 +1,9 @@
 import { createServerFn } from "@tanstack/react-start"
 import { db } from "../db/index"
 import { category} from "@/db/schema"
-import { AdminMiddleware } from "./middleware"
 import { eq } from "drizzle-orm"
 import { CategorySchema } from "@/db/validations/category.types"
+import { AdminMiddleware } from "./middleware/auth.middleware"
 
 export const getAllCategories = createServerFn({ method: "GET" })
 .middleware([AdminMiddleware])

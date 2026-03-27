@@ -1,4 +1,4 @@
-import { pgTable, text, smallint, timestamp, unique } from "drizzle-orm/pg-core"
+import { pgTable, text, smallint, timestamp, unique, uuid } from "drizzle-orm/pg-core"
 import { nanoid } from "nanoid"
 import { project } from "./project.schema"
 import { user } from "./user.schema"
@@ -13,7 +13,7 @@ export const projectRating = pgTable(
       .notNull()
       .references(() => project.id, { onDelete: "cascade" }),
 
-    userId: text("user_id")
+    userId: uuid("user_id")
       .notNull()
       .references(() => user.id, { onDelete: "cascade" }),
 

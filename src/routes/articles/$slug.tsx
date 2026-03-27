@@ -2,8 +2,8 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { getArticleBySlugQueryOptions } from '@/db/queries/article.queries'
 import { getSessionQueryOptions } from '@/db/queries/utils.queries'
-import { OptionalAuthMiddleware } from '@/server/middleware'
 import ArticleDetails from '@/components/ArticleDetails'
+import { OptionalAuthMiddleware } from '@/server/middleware/auth.middleware'
 
 export const Route = createFileRoute('/articles/$slug')({
   server: { middleware: [OptionalAuthMiddleware] },
