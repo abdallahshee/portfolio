@@ -88,7 +88,7 @@ export const getProjectById = createServerFn({ method: "GET" })
   .middleware([OptionalAuthMiddleware])
   .handler(async ({ data, context }) => {
     try {
-      const userId = context.dbUser?.id
+      const userId = context.userId
 
       const [projectResult, ratingResult, userRatingResult] = await Promise.all([
         db.select().from(project).where(eq(project.id, data.projectId)),

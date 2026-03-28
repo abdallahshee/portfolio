@@ -38,19 +38,20 @@ export function getSupabaseServerClient(cookies: CookieAdapter) {
 }
 
 
+// src/lib/supabase/server.ts
 export async function getServerSession(): Promise<Session | null> {
   const request = getRequest()
   const supabase = getSupabaseServerClient({
     getAll() {
       const cookieHeader = request.headers.get('cookie') ?? ''
-      return parseCookieHeader(cookieHeader)
+      return parseCookieHeader(cookieHeader).filter((c): c is CookieItem => c.value !== undefined)
     },
-    setAll() {},
+    setAll() {
+      // ✅ intentional no-op — response headers are immutable in server functions
+    },
   })
-  const { data: { session }, error } = await supabase.auth.getSession()
-  if (error) {
-    throw new Error(error.message)
-  }
 
+  const { data: { session }, error } = await supabase.auth.getSession()
+  if (error) throw new Error(error.message)
   return session
 }

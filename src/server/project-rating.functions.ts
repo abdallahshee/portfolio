@@ -14,7 +14,7 @@ export const rateProject = createServerFn({ method: "POST" })
   .inputValidator(RateProjectSchema)
   .middleware([UserMiddleware])
   .handler(async ({ data, context }) => {
-    const userId = context.dbUser!.id
+    const userId = context.userId
 
     // Block if already rated
     const existing = await db.query.projectRating.findFirst({

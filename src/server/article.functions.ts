@@ -38,7 +38,7 @@ export const createArticle = createServerFn({ method: "POST" })
                 ...data,
                 slug,
                 excerpt,
-                userId: context.superbaseUser?.id!,
+                userId: context.userId!,
             }
 
             const result = await db.insert(article).values(newData).returning()
@@ -113,7 +113,7 @@ export const getArticleBySlug = createServerFn()
     .inputValidator((data: { slug: string }) => data)
     .handler(async ({ data, context }) => {
         try {
-            const currentUserId = context.dbUser?.id ?? null
+            const currentUserId = context.userId
 
             // Blog
             const articleResult = await db
@@ -314,7 +314,7 @@ export const updateArticle = createServerFn({ method: "POST" })
                 .where(
                     and(
                         eq(article.slug, data.slug),
-                        eq(article.userId, context.superbaseUser?.id!)
+                        eq(article.userId, context.userId!)
                     )
                 )
                 .returning()
@@ -403,7 +403,7 @@ export const getMyArticles = createServerFn({ method: "GET" })
     .middleware([UserMiddleware])
     .handler(async ({ context }) => {
         try {
-            const userId = context.dbUser?.id!
+            const userId = context.user?.id!
 
             const articles = await db
                 .select({
@@ -439,7 +439,7 @@ export const getMyPaginatedArticles = createServerFn({ method: 'GET' })
     }))
     .handler(async ({ data, context }) => {
         try {
-            const userId = context.dbUser.id
+            const userId = context.user.id
             const { page = 1, limit = 6 } = data
             const offset = (page - 1) * limit
 

@@ -11,7 +11,7 @@ export const createComment = createServerFn({ method: 'POST' })
     .inputValidator(CommentSchema)
     .handler(async ({ data, context }) => {
         try {
-            if (!context.dbUser?.id) {
+            if (!context.userId) {
                 throw new Error('Unauthorized')
             }
             const existingBlog = await db
@@ -49,7 +49,7 @@ export const createComment = createServerFn({ method: 'POST' })
                 .values({
                     // id: nanoid(16),
                     articleId: data.articleId,
-                    userId: context.dbUser.id,
+                    userId: context.user.id,
                     parentId: normalizedParentId,
                     content: data.content.trim(),
                 })

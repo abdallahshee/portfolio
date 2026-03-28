@@ -14,8 +14,10 @@ import {
   Pagination,
   TextInput,
   SegmentedControl,
+  Skeleton,
+  ThemeIcon,
 } from '@mantine/core'
-import { Search, X, FolderKanban, ListFilter } from 'lucide-react'
+import { Search, X, FolderKanban, ListFilter, FolderOpen } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
@@ -178,123 +180,167 @@ function RouteComponent() {
       )}
 
       {/* Projects Grid */}
-      <div
-        className={`grid gap-10 sm:grid-cols-2 lg:grid-cols-3 transition-opacity duration-200 ${isPlaceholderData ? 'opacity-60' : 'opacity-100'
-          }`}
-      >
-        {projects.map((project) => (
-          <Card
-            key={project.id}
-            shadow="sm"
-            padding="lg"
-            radius="lg"
-            withBorder
-            className="flex h-full flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer"
-          >
-            <Stack gap="sm">
-              {/* Image */}
-              <div className="flex h-[180px] items-center justify-center overflow-hidden rounded-md bg-gray-100">
-                {project.imageUrl ? (
-                  <Image
-                    src={project.imageUrl}
-                    alt={project.title}
-                    height={180}
-                    fit="cover"
-                    className="h-full w-full transition-transform duration-300 hover:scale-105"
-                  />
-                ) : (
-                  <Text size="sm" c="dimmed">No image</Text>
-                )}
-              </div>
-
-              {/* Title */}
-              <Title order={4}>{project.title}</Title>
-
-              {/* Rating */}
-              <Group gap="xs">
-                <Rating value={project.averageRating} fractions={2} readOnly size="sm" />
-                <Text size="xs" c="dimmed">
-                  {project.averageRating > 0
-                    ? `${project.averageRating} (${project.totalRatings})`
-                    : "No ratings yet"}
-                </Text>
-              </Group>
-
-              {/* Status Badge */}
-              <Group gap="sm">
-                <Badge
-                  color={project.isPublic ? "blue" : "green"}
-                  variant="light"
-                  className="w-fit"
-                >
-                  {project.isPublic ? "Open Source" : "Private Project"}
-                </Badge>
-              </Group>
-
-              {/* Description */}
-              <Text size="sm" c="dimmed" lineClamp={3}>
-                {project.description}
-              </Text>
-
-              {/* Technologies */}
-              <Stack gap="xs" mt="xs">
-                <Text size="sm" fw={500}>Technologies</Text>
-                <Group gap="xs">
-                  {project.technologies.slice(0, 4).map((tech) => (
-                    <Badge
-                      key={tech}
-                      size="sm"
-                      variant="light"
-                      color="indigo"
-                      radius="md"
-                      style={
-                        isSearching &&
-                          tech.toLowerCase().includes(debouncedSearch.toLowerCase())
-                          ? { outline: "1.5px solid var(--mantine-color-indigo-4)" }
-                          : {}
-                      }
-                    >
-                      {tech}
-                    </Badge>
-                  ))}
-                </Group>
-              </Stack>
-            </Stack>
-
-            <Stack mt="md" gap="xs">
-              <Link
-                to="/projects/$id"
-                params={{ id: project.id }}
-                className="no-underline"
-              >
-                <Button
-                  leftSection={<FolderKanban size={16} />}
-                  variant="gradient"
-                  fullWidth
-                  color="blue"
-                >
-                  View Project Details
-                </Button>
-              </Link>
-            </Stack>
-          </Card>
-        ))}
-      </div>
-
-      {/* Pagination — hide when filter is active since it's client-side */}
-      {!isSearching && filter === 'all' && totalPages > 1 && (
-        <Group justify="center" mt="xl">
-          <Pagination
-            value={page}
-            variant='gradient'
-            color='green'
-            onChange={handlePageChange}
-            total={totalPages}
-            radius="md"
-            withEdges
-          />
-        </Group>
+    {/* Projects Grid */}
+{isLoading ? (
+  // ✅ loading skeleton
+  <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+    {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+      <Card key={i} shadow="sm" padding="lg" radius="lg" withBorder>
+        <Stack gap="sm">
+          <Skeleton height={180} radius="md" />
+          <Skeleton height={20} width="60%" />
+          <Skeleton height={16} width="40%" />
+          <Skeleton height={16} width="30%" />
+          <Skeleton height={60} />
+          <Skeleton height={36} mt="md" />
+        </Stack>
+      </Card>
+    ))}
+  </div>
+) : projects.length === 0 ? (
+  // ✅ empty state
+  <div className="flex justify-center py-24">
+    <Stack align="center" gap="md">
+      <ThemeIcon size={72} radius="xl" variant="light" color="indigo">
+        <FolderOpen size={36} />
+      </ThemeIcon>
+      <Title order={3}>No projects found</Title>
+      {isSearching ? (
+        <>
+          <Text c="dimmed" ta="center" maw={400}>
+            No projects matched <strong>"{debouncedSearch}"</strong>. Try a different search term or clear the search.
+          </Text>
+          <Button variant="light" color="indigo" onClick={() => handleSearchChange("")}>
+            Clear Search
+          </Button>
+        </>
+      ) : filter !== 'all' ? (
+        <>
+          <Text c="dimmed" ta="center" maw={400}>
+            No {filter === 'public' ? 'open source' : 'private'} projects found. Try a different filter.
+          </Text>
+          <Button variant="light" color="indigo" onClick={() => handleFilterChange('all')}>
+            Show All Projects
+          </Button>
+        </>
+      ) : (
+        <Text c="dimmed" ta="center" maw={400}>
+          No projects have been added yet. Check back soon.
+        </Text>
       )}
+    </Stack>
+  </div>
+) : (
+  // ✅ projects grid
+  <div
+    className={`grid gap-10 sm:grid-cols-2 lg:grid-cols-3 transition-opacity duration-200 ${
+      isPlaceholderData ? 'opacity-60' : 'opacity-100'
+    }`}
+  >
+    {projects.map((project) => (
+      <Card
+        key={project.id}
+        shadow="sm"
+        padding="lg"
+        radius="lg"
+        withBorder
+        className="flex h-full flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer"
+      >
+        <Stack gap="sm">
+          <div className="flex h-[180px] items-center justify-center overflow-hidden rounded-md bg-gray-100">
+            {project.imageUrl ? (
+              <Image
+                src={project.imageUrl}
+                alt={project.title}
+                height={180}
+                fit="cover"
+                className="h-full w-full transition-transform duration-300 hover:scale-105"
+              />
+            ) : (
+              <Text size="sm" c="dimmed">No image</Text>
+            )}
+          </div>
+
+          <Title order={4}>{project.title}</Title>
+
+          <Group gap="xs">
+            <Rating value={project.averageRating} fractions={2} readOnly size="sm" />
+            <Text size="xs" c="dimmed">
+              {project.averageRating > 0
+                ? `${project.averageRating} (${project.totalRatings})`
+                : "No ratings yet"}
+            </Text>
+          </Group>
+
+          <Group gap="sm">
+            <Badge
+              color={project.isPublic ? "blue" : "green"}
+              variant="light"
+              className="w-fit"
+            >
+              {project.isPublic ? "Open Source" : "Private Project"}
+            </Badge>
+          </Group>
+
+          <Text size="sm" c="dimmed" lineClamp={3}>
+            {project.description}
+          </Text>
+
+          <Stack gap="xs" mt="xs">
+            <Text size="sm" fw={500}>Technologies</Text>
+            <Group gap="xs">
+              {project.technologies.slice(0, 4).map((tech) => (
+                <Badge
+                  key={tech}
+                  size="sm"
+                  variant="light"
+                  color="indigo"
+                  radius="md"
+                  style={
+                    isSearching &&
+                      tech.toLowerCase().includes(debouncedSearch.toLowerCase())
+                      ? { outline: "1.5px solid var(--mantine-color-indigo-4)" }
+                      : {}
+                  }
+                >
+                  {tech}
+                </Badge>
+              ))}
+            </Group>
+          </Stack>
+        </Stack>
+
+        <Stack mt="md" gap="xs">
+          <Link to="/projects/$id" params={{ id: project.id }} className="no-underline">
+            <Button
+              leftSection={<FolderKanban size={16} />}
+              variant="gradient"
+              fullWidth
+              color="blue"
+            >
+              View Project Details
+            </Button>
+          </Link>
+        </Stack>
+      </Card>
+    ))}
+  </div>
+)}
+
+{/* Pagination */}
+{!isLoading && !isSearching && filter === 'all' && totalPages > 1 && (
+  <Group justify="center" mt="xl">
+    <Pagination
+      value={page}
+      variant="gradient"
+      color="green"
+      onChange={handlePageChange}
+      total={totalPages}
+      radius="md"
+      withEdges
+    />
+  </Group>
+)}
     </Container>
   )
 }

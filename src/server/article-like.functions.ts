@@ -19,7 +19,7 @@ export const likeBlog = createServerFn()
     .middleware([UserMiddleware])
     .inputValidator((data: { articleId: string }) => data)
     .handler(async ({ data, context }) => {
-        const currentUserId = context.dbUser?.id
+        const currentUserId = context.user?.id
 
         if (!currentUserId) {
             throw new Error("You must be logged in to like a blog")
@@ -57,7 +57,7 @@ export const dislikeArticle = createServerFn()
     .middleware([UserMiddleware])
     .inputValidator((data: { articleId: string }) => data)
     .handler(async ({ data, context }) => {
-        const currentUserId = context.dbUser?.id
+        const currentUserId = context.user?.id
 
         if (!currentUserId) {
             throw new Error("You must be logged in to dislike a blog")

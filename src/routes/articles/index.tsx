@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
 import {
   Avatar, Badge, Box, Button, Card, Container, Group,
-  Image, Pagination, Text, TextInput, Title,
+  Image, Pagination, Skeleton, Stack, Text, TextInput, Title, ThemeIcon,
 } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { useQuery } from "@tanstack/react-query"
@@ -9,7 +9,7 @@ import {
   getPaginatedArticlesQueryOptions,
   searchArticlesQueryOptions,
 } from "@/db/queries/article.queries"
-import { BookMarked, Heart, MessageCircle, PenLine, Search, X } from "lucide-react"
+import { BookMarked, BookOpen, Heart, MessageCircle, PenLine, Search, X } from "lucide-react"
 import { useEffect, useState } from "react"
 import classes from "../../css/article.module.css"
 import moment from "moment"
@@ -37,23 +37,46 @@ export const Route = createFileRoute("/articles/")({
 
 const PAGE_SIZE = 6
 
+// ✅ skeleton card for loading state
+function ArticleCardSkeleton() {
+  return (
+    <Card withBorder radius="md" p={0} style={{ width: "100%", height: 400, display: "flex", flexDirection: "column" }}>
+      <Skeleton height={200} radius={0} />
+      <Stack p="md" gap="sm" style={{ flex: 1 }}>
+        <Skeleton height={12} width="30%" />
+        <Skeleton height={16} width="80%" />
+        <Skeleton height={16} width="60%" />
+        <Skeleton height={12} width="90%" mt="auto" />
+        <Skeleton height={12} width="70%" />
+        <Group justify="space-between" mt="xs">
+          <Group gap={6}>
+            <Skeleton height={22} width={22} radius="xl" />
+            <Skeleton height={12} width={80} />
+          </Group>
+          <Skeleton height={12} width={60} />
+        </Group>
+      </Stack>
+    </Card>
+  )
+}
+
 function BlogsPage() {
   const navigate = useNavigate()
   const { page } = Route.useSearch()
   const [searchInput, setSearchInput] = useState("")
   const [debouncedSearch] = useDebouncedValue(searchInput, 300)
   const supabase = getSupabaseBrowserClient()
-    const [session, setSession] = useState<Session | null>(null) // ✅ typed
-  const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below
+  const [session, setSession] = useState<Session | null>(null)
+  const [isSessionLoading, setIsSessionLoading] = useState(true)
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => { // ✅ typed
+    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
       setSession(data?.session ?? null)
       setIsSessionLoading(false)
     })
 
     const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event: AuthChangeEvent, session: Session | null) => { // ✅ typed
+      (_event: AuthChangeEvent, session: Session | null) => {
         setSession(session)
       }
     )
@@ -88,7 +111,6 @@ function BlogsPage() {
   const isLoading = hasSearch ? searchLoading : paginatedLoading
   const isFetching = hasSearch ? searchFetching : paginatedFetching
 
-  // ✅ fixed — was data?.pagination before which is the metadata object, not the array
   const rawBlogs = data?.blogs ?? paginatedData?.blogs
   const blogs = Array.isArray(rawBlogs) ? rawBlogs : []
 
@@ -167,93 +189,114 @@ function BlogsPage() {
         )}
       </div>
 
-      {/* Empty state */}
-      {!isLoading && blogs.length === 0 && (
-        <div className="py-24 text-center">
-          <Title order={3} c="dimmed">
-            {hasSearch ? `No articles found for "${debouncedSearch}"` : "No articles yet"}
-          </Title>
-          {isAuthenticated && !hasSearch && (
-            <Link to="/articles/create" className="no-underline">
-              <Button mt="lg" variant="light" color="grape" leftSection={<PenLine size={15} />}>
-                Write the first article
+      {/* ✅ loading skeletons */}
+      {isLoading ? (
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+            <ArticleCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : blogs.length === 0 ? (
+        // ✅ empty state
+        <div className="flex justify-center py-24">
+          <Stack align="center" gap="md">
+            <ThemeIcon size={72} radius="xl" variant="light" color="grape">
+              <BookOpen size={36} />
+            </ThemeIcon>
+            <Title order={3}>
+              {hasSearch ? `No results for "${debouncedSearch}"` : "No articles yet"}
+            </Title>
+            <Text c="dimmed" ta="center" maw={400}>
+              {hasSearch
+                ? "Try a different search term or clear the search to browse all articles."
+                : "No articles have been published yet. Check back soon."}
+            </Text>
+            {hasSearch ? (
+              <Button variant="light" color="grape" onClick={() => handleSearchChange("")}>
+                Clear Search
               </Button>
+            ) : isAuthenticated ? (
+              <Link to="/articles/create" className="no-underline">
+                <Button variant="light" color="grape" leftSection={<PenLine size={15} />}>
+                  Write the first article
+                </Button>
+              </Link>
+            ) : null}
+          </Stack>
+        </div>
+      ) : (
+        // ✅ articles grid
+        <div className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${
+          isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
+        }`}>
+          {blogs.map((article) => (
+            <Link
+              key={article.id}
+              to="/articles/$slug"
+              params={{ slug: article.slug }}
+              className="no-underline"
+            >
+              <Card
+                withBorder
+                radius="md"
+                p={0}
+                className={classes.card}
+                style={{ width: "100%", height: 400, display: "flex", flexDirection: "column" }}
+              >
+                <Box style={{ height: 200, overflow: "hidden", flexShrink: 0 }}>
+                  <Image
+                    src={article.coverImage!}
+                    alt={article.title}
+                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                  />
+                </Box>
+
+                <div
+                  className={classes.body}
+                  style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", padding: "1rem" }}
+                >
+                  <Text tt="uppercase" opacity={0.6} fw={700} size="xs" c="grape" mb={4}>
+                    {article.categoryName}
+                  </Text>
+                  <Text fw={600} size="sm" lineClamp={2} mb={6}>
+                    {article.title}
+                  </Text>
+                  <Text size="xs" c="dimmed" lineClamp={2} mb="auto">
+                    {article.excerpt}
+                  </Text>
+
+                  <Group justify="space-between" align="center" mt={12}>
+                    <Group gap={6}>
+                      <Avatar size={22} src={article.authorImage} alt={article.authorName!} radius="xl" />
+                      <Text size="xs" fw={500}>{article.authorName}</Text>
+                    </Group>
+                    <Text size="xs" c="dimmed">
+                      {moment(article.createdAt).format("MMM D, YYYY")}
+                    </Text>
+                  </Group>
+
+                  <Group
+                    gap="xs" mt={8} pt={8}
+                    style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
+                  >
+                    <Group gap={4}>
+                      <Heart size={13} opacity={0.5} />
+                      <Text size="xs" c="dimmed">{article.likes}</Text>
+                    </Group>
+                    <Group gap={4}>
+                      <MessageCircle size={13} opacity={0.5} />
+                      <Text size="xs" c="dimmed">{article.comments}</Text>
+                    </Group>
+                  </Group>
+                </div>
+              </Card>
             </Link>
-          )}
+          ))}
         </div>
       )}
 
-      {/* Grid */}
-      <div className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${
-        isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
-      }`}>
-        {blogs.map((article) => (
-          <Link
-            key={article.id}
-            to="/articles/$slug"
-            params={{ slug: article.slug }}
-            className="no-underline"
-          >
-            <Card
-              withBorder
-              radius="md"
-              p={0}
-              className={classes.card}
-              style={{ width: "100%", height: 400, display: "flex", flexDirection: "column" }}
-            >
-              <Box style={{ height: 200, overflow: "hidden", flexShrink: 0 }}>
-                <Image
-                  src={article.coverImage!}
-                  alt={article.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                />
-              </Box>
-
-              <div
-                className={classes.body}
-                style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", padding: "1rem" }}
-              >
-                <Text tt="uppercase" opacity={0.6} fw={700} size="xs" c="grape" mb={4}>
-                  {article.categoryName}
-                </Text>
-                <Text fw={600} size="sm" lineClamp={2} mb={6}>
-                  {article.title}
-                </Text>
-                <Text size="xs" c="dimmed" lineClamp={2} mb="auto">
-                  {article.excerpt}
-                </Text>
-
-                <Group justify="space-between" align="center" mt={12}>
-                  <Group gap={6}>
-                    <Avatar size={22} src={article.authorImage} alt={article.authorName!} radius="xl" />
-                    <Text size="xs" fw={500}>{article.authorName}</Text>
-                  </Group>
-                  <Text size="xs" c="dimmed">
-                    {moment(article.createdAt).format("MMM D, YYYY")}
-                  </Text>
-                </Group>
-
-                <Group
-                  gap="xs" mt={8} pt={8}
-                  style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
-                >
-                  <Group gap={4}>
-                    <Heart size={13} opacity={0.5} />
-                    <Text size="xs" c="dimmed">{article.likes}</Text>
-                  </Group>
-                  <Group gap={4}>
-                    <MessageCircle size={13} opacity={0.5} />
-                    <Text size="xs" c="dimmed">{article.comments}</Text>
-                  </Group>
-                </Group>
-              </div>
-            </Card>
-          </Link>
-        ))}
-      </div>
-
       {/* Pagination */}
-      {!hasSearch && totalPages > 1 && (
+      {!isLoading && !hasSearch && totalPages > 1 && (
         <Group justify="center" mt="xl">
           <Pagination
             value={pagination.page}

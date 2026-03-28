@@ -1,7 +1,6 @@
 export * from './user.schema'
 export * from './project.schema'
 export * from './article.schema'
-export * from './setting.schema'
 export * from './project-rating.schema'
 export * from './article-like.schema'
 export * from './comment.schema'

@@ -26,52 +26,48 @@ export async function getSupabaseUser(): Promise<SupabaseUser | null> {
       const cookieHeader = request.headers.get('cookie') ?? ''
       return parseCookieHeader(cookieHeader)
     },
-    setAll() {
-      // no-op here; for many read-only auth checks this is enough
-    },
+    setAll() {},
   })
-  const {
-    data: { user: authUser },
-    error: authError,
-  } = await supabase.auth.getUser()
-  if (authError) {
-    throw new Error(authError.message)
-  }
-  if (!authUser) {
+
+  const { data: { user: authUser }, error: authError } = await supabase.auth.getUser()
+
+  // ✅ return null instead of throwing — missing session is not an error
+  if (authError || !authUser) {
     return null
   }
+
   return authUser
 }
 
-export async function getDbUser(): Promise<DbUser | null> {
-  const request = getRequest()
-  const supabase =getSupabaseServerClient({
-    getAll() {
-      const cookieHeader = request.headers.get('cookie') ?? ''
-      return parseCookieHeader(cookieHeader)
-    },
-    setAll() {
-      // no-op here; for many read-only auth checks this is enough
-    },
-  })
-  const {
-    data: { user: authUser },
-    error: authError,
-  } = await supabase.auth.getUser()
-  if (authError) {
-    throw new Error(authError.message)
-  }
-  if (!authUser) {
-    return null
-  }
-  const dbUser = await db.query.user.findFirst({
-    where: eq(user.id, authUser.id),
-  })
-  if (!dbUser) {
-    return null
-  }
-  return dbUser
-}
+// export async function getDbUser(): Promise<DbUser | null> {
+//   const request = getRequest()
+//   const supabase = getSupabaseServerClient({
+//     getAll() {
+//       const cookieHeader = request.headers.get('cookie') ?? ''
+//       return parseCookieHeader(cookieHeader)
+//     },
+//     setAll() {
+//       // no-op here; for many read-only auth checks this is enough
+//     },
+//   })
+//   const {
+//     data: { user: authUser },
+//     error: authError,
+//   } = await supabase.auth.getUser()
+//   if (authError) {
+//     throw new Error(authError.message)
+//   }
+//   if (!authUser) {
+//     return null
+//   }
+//   const dbUser = await db.query.user.findFirst({
+//     where: eq(user.id, authUser.id),
+//   })
+//   if (!dbUser) {
+//     return null
+//   }
+//   return dbUser
+// }
 
 
 

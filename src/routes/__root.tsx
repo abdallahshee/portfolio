@@ -56,7 +56,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     meta: [
       { charSet: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { title: 'TanStack Start Starter' },
+      { title: 'Abdallah Shee' },
     ],
     links: [{ rel: 'stylesheet', href: appCss }],
   }),
@@ -70,8 +70,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 
 // ✅ This component is INSIDE the providers — useQuery works here
 function AppShell({ children }: { children: React.ReactNode }) {
-  const { data: session,isLoading } = useQuery(getSessionQueryOptions())
- 
+  const { data: session, isLoading } = useQuery(getSessionQueryOptions())
 
   const isAdminRoute = useRouterState({
     select: (s) => s.location.pathname.startsWith('/admin'),
@@ -81,13 +80,9 @@ function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      {/* <ThemeToggle /> */}
-      {/* {isLoading && 
-       <Skeleton height={34} width={120} radius="xl" className="ml-4 flex-shrink-0" />
-      } */}
+      <Notifications position="top-right" />
       {showHeader && <Header />}
-       <main className={showHeader || isLoading ? "pt-10" : ""}>
-        <Notifications />
+      <main className={showHeader || isLoading ? "pt-10" : ""}>
         {children}
         <ScrollToTop />
       </main>

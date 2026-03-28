@@ -2,7 +2,7 @@ import { createMiddleware } from "@tanstack/react-start"
 import { eq } from "drizzle-orm"
 import { redirect } from "@tanstack/react-router"
 import { article } from "@/db/schema/article.schema"
-import {  getDbUser, getSupabaseUser } from "@/lib/supabase/utils"
+import {  getSupabaseUser } from "@/lib/supabase/utils"
 import { db } from "@/db"
 
 
@@ -18,7 +18,7 @@ export const AuthenticatedMiddleware = createMiddleware()
         }
         return next({
             context: {
-                superbaseUser: supabaseUser,
+                userId:supabaseUser.id,
             },
         })
     })
@@ -26,7 +26,7 @@ export const AuthenticatedMiddleware = createMiddleware()
     export const UserMiddleware = createMiddleware()
     .middleware([AuthenticatedMiddleware])
     .server(async ({ next,request,context }) => {
-        const dbUserId=context?.superbaseUser.id
+        const dbUserId=context?.userId
         const dbUser=await db.query.user.findFirst({where: (person, { eq }) => eq(person.id, dbUserId)})
         if (!dbUser) {
               const redirectTo = new URL(request.url).pathname
@@ -40,7 +40,7 @@ export const AuthenticatedMiddleware = createMiddleware()
         return next({
             context: {
                 ...context,
-                dbUser: dbUser,
+                user: dbUser,
                 role,
             },
         })
@@ -50,12 +50,12 @@ export const AuthenticatedMiddleware = createMiddleware()
 export const UserEditArticleMiddleware = createMiddleware()
     .middleware([UserMiddleware])
     .server(async ({ request, context, next }) => {
-        const user = context.superbaseUser
+        const userId = context.userId
         const url = new URL(request.url)
         const slug = url.pathname.split("/").filter(Boolean)[1]
         const redirectTo = encodeURIComponent(url.pathname + url.search)
 
-        if (!user || !slug) {
+        if (!userId || !slug) {
             return Response.redirect(
                 new URL(`/account?redirect=${redirectTo}`, request.url),
                 302
@@ -74,7 +74,7 @@ export const UserEditArticleMiddleware = createMiddleware()
             return new Response("Blog not found", { status: 404 })
         }
 
-        if (foundBlog.userId !== user.id) {
+        if (foundBlog.userId !== userId) {
             return new Response("Forbidden", { status: 403 })
         }
 
@@ -104,11 +104,11 @@ export const AdminMiddleware = createMiddleware()
 
 export const OptionalAuthMiddleware = createMiddleware().server(
     async ({ next}) => {
-        const dbUser = await getDbUser()
+        const user = await getSupabaseUser()
 
         return next({
             context: {
-                dbUser
+                userId:user?.id
             }
         })
     }

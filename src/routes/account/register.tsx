@@ -25,6 +25,7 @@ import { SignUpSchema, type SignUpRequest } from "@/db/validations/user.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import { uploadImage } from "@/lib/utils"
+import { useDisclosure } from "@mantine/hooks"
 
 export const Route = createFileRoute("/account/register")({
   validateSearch: (search: Record<string, unknown>) => ({
@@ -37,13 +38,11 @@ export const Route = createFileRoute("/account/register")({
 function RouteComponent() {
   const { callbackUrl } = Route.useSearch()
   const router = useRouter()
-  const client=getSupabaseBrowserClient()
-  const [file, setFile] = useState<File | null>()
+  const client = getSupabaseBrowserClient()
+  const [file, setFile] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(
-    null
-  )
-  const [formError, setFormError] = useState<string | null>(null) // ← new
+  const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(null)
+  const [formError, setFormError] = useState<string | null>(null)
   const form = useForm<SignUpRequest>({
     initialValues: {
       name: "",
@@ -54,59 +53,73 @@ function RouteComponent() {
     },
     validate: zod4Resolver(SignUpSchema),
     validateInputOnBlur: true,
-
   })
+
   const previewUrl = useMemo(() => {
     if (!file) return null
     return URL.createObjectURL(file)
   }, [file])
 
   const handleSubmit = async (values: SignUpRequest) => {
+    console.log("THe form values " + JSON.stringify(values))
     setFormError(null)
     try {
       setIsSubmitting(true)
-      let url = ""
+
+      // upload image or keep null
+      let imageUrl: string | null = null
       if (file) {
-        url = await uploadImage(file)
-      } else {
-        url = "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=300&q=80"
+        imageUrl = await uploadImage(file)
       }
-      const res = await client.auth.signUp({
+
+      const { data, error } = await client.auth.signUp({
         email: values.email.trim().toLowerCase(),
-        password: values.password
+        password: values.password,
+        options: {
+          data: {
+            full_name: values.name ?? null,
+            avatar_url: imageUrl,
+            role: 'user',                    // ✅ trigger reads this for role column
+            // ✅ false until email confirmation link clicked
+          },
+        },
       })
-    
-      if (res?.data?.user) {
+
+      if (error) {
+        setFormError(error.message)
+        return
+      }
+
+      if (data.user) {
         notifications.show({
           title: "Account created",
           message: "Your account has been created successfully 🎉",
           color: "green",
         })
-        router.navigate({
+        await router.navigate({
           to: "/account",
           search: { callbackUrl },
         })
-        return
       }
-      const message = res?.error?.message
-      setFormError(message)
+
     } catch (err: any) {
-      const message = err?.code.message
-      setFormError(message)
+      setFormError(err?.message ?? "Something went wrong")
     } finally {
       setIsSubmitting(false)
     }
   }
 
-
-
   const handleOAuthSignUp = async (provider: "github" | "google") => {
     try {
       setOauthProvider(provider)
-      // await client.auth.signInWithPassword({
-      //   provider,
-      //   callbackURL: callbackUrl,
-      // })
+      // ✅ was commented out — now actually calls Supabase OAuth
+      const { error } = await client.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}${callbackUrl}`,
+        },
+      })
+      if (error) throw error
     } catch (err: any) {
       notifications.show({
         title: "OAuth sign up failed",
@@ -118,7 +131,6 @@ function RouteComponent() {
     }
   }
 
-
   return (
     <Paper radius="2xl" p="xl" withBorder className="w-full shadow-lg md:p-8">
       <Stack gap="lg">
@@ -128,15 +140,12 @@ function RouteComponent() {
               <UserPlus size={20} />
             </ThemeIcon>
           </Group>
-
-          <Title order={2} className="text-3xl">
-            Create Account
-          </Title>
-
+          <Title order={2} className="text-3xl">Create Account</Title>
           <Text c="dimmed" size="sm" mt={6}>
             Join and start exploring projects and blogs.
           </Text>
         </div>
+
         <div className="flex flex-col gap-3">
           <GoogleButton
             radius="xl"
@@ -155,20 +164,24 @@ function RouteComponent() {
             Sign up with Github
           </GithubButton>
         </div>
+
         <Divider label="Or create account with email" labelPosition="center" my="xs" />
-        {/* ← Error alert shown above the form fields */}
+
+        {/* ✅ fixed alert title from "Sign in failed" to "Sign up failed" */}
         {formError && (
           <Alert
             color="red"
             radius="md"
             icon={<AlertCircle size={24} />}
-            title="Sign in failed"
+            title="Sign up failed"
             withCloseButton
-            onClose={() => setFormError(null)} // ← allow user to dismiss it
+            onClose={() => setFormError(null)}
           >
             {formError}
           </Alert>
         )}
+  
+
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="md">
             {previewUrl && (
@@ -189,7 +202,7 @@ function RouteComponent() {
               radius="md"
               size="md"
               {...form.getInputProps("name")}
-              required
+
             />
 
             <TextInput
@@ -198,7 +211,7 @@ function RouteComponent() {
               radius="md"
               size="md"
               {...form.getInputProps("email")}
-              required
+
             />
 
             <FileInput
@@ -208,7 +221,7 @@ function RouteComponent() {
               size="md"
               leftSection={<ImagePlus size={16} />}
               accept="image/*"
-              onChange={(e) => setFile(e)}
+              onChange={(file) => setFile(file)} // ✅ was (e) => setFile(e), renamed for clarity
               clearable
             />
 
@@ -218,7 +231,7 @@ function RouteComponent() {
               radius="md"
               size="md"
               {...form.getInputProps("password")}
-              required
+
             />
 
             <PasswordInput
@@ -227,7 +240,7 @@ function RouteComponent() {
               radius="md"
               size="md"
               {...form.getInputProps("confirmPassword")}
-              required
+
             />
 
             <Button
@@ -238,6 +251,7 @@ function RouteComponent() {
               size="md"
               loading={isSubmitting}
               leftSection={<UserPlus size={18} />}
+  
             >
               Create Account
             </Button>

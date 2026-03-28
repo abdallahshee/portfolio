@@ -53,44 +53,58 @@ function RouteComponent() {
   })
 
 
-  const handleSubmit = async (values: SignInRequest) => {
-    setFormError(null)
-    try {
-      setIsSubmitting(true)
-      const { data, error } = await client.auth.signUp({
-        email: values.email,
-        password: values.password
-      })
+const handleSubmit = async (values: SignInRequest) => {
+  setFormError(null)
+  try {
+    setIsSubmitting(true)
 
-      if (error) {
-        setFormError(error.message)
-        router.navigate({ to: redirectTo })
-        return data
-      }
+    const { data, error } = await client.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    })
 
-      return data
-    } catch (err: any) {
-      const message = err?.message
-      setFormError(message)
-    } finally {
-      setIsSubmitting(false)
+    if (error) {
+      setFormError(error.message)
+      return
     }
-  }
 
-  const handleOAuthSignIn = async (provider: "github" | "google") => {
-    try {
-      setOauthProvider(provider)
-      // await getSupabaseBrowserClient.signIn.social({ provider, callbackURL: redirectTo })
-    } catch (err: any) {
-      notifications.show({
-        title: "OAuth login failed",
-        message: err?.message ?? `Could not continue with ${provider}`,
-        color: "red",
+    // ✅ if rememberMe is false, clear session when browser closes
+    if (!values.rememberMe) {
+      await client.auth.updateUser({
+        data: { session_expiry: 'browser' }
       })
-    } finally {
-      setOauthProvider(null)
     }
+
+    await router.navigate({ to: redirectTo })
+    return data
+
+  } catch (err: any) {
+    setFormError(err?.message ?? "Something went wrong")
+  } finally {
+    setIsSubmitting(false)
   }
+}
+
+ const handleOAuthSignIn = async (provider: "github" | "google") => {
+  try {
+    setOauthProvider(provider)
+    const { error } = await client.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: `${window.location.origin}${redirectTo}`,
+      },
+    })
+    if (error) throw error
+  } catch (err: any) {
+    notifications.show({
+      title: "OAuth login failed",
+      message: err?.message ?? `Could not continue with ${provider}`,
+      color: "red",
+    })
+  } finally {
+    setOauthProvider(null)
+  }
+}
 
   return (
     <Paper radius="2xl" p="xl" withBorder className="w-full shadow-lg md:p-8">

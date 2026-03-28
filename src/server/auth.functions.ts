@@ -15,9 +15,10 @@ export const getSessionFn = createServerFn({ method: "GET" }).handler(async () =
 
 
 
-const resend = new Resend(process.env.RESEND_API_KEY!)
+
 
 export const sendEmail = async (data: SendEmailRequest) => {
+  const resend = new Resend(process.env.RESEND_API_KEY!)
   const result = await resend.emails.send({
     from: "onboarding@resend.dev",
     to: process.env.CONTACT_RECEIVER_EMAIL!,
