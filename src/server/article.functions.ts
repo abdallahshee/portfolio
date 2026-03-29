@@ -427,7 +427,7 @@ export const getMyArticles = createServerFn({ method: "GET" })
             return articles
         } catch (err) {
             console.error(err)
-            return []
+            throw err
         }
     })
 
