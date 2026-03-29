@@ -1,4 +1,17 @@
 import { Button, type ButtonProps } from '@mantine/core';
+function FacebookIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 320 512"
+      fill="currentColor"
+      style={{ width: 14, height: 14 }}
+      {...props}
+    >
+      <path d="M279.14 288l14.22-92.66h-88.91V127.3c0-25.35 12.42-50.06 52.24-50.06H293V6.26S259.43 0 225.36 0c-73.22 0-121.09 44.38-121.09 124.72V195.3H22.89V288h81.38v224h100.17V288z" />
+    </svg>
+  )
+}
 
 function GithubIcon(props: React.ComponentPropsWithoutRef<"svg">) {
   return (
@@ -57,13 +70,34 @@ function GoogleIcon(props: React.ComponentPropsWithoutRef<'svg'>) {
   );
 }
 
-export function GoogleButton(props: ButtonProps & React.ComponentPropsWithoutRef<'button'>) {
+export function GoogleButton(
+  props: ButtonProps & React.ComponentPropsWithoutRef<'button'>
+) {
   return (
-    <Button leftSection={<GoogleIcon />} variant="default" {...props} />
-  );
+    <Button
+      leftSection={<GoogleIcon />}
+      variant="default"
+      radius="xl"
+      className="bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 hover:border-gray-400 transition-all"
+      {...props}
+    />
+  )
 }
 
 export function GithubButton(props: ButtonProps & React.ComponentPropsWithoutRef<'button'>) {
   return (
     <Button leftSection={<GithubIcon />} variant="default" {...props} />);
+}
+
+export function FacebookButton(
+  props: ButtonProps & React.ComponentPropsWithoutRef<'button'>
+) {
+  return (
+    <Button
+      leftSection={<FacebookIcon />}
+      color="blue"
+      variant="light"
+      {...props}
+    />
+  )
 }

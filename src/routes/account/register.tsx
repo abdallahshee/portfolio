@@ -20,7 +20,7 @@ import {
 import { notifications } from "@mantine/notifications"
 import { AlertCircle, ImagePlus, UserPlus } from "lucide-react"
 import { useMemo, useState } from "react"
-import { GithubButton, GoogleButton } from "@/components/Buttons"
+import { FacebookButton, GithubButton, GoogleButton } from "@/components/Buttons"
 import { SignUpSchema, type SignUpRequest } from "@/db/validations/user.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
@@ -155,14 +155,14 @@ function RouteComponent() {
           >
             Sign up with Google
           </GoogleButton>
-          <GithubButton
+          <FacebookButton
             size="md"
             radius="xl"
             loading={oauthProvider === "github"}
             onClick={() => handleOAuthSignUp("github")}
           >
-            Sign up with Github
-          </GithubButton>
+            Sign up with Facebook
+          </FacebookButton>
         </div>
 
         <Divider label="Or create account with email" labelPosition="center" my="xs" />

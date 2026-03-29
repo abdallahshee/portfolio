@@ -67,7 +67,6 @@ export default function Header() {
   const user = session?.user ?? null
   const isAdmin = user?.role === "admin"
 
-  const [hireOpen, setHireOpen] = useState(false)
   const [themeMode, setThemeMode] = useState<ThemeMode>('light')
 
   useEffect(() => {
@@ -114,8 +113,8 @@ export default function Header() {
       className="flex items-center justify-center rounded-full px-4 pt-1 transition hover:bg-slate-100 dark:hover:bg-slate-800"
     >
       {themeMode === 'dark'
-        ? <Moon size={28} className="text-indigo-400" />
-        : <Sun size={28} className="text-indigo-500" />
+        ? <Moon size={24} className="text-indigo-400" />
+        : <Sun size={24} className="text-indigo-500" />
       }
     </UnstyledButton>
   )

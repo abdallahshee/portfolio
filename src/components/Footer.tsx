@@ -41,7 +41,7 @@ export default function Footer() {
                   Abdallah Shee
                 </Title>
                 <Text size="sm" c="dimmed">
-                  System Designer • Software Architect • Full-Stack Developer 🇰🇪
+                  Software Architect • Full-Stack Developer 🇰🇪
                 </Text>
               </div>
             </Group>

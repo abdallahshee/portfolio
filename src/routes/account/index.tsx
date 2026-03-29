@@ -23,7 +23,7 @@ import {
 
 import { useState } from "react"
 import { SignInSchema, type SignInRequest } from "@/db/validations/user.types"
-import { GithubButton, GoogleButton } from "@/components/Buttons"
+import { FacebookButton, GithubButton, GoogleButton } from "@/components/Buttons"
 import { zod4Resolver } from 'mantine-form-zod-resolver'
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 
@@ -41,7 +41,7 @@ function RouteComponent() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(null)
   const [formError, setFormError] = useState<string | null>(null) // ← new
-  const client = getSupabaseBrowserClient()
+  const supabase = getSupabaseBrowserClient()
   const form = useForm<SignInRequest>({
     initialValues: {
       email: "",
@@ -58,7 +58,7 @@ const handleSubmit = async (values: SignInRequest) => {
   try {
     setIsSubmitting(true)
 
-    const { data, error } = await client.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email: values.email,
       password: values.password,
     })
@@ -70,7 +70,7 @@ const handleSubmit = async (values: SignInRequest) => {
 
     // ✅ if rememberMe is false, clear session when browser closes
     if (!values.rememberMe) {
-      await client.auth.updateUser({
+      await supabase.auth.updateUser({
         data: { session_expiry: 'browser' }
       })
     }
@@ -88,7 +88,7 @@ const handleSubmit = async (values: SignInRequest) => {
  const handleOAuthSignIn = async (provider: "github" | "google") => {
   try {
     setOauthProvider(provider)
-    const { error } = await client.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
         redirectTo: `${window.location.origin}${redirectTo}`,
@@ -132,14 +132,14 @@ const handleSubmit = async (values: SignInRequest) => {
           >
             Sign in with Google
           </GoogleButton>
-          <GithubButton
+          <FacebookButton
             size="md"
             radius="xl"
             loading={oauthProvider === "github"}
             onClick={() => handleOAuthSignIn("github")}
           >
-            Sign in with Github
-          </GithubButton>
+            Sign in with Facebook
+          </FacebookButton>
         </div>
 
         <Divider label="Or continue with email" labelPosition="center" my="xs" />
