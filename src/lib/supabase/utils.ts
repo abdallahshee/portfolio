@@ -1,10 +1,9 @@
 // src/features/auth/get-current-user.ts
 import { getRequest } from '@tanstack/react-start/server'
-import { eq } from 'drizzle-orm'
 import { getSupabaseServerClient } from '@/lib/supabase/server'
-import { db, user } from '@/db/index'
-import type { DbUser, SupabaseUser } from '@/db/validations/user.types'
-import type { Session } from '@supabase/supabase-js'
+
+import type { SupabaseUser } from '@/db/validations/user.types'
+
 
 export function parseCookieHeader(cookieHeader: string) {
   return cookieHeader
@@ -21,14 +20,16 @@ export function parseCookieHeader(cookieHeader: string) {
 
 export async function getSupabaseUser(): Promise<SupabaseUser | null> {
   const request = getRequest()
-  const supabase = getSupabaseServerClient({
-    getAll() {
-      const cookieHeader = request.headers.get('cookie') ?? ''
-      return parseCookieHeader(cookieHeader)
-    },
-    setAll() {},
-  })
+  // const supabase = getSupabaseServerClient({
+  //   getAll() {
+  //     const cookieHeader = request.headers.get('cookie') ?? ''
+  //     return parseCookieHeader(cookieHeader)
+  //   },
+  //   setAll() {},
 
+  const supabase=getSupabaseServerClient()
+  // })
+// const { data: { user: authUser }, error: authErro } = await supabase.auth.
   const { data: { user: authUser }, error: authError } = await supabase.auth.getUser()
 
   // ✅ return null instead of throwing — missing session is not an error
@@ -39,53 +40,6 @@ export async function getSupabaseUser(): Promise<SupabaseUser | null> {
   return authUser
 }
 
-// export async function getDbUser(): Promise<DbUser | null> {
-//   const request = getRequest()
-//   const supabase = getSupabaseServerClient({
-//     getAll() {
-//       const cookieHeader = request.headers.get('cookie') ?? ''
-//       return parseCookieHeader(cookieHeader)
-//     },
-//     setAll() {
-//       // no-op here; for many read-only auth checks this is enough
-//     },
-//   })
-//   const {
-//     data: { user: authUser },
-//     error: authError,
-//   } = await supabase.auth.getUser()
-//   if (authError) {
-//     throw new Error(authError.message)
-//   }
-//   if (!authUser) {
-//     return null
-//   }
-//   const dbUser = await db.query.user.findFirst({
-//     where: eq(user.id, authUser.id),
-//   })
-//   if (!dbUser) {
-//     return null
-//   }
-//   return dbUser
-// }
 
 
 
-// export async function getServerSession(): Promise<Session | null> {
-//   const request = getRequest()
-//   const supabase = getSupabaseServerClient({
-//     getAll() {
-//       const cookieHeader = request.headers.get('cookie') ?? ''
-//       return parseCookieHeader(cookieHeader)
-//     },
-//     setAll() {},
-//   })
-
-//   const { data: { session }, error } = await supabase.auth.getSession()
-
-//   if (error) {
-//     throw new Error(error.message)
-//   }
-
-//   return session
-// }

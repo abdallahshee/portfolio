@@ -55,6 +55,8 @@ function RouteComponent() {
       imageUrl: null,
       isPublic: true,
       technologies: ["React"],
+      caseStudy:"",
+      duration:""
     },
     validate:zod4Resolver(ProjectSchema),
     validateInputOnBlur:true,
@@ -163,6 +165,14 @@ function RouteComponent() {
                   {...form.getInputProps("title")}
                 />
 
+                <TextInput
+                  label="Duration"
+                  placeholder="Enter Project duration"
+                  radius="md"
+                  size="md"
+                  {...form.getInputProps("duration")}
+                />
+
                 <Textarea
                   label="Description"
                   placeholder="Describe your project"
@@ -176,6 +186,15 @@ function RouteComponent() {
                 <Checkbox
                   label="Make project public"
                   {...form.getInputProps("isPublic", { type: "checkbox" })}
+                />
+                 <Textarea
+                  label="Case Study"
+                  placeholder="Describe motivation behind this project"
+                  minRows={5}
+                  autosize
+                  radius="md"
+                  size="md"
+                  {...form.getInputProps("caseStudy")}
                 />
               </Stack>
             </Card>

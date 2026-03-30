@@ -1,36 +1,26 @@
 // src/lib/supabase/server.ts
 import { createServerClient } from '@supabase/ssr'
-import type { Session } from '@supabase/supabase-js'
-import { getRequest } from '@tanstack/react-start/server'
-import { parseCookieHeader } from './utils'
+import { getCookies,setCookie } from '@tanstack/react-start/server'
 
-export type CookieItem = {
-  name: string
-  value: string
-}
 
-export type CookieToSet = {
-  name: string
-  value: string
-  options?: Record<string, unknown>
-}
-
-export type CookieAdapter = {
-  getAll: () => CookieItem[]
-  setAll: (cookies: CookieToSet[]) => void
-}
-
-export function getSupabaseServerClient(cookies: CookieAdapter) {
+export function getSupabaseServerClient() {
   return createServerClient(
     process.env.SUPABASE_URL!,
     process.env.SUPABASE_ANON_KEY!,
     {
       cookies: {
         getAll() {
-          return cookies.getAll() 
+          // ✅ convert object { name: value } to array [{ name, value }]
+          return Object.entries(getCookies()).map(([name, value]) => ({
+            name,
+            value: value ?? '',
+          }))
         },
         setAll(cookiesToSet) {
-          cookies.setAll(cookiesToSet)
+          // ✅ iterate and set each cookie individually
+          cookiesToSet.forEach(({ name, value, options }) =>
+            setCookie(name, value, options as any)
+          )
         },
       },
     }
@@ -38,20 +28,3 @@ export function getSupabaseServerClient(cookies: CookieAdapter) {
 }
 
 
-// src/lib/supabase/server.ts
-export async function getServerSession(): Promise<Session | null> {
-  const request = getRequest()
-  const supabase = getSupabaseServerClient({
-    getAll() {
-      const cookieHeader = request.headers.get('cookie') ?? ''
-      return parseCookieHeader(cookieHeader).filter((c): c is CookieItem => c.value !== undefined)
-    },
-    setAll() {
-      // ✅ intentional no-op — response headers are immutable in server functions
-    },
-  })
-
-  const { data: { session }, error } = await supabase.auth.getSession()
-  if (error) throw new Error(error.message)
-  return session
-}

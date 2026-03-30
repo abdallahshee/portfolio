@@ -23,11 +23,9 @@ export const user = pgTable('user', {
   id: uuid('id')
     .primaryKey()
     .references(() => authUsers.id, { onDelete: 'cascade' }),
-
   name: text('name'),
   email: text('email').notNull().unique(),
   role: text('role', { enum: ['user', 'admin'] }).default('user').notNull(),
-  emailVerified: boolean('email_verified').default(false).notNull(),
   image: text('image'),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true })

@@ -12,10 +12,12 @@ export const project = pgTable('project', {
   isPublic: boolean('is_public').notNull(),
   url: text('url').notNull(),
   technologies: text('technologies').array().notNull(),
+  duration: text("duration").notNull(),   // ✅ e.g. '2 months', '3 weeks', '45 days'
+  caseStudy: text("case_study").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
-    .$onUpdate(() => /* @__PURE__ */ new Date())
+    .$onUpdate(() => new Date())
     .notNull(),
 })
 

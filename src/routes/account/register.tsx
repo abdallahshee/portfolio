@@ -76,10 +76,10 @@ function RouteComponent() {
         email: values.email.trim().toLowerCase(),
         password: values.password,
         options: {
+            emailRedirectTo: `${window.location.origin}/account`,
           data: {
             full_name: values.name ?? null,
-            avatar_url: imageUrl,
-            role: 'user',                    // ✅ trigger reads this for role column
+            avatar_url: imageUrl                  // ✅ trigger reads this for role column
             // ✅ false until email confirmation link clicked
           },
         },

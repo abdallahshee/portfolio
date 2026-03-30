@@ -65,7 +65,7 @@ export default function Header() {
   }, [])
 
   const user = session?.user ?? null
-  const isAdmin = user?.role === "admin"
+const isAdmin = user?.user_metadata?.role === "admin"
 
   const [themeMode, setThemeMode] = useState<ThemeMode>('light')
 

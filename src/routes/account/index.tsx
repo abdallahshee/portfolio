@@ -23,7 +23,7 @@ import {
 
 import { useState } from "react"
 import { SignInSchema, type SignInRequest } from "@/db/validations/user.types"
-import { FacebookButton, GithubButton, GoogleButton } from "@/components/Buttons"
+import { FacebookButton, GoogleButton } from "@/components/Buttons"
 import { zod4Resolver } from 'mantine-form-zod-resolver'
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 
