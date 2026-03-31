@@ -64,8 +64,8 @@ TO authenticated
 USING (
   bucket_id = 'avatars'
   AND EXISTS (
-    SELECT 1 FROM public.user_table
-    WHERE public.user_table.id = auth.uid()
-    AND public.user_table.role = 'admin'
+    SELECT 1 FROM public.user
+    WHERE public.user.id = auth.uid()
+    AND public.user.role = 'admin'
   )
 );

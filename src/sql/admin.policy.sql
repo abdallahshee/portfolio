@@ -3,7 +3,7 @@ DECLARE
   tbl text;
 BEGIN
   FOREACH tbl IN ARRAY ARRAY[
-    'user_table', 'article', 'article_like', 'comment',
+    'user', 'article', 'article_like', 'comment',
     'project', 'project_rating', 'category'
   ]
   LOOP
@@ -20,17 +20,17 @@ BEGIN
       USING (
         EXISTS (
           SELECT 1
-          FROM public.user_table
-          WHERE public.user_table.id = auth.uid()
-            AND public.user_table.role = 'admin'
+          FROM public.user
+          WHERE public.user.id = auth.uid()
+            AND public.user.role = 'admin'
         )
       )
       WITH CHECK (
         EXISTS (
           SELECT 1
-          FROM public.user_table
-          WHERE public.user_table.id = auth.uid()
-            AND public.user_table.role = 'admin'
+          FROM public.user
+          WHERE public.user.id = auth.uid()
+            AND public.user.role = 'admin'
         )
       )
     $policy$, tbl);

@@ -30,7 +30,7 @@ DROP FUNCTION IF EXISTS public.handle_user_sign_in();
 CREATE OR REPLACE FUNCTION public.handle_user_sign_in()
 RETURNS trigger AS $$
 BEGIN
-  UPDATE public.user_table
+  UPDATE public.user
   SET last_sign_in_at = NOW()
   WHERE id = NEW.id;
   RETURN NEW;

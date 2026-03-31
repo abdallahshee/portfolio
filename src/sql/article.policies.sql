@@ -2,7 +2,6 @@
 ALTER TABLE public.article ENABLE ROW LEVEL SECURITY;
 
 -- 1. anyone (including unauthenticated) can read published articles
-ALTER TABLE public.article ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Published articles are publicly viewable" ON public.article;
 CREATE POLICY "Published articles are publicly viewable"

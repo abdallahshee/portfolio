@@ -18,7 +18,7 @@ const auth = pgSchema('auth')
   id: uuid('id').primaryKey(),
 })
 
-export const user = pgTable('user_table', {
+export const user = pgTable('user', {
   id: uuid('id')
     .primaryKey()
     .references(() => authUsers.id, { onDelete: 'cascade' }),
