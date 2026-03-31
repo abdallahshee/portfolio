@@ -142,7 +142,7 @@ const isAdmin = user?.user_metadata?.role === "admin"
         {isAdmin && (
           <>
             <Menu.Item
-              leftSection={<LayoutDashboard size={16} className="text-indigo-500" />}
+              leftSection={<LayoutDashboard size={16} className="text-blue-600" />}
               onClick={() => router.navigate({ to: "/admin" })}
             >
               Admin Dashboard
@@ -150,10 +150,10 @@ const isAdmin = user?.user_metadata?.role === "admin"
             <Menu.Divider />
           </>
         )}
-        <Menu.Item color="red" leftSection={<Settings size={16} className="text-indigo-500"  />} onClick={handleLogout}>
+        <Menu.Item  leftSection={<Settings size={16} className="text-blue-600"  />} onClick={handleLogout}>
        Account Settings
         </Menu.Item>
-        <Menu.Item color="red" leftSection={<LogOut size={16} className="text-indigo-500" />} onClick={handleLogout}>
+        <Menu.Item leftSection={<LogOut size={16} className="text-blue-600" />} onClick={handleLogout}>
           Logout
         </Menu.Item>
       </Menu.Dropdown>
