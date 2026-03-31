@@ -51,12 +51,12 @@ export async function uploadProjectImage(file: File, projectId: string): Promise
   return data.publicUrl
 }
 
-export async function uploadAvatarImage(file: File, userId: string): Promise<string> {
+export async function uploadAvatarImage(file: File): Promise<string> {
   const supabase = getSupabaseBrowserClient()
   const fileExt = file.name.split('.').pop()
-
+const random=nanoid(5)
   // ✅ must be {userId}/filename for policies to work
-  const filePath = `${userId}/avatar.${fileExt}`
+  const filePath = `${random}/avatar.${fileExt}`
 
   const { error } = await supabase.storage
     .from('avatars')

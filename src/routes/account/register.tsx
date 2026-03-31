@@ -4,10 +4,8 @@ import { useForm } from "@mantine/form"
 import {
   Alert,
   Anchor,
-  Avatar,
   Button,
   Divider,
-  FileInput,
   Group,
   Paper,
   PasswordInput,
@@ -18,13 +16,12 @@ import {
   Title,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
-import { AlertCircle, ImagePlus, UserPlus } from "lucide-react"
-import { useMemo, useState } from "react"
-import { FacebookButton, GithubButton, GoogleButton } from "@/components/Buttons"
+import { AlertCircle, UserPlus } from "lucide-react"
+import { useState } from "react"
+import { FacebookButton, GoogleButton } from "@/components/Buttons"
 import { SignUpSchema, type SignUpRequest } from "@/db/validations/user.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
-
 import { useDisclosure } from "@mantine/hooks"
 
 export const Route = createFileRoute("/account/register")({
@@ -35,32 +32,30 @@ export const Route = createFileRoute("/account/register")({
   component: RouteComponent,
 })
 
+// ✅ default avatar public URL from your avatars bucket
+const DEFAULT_AVATAR_URL = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/avatars/default/avatar.png`
+
 function RouteComponent() {
   const { callbackUrl } = Route.useSearch()
   const router = useRouter()
   const client = getSupabaseBrowserClient()
-  const [file, setFile] = useState<File | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(null)
   const [formError, setFormError] = useState<string | null>(null)
+
   const form = useForm<SignUpRequest>({
     initialValues: {
       name: "",
       email: "",
       password: "",
+      image: DEFAULT_AVATAR_URL, // ✅ set default avatar as initial value
       confirmPassword: "",
     },
     validate: zod4Resolver(SignUpSchema),
     validateInputOnBlur: true,
   })
 
-  const previewUrl = useMemo(() => {
-    if (!file) return null
-    return URL.createObjectURL(file)
-  }, [file])
-
   const handleSubmit = async (values: SignUpRequest) => {
-    console.log("THe form values " + JSON.stringify(values))
     setFormError(null)
     try {
       setIsSubmitting(true)
@@ -69,11 +64,11 @@ function RouteComponent() {
         email: values.email.trim().toLowerCase(),
         password: values.password,
         options: {
-            emailRedirectTo: `${window.location.origin}/account`,
+          emailRedirectTo: `${window.location.origin}/account`,
           data: {
-            name: values.name ?? null,
-               // ✅ trigger reads this for role column
-            // ✅ false until email confirmation link clicked
+            name: values.name,
+            avatar_url: DEFAULT_AVATAR_URL, // ✅ always use default on signup
+         
           },
         },
       })
@@ -83,7 +78,22 @@ function RouteComponent() {
         return
       }
 
-      if (data.user) {
+      if (data.user && !data.session) {
+        // ✅ email confirmation required
+        notifications.show({
+          title: "Almost there!",
+          message: "Check your email and click the confirmation link to activate your account.",
+          color: "blue",
+          autoClose: false,
+        })
+        await router.navigate({
+          to: "/account",
+          search: { callbackUrl },
+        })
+        return
+      }
+
+      if (data.user && data.session) {
         notifications.show({
           title: "Account created",
           message: "Your account has been created successfully 🎉",
@@ -105,7 +115,6 @@ function RouteComponent() {
   const handleOAuthSignUp = async (provider: "github" | "google") => {
     try {
       setOauthProvider(provider)
-      // ✅ was commented out — now actually calls Supabase OAuth
       const { error } = await client.auth.signInWithOAuth({
         provider,
         options: {
@@ -160,7 +169,6 @@ function RouteComponent() {
 
         <Divider label="Or create account with email" labelPosition="center" my="xs" />
 
-        {/* ✅ fixed alert title from "Sign in failed" to "Sign up failed" */}
         {formError && (
           <Alert
             color="red"
@@ -173,18 +181,15 @@ function RouteComponent() {
             {formError}
           </Alert>
         )}
-  
 
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="md">
-            
             <TextInput
               label="Full Name"
               placeholder="John Doe"
               radius="md"
               size="md"
               {...form.getInputProps("name")}
-
             />
 
             <TextInput
@@ -193,7 +198,6 @@ function RouteComponent() {
               radius="md"
               size="md"
               {...form.getInputProps("email")}
-
             />
 
             <PasswordInput
@@ -202,7 +206,6 @@ function RouteComponent() {
               radius="md"
               size="md"
               {...form.getInputProps("password")}
-
             />
 
             <PasswordInput
@@ -211,7 +214,6 @@ function RouteComponent() {
               radius="md"
               size="md"
               {...form.getInputProps("confirmPassword")}
-
             />
 
             <Button
@@ -222,7 +224,6 @@ function RouteComponent() {
               size="md"
               loading={isSubmitting}
               leftSection={<UserPlus size={18} />}
-  
             >
               Create Account
             </Button>

@@ -4,7 +4,7 @@ import {
   Text, Menu, UnstyledButton, Group, Skeleton,
 } from "@mantine/core"
 import { Link, useRouter } from "@tanstack/react-router"
-import { ChevronDown, LogOut, Sun, Moon, LayoutDashboard } from "lucide-react"
+import { ChevronDown, LogOut, Sun, Moon, LayoutDashboard, Settings } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
 
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
@@ -125,13 +125,13 @@ const isAdmin = user?.user_metadata?.role === "admin"
         <UnstyledButton className="ml-4 flex-shrink-0 rounded-full transition hover:bg-slate-100 dark:hover:bg-slate-800">
           <Group gap="sm" className="px-2 py-1.5">
             <Avatar
-              src={user?.user_metadata?.avatar_url || "https://i.pravatar.cc/100"}
-              alt={user?.user_metadata?.full_name}
+              src={user?.user_metadata?.avatar_url}
+              alt={user?.user_metadata?.name}
               radius="xl"
               size="sm"
             />
             <Text size="sm" fw={600} className="whitespace-nowrap leading-tight">
-              {user?.user_metadata?.full_name}
+              {user?.user_metadata?.name}
             </Text>
             <ChevronDown size={16} className="text-slate-500" />
           </Group>
@@ -150,7 +150,10 @@ const isAdmin = user?.user_metadata?.role === "admin"
             <Menu.Divider />
           </>
         )}
-        <Menu.Item color="red" leftSection={<LogOut size={16} />} onClick={handleLogout}>
+        <Menu.Item color="red" leftSection={<Settings size={16} className="text-indigo-500"  />} onClick={handleLogout}>
+       Account Settings
+        </Menu.Item>
+        <Menu.Item color="red" leftSection={<LogOut size={16} className="text-indigo-500" />} onClick={handleLogout}>
           Logout
         </Menu.Item>
       </Menu.Dropdown>

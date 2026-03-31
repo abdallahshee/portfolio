@@ -12,7 +12,7 @@ export const SignUpSchema = createSelectSchema(user, {
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         "Must be a valid email address"
     )
-}).pick({ name: true, email: true})
+}).pick({ name: true, email: true,image:true})
     .extend({
         password: z.string()
             .min(8, "Password must be at least 8 characters")
