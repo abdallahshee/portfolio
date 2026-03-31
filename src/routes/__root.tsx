@@ -22,7 +22,10 @@ import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollTop'
 import NotFound from "../components/NotFound"
 import { useRouterState } from '@tanstack/react-router';
-import { getSessionQueryOptions } from '@/db/queries/utils.queries';
+import { getSupabaseBrowserClient } from '@/lib/supabase/client';
+import { useEffect, useState } from 'react';
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
+
 
 
 
@@ -60,17 +63,35 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
     links: [{ rel: 'stylesheet', href: appCss }],
   }),
-  loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(getSessionQueryOptions())
-  },
+  // loader: async ({ context }) => {
+  //   await context.queryClient.prefetchQuery(getSessionQueryOptions())
+  // },
   shellComponent: RootDocument,
   notFoundComponent: NotFound,
   errorComponent:ErrorComponent
 })
 
-// ✅ This component is INSIDE the providers — useQuery works here
 function AppShell({ children }: { children: React.ReactNode }) {
-  const { data: session, isLoading } = useQuery(getSessionQueryOptions())
+  const supabase = getSupabaseBrowserClient()
+  const [session, setSession] = useState<Session | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    // ✅ getSession inside async callback, not directly in useEffect
+    supabase.auth.getSession().then(( data:any ) => {
+      setSession(data?.session ?? null)
+      setIsLoading(false)
+    })
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event: AuthChangeEvent, session: Session | null) => {
+        setSession(session)
+        setIsLoading(false)
+      }
+    )
+
+    return () => listener.subscription.unsubscribe()
+  }, [])
 
   const isAdminRoute = useRouterState({
     select: (s) => s.location.pathname.startsWith('/admin'),

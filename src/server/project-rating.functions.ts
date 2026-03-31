@@ -3,19 +3,21 @@ import { and, eq } from "drizzle-orm"
 import { z } from "zod"
 import { db } from "../db/index"
 import { projectRating } from "@/db/schema"
-import { UserMiddleware } from "./middleware/auth.middleware"
+import { AuthenticatedMiddleware } from "./middleware/auth.middleware"
+
 
 const RateProjectSchema = z.object({
   projectId: z.string(),
   rating: z.number().int().min(1).max(10),
+  userId:z.string()
 })
 
 export const rateProject = createServerFn({ method: "POST" })
   .inputValidator(RateProjectSchema)
-  .middleware([UserMiddleware])
-  .handler(async ({ data, context }) => {
-    const userId = context.userId
-
+  .middleware([AuthenticatedMiddleware])
+  .handler(async ({ data }) => {
+ 
+const userId=data.userId
     // Block if already rated
     const existing = await db.query.projectRating.findFirst({
       where: and(

@@ -4,6 +4,7 @@ import z from "zod"
 import { article } from "../schema/article.schema"
 
 
+
 export const ArticleSchema = createSelectSchema(article, {
     tags: z.array(
         z.string()
@@ -13,10 +14,16 @@ export const ArticleSchema = createSelectSchema(article, {
         .max(5, "You can not add more than 10 tags"),
     title: (schema) => schema.min(20, "Too short Title").max(50, "Title is too long"),
     content: (schema) => schema.min(300, "Too short article")
-}).pick({ categoryId: true, title: true, content: true, coverImage: true, tags: true })
+
+})
+.pick({ categoryId: true, title: true, 
+    content: true, coverImage: true, 
+    tags: true,status:true,userId:true,
+
+ })
 
 
-export type ArticleRequest = Pick<InferSelectModel<typeof article>, "categoryId" | "title" | "content" | "coverImage" | "tags">
+export type ArticleRequest = Pick<InferSelectModel<typeof article>,"userId"|"status"| "categoryId" | "title" | "content" | "coverImage" | "tags">
 export const ArticleUpdateSchema=ArticleSchema
 .extend({slug:z.string()})
 export type ArticleUpdateRequest = z.infer<typeof ArticleUpdateSchema>

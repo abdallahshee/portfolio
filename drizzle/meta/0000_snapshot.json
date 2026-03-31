@@ -1,5 +1,5 @@
 {
-  "id": "d332d130-ec7d-4509-afa3-f4f328ad05bc",
+  "id": "d305fde6-04aa-4ea3-8f8d-74fb6b6cb327",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -128,7 +128,7 @@
           "name": "status",
           "type": "text",
           "primaryKey": false,
-          "notNull": false
+          "notNull": true
         },
         "tags": {
           "name": "tags",
@@ -359,16 +359,15 @@
           "notNull": true,
           "default": "'user'"
         },
-        "email_verified": {
-          "name": "email_verified",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        },
         "image": {
           "name": "image",
           "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "last_sign_in_at": {
+          "name": "last_sign_in_at",
+          "type": "timestamp with time zone",
           "primaryKey": false,
           "notNull": false
         },
@@ -464,6 +463,18 @@
           "primaryKey": false,
           "notNull": true
         },
+        "duration": {
+          "name": "duration",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "case_study": {
+          "name": "case_study",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
+        },
         "created_at": {
           "name": "created_at",
           "type": "timestamp",
@@ -491,32 +502,6 @@
           ]
         }
       },
-      "policies": {},
-      "checkConstraints": {},
-      "isRLSEnabled": false
-    },
-    "public.site_setting": {
-      "name": "site_setting",
-      "schema": "",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "text",
-          "primaryKey": true,
-          "notNull": true
-        },
-        "settings": {
-          "name": "settings",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": true,
-          "default": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {},
-      "uniqueConstraints": {},
       "policies": {},
       "checkConstraints": {},
       "isRLSEnabled": false

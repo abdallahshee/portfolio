@@ -1,16 +1,16 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 import { useState } from "react"
-import { getArticleBySlugForUpdateQueryOptions } from "@/db/queries/article.queries"
 import { useArticleUpdateMutationOption } from "@/db/mutations/article.mutations"
 import ArticleEditor from "@/components/ArticleEditor"
 import type { ArticleRequest } from "@/db/validations/article.types"
 import { UserEditArticleMiddleware } from "@/server/middleware/auth.middleware"
+import { getArticleBySlugQueryOptions } from "@/db/queries/article.queries"
 
-export const Route = createFileRoute("/articles/$slug/edit")({
+export const Route = createFileRoute("/articles/$userId/$slug/edit")({
   server: { middleware: [UserEditArticleMiddleware] },
   loader: async ({ params, context }) => {
     return context.queryClient.ensureQueryData(
-      getArticleBySlugForUpdateQueryOptions(params.slug)
+      getArticleBySlugQueryOptions(params.slug)
     )
   },
   component: RouteComponent,
@@ -19,7 +19,7 @@ export const Route = createFileRoute("/articles/$slug/edit")({
 function RouteComponent() {
   const router = useRouter()
   const article = Route.useLoaderData()
-  const { slug } = Route.useParams()
+  const { slug,userId } = Route.useParams()
   const [loading, setLoading] = useState(false)
   const updateMutation = useArticleUpdateMutationOption({ role: "user" })
 
@@ -29,10 +29,12 @@ function RouteComponent() {
       initialValues={{
         title: article?.title!,
         content: article?.content!,
+        userId:userId,
         tags: article?.tags!,
         coverImage: article?.coverImage!,
         categoryId: article?.id!,
-        slug, // ← passed so onSubmit can send it to the server fn
+        status:article?.status!,
+        slug:slug!
       }}
       loading={loading}
       onSubmit={async (values: ArticleRequest, imageUrl: string) => {

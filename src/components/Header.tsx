@@ -6,7 +6,7 @@ import {
 import { Link, useRouter } from "@tanstack/react-router"
 import { ChevronDown, LogOut, Sun, Moon, LayoutDashboard } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
-import { getSessionQueryOptions} from "@/db/queries/utils.queries"
+
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import type { Session, AuthChangeEvent } from "@supabase/supabase-js"
 
@@ -88,7 +88,7 @@ const isAdmin = user?.user_metadata?.role === "admin"
   const handleLogout = async () => {
     await supabase.auth.signOut()
     await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
-    await queryClient.invalidateQueries({ queryKey: getSessionQueryOptions().queryKey })
+    // await queryClient.invalidateQueries({ queryKey: getSessionQueryOptions().queryKey })
   }
 
   const handleLogin = async () => {
@@ -215,8 +215,8 @@ const isAdmin = user?.user_metadata?.role === "admin"
                 <div className="flex flex-col space-y-3">
                   <div className="flex items-center space-x-3">
                     <Avatar
-                      src={user.user_metadata?.avatar_url || "https://i.pravatar.cc/100"}
-                      alt={user.user_metadata?.full_name}
+                      src={user?.user_metadata?.avatar_url || "https://i.pravatar.cc/100"}
+                      alt={user?.user_metadata?.full_name}
                       radius="xl"
                       size="sm"
                     />

@@ -2,14 +2,16 @@ import { createMiddleware } from "@tanstack/react-start"
 import { eq } from "drizzle-orm"
 import { redirect } from "@tanstack/react-router"
 import { article } from "@/db/schema/article.schema"
-import {  getSupabaseUser } from "@/lib/supabase/utils"
 import { db } from "@/db"
+import { getSupabaseServerClient } from "@/lib/supabase/server"
 
 
 export const AuthenticatedMiddleware = createMiddleware()
     .server(async ({ next,request }) => {
-        const supabaseUser = await getSupabaseUser()
-        if (!supabaseUser) {
+        const supabase = getSupabaseServerClient()
+        const {data:user,error}=await supabase.auth.getUser()
+        const role=user.user?.user_metadata.role
+        if (!user) {
               const redirectTo = new URL(request.url).pathname
         throw redirect({
             to: "/account",
@@ -18,37 +20,39 @@ export const AuthenticatedMiddleware = createMiddleware()
         }
         return next({
             context: {
-                userId:supabaseUser.id,
+                userId:user?.user?.id,
+                role:role
+               
             },
         })
     })
 
-    export const UserMiddleware = createMiddleware()
-    .middleware([AuthenticatedMiddleware])
-    .server(async ({ next,request,context }) => {
-        const dbUserId=context?.userId
-        const dbUser=await db.query.user.findFirst({where: (person, { eq }) => eq(person.id, dbUserId)})
-        if (!dbUser) {
-              const redirectTo = new URL(request.url).pathname
-        throw redirect({
-            to: "/account",
-            search: { callbackUrl: redirectTo },
-        })
-        }
+    // export const UserMiddleware = createMiddleware()
+    // .middleware([AuthenticatedMiddleware])
+    // .server(async ({ next,request,context }) => {
+    //     const dbUserId=context?.userId
+    //     const dbUser=await db.query.user.findFirst({where: (person, { eq }) => eq(person.id, dbUserId)})
+    //     if (!dbUser) {
+    //           const redirectTo = new URL(request.url).pathname
+    //     throw redirect({
+    //         to: "/account",
+    //         search: { callbackUrl: redirectTo },
+    //     })
+    //     }
 
-       const role=dbUser.role
-        return next({
-            context: {
-                ...context,
-                user: dbUser,
-                role,
-            },
-        })
-    })
+    //    const role=dbUser.role
+    //     return next({
+    //         context: {
+    //             ...context,
+             
+    //             role,
+    //         },
+    //     })
+    // })
 
 
 export const UserEditArticleMiddleware = createMiddleware()
-    .middleware([UserMiddleware])
+    .middleware( [AuthenticatedMiddleware])
     .server(async ({ request, context, next }) => {
         const userId = context.userId
         const url = new URL(request.url)
@@ -87,9 +91,9 @@ export const UserEditArticleMiddleware = createMiddleware()
 
 
 export const AdminMiddleware = createMiddleware()
-    .middleware([UserMiddleware])
+    .middleware([AuthenticatedMiddleware])
     .server(async ({ context, request, next }) => {
-        const isAdmin = context.role === "admin"
+        const isAdmin = context.role==="admin"
         const url = new URL(request.url)
         const redirectTo = encodeURIComponent(url.pathname + url.search)
         if (!isAdmin) {
@@ -104,11 +108,12 @@ export const AdminMiddleware = createMiddleware()
 
 export const OptionalAuthMiddleware = createMiddleware().server(
     async ({ next}) => {
-        const user = await getSupabaseUser()
+       const supabase=getSupabaseServerClient()
+       const {data:user,error}=await supabase.auth.getUser()
 
         return next({
             context: {
-                userId:user?.id
+                userId:user.user?.id
             }
         })
     }

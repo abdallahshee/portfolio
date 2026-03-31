@@ -41,6 +41,8 @@ function RouteComponent() {
             content: markdownContent,
             coverImage: imageUrl || "https://images.pexels.com/photos/265667/pexels-photo-265667.jpeg",
             categoryId: values.categoryId,
+            userId:values.userId,
+            status:values.status
           })
         } catch (err) {
           console.error(err)

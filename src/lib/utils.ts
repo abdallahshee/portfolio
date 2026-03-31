@@ -1,6 +1,7 @@
 import type { ClassValue } from 'clsx'
 import { clsx } from 'clsx'
 import { twMerge } from 'tailwind-merge'
+import { getSupabaseBrowserClient } from './supabase/client'
 
 
 export function cn(...inputs: ClassValue[]) {
@@ -9,20 +10,7 @@ export function cn(...inputs: ClassValue[]) {
 
 
 // src/lib/utils.ts
-export async function uploadImage(file: File): Promise<string> {
-  const formData = new FormData()
-  formData.append('file', file)
 
-  const res = await fetch('/api/upload', {
-    method: 'POST',
-    body: formData,
-  })
-
-  if (!res.ok) throw new Error('Image upload failed')
-
-  const data = await res.json()
-  return data.url // the URL of the uploaded image
-}
 
 
 

@@ -14,7 +14,7 @@ CREATE TABLE "article" (
 	"userId" uuid NOT NULL,
 	"content" text NOT NULL,
 	"cover_image" text,
-	"status" text,
+	"status" text NOT NULL,
 	"tags" text[] NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"category_id" text,
@@ -43,8 +43,8 @@ CREATE TABLE "user" (
 	"name" text,
 	"email" text NOT NULL,
 	"role" text DEFAULT 'user' NOT NULL,
-	"email_verified" boolean DEFAULT false NOT NULL,
 	"image" text,
+	"last_sign_in_at" timestamp with time zone,
 	"created_at" timestamp with time zone DEFAULT now() NOT NULL,
 	"updated_at" timestamp with time zone DEFAULT now() NOT NULL,
 	CONSTRAINT "user_email_unique" UNIQUE("email")
@@ -58,14 +58,11 @@ CREATE TABLE "project" (
 	"is_public" boolean NOT NULL,
 	"url" text NOT NULL,
 	"technologies" text[] NOT NULL,
+	"duration" text NOT NULL,
+	"case_study" text NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
 	CONSTRAINT "project_description_unique" UNIQUE("description")
-);
---> statement-breakpoint
-CREATE TABLE "site_setting" (
-	"id" text PRIMARY KEY NOT NULL,
-	"settings" boolean DEFAULT false NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE "project_rating" (

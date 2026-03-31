@@ -6,7 +6,7 @@ import { category, comment, user } from "@/db/schema";
 import { ArticleSchema, ArticleUpdateSchema } from "@/db/validations/article.types";
 import { article } from "@/db/schema/article.schema";
 import { articleLike } from "@/db/schema/article-like.schema";
-import { UserMiddleware, AuthenticatedMiddleware, OptionalAuthMiddleware } from "./middleware/auth.middleware";
+import { AuthenticatedMiddleware } from "./middleware/auth.middleware";
 
 
 
@@ -28,21 +28,19 @@ function createExcerpt(content: string, maxLength = 160) {
 
 export const createArticle = createServerFn({ method: "POST" })
     .inputValidator(ArticleSchema)
-    .middleware([UserMiddleware])
-    .handler(async ({ data, context }) => {
+    .middleware([AuthenticatedMiddleware])
+    .handler(async ({ data }) => {
         try {
             const slug = createSlug(data.title)
             const excerpt = createExcerpt(data.content)
-
             const newData = {
                 ...data,
                 slug,
                 excerpt,
-                userId: context.userId!,
+                userId: data.userId,
             }
-
-            const result = await db.insert(article).values(newData).returning()
-            return result[0] // ✅ single object instead of array
+            const [result] = await db.insert(article).values(newData).returning()
+            return result// ✅ single object instead of array
         } catch (err) {
             console.error("Create blog failed:", err)
             throw err
@@ -81,40 +79,12 @@ export const getAllArticles = createServerFn()
         }
     })
 
-export const getArticleBySlugdForUpdate = createServerFn()
-    .middleware([AuthenticatedMiddleware])
+
+export const getArticleBySlug = createServerFn()
+    // .middleware([OptionalAuthMiddleware])
     .inputValidator((data: { slug: string }) => data)
     .handler(async ({ data }) => {
         try {
-            // Blog
-            const blogResult = await db
-                .select({
-                    id: article.id,
-                    title: article.title,
-                    tags: article.tags,
-                    content: article.content,
-                    coverImage: article.coverImage,
-                })
-                .from(article)
-                .where(eq(article.slug, data.slug))
-            const blogData = blogResult[0]
-            if (!blogData) return null
-            return {
-                ...blogData,
-            }
-        } catch (err) {
-            console.log(err)
-            throw err
-        }
-    })
-
-export const getArticleBySlug = createServerFn()
-    .middleware([OptionalAuthMiddleware])
-    .inputValidator((data: { slug: string }) => data)
-    .handler(async ({ data, context }) => {
-        try {
-            const currentUserId = context.userId
-
             // Blog
             const articleResult = await db
                 .select({
@@ -126,6 +96,7 @@ export const getArticleBySlug = createServerFn()
                     userId: article.userId,
                     authorId: user.id,
                     slug: article.slug,
+                    status:article.status,
                     authorName: user.name,
                     authorImage: user.image,
                     categoryName: category.name,
@@ -170,20 +141,20 @@ export const getArticleBySlug = createServerFn()
             // Whether current user has liked this blog
             let likedByUser = false
 
-            if (currentUserId) {
-                const likedResult = await db
-                    .select({ id: articleLike.id })
-                    .from(articleLike)
-                    .where(
-                        and(
-                            eq(articleLike.articleId, articleData.id),
-                            eq(articleLike.userId, currentUserId)
-                        )
-                    )
-                    .limit(1)
 
-                likedByUser = likedResult.length > 0
-            }
+            const likedResult = await db
+                .select({ id: articleLike.id })
+                .from(articleLike)
+                .leftJoin(user, eq(articleLike.userId, user.id))
+                .where(
+                    and(
+                        eq(articleLike.articleId, articleData.id),
+                    )
+                )
+                .limit(1)
+
+            likedByUser = likedResult.length > 0
+
 
             return {
                 ...articleData,
@@ -300,8 +271,8 @@ export const getTopArticles = createServerFn({ method: "GET" })
 
 export const updateArticle = createServerFn({ method: "POST" })
     .inputValidator(ArticleUpdateSchema)
-    .middleware([UserMiddleware])
-    .handler(async ({ data, context }) => {
+    .middleware([AuthenticatedMiddleware])
+    .handler(async ({ data }) => {
         try {
             const updated = await db
                 .update(article)
@@ -309,12 +280,13 @@ export const updateArticle = createServerFn({ method: "POST" })
                     title: data.title,
                     content: data.content,
                     coverImage: data.coverImage ?? null,
+                    status: data.status,
                     tags: data.tags,
                 })
                 .where(
                     and(
                         eq(article.slug, data.slug),
-                        eq(article.userId, context.userId!)
+                        eq(article.userId, data.userId!)
                     )
                 )
                 .returning()
@@ -381,7 +353,7 @@ export const searchArticles = createServerFn({ method: "GET" })
             const total = Number(totalResult[0].count)
 
             return {
-                blogs:articleRows,
+                blogs: articleRows,
                 pagination: {
                     total,
                     page,
@@ -399,11 +371,12 @@ export const searchArticles = createServerFn({ method: "GET" })
     })
 
 // server/blog.functions.ts
-export const getMyArticles = createServerFn({ method: "GET" })
-    .middleware([UserMiddleware])
-    .handler(async ({ context }) => {
+export const getUserArticles = createServerFn({ method: "GET" })
+    .inputValidator((data: { userId: string }) => data)
+    .middleware([AuthenticatedMiddleware])
+    .handler(async ({ data }) => {
         try {
-            const userId = context.user?.id!
+            const userId = data.userId
 
             const articles = await db
                 .select({
@@ -421,7 +394,7 @@ export const getMyArticles = createServerFn({ method: "GET" })
                 })
                 .from(article)
                 .leftJoin(category, eq(article.categoryId, category.id))
-                .where(eq(article.userId, userId))
+                .where(eq(article.userId, userId!))
                 .orderBy(desc(article.createdAt))
 
             return articles
@@ -431,15 +404,15 @@ export const getMyArticles = createServerFn({ method: "GET" })
         }
     })
 
-export const getMyPaginatedArticles = createServerFn({ method: 'GET' })
-    .middleware([UserMiddleware])
-    .inputValidator((data: { page?: number; limit?: number }) => ({
-        page: data.page && data.page > 0 ? data.page : 1,
-        limit: data.limit && data.limit > 0 ? data.limit : 6,
+export const getUserPaginatedArticles = createServerFn({ method: 'GET' })
+    .middleware([AuthenticatedMiddleware])
+    .inputValidator((data: { page?: number; limit?: number, userId: string }) => ({
+        page: data.page && data.page > 0 ? data.page : 1, userId: data.userId,
+        limit: data.limit && data.limit > 0 ? data.limit : 6
     }))
-    .handler(async ({ data, context }) => {
+    .handler(async ({ data }) => {
         try {
-            const userId = context.user.id
+            const userId = data.userId
             const { page = 1, limit = 6 } = data
             const offset = (page - 1) * limit
 

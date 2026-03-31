@@ -17,7 +17,6 @@ import {
   Sparkles, ArrowLeft, PencilLine, Clock3, NotebookPen,
 } from "lucide-react"
 import { useEffect, useRef, useState } from "react"
-import { uploadImage } from "@/lib/utils"
 import { ArticleSchema, type ArticleRequest } from "@/db/validations/article.types"
 import type { Category } from "@/db/validations/category.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
@@ -59,6 +58,8 @@ export default function ArticleEditor({
   const form = useForm<ArticleRequest>({
     initialValues: {
       title: initialValues?.title ?? "",
+      userId:initialValues?.userId??"",
+      status:initialValues?.status??"draft",
       content: initialValues?.content ?? "",
       coverImage: initialValues?.coverImage ?? "",
       tags: initialValues?.tags ?? [],
@@ -93,30 +94,30 @@ export default function ArticleEditor({
   }, [editor, initialValues?.content])
 
   // handle image file change — upload and set preview
-  useEffect(() => {
-    if (!imageFile) return
+  // useEffect(() => {
+  //   if (!imageFile) return
 
-    let cancelled = false
+  //   let cancelled = false
 
-    const upload = async () => {
-      setUploading(true)
-      try {
-        const url = await uploadImage(imageFile)
-        if (!cancelled) {
-          setPreviewUrl(url)
-          form.setFieldValue("coverImage", url)
-        }
-      } catch (err) {
-        console.error("Image upload failed:", err)
-      } finally {
-        if (!cancelled) setUploading(false)
-      }
-    }
+  //   const upload = async () => {
+  //     setUploading(true)
+  //     try {
+  //       const url = await uploadImage(imageFile)
+  //       if (!cancelled) {
+  //         setPreviewUrl(url)
+  //         form.setFieldValue("coverImage", url)
+  //       }
+  //     } catch (err) {
+  //       console.error("Image upload failed:", err)
+  //     } finally {
+  //       if (!cancelled) setUploading(false)
+  //     }
+  //   }
 
-    upload()
+  //   upload()
 
-    return () => { cancelled = true }
-  }, [imageFile])
+  //   return () => { cancelled = true }
+  // }, [imageFile])
 
   const handleAddTag = () => {
     const newTag = tagInput.trim()

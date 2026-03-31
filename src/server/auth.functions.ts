@@ -1,20 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { SendEmailWitHtmlSchema, type SendEmailRequest } from "@/db/validations/contact.types"
 import { Resend } from "resend";
-import { UserMiddleware } from "./middleware/auth.middleware";
-import { getServerSession } from "@/lib/supabase/server";
-
-
-export const getSessionFn = createServerFn({ method: "GET" }).handler(async () => {
- const session=await getServerSession()
-  if (!session) {
-    return null
-  }
-  return session
-})
-
-
-
+import { AuthenticatedMiddleware } from "./middleware/auth.middleware";
 
 
 export const sendEmail = async (data: SendEmailRequest) => {
@@ -32,7 +19,7 @@ export const sendEmail = async (data: SendEmailRequest) => {
 }
 // src/server/contact.functions.ts
 export const sendEmailFn = createServerFn({ method: "POST" })
-  .middleware([UserMiddleware])
+  .middleware([AuthenticatedMiddleware])
   .inputValidator(SendEmailWitHtmlSchema)
   .handler(async ({ data }) => {
     try {

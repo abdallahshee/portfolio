@@ -1,6 +1,7 @@
 // src/lib/supabase/server.ts
 import { createServerClient } from '@supabase/ssr'
 import { getCookies,setCookie } from '@tanstack/react-start/server'
+import { getSupabaseBrowserClient } from './client'
 
 
 export function getSupabaseServerClient() {
@@ -26,5 +27,7 @@ export function getSupabaseServerClient() {
     }
   )
 }
+
+
 
 

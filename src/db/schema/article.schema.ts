@@ -12,10 +12,10 @@ export const article = pgTable("article", {
   title: text("title").notNull(),
   slug: text("slug").notNull().unique(),
   excerpt: text("excerpt").notNull(),
-  userId: uuid("userId").notNull().references(() => user.id),
+  userId: uuid("user_id").notNull().references(() => user.id),
   content: text("content").notNull(), // markdown
   coverImage: text("cover_image"),
-  status: text("status", { enum: ['draft', 'pending', 'published'] }),
+  status: text("status", { enum: ['draft', 'pending', 'published'] }).notNull(),
   tags: text("tags").array().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   categoryId: text('category_id').references(() => category.id, { onDelete: 'set null' }),

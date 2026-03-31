@@ -5,7 +5,6 @@ import {
   pgTable,
   text,
   timestamp,
-  boolean,
   uuid,
 } from 'drizzle-orm/pg-core'
 import { comment } from './comment.schema'
@@ -19,7 +18,7 @@ const auth = pgSchema('auth')
   id: uuid('id').primaryKey(),
 })
 
-export const user = pgTable('user', {
+export const user = pgTable('user_table', {
   id: uuid('id')
     .primaryKey()
     .references(() => authUsers.id, { onDelete: 'cascade' }),
@@ -27,6 +26,7 @@ export const user = pgTable('user', {
   email: text('email').notNull().unique(),
   role: text('role', { enum: ['user', 'admin'] }).default('user').notNull(),
   image: text('image'),
+  lastSignInAt: timestamp('last_sign_in_at', { withTimezone: true }),
   createdAt: timestamp('created_at', { withTimezone: true }).defaultNow().notNull(),
   updatedAt: timestamp('updated_at', { withTimezone: true })
     .defaultNow()

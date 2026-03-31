@@ -24,7 +24,7 @@ import { FacebookButton, GithubButton, GoogleButton } from "@/components/Buttons
 import { SignUpSchema, type SignUpRequest } from "@/db/validations/user.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
-import { uploadImage } from "@/lib/utils"
+
 import { useDisclosure } from "@mantine/hooks"
 
 export const Route = createFileRoute("/account/register")({
@@ -47,7 +47,6 @@ function RouteComponent() {
     initialValues: {
       name: "",
       email: "",
-      image: null,
       password: "",
       confirmPassword: "",
     },
@@ -66,20 +65,14 @@ function RouteComponent() {
     try {
       setIsSubmitting(true)
 
-      // upload image or keep null
-      let imageUrl: string | null = null
-      if (file) {
-        imageUrl = await uploadImage(file)
-      }
-
       const { data, error } = await client.auth.signUp({
         email: values.email.trim().toLowerCase(),
         password: values.password,
         options: {
             emailRedirectTo: `${window.location.origin}/account`,
           data: {
-            full_name: values.name ?? null,
-            avatar_url: imageUrl                  // ✅ trigger reads this for role column
+            name: values.name ?? null,
+               // ✅ trigger reads this for role column
             // ✅ false until email confirmation link clicked
           },
         },
@@ -184,18 +177,7 @@ function RouteComponent() {
 
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="md">
-            {previewUrl && (
-              <div className="flex justify-center">
-                <Avatar
-                  src={previewUrl}
-                  alt="Profile Preview"
-                  size={96}
-                  radius="xl"
-                  className="border border-slate-200 shadow-sm"
-                />
-              </div>
-            )}
-
+            
             <TextInput
               label="Full Name"
               placeholder="John Doe"
@@ -212,17 +194,6 @@ function RouteComponent() {
               size="md"
               {...form.getInputProps("email")}
 
-            />
-
-            <FileInput
-              label="Profile Image"
-              placeholder="Upload profile image"
-              radius="md"
-              size="md"
-              leftSection={<ImagePlus size={16} />}
-              accept="image/*"
-              onChange={(file) => setFile(file)} // ✅ was (e) => setFile(e), renamed for clarity
-              clearable
             />
 
             <PasswordInput

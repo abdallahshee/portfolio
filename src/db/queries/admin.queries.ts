@@ -3,8 +3,7 @@ import { queryOptions } from "@tanstack/react-query"
 import {
   getAdminStats,
   getAdminProjects,
-  getAdminBlogs,
-  getAdminUsers,
+
 } from "@/server/admin.functions"
 
 export const adminStatsQueryOptions = queryOptions({
@@ -17,12 +16,5 @@ export const adminProjectsQueryOptions = queryOptions({
   queryFn: () => getAdminProjects(),
 })
 
-export const adminBlogsQueryOptions = queryOptions({
-  queryKey: ["admin", "articles"],
-  queryFn: () => getAdminBlogs(),
-})
 
-export const adminUsersQueryOptions = queryOptions({
-  queryKey: ["admin", "users"],
-  queryFn: () => getAdminUsers(),
-})
+

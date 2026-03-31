@@ -1,4 +1,4 @@
-import { getAllArticles, getArticleBySlug, getArticleBySlugdForUpdate, getMyArticles, getMyPaginatedArticles, getPaginatedArticles, getTopArticles, searchArticles } from "@/server/article.functions";
+import { getAllArticles, getArticleBySlug, getUserPaginatedArticles, getPaginatedArticles, getTopArticles, searchArticles } from "@/server/article.functions";
 import { queryOptions } from "@tanstack/react-query";
 
 export const getAllArticlesQueryOptions = () => queryOptions({
@@ -25,10 +25,7 @@ export const getArticleBySlugQueryOptions = (slug: string) => queryOptions({
     queryFn: () => getArticleBySlug({ data: { slug } })
 })
 
-export const getArticleBySlugForUpdateQueryOptions = (slug: string) => queryOptions({
-    queryKey: ["blogsUpdate", slug],
-    queryFn: () => getArticleBySlugdForUpdate({ data: { slug } })
-})
+
 export const searchArticlesQueryOptions = (
     query: string,
     page: number,
@@ -44,8 +41,8 @@ export const getMyPaginatedBlogsQueryOptions = (userId:string,page: number, limi
     queryOptions({
         queryKey: ['articles', userId,page, limit],
         queryFn: () =>
-            getMyPaginatedArticles({
-                data: {page, limit},
+            getUserPaginatedArticles({
+                data: {userId,page, limit},
             }),
     })
 
