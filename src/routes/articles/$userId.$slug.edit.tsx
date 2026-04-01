@@ -2,13 +2,13 @@ import { createFileRoute, useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 import ArticleEditor from "@/components/ArticleEditor"
 import type { ArticleRequest } from "@/db/validations/article.types"
-import { UserEditArticleMiddleware } from "@/server/middleware/auth.middleware"
 import { getArticleBySlugQueryOptions } from "@/db/queries/article.queries"
 import { useArticleUpdateMutationOption } from "@/db/mutations/article.mutations"
+import { AuthenticatedMiddleware } from "@/server/middleware/auth.middleware"
 
 export const Route = createFileRoute("/articles/$userId/$slug/edit")({
    validateSearch: () => ({}), // ✅ explicitly declare no search params
-  server: { middleware: [UserEditArticleMiddleware] },
+  server: { middleware: [AuthenticatedMiddleware] },
   loader: async ({ params, context }) => {
     return context.queryClient.ensureQueryData(
       getArticleBySlugQueryOptions(params.slug)

@@ -15,11 +15,6 @@ function RouteComponent() {
       {/* subtle grid pattern */}
       <div
         className="absolute inset-0 pointer-events-none opacity-30 dark:opacity-10"
-        // style={{
-        //   backgroundImage: `linear-gradient(var(--mantine-color-gray-2) 1px, transparent 1px),
-        //                     linear-gradient(90deg, var(--mantine-color-gray-2) 1px, transparent 1px)`,
-        //   backgroundSize: '32px 32px',
-        // }}
       />
 
       <div className="relative w-full max-w-lg">

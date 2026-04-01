@@ -6,7 +6,7 @@ export const useRateProjectMutation = () => {
   const queryClient = useQueryClient()
 
   return useMutation({
-    mutationFn:(data: { projectId: string; rating: number }) => rateProject({ data }),
+    mutationFn:(data: { projectId: string; rating: number,userId:string }) => rateProject({ data }),
      
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({

@@ -28,7 +28,7 @@ import {
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { getProjectByIdQueryOptions } from "@/db/queries/project.queries"
 import { useEffect, useState } from "react"
-import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import { useRateProjectMutation } from "@/db/mutations/project-rating.mutations"
 import moment from "moment"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
@@ -94,6 +94,7 @@ function ProjectDetails() {
       await rateMutation.mutateAsync({
         projectId: project?.id!,
         rating,
+        userId:session.user.id
       })
 
     } catch (error) {

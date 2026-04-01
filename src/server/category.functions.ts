@@ -3,7 +3,7 @@ import { db } from "../db/index"
 import { category } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { CategorySchema, EditCategorySchema } from "@/db/validations/category.types"
-import { AuthenticatedMiddleware } from "./middleware/auth.middleware"
+import { AdminMiddleware, AuthenticatedMiddleware } from "./middleware/auth.middleware"
 
 export const getAllCategories = createServerFn({ method: "GET" })
     .middleware([AuthenticatedMiddleware])
@@ -13,14 +13,14 @@ export const getAllCategories = createServerFn({ method: "GET" })
     })
 
 export const deleteCategory = createServerFn({ method: "POST" })
-    .middleware([AuthenticatedMiddleware])
+    .middleware([AdminMiddleware])
     .inputValidator((data: { categoryId: string }) => data)
     .handler(async ({ data }) => {
         await db.delete(category).where(eq(category.id, data.categoryId))
     })
 
 export const createCategory = createServerFn({ method: "POST" })
-    .middleware([AuthenticatedMiddleware])
+    .middleware([AdminMiddleware])
     .inputValidator(CategorySchema)
     .handler(async ({ data }) => {
         try {
@@ -38,7 +38,7 @@ export const createCategory = createServerFn({ method: "POST" })
 
 
 export const editCategory = createServerFn({ method: "POST" })
-    .middleware([AuthenticatedMiddleware])
+    .middleware([AdminMiddleware])
     .inputValidator(EditCategorySchema)
     .handler(async ({ data }) => {
         try {

@@ -4,10 +4,11 @@ import { db } from '../db/index'
 import { CommentSchema } from '@/db/validations/comment.types'
 import { article } from '@/db/schema/article.schema'
 import { comment } from '@/db/schema'
-import { UserMiddleware } from './middleware/auth.middleware'
+import { AuthenticatedMiddleware } from './middleware/auth.middleware'
+
 
 export const createComment = createServerFn({ method: 'POST' })
-    .middleware([UserMiddleware])
+    .middleware([AuthenticatedMiddleware])
     .inputValidator(CommentSchema)
     .handler(async ({ data, context }) => {
         try {
@@ -47,9 +48,9 @@ export const createComment = createServerFn({ method: 'POST' })
             const inserted = await db
                 .insert(comment)
                 .values({
-                    // id: nanoid(16),
+               
                     articleId: data.articleId,
-                    userId: context.user.id,
+                    userId: context.userId,
                     parentId: normalizedParentId,
                     content: data.content.trim(),
                 })

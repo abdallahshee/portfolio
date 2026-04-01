@@ -22,7 +22,7 @@ import { FacebookButton, GoogleButton } from "@/components/Buttons"
 import { SignUpSchema, type SignUpRequest } from "@/db/validations/user.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
-import { useDisclosure } from "@mantine/hooks"
+
 
 export const Route = createFileRoute("/account/register")({
   validateSearch: (search: Record<string, unknown>) => ({

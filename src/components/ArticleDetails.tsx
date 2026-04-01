@@ -95,7 +95,7 @@ useEffect(() => {
       }
     })
     return roots
-  }, [data.comments])
+  }, [data?.comments])
 
   const handleCommentSubmit = async (values: CommentForm) => {
     if (!requireAuth()) return

@@ -1,10 +1,6 @@
 import { createMiddleware } from "@tanstack/react-start"
-import { eq } from "drizzle-orm"
 import { redirect } from "@tanstack/react-router"
-import { article } from "@/db/schema/article.schema"
-import { db } from "@/db"
 import { getSupabaseServerClient } from "@/lib/supabase/server"
-
 
 export const AuthenticatedMiddleware = createMiddleware()
     .server(async ({ next,request }) => {
@@ -49,45 +45,6 @@ export const AuthenticatedMiddleware = createMiddleware()
     //         },
     //     })
     // })
-
-
-export const UserEditArticleMiddleware = createMiddleware()
-    .middleware( [AuthenticatedMiddleware])
-    .server(async ({ request, context, next }) => {
-        const userId = context.userId
-        const url = new URL(request.url)
-        const slug = url.pathname.split("/").filter(Boolean)[1]
-        const redirectTo = encodeURIComponent(url.pathname + url.search)
-
-        if (!userId || !slug) {
-            return Response.redirect(
-                new URL(`/account?redirect=${redirectTo}`, request.url),
-                302
-            )
-        }
-
-        const foundBlog = (
-            await db
-                .select({ userId: article.userId })
-                .from(article)
-                .where(eq(article.slug, slug))
-                .limit(1)
-        )[0]
-
-        if (!foundBlog) {
-            return new Response("Blog not found", { status: 404 })
-        }
-
-        if (foundBlog.userId !== userId) {
-            return new Response("Forbidden", { status: 403 })
-        }
-
-        return next({
-            context: {
-                ...context,
-            },
-        })
-    })
 
 
 export const AdminMiddleware = createMiddleware()

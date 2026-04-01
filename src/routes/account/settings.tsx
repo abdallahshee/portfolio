@@ -28,8 +28,6 @@ function RouteComponent() {
               </Text>
             </div>
     
-          
-    
             <Divider label="Or create account with email" labelPosition="center" my="xs" />
     
             {formError && (

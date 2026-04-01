@@ -19,7 +19,7 @@ export const sendEmail = async (data: SendEmailRequest) => {
 }
 // src/server/contact.functions.ts
 export const sendEmailFn = createServerFn({ method: "POST" })
-  .middleware([AuthenticatedMiddleware])
+  // .middleware([AuthenticatedMiddleware])
   .inputValidator(SendEmailWitHtmlSchema)
   .handler(async ({ data }) => {
     try {

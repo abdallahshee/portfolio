@@ -23,12 +23,6 @@ export const getAdminStats = createServerFn({ method: "GET" })
   })
 
 // ── Admin projects ──
-export const getAdminProjects = createServerFn({ method: "GET" })
-  .middleware([AuthenticatedMiddleware])
-  .handler(async () => {
-    const projects = await db.select().from(project).orderBy(desc(project.createdAt))
-    return projects
-  })
 
 export const deleteProject = createServerFn({ method: "POST" })
   .inputValidator((data: { projectId: string }) => data)

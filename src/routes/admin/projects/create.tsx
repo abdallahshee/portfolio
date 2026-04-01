@@ -30,12 +30,13 @@ import {
   Trash,
   Wrench,
 } from "lucide-react"
-import { uploadImage } from "@/lib/utils"
+
 import { useMemo, useState } from "react"
 import { ProjectSchema, type ProjectRequest } from "@/db/validations/project.types"
 import { useProjectCreateMutation } from "@/db/mutations/project.mutations"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { AdminMiddleware } from "@/server/middleware/auth.middleware"
+import { uploadProjectImage } from "@/lib/supabase/client"
 
 
 
@@ -79,7 +80,7 @@ function RouteComponent() {
       if (!file) {
         return url
       }
-       url = await uploadImage(file)
+      //  url = await uploadProjectImage(file)
       const { imageUrl, ...datas } = values
       await createProject.mutateAsync({
         ...datas,

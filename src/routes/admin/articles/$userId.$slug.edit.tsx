@@ -2,12 +2,12 @@ import { createFileRoute, useRouter } from "@tanstack/react-router"
 import { useState } from "react"
 import ArticleEditor from "@/components/ArticleEditor"
 import type { ArticleRequest } from "@/db/validations/article.types"
-import { UserEditArticleMiddleware } from "@/server/middleware/auth.middleware"
 import { getArticleBySlugQueryOptions } from "@/db/queries/article.queries"
 import { useArticleUpdateMutationOption } from "@/db/mutations/article.mutations"
+import { AdminMiddleware } from "@/server/middleware/auth.middleware"
 
 export const Route = createFileRoute("/admin/articles/$userId/$slug/edit")({
-  server: { middleware: [UserEditArticleMiddleware] },
+  server: { middleware: [AdminMiddleware] },
  loader: async ({ params, context }) => {
     return context.queryClient.ensureQueryData(
       getArticleBySlugQueryOptions(params.slug)
