@@ -1,8 +1,23 @@
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useForm } from "@mantine/form"
 import {
-  TextInput, Button, Paper, Title, Stack, FileInput,
-  Group, Image, Badge, Container, Text, Card, Divider,
-  ThemeIcon, SimpleGrid, Select, Loader,
+  TextInput,
+  Button,
+  Paper,
+  Title,
+  Stack,
+  FileInput,
+  Group,
+  Image,
+  Badge,
+  Container,
+  Text,
+  Card,
+  Divider,
+  ThemeIcon,
+  SimpleGrid,
+  Select,
+  Loader,
 } from "@mantine/core"
 import { RichTextEditor, Link } from "@mantine/tiptap"
 import { useEditor } from "@tiptap/react"
@@ -13,60 +28,82 @@ import SubScript from "@tiptap/extension-subscript"
 import Highlight from "@tiptap/extension-highlight"
 import TextAlign from "@tiptap/extension-text-align"
 import {
-  Save, ImagePlus, FileText, PenSquare, Tags,
-  Sparkles, ArrowLeft, PencilLine, Clock3, NotebookPen,
+  Save,
+  ImagePlus,
+  FileText,
+  PenSquare,
+  Tags,
+  Sparkles,
+  ArrowLeft,
+  PencilLine,
+  Clock3,
+  NotebookPen,
 } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
-import { ArticleSchema, type ArticleRequest } from "@/db/validations/article.types"
-import type { Category } from "@/db/validations/category.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
+import { useServerFn } from "@tanstack/react-start"
 
+import { ArticleSchema, type ArticleRequest } from "@/db/validations/article.types"
+import { getArticleBySlug } from "@/server/article.functions"
+import { useQuery } from "@tanstack/react-query"
+import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
+
+type EditorMode = "create" | "edit"
+
+interface CategoryOption {
+  id: string
+  name: string
+}
 
 interface ArticleEditorProps {
-  mode: "create" | "edit"
-  initialValues?: ArticleRequest & { slug?: string }
-  onSubmit: (values: ArticleRequest, imageUrl: string) => Promise<void>
-  onCancel: () => void
+  mode: EditorMode
+  slug?: string
+  initialData?: Partial<ArticleRequest> | null
   loading?: boolean
-  categories?: Category[]
+  onCancel: () => void
+  onSubmit: (values: ArticleRequest, imageFile: File | null) => Promise<void> | void
+}
+
+const defaultArticleValues: ArticleRequest = {
+  title: "",
+  userId: "",
+  content: "",
+  coverImage: null,
+  status: "draft",
+  tags: [],
+  categoryId: null,
 }
 
 export default function ArticleEditor({
   mode,
-  initialValues,
-  onSubmit,
-  onCancel,
+  slug,
+  initialData,
   loading = false,
-  categories = [],
+  onCancel,
+  onSubmit,
 }: ArticleEditorProps) {
   const isEdit = mode === "edit"
+  const getArticleFn = useServerFn(getArticleBySlug)
   const turndownService = useRef<any>(null)
+  const { data: categories } = useQuery(getAllCategoriesQueryOption())
   const [tagInput, setTagInput] = useState("")
   const [imageFile, setImageFile] = useState<File | null>(null)
-  const [previewUrl, setPreviewUrl] = useState<string | null>(
-    initialValues?.coverImage ?? null
-  )
-  const [uploading, setUploading] = useState(false)
-
-  // lazy load TurndownService only when needed
-  useEffect(() => {
-    import("turndown").then((mod) => {
-      turndownService.current = new mod.default()
-    })
-  }, [])
+  const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.coverImage ?? null)
+  const [fetchingArticle, setFetchingArticle] = useState(false)
+  const mergedInitialValues = useMemo<ArticleRequest>(() => {
+    return {
+      ...defaultArticleValues,
+      ...initialData,
+      coverImage: initialData?.coverImage ?? null,
+      categoryId: initialData?.categoryId ?? null,
+      tags: initialData?.tags ?? [],
+      status: initialData?.status ?? "draft",
+    }
+  }, [initialData])
 
   const form = useForm<ArticleRequest>({
-    initialValues: {
-      title: initialValues?.title ?? "",
-      userId:initialValues?.userId??"",
-      status:initialValues?.status??"draft",
-      content: initialValues?.content ?? "",
-      coverImage: initialValues?.coverImage ?? "",
-      tags: initialValues?.tags ?? [],
-      categoryId: initialValues?.categoryId ?? "",
-    },
-    validate:zod4Resolver(ArticleSchema),
-    validateInputOnBlur:true
+    initialValues: mergedInitialValues,
+    validate: zod4Resolver(ArticleSchema),
+    validateInputOnBlur: true,
   })
 
   const editor = useEditor({
@@ -80,52 +117,96 @@ export default function ArticleEditor({
       Highlight,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
     ],
-    content: form.values.content,
+    content: mergedInitialValues.content,
     onUpdate: ({ editor }) => {
       form.setFieldValue("content", editor.getHTML())
     },
   })
 
-  // sync editor content when initialValues change (edit mode)
   useEffect(() => {
-    if (editor && initialValues?.content && editor.getHTML() !== initialValues.content) {
-      editor.commands.setContent(initialValues.content)
+    import("turndown").then((mod) => {
+      turndownService.current = new mod.default()
+    })
+  }, [])
+
+  useEffect(() => {
+    form.setValues(mergedInitialValues)
+    setPreviewUrl(mergedInitialValues.coverImage)
+
+    if (editor) {
+      const nextContent = mergedInitialValues.content || ""
+      if (editor.getHTML() !== nextContent) {
+        editor.commands.setContent(nextContent)
+      }
     }
-  }, [editor, initialValues?.content])
+  }, [mergedInitialValues, editor])
 
-  // handle image file change — upload and set preview
-  // useEffect(() => {
-  //   if (!imageFile) return
+  useEffect(() => {
+    if (!imageFile) return
 
-  //   let cancelled = false
+    const objectUrl = URL.createObjectURL(imageFile)
+    setPreviewUrl(objectUrl)
 
-  //   const upload = async () => {
-  //     setUploading(true)
-  //     try {
-  //       const url = await uploadImage(imageFile)
-  //       if (!cancelled) {
-  //         setPreviewUrl(url)
-  //         form.setFieldValue("coverImage", url)
-  //       }
-  //     } catch (err) {
-  //       console.error("Image upload failed:", err)
-  //     } finally {
-  //       if (!cancelled) setUploading(false)
-  //     }
-  //   }
+    return () => {
+      URL.revokeObjectURL(objectUrl)
+    }
+  }, [imageFile])
 
-  //   upload()
+  useEffect(() => {
+    if (!isEdit || initialData || !slug) return
 
-  //   return () => { cancelled = true }
-  // }, [imageFile])
+    let isMounted = true
+
+    const fetchArticle = async () => {
+      try {
+        setFetchingArticle(true)
+        const article = await getArticleFn({ data: { slug } })
+
+        if (!isMounted || !article) return
+
+        const nextValues: ArticleRequest = {
+          title: article.title ?? "",
+          userId: article.userId ?? "",
+          content: article.content ?? "",
+          coverImage: article.coverImage ?? null,
+          status: article.status ?? "draft",
+          tags: article.tags ?? [],
+          categoryId: article?.categoryId ?? null,
+        }
+
+        form.setValues(nextValues)
+        setPreviewUrl(nextValues.coverImage)
+
+        if (editor) {
+          editor.commands.setContent(nextValues.content || "")
+        }
+      } catch (error) {
+        console.error("Failed to fetch article:", error)
+      } finally {
+        if (isMounted) setFetchingArticle(false)
+      }
+    }
+
+    fetchArticle()
+
+    return () => {
+      isMounted = false
+    }
+  }, [isEdit, initialData, slug, getArticleFn, editor])
 
   const handleAddTag = () => {
     const newTag = tagInput.trim()
     if (!newTag) return
+
     const exists = form.values.tags.some(
       (tag) => tag.toLowerCase() === newTag.toLowerCase()
     )
-    if (exists) { setTagInput(""); return }
+
+    if (exists) {
+      setTagInput("")
+      return
+    }
+
     form.setFieldValue("tags", [...form.values.tags, newTag])
     setTagInput("")
   }
@@ -138,20 +219,31 @@ export default function ArticleEditor({
   }
 
   const handleSubmit = async (values: ArticleRequest) => {
-    const markdownContent = turndownService.current
-      ? turndownService.current.turndown(values.content)
-      : values.content
+    const markdownContent =
+      turndownService.current && values.content
+        ? turndownService.current.turndown(values.content)
+        : values.content
 
-    await onSubmit({ ...values, content: markdownContent }, values.coverImage ?? "")
+    await onSubmit(
+      {
+        ...values,
+        content: markdownContent,
+      },
+      imageFile
+    )
+    // if(state)
   }
+
+  const isBusy = loading || fetchingArticle
 
   return (
     <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
       <Container size="xl">
         <Stack gap="xl">
-
-          {/* Header */}
-          <Paper radius="2xl" p="xl" withBorder
+          <Paper
+            radius="2xl"
+            p="xl"
+            withBorder
             className="overflow-hidden bg-gradient-to-br from-white to-slate-50 shadow-sm dark:from-slate-900 dark:to-slate-950"
           >
             <Group justify="space-between" align="flex-start" className="gap-4">
@@ -164,17 +256,24 @@ export default function ArticleEditor({
                     {isEdit ? "Blog Editor" : "Blog Studio"}
                   </Text>
                 </Group>
+
                 <Title order={1} className="text-3xl md:text-5xl">
                   {isEdit ? "Edit Blog Post" : "Create a New Blog Post"}
                 </Title>
+
                 <Text className="max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
                   {isEdit
                     ? "Refine your article, update the cover image, improve the content, and keep your tags organized before publishing changes."
-                    : "Write, format, and publish a professional article with a cover image, rich text content, and organized tags."
-                  }
+                    : "Write, format, and publish a professional article with a cover image, rich text content, and organized tags."}
                 </Text>
               </Stack>
-              <Button variant="light" radius="xl" leftSection={<ArrowLeft size={16} />} onClick={onCancel}>
+
+              <Button
+                variant="light"
+                radius="xl"
+                leftSection={<ArrowLeft size={16} />}
+                onClick={onCancel}
+              >
                 Back
               </Button>
             </Group>
@@ -183,185 +282,263 @@ export default function ArticleEditor({
           <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="lg">
             <div className="lg:col-span-2">
               <Paper radius="2xl" p="xl" withBorder className="shadow-sm">
-                <form onSubmit={form.onSubmit(handleSubmit)}>
-                  <Stack gap="lg">
-
-                    {/* Post Details */}
-                    <div>
-                      <Group gap="xs" mb="xs">
-                        <ThemeIcon variant="light" color="blue" radius="xl">
-                          <FileText size={16} />
-                        </ThemeIcon>
-                        <Title order={3}>Post Details</Title>
-                      </Group>
+                {isBusy ? (
+                  <div className="flex min-h-[300px] items-center justify-center">
+                    <Group gap="sm">
+                      <Loader size="sm" />
                       <Text size="sm" c="dimmed">
-                        {isEdit ? "Update the core details of your blog post." : "Add the main details for your article."}
+                        {fetchingArticle ? "Loading article..." : "Processing..."}
                       </Text>
-                    </div>
-
-                    <TextInput
-                      label="Blog Title"
-                      placeholder="My awesome blog"
-                      leftSection={<FileText size={16} />}
-                      radius="md" size="md"
-                      {...form.getInputProps("title")}
-                      required
-                    />
-
-                    <Select
-                      label="Category"
-                      placeholder="Select a category"
-                      leftSection={<FileText size={16} />}
-                      radius="md" size="md"
-                      data={categories.map((cat) => ({ label: cat.name, value: cat.id }))}
-                      {...form.getInputProps("categoryId")}
-                    />
-
-                    <FileInput
-                      label={isEdit ? "Blog Image" : "Cover Image"}
-                      placeholder={isEdit ? "Update blog image" : "Upload blog image"}
-                      leftSection={uploading ? <Loader size={16} /> : <ImagePlus size={16} />}
-                      accept="image/*"
-                      radius="md" size="md"
-                      onChange={(file) => setImageFile(file)}
-                      disabled={uploading}
-                    />
-
-                    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/40">
-                      {uploading ? (
-                        <div className="flex h-[220px] items-center justify-center gap-2 text-slate-500">
-                          <Loader size="sm" />
-                          <Text size="sm">Uploading image...</Text>
-                        </div>
-                      ) : previewUrl ? (
-                        <Image src={previewUrl} alt="Blog cover preview" h={240} radius="xl" fit="contain" />
-                      ) : (
-                        <div className="flex h-[220px] items-center justify-center rounded-xl border border-dashed border-slate-300 text-slate-500 dark:border-slate-700">
-                          {isEdit ? "No cover image available" : "No cover image selected"}
-                        </div>
-                      )}
-                    </div>
-
-                    <Divider />
-
-                    {/* Content */}
-                    <div>
-                      <Group gap="xs" mb="xs">
-                        <ThemeIcon variant="light" color="grape" radius="xl">
-                          <PenSquare size={16} />
-                        </ThemeIcon>
-                        <Title order={3}>Content</Title>
-                      </Group>
-                      <Text size="sm" c="dimmed">
-                        {isEdit ? "Edit and format your article content below." : "Use the editor below to write and format your post."}
-                      </Text>
-                    </div>
-
-                    <RichTextEditor editor={editor}>
-                      <RichTextEditor.Toolbar sticky stickyOffset={60}>
-                        <RichTextEditor.ControlsGroup>
-                          <RichTextEditor.Bold />
-                          <RichTextEditor.Italic />
-                          <RichTextEditor.Underline />
-                          <RichTextEditor.Strikethrough />
-                          <RichTextEditor.ClearFormatting />
-                          <RichTextEditor.Highlight />
-                          <RichTextEditor.Code />
-                        </RichTextEditor.ControlsGroup>
-                        <RichTextEditor.ControlsGroup>
-                          <RichTextEditor.H1 />
-                          <RichTextEditor.H2 />
-                          <RichTextEditor.H3 />
-                          <RichTextEditor.H4 />
-                        </RichTextEditor.ControlsGroup>
-                        <RichTextEditor.ControlsGroup>
-                          <RichTextEditor.Blockquote />
-                          <RichTextEditor.Hr />
-                          <RichTextEditor.BulletList />
-                          <RichTextEditor.OrderedList />
-                          <RichTextEditor.Subscript />
-                          <RichTextEditor.Superscript />
-                        </RichTextEditor.ControlsGroup>
-                        <RichTextEditor.ControlsGroup>
-                          <RichTextEditor.Link />
-                          <RichTextEditor.Unlink />
-                        </RichTextEditor.ControlsGroup>
-                        <RichTextEditor.ControlsGroup>
-                          <RichTextEditor.AlignLeft />
-                          <RichTextEditor.AlignCenter />
-                          <RichTextEditor.AlignJustify />
-                          <RichTextEditor.AlignRight />
-                        </RichTextEditor.ControlsGroup>
-                        <RichTextEditor.ControlsGroup>
-                          <RichTextEditor.Undo />
-                          <RichTextEditor.Redo />
-                        </RichTextEditor.ControlsGroup>
-                      </RichTextEditor.Toolbar>
-                      <RichTextEditor.Content className="min-h-[320px]" />
-                    </RichTextEditor>
-
-                    <Divider />
-
-                    {/* Tags */}
-                    <div>
-                      <Group gap="xs" mb="xs">
-                        <ThemeIcon variant="light" color="teal" radius="xl">
-                          <Tags size={16} />
-                        </ThemeIcon>
-                        <Title order={3}>Tags</Title>
-                      </Group>
-                      <Text size="sm" c="dimmed">
-                        {isEdit
-                          ? "Update tags to better organize and surface your article."
-                          : "Add relevant tags to make your article easier to discover."
-                        }
-                      </Text>
-                    </div>
-
-                    <div>
-                      <Group align="flex-end">
-                        <TextInput
-                          label="New Tag"
-                          placeholder="Enter a tag"
-                          value={tagInput}
-                          onChange={(e) => setTagInput(e.currentTarget.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === "Enter") { e.preventDefault(); handleAddTag() }
-                          }}
-                          className="flex-1"
-                          radius="md"
-                        />
-                        <Button type="button" onClick={handleAddTag} radius="md">Add</Button>
-                      </Group>
-                      {form.values.tags.length > 0 && (
-                        <Group mt="sm">
-                          {form.values.tags.map((tag) => (
-                            <Badge key={tag} size="lg" radius="xl" variant="light"
-                              className="cursor-pointer" onClick={() => handleRemoveTag(tag)}
-                            >
-                              {tag} ×
-                            </Badge>
-                          ))}
-                        </Group>
-                      )}
-                    </div>
-
-                    <Group justify="flex-end" mt="md">
-                      <Button variant="default" type="button" radius="xl" onClick={onCancel}>
-                        Cancel
-                      </Button>
-                      <Button type="submit" radius="xl" loading={loading}
-                        disabled={uploading} leftSection={<Save size={16} />}
-                      >
-                        {isEdit ? "Save Changes" : "Create Blog"}
-                      </Button>
                     </Group>
-                  </Stack>
-                </form>
+                  </div>
+                ) : (
+                  <form onSubmit={form.onSubmit(handleSubmit)}>
+                    <Stack gap="lg">
+                      <div>
+                        <Group gap="xs" mb="xs">
+                          <ThemeIcon variant="light" color="blue" radius="xl">
+                            <FileText size={16} />
+                          </ThemeIcon>
+                          <Title order={3}>Post Details</Title>
+                        </Group>
+                        <Text size="sm" c="dimmed">
+                          {isEdit
+                            ? "Update the core details of your blog post."
+                            : "Add the main details for your article."}
+                        </Text>
+                      </div>
+
+                      <TextInput
+                        label="Blog Title"
+                        placeholder="My awesome blog"
+                        leftSection={<FileText size={16} />}
+                        radius="md"
+                        size="md"
+                
+                        {...form.getInputProps("title")}
+                      />
+
+                      <Select
+                        label="Category"
+                        placeholder="Select a category"
+                        leftSection={<FileText size={16} />}
+                        radius="md"
+                        size="md"
+                        data={categories?.map((cat) => ({
+                          label: cat.name,
+                          value: cat.id,
+                        }))}
+                        value={form.values.categoryId}
+                        onChange={(value) =>
+                          form.setFieldValue("categoryId", value || null)
+                        }
+                        error={form.errors.categoryId}
+                        clearable
+                      />
+
+                      <Select
+                        label="Status"
+                        placeholder="Select status"
+                        radius="md"
+                        size="md"
+                        data={[
+                          { label: "Draft", value: "draft" },
+                          { label: "Pending", value: "pending" },
+                          { label: "Published", value: "published" },
+                        ]}
+                        value={form.values.status}
+                        onChange={(value) => {
+                          if (!value) return
+                          form.setFieldValue(
+                            "status",
+                            value as ArticleRequest["status"]
+                          )
+                        }}
+                        error={form.errors.status}
+                      />
+
+                      <FileInput
+                        label={isEdit ? "Blog Image" : "Cover Image"}
+                        placeholder={
+                          isEdit ? "Update blog image" : "Upload blog image"
+                        }
+                        leftSection={<ImagePlus size={16} />}
+                        accept="image/*"
+                        radius="md"
+                        size="md"
+                        value={imageFile}
+                        onChange={setImageFile}
+                      />
+
+                      <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/40">
+                        {previewUrl ? (
+                          <Image
+                            src={previewUrl}
+                            alt="Blog cover preview"
+                            h={240}
+                            radius="xl"
+                            fit="contain"
+                          />
+                        ) : (
+                          <div className="flex h-[220px] items-center justify-center rounded-xl border border-dashed border-slate-300 text-slate-500 dark:border-slate-700">
+                            {isEdit
+                              ? "No cover image available"
+                              : "No cover image selected"}
+                          </div>
+                        )}
+                      </div>
+
+                      <Divider />
+
+                      <div>
+                        <Group gap="xs" mb="xs">
+                          <ThemeIcon variant="light" color="grape" radius="xl">
+                            <PenSquare size={16} />
+                          </ThemeIcon>
+                          <Title order={3}>Content</Title>
+                        </Group>
+                        <Text size="sm" c="dimmed">
+                          {isEdit
+                            ? "Edit and format your article content below."
+                            : "Use the editor below to write and format your post."}
+                        </Text>
+                      </div>
+
+                      <RichTextEditor editor={editor}>
+                        <RichTextEditor.Toolbar sticky stickyOffset={60}>
+                          <RichTextEditor.ControlsGroup>
+                            <RichTextEditor.Bold />
+                            <RichTextEditor.Italic />
+                            <RichTextEditor.Underline />
+                            <RichTextEditor.Strikethrough />
+                            <RichTextEditor.ClearFormatting />
+                            <RichTextEditor.Highlight />
+                            <RichTextEditor.Code />
+                          </RichTextEditor.ControlsGroup>
+
+                          <RichTextEditor.ControlsGroup>
+                            <RichTextEditor.H1 />
+                            <RichTextEditor.H2 />
+                            <RichTextEditor.H3 />
+                            <RichTextEditor.H4 />
+                          </RichTextEditor.ControlsGroup>
+
+                          <RichTextEditor.ControlsGroup>
+                            <RichTextEditor.Blockquote />
+                            <RichTextEditor.Hr />
+                            <RichTextEditor.BulletList />
+                            <RichTextEditor.OrderedList />
+                            <RichTextEditor.Subscript />
+                            <RichTextEditor.Superscript />
+                          </RichTextEditor.ControlsGroup>
+
+                          <RichTextEditor.ControlsGroup>
+                            <RichTextEditor.Link />
+                            <RichTextEditor.Unlink />
+                          </RichTextEditor.ControlsGroup>
+
+                          <RichTextEditor.ControlsGroup>
+                            <RichTextEditor.AlignLeft />
+                            <RichTextEditor.AlignCenter />
+                            <RichTextEditor.AlignJustify />
+                            <RichTextEditor.AlignRight />
+                          </RichTextEditor.ControlsGroup>
+
+                          <RichTextEditor.ControlsGroup>
+                            <RichTextEditor.Undo />
+                            <RichTextEditor.Redo />
+                          </RichTextEditor.ControlsGroup>
+                        </RichTextEditor.Toolbar>
+
+                        <RichTextEditor.Content className="min-h-[320px]" />
+                      </RichTextEditor>
+
+                      {form.errors.content && (
+                        <Text c="red" size="sm">
+                          {form.errors.content}
+                        </Text>
+                      )}
+
+                      <Divider />
+
+                      <div>
+                        <Group gap="xs" mb="xs">
+                          <ThemeIcon variant="light" color="teal" radius="xl">
+                            <Tags size={16} />
+                          </ThemeIcon>
+                          <Title order={3}>Tags</Title>
+                        </Group>
+                        <Text size="sm" c="dimmed">
+                          {isEdit
+                            ? "Update tags to better organize and surface your article."
+                            : "Add relevant tags to make your article easier to discover."}
+                        </Text>
+                      </div>
+
+                      <div>
+                        <Group align="flex-end">
+                          <TextInput
+                            label="New Tag"
+                            placeholder="Enter a tag"
+                            value={tagInput}
+                            onChange={(e) => setTagInput(e.currentTarget.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault()
+                                handleAddTag()
+                              }
+                            }}
+                            className="flex-1"
+                            radius="md"
+                          />
+                          <Button type="button" onClick={handleAddTag} radius="md">
+                            Add
+                          </Button>
+                        </Group>
+
+                        {form.values.tags.length > 0 && (
+                          <Group mt="sm">
+                            {form.values.tags.map((tag) => (
+                              <Badge
+                                key={tag}
+                                size="lg"
+                                radius="xl"
+                                variant="light"
+                                className="cursor-pointer"
+                                onClick={() => handleRemoveTag(tag)}
+                              >
+                                {tag} ×
+                              </Badge>
+                            ))}
+                          </Group>
+                        )}
+                      </div>
+
+                      <Group justify="flex-end" mt="md">
+                        <Button
+                          variant="default"
+                          type="button"
+                          radius="xl"
+                          onClick={onCancel}
+                        >
+                          Cancel
+                        </Button>
+
+                        <Button
+                          type="submit"
+                          radius="xl"
+                          loading={loading}
+                          leftSection={<Save size={16} />}
+                        >
+                          {isEdit ? "Save Changes" : "Create Blog"}
+                        </Button>
+                      </Group>
+                    </Stack>
+                  </form>
+                )}
               </Paper>
             </div>
 
-            {/* Sidebar */}
             <Stack gap="lg">
               <Card radius="2xl" withBorder p="xl" className="shadow-sm">
                 <Group gap="xs" mb="sm">
@@ -370,20 +547,37 @@ export default function ArticleEditor({
                   </ThemeIcon>
                   <Title order={4}>{isEdit ? "Editing Tips" : "Writing Tips"}</Title>
                 </Group>
+
                 <Stack gap="sm">
                   {isEdit ? (
                     <>
-                      <Text size="sm" c="dimmed">Refresh the title to make it clearer and more engaging.</Text>
-                      <Text size="sm" c="dimmed">Replace the cover image if you want a stronger visual first impression.</Text>
-                      <Text size="sm" c="dimmed">Break long sections with headings for easier reading.</Text>
-                      <Text size="sm" c="dimmed">Update tags to match the final direction of the article.</Text>
+                      <Text size="sm" c="dimmed">
+                        Refresh the title to make it clearer and more engaging.
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        Replace the cover image if you want a stronger visual first impression.
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        Break long sections with headings for easier reading.
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        Update tags to match the final direction of the article.
+                      </Text>
                     </>
                   ) : (
                     <>
-                      <Text size="sm" c="dimmed">Use a clear, attention-grabbing title.</Text>
-                      <Text size="sm" c="dimmed">Add a strong cover image to improve presentation.</Text>
-                      <Text size="sm" c="dimmed">Break content into short sections with headings.</Text>
-                      <Text size="sm" c="dimmed">Use tags that match the main topic of your article.</Text>
+                      <Text size="sm" c="dimmed">
+                        Use a clear, attention-grabbing title.
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        Add a strong cover image to improve presentation.
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        Break content into short sections with headings.
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        Use tags that match the main topic of your article.
+                      </Text>
                     </>
                   )}
                 </Stack>
@@ -394,44 +588,71 @@ export default function ArticleEditor({
                   <ThemeIcon variant="light" color="gray" radius="xl">
                     <Clock3 size={16} />
                   </ThemeIcon>
-                  <Title order={4}>{isEdit ? "Edit Summary" : "Publishing Checklist"}</Title>
+                  <Title order={4}>
+                    {isEdit ? "Edit Summary" : "Publishing Checklist"}
+                  </Title>
                 </Group>
+
                 <Stack gap="xs">
                   {isEdit ? (
                     <>
-                      <Text size="sm" c="dimmed">Current title:</Text>
+                      <Text size="sm" c="dimmed">
+                        Current title:
+                      </Text>
                       <Text fw={600}>{form.values.title || "Untitled post"}</Text>
                       <Divider my="xs" />
-                      <Text size="sm" c="dimmed">Total tags: {form.values.tags.length}</Text>
-                      <Text size="sm" c="dimmed">Cover image: {previewUrl ? "Available" : "Not set"}</Text>
+                      <Text size="sm" c="dimmed">
+                        Total tags: {form.values.tags.length}
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        Cover image: {previewUrl ? "Available" : "Not set"}
+                      </Text>
                     </>
                   ) : (
                     <>
-                      <Text size="sm" c="dimmed">• Title added</Text>
-                      <Text size="sm" c="dimmed">• Cover image selected</Text>
-                      <Text size="sm" c="dimmed">• Content formatted</Text>
-                      <Text size="sm" c="dimmed">• Tags attached</Text>
+                      <Text size="sm" c="dimmed">
+                        • Title added
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        • Cover image selected
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        • Content formatted
+                      </Text>
+                      <Text size="sm" c="dimmed">
+                        • Tags attached
+                      </Text>
                     </>
                   )}
                 </Stack>
               </Card>
 
               <Card radius="2xl" withBorder p="xl" className="shadow-sm">
-                <Title order={4} mb="sm">Quick Preview</Title>
+                <Title order={4} mb="sm">
+                  Quick Preview
+                </Title>
+
                 <Stack gap="xs">
                   <Text fw={600}>
-                    {form.values.title || (isEdit ? "Your edited blog title will appear here" : "Your blog title will appear here")}
+                    {form.values.title ||
+                      (isEdit
+                        ? "Your edited blog title will appear here"
+                        : "Your blog title will appear here")}
                   </Text>
+
                   <Text size="sm" c="dimmed" lineClamp={4}>
-                    {editor?.getText() || (isEdit
-                      ? "Edit your content to see a short text preview here."
-                      : "Start writing to see a quick text preview of your article."
-                    )}
+                    {editor?.getText() ||
+                      (isEdit
+                        ? "Edit your content to see a short text preview here."
+                        : "Start writing to see a quick text preview of your article.")}
                   </Text>
+
                   {form.values.tags.length > 0 && (
                     <Group mt="xs">
                       {form.values.tags.slice(0, 3).map((tag) => (
-                        <Badge key={tag} variant="dot" color="indigo">{tag}</Badge>
+                        <Badge key={tag} variant="dot" color="indigo">
+                          {tag}
+                        </Badge>
                       ))}
                     </Group>
                   )}

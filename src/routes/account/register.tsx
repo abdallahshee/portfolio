@@ -64,11 +64,11 @@ function RouteComponent() {
         email: values.email.trim().toLowerCase(),
         password: values.password,
         options: {
-          emailRedirectTo: `${window.location.origin}/account`,
+          emailRedirectTo: `${window.location.origin}`,
           data: {
             name: values.name,
             avatar_url: DEFAULT_AVATAR_URL, // ✅ always use default on signup
-         
+            role:"user"
           },
         },
       })

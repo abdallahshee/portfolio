@@ -6,9 +6,9 @@ import { UserEditArticleMiddleware } from "@/server/middleware/auth.middleware"
 import { getArticleBySlugQueryOptions } from "@/db/queries/article.queries"
 import { useArticleUpdateMutationOption } from "@/db/mutations/article.mutations"
 
-export const Route = createFileRoute("/articles/$userId/$slug/edit")({
+export const Route = createFileRoute("/admin/articles/$userId/$slug/edit")({
   server: { middleware: [UserEditArticleMiddleware] },
-  loader: async ({ params, context }) => {
+ loader: async ({ params, context }) => {
     return context.queryClient.ensureQueryData(
       getArticleBySlugQueryOptions(params.slug)
     )

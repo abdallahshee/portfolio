@@ -99,6 +99,7 @@ export const getArticleBySlug = createServerFn()
                     status:article.status,
                     authorName: user.name,
                     authorImage: user.image,
+                    categoryId:category.id,
                     categoryName: category.name,
                     createdAt: article.createdAt,
                     updatedAt: article.updatedAt,

@@ -19,9 +19,10 @@ import {
   Phone,
 } from "lucide-react"
 
-import { Link } from "@tanstack/react-router"
+import { Link, useRouter } from "@tanstack/react-router"
 
 export default function Footer() {
+  const router=useRouter()
   return (
     <footer className="mt-20 border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
       <Container size="xl" className="py-14">
@@ -41,7 +42,7 @@ export default function Footer() {
                   Abdallah Shee
                 </Title>
                 <Text size="sm" c="dimmed">
-                  Software Architect • Full-Stack Developer 🇰🇪
+                  Full-Stack Software Developer 🇰🇪
                 </Text>
               </div>
             </Group>
@@ -51,7 +52,7 @@ export default function Footer() {
 
           {/* Navigation */}
           <Stack gap="sm">
-            <Title order={5}>Navigation</Title>
+            {/* <Title order={5}>Navigation</Title> */}
 
             <Anchor component={Link} to="/" className="hover:text-indigo-500 transition-colors">
               Home
@@ -73,12 +74,12 @@ export default function Footer() {
 
             <Group gap="xs">
               <Phone size={16} className="text-slate-500" />
-              <Text size="sm">+254 712 345 678</Text>
+              <Text size="sm">+254 796515302</Text>
             </Group>
 
             <Group gap="xs">
               <Mail size={16} className="text-slate-500" />
-              <Text size="sm">developer@email.com</Text>
+              <Text size="sm">abdallahshee664@email.com</Text>
             </Group>
           </Stack>
 
@@ -89,7 +90,7 @@ export default function Footer() {
             <Group gap="sm">
               <ActionIcon
                 component="a"
-                href="https://github.com/yourusername"
+                href="https://github.com/abdallahshee"
                 target="_blank"
                 variant="subtle"
                 radius="xl"
@@ -100,7 +101,7 @@ export default function Footer() {
 
               <ActionIcon
                 component="a"
-                href="https://linkedin.com/in/yourusername"
+                href="https://linkedin.com/in/abdallahshee"
                 target="_blank"
                 variant="subtle"
                 radius="xl"
@@ -111,7 +112,7 @@ export default function Footer() {
 
               <ActionIcon
                 component="a"
-                href="mailto:developer@email.com"
+                onClick={()=>router.navigate({to:"/contact"})}
                 variant="subtle"
                 radius="xl"
                 size="lg"

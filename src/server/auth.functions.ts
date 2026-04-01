@@ -7,7 +7,7 @@ import { AuthenticatedMiddleware } from "./middleware/auth.middleware";
 export const sendEmail = async (data: SendEmailRequest) => {
   const resend = new Resend(process.env.RESEND_API_KEY!)
   const result = await resend.emails.send({
-    from: "onboarding@resend.dev",
+    from:"noreply.abdallahshee.com",
     to: process.env.CONTACT_RECEIVER_EMAIL!,
     replyTo: data.email,
     subject: `[Portfolio Contact] ${data.subject}`,

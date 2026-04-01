@@ -148,7 +148,7 @@ function ContactPage() {
               <ThemeIcon variant="light" color="indigo" radius="xl" size="md">
                 <Mail size={15} />
               </ThemeIcon>
-              <Text size="sm" fw={500}>developer@email.com</Text>
+              <Text size="sm" fw={500}>abdallahshee664@email.com</Text>
             </Group>
           </Paper>
         </Anchor>
@@ -158,11 +158,11 @@ function ContactPage() {
               <ThemeIcon variant="light" color="indigo" radius="xl" size="md">
                 <Phone size={15} />
               </ThemeIcon>
-              <Text size="sm" fw={500}>+254 712 345 678</Text>
+              <Text size="sm" fw={500}>+254 796515302</Text>
             </Group>
           </Paper>
         </Anchor>
-        <Anchor href="https://github.com/yourusername" target="_blank" underline="never">
+        <Anchor href="https://github.com/abdallahshee" target="_blank" underline="never">
           <Paper withBorder radius="xl" px="lg" py="sm" className="shadow-sm hover:shadow-md transition-shadow cursor-pointer">
             <Group gap="sm">
               <ThemeIcon variant="light" color="dark" radius="xl" size="md">
@@ -172,7 +172,7 @@ function ContactPage() {
             </Group>
           </Paper>
         </Anchor>
-        <Anchor href="https://linkedin.com/in/yourusername" target="_blank" underline="never">
+        <Anchor href="https://linkedin.com/in/abdallahshee" target="_blank" underline="never">
           <Paper withBorder radius="xl" px="lg" py="sm" className="shadow-sm hover:shadow-md transition-shadow cursor-pointer">
             <Group gap="sm">
               <ThemeIcon variant="light" color="blue" radius="xl" size="md">

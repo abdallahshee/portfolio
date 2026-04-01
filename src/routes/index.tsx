@@ -130,7 +130,7 @@ function App() {
           <Stack gap="lg" className="max-w-3xl">
             <div className="relative inline-block text-xl sm:text-2xl lg:text-3xl font-bold leading-tight">
               <span className="text-blue-500">
-                Software Architect • Full-Stack Developer
+                Full-Stack Software Developer
               </span>
 
               <span className="absolute left-0 -bottom-1 sm:-bottom-2 h-[3px] sm:h-[4px] w-3/5 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 rounded-full"></span>
@@ -195,19 +195,35 @@ function App() {
               shadow="md"
               radius="xl"
               withBorder
-              className="absolute -bottom-5 left-1/2 -translate-x-1/2 lg:left-auto lg:-translate-x-0 lg:-bottom-6 lg:-left-6 px-5 py-4 bg-white/95 backdrop-blur dark:bg-slate-900/95"
+              className="
+    absolute
+    -bottom-5 left-1/2 -translate-x-1/2
+    lg:-bottom-6 lg:-left-6 lg:left-auto lg:translate-x-0
+    px-4 py-3
+    sm:px-5 sm:py-4
+    bg-white/95 backdrop-blur dark:bg-slate-900/95
+    w-max max-w-[90vw]
+  "
             >
-              <Group gap="md" wrap="nowrap">
-                <ThemeIcon size={44} radius="xl" variant="light" color="indigo">
-                  <Code2 size={20} />
+              <Group gap="sm" wrap="nowrap">
+                <ThemeIcon
+                  size={36}
+                  radius="xl"
+                  variant="light"
+                  color="indigo"
+                  className="sm:size-11 flex-shrink-0"
+                >
+                  <Code2 size={16} className="sm:size-5" />
                 </ThemeIcon>
 
-                <div>
-                  <Group gap="xs" align="center">
-                    <Text fw={700}>Abdallah Shee</Text>
-                    <span className="text-base">🇰🇪</span>
+                <div className="min-w-0">
+                  <Group gap="xs" align="center" wrap="nowrap">
+                    <Text fw={700} size="sm" className="sm:text-base truncate">
+                      Abdallah Shee
+                    </Text>
+                    <span className="text-sm sm:text-base flex-shrink-0">🇰🇪</span>
                   </Group>
-                  <Text size="sm" c="dimmed" className="leading-5">
+                  <Text size="xs" c="dimmed" className="sm:text-sm leading-5 truncate">
                     Nairobi, Kenya
                   </Text>
                 </div>
@@ -346,11 +362,13 @@ function App() {
                 {[
                   'React 19',
                   'TanStack Start',
-                  'Drizzle ORM',
+                  'PostgreSQL',
                   'Supabase',
+                  'Drizzle ORM',
+                  'TypeScript',
                   'Tailwind v4',
                   'Zod',
-                  'TypeScript',
+
                 ].map((tech) => (
                   <Badge
                     key={tech}
@@ -618,7 +636,7 @@ function App() {
               <Button
                 variant="filled"
                 component="a"
-                href="mailto:abdallah@example.com"
+                onClick={()=>router.navigate({to:"/contact"})}
                 leftSection={<Mail size={18} />}
                 color="indigo"
               >
@@ -626,7 +644,7 @@ function App() {
               </Button>
               <Button
                 component="a"
-                href="https://github.com"
+                href="https://github.com/abdallahshee"
                 target="_blank"
                 variant="filled"
                 leftSection={<Github size={18} />}
@@ -635,7 +653,7 @@ function App() {
               </Button>
               <Button
                 component="a"
-                href="https://linkedin.com"
+                href="https://linkedin.com/in/abdallahshee"
                 target="_blank"
                 variant="filled"
                 leftSection={<Linkedin size={18} />}

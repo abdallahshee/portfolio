@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
   INSERT INTO public.user (
-    id, email, name,image,
+    id, email, name,image,role,
     created_at, updated_at
   )
   VALUES (
@@ -13,6 +13,7 @@ BEGIN
     NEW.email,
     NEW.raw_user_meta_data->>'name',
     NEW.raw_user_meta_data->>'avatar_url',
+    'user',
     NOW(),
     NOW()
   );

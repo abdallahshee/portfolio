@@ -3,7 +3,7 @@ import {
   Burger, Drawer, ScrollArea, Button, Avatar,
   Text, Menu, UnstyledButton, Group, Skeleton,
 } from "@mantine/core"
-import { Link, useRouter } from "@tanstack/react-router"
+import { Link, useRouter,useRouterState } from "@tanstack/react-router"
 import { ChevronDown, LogOut, Sun, Moon, LayoutDashboard, Settings } from "lucide-react"
 import { useQueryClient } from "@tanstack/react-query"
 
@@ -41,12 +41,16 @@ function hasStoredSession(): boolean {
 export default function Header() {
   const [opened, setOpened] = useState(false)
   const router = useRouter()
-  const queryClient = useQueryClient()
+ 
   const supabase = getSupabaseBrowserClient()
 
   const [session, setSession] = useState<Session | null>(null)
   // ✅ only show skeleton if there's a stored session to wait for
   const [isSessionLoading, setIsSessionLoading] = useState(() => hasStoredSession())
+
+  const currentPath = useRouterState({
+  select: (state) => state.location.pathname,
+})
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
@@ -77,7 +81,6 @@ const isAdmin = user?.user_metadata?.role === "admin"
     return () => clearTimeout(timeout)
   }, [])
 
- 
   const handleThemeChange = () => {
     const next: ThemeMode = themeMode === 'light' ? 'dark' : 'light'
     setThemeMode(next)

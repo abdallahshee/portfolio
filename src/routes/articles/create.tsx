@@ -1,15 +1,12 @@
 import { createFileRoute, useRouter } from "@tanstack/react-router"
 import { useState } from "react"
-import { useRef } from "react"
-import TurndownService from "turndown"
-import { useArticleCreateMutation } from "@/db/mutations/article.mutations"
-import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
 import { useQuery } from "@tanstack/react-query"
 
 import ArticleEditor from "@/components/ArticleEditor"
 import type { ArticleRequest } from "@/db/validations/article.types"
+import { useArticleCreateMutation } from "@/db/mutations/article.mutations"
+import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
 import { AuthenticatedMiddleware } from "@/server/middleware/auth.middleware"
-
 
 export const Route = createFileRoute("/articles/create")({
   server: { middleware: [AuthenticatedMiddleware] },
@@ -22,28 +19,39 @@ export const Route = createFileRoute("/articles/create")({
 function RouteComponent() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const turndownService = useRef(new TurndownService())
-  const createBlogMutation = useArticleCreateMutation({role:"user"})
+
+  const createBlogMutation = useArticleCreateMutation({ role: "user" })
   const { data: categories } = useQuery(getAllCategoriesQueryOption())
 
   return (
     <ArticleEditor
       mode="create"
-      categories={categories ?? []}
       loading={loading}
-      onSubmit={async (values:ArticleRequest, imageUrl:string) => {
+      onSubmit={async (values: ArticleRequest, imageFile: File | null) => {
         try {
           setLoading(true)
-          const markdownContent = turndownService.current.turndown(values.content)
+
+          let coverImage =
+            values.coverImage ||
+            "https://images.pexels.com/photos/265667/pexels-photo-265667.jpeg"
+
+          // Upload the image here if a new file was selected
+          // Example:
+          // if (imageFile) {
+          //   coverImage = await uploadImage(imageFile)
+          // }
+
           await createBlogMutation.mutateAsync({
             title: values.title,
             tags: values.tags,
-            content: markdownContent,
-            coverImage: imageUrl || "https://images.pexels.com/photos/265667/pexels-photo-265667.jpeg",
+            content: values.content,
+            coverImage,
             categoryId: values.categoryId,
-            userId:values.userId,
-            status:values.status
+            userId: values.userId,
+            status: values.status,
           })
+
+          router.history.back()
         } catch (err) {
           console.error(err)
         } finally {
