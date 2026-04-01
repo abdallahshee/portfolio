@@ -153,6 +153,14 @@ const isAdmin = user?.user_metadata?.role === "admin"
             <Menu.Divider />
           </>
         )}
+
+        <Menu.Item
+              leftSection={<LayoutDashboard size={16} className="text-blue-600" />}
+              onClick={() => router.navigate({ to: "/admin" })}
+            >
+              Admin Dashboard
+            </Menu.Item>
+            <Menu.Divider />
         <Menu.Item  leftSection={<Settings size={16} className="text-blue-600"  />} onClick={handleLogout}>
        Account Settings
         </Menu.Item>

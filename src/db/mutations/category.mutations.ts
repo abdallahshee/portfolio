@@ -1,8 +1,8 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createCategory, deleteCategory } from "@/server/category.functions"
+import { createCategory, deleteCategory, editCategory } from "@/server/category.functions"
 import { getAllCategoriesQueryOption } from "../queries/category.queries"
-import type { CategoryRequest } from "../validations/category.types"
+import type { CategoryRequest, EditCategoryRequest } from "../validations/category.types"
 
 
 export const useCategoryCreateMutations = (onSuccess?: () => void) => {
@@ -28,4 +28,12 @@ export const useDeleteCategoryMutation = () => {
     })
 }
 
-// export const useCategoryUpdateMutation
+export const useCategoryEditMutation=()=>{
+    const queryClient=useQueryClient()
+    return useMutation({
+        mutationFn:(data:EditCategoryRequest)=>editCategory({data}),
+        onSuccess:async()=>{
+            queryClient.invalidateQueries({queryKey:getAllCategoriesQueryOption().queryKey})
+        }
+    })
+}

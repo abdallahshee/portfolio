@@ -34,7 +34,6 @@ function RouteComponent() {
         tags: article?.tags ?? [],
         coverImage: article?.coverImage ?? null,
         categoryId: article?.categoryId ?? null,
-        status: article?.status,
       }}
       loading={loading}
     onSubmit={async (values: ArticleRequest, imageFile: File | null) => {

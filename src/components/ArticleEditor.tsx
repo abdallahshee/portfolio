@@ -46,6 +46,7 @@ import { ArticleSchema, type ArticleRequest } from "@/db/validations/article.typ
 import { getArticleBySlug } from "@/server/article.functions"
 import { useQuery } from "@tanstack/react-query"
 import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 
 type EditorMode = "create" | "edit"
 
@@ -68,7 +69,6 @@ const defaultArticleValues: ArticleRequest = {
   userId: "",
   content: "",
   coverImage: null,
-  status: "draft",
   tags: [],
   categoryId: null,
 }
@@ -89,6 +89,7 @@ export default function ArticleEditor({
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.coverImage ?? null)
   const [fetchingArticle, setFetchingArticle] = useState(false)
+  const supabase=getSupabaseBrowserClient()
   const mergedInitialValues = useMemo<ArticleRequest>(() => {
     return {
       ...defaultArticleValues,
@@ -96,7 +97,6 @@ export default function ArticleEditor({
       coverImage: initialData?.coverImage ?? null,
       categoryId: initialData?.categoryId ?? null,
       tags: initialData?.tags ?? [],
-      status: initialData?.status ?? "draft",
     }
   }, [initialData])
 
@@ -169,7 +169,6 @@ export default function ArticleEditor({
           userId: article.userId ?? "",
           content: article.content ?? "",
           coverImage: article.coverImage ?? null,
-          status: article.status ?? "draft",
           tags: article.tags ?? [],
           categoryId: article?.categoryId ?? null,
         }
@@ -336,27 +335,7 @@ export default function ArticleEditor({
                         clearable
                       />
 
-                      <Select
-                        label="Status"
-                        placeholder="Select status"
-                        radius="md"
-                        size="md"
-                        data={[
-                          { label: "Draft", value: "draft" },
-                          { label: "Pending", value: "pending" },
-                          { label: "Published", value: "published" },
-                        ]}
-                        value={form.values.status}
-                        onChange={(value) => {
-                          if (!value) return
-                          form.setFieldValue(
-                            "status",
-                            value as ArticleRequest["status"]
-                          )
-                        }}
-                        error={form.errors.status}
-                      />
-
+                     
                       <FileInput
                         label={isEdit ? "Blog Image" : "Cover Image"}
                         placeholder={

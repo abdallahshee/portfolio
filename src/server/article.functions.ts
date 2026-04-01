@@ -34,12 +34,15 @@ export const createArticle = createServerFn({ method: "POST" })
             const slug = createSlug(data.title)
             const excerpt = createExcerpt(data.content)
             const newData = {
-                ...data,
+                title: data.title,
+                tags: data.tags,           // ✅ was 'tages'
+                content: data.content,
+                categoryId: data.categoryId ?? undefined, // ✅ convert null to undefined
                 slug,
                 excerpt,
                 userId: data.userId,
             }
-            const [result] = await db.insert(article).values(newData).returning()
+            const [result] = await db.insert(article).values({ ...newData,status:"draft" }).returning()
             return result// ✅ single object instead of array
         } catch (err) {
             console.error("Create blog failed:", err)
@@ -96,10 +99,10 @@ export const getArticleBySlug = createServerFn()
                     userId: article.userId,
                     authorId: user.id,
                     slug: article.slug,
-                    status:article.status,
+                    status: article.status,
                     authorName: user.name,
                     authorImage: user.image,
-                    categoryId:category.id,
+                    categoryId: category.id,
                     categoryName: category.name,
                     createdAt: article.createdAt,
                     updatedAt: article.updatedAt,
@@ -281,7 +284,6 @@ export const updateArticle = createServerFn({ method: "POST" })
                     title: data.title,
                     content: data.content,
                     coverImage: data.coverImage ?? null,
-                    status: data.status,
                     tags: data.tags,
                 })
                 .where(

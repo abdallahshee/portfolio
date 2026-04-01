@@ -48,7 +48,7 @@ function RouteComponent() {
             coverImage,
             categoryId: values.categoryId,
             userId: values.userId,
-            status: values.status,
+ 
           })
 
           router.history.back()

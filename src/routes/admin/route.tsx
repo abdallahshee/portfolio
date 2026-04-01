@@ -50,27 +50,21 @@ function RouteComponent() {
   const router = useRouter()
   const supabase = getSupabaseBrowserClient()
   const queryClient = useQueryClient()
-
-  // ✅ proper session state
   const [session, setSession] = useState<Session | null>(null)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
       setSession(data?.session ?? null)
     })
-
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event: AuthChangeEvent, session: Session | null) => {
         setSession(session)
       }
     )
-
     return () => listener.subscription.unsubscribe()
   }, [])
 
-  // ✅ derive user from session
   const user = session?.user ?? null
-
   const pathname = useRouterState({ select: (s) => s.location.pathname })
 
   useEffect(() => {
@@ -96,40 +90,37 @@ function RouteComponent() {
 
   const handleLogout = async () => {
     setIsSigningOut(true)
-    await supabase.auth.signOut() // ✅ actually sign out
+    await supabase.auth.signOut()
     await queryClient.invalidateQueries()
     await router.navigate({ to: '/' })
     setIsSigningOut(false)
   }
 
-  const ThemeButton = (
-    <UnstyledButton
-      onClick={handleThemeChange}
-      title={themeMode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
-      className="flex items-center justify-center rounded-full px-5 py-1 transition hover:bg-slate-100 dark:hover:bg-slate-800"
-    >
-      {themeMode === 'dark'
-        ? <Moon size={28} className="text-indigo-400" />
-        : <Sun size={28} className="text-indigo-500" />
-      }
-    </UnstyledButton>
-  )
-
   return (
     <div className="flex min-h-screen flex-col selection:bg-[rgba(79,184,178,0.24)]">
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
 
-        {/* Row 1 — brand + user */}
-        <div className="max-w-[1280px] mx-auto flex items-center justify-center gap-8 px-6 py-3">
-          <Group gap="xl">
-            <div>
-              <Text fw={700} size="sm" className="leading-tight">Admin Panel</Text>
-            </div>
+        {/* ── Row 1 — brand + theme toggle + user ── */}
+        <div className="max-w-[1280px] mx-auto flex items-center justify-between px-6 py-3">
+
+          {/* Left — brand + theme toggle in same row ✅ */}
+          <Group gap="sm">
+            <Text fw={700} size="sm" className="leading-tight">Admin Panel</Text>
+            <div className="h-4 w-px bg-slate-200 dark:bg-slate-700" />
+            {/* ✅ theme toggle inline with Admin Panel text */}
+            <UnstyledButton
+              onClick={handleThemeChange}
+              title={themeMode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+              className="flex items-center justify-center rounded-full p-1.5 transition hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              {themeMode === 'dark'
+                ? <Moon size={18} className="text-indigo-400" />
+                : <Sun size={18} className="text-indigo-500" />
+              }
+            </UnstyledButton>
           </Group>
 
-          <div className="h-6 w-px bg-slate-200 dark:bg-slate-700" />
-
-          {/* ✅ user info from session */}
+          {/* Right — user info + mobile menu */}
           <Group gap="sm">
             <Avatar
               size={32}
@@ -142,50 +133,19 @@ function RouteComponent() {
             <Text size="sm" fw={500} className="hidden sm:block">
               {user?.user_metadata?.full_name ?? user?.email}
             </Text>
+
+            {/* Mobile menu button */}
+            <UnstyledButton
+              onClick={() => setMobileOpen(true)}
+              className="flex items-center justify-center rounded-full p-2 transition hover:bg-slate-100 dark:hover:bg-slate-800 sm:hidden"
+            >
+              <Menu size={20} className="text-slate-600 dark:text-slate-400" />
+            </UnstyledButton>
           </Group>
-
-          {/* Mobile menu button */}
-          <UnstyledButton
-            onClick={() => setMobileOpen(true)}
-            className="absolute right-4 flex items-center justify-center rounded-full p-2 transition hover:bg-slate-100 dark:hover:bg-slate-800 sm:hidden"
-          >
-            <Menu size={20} className="text-slate-600 dark:text-slate-400" />
-          </UnstyledButton>
         </div>
 
-        {/* Row 2 — action buttons */}
-        <div className="border-b border-slate-100 dark:border-slate-800">
-          <div className="max-w-[1280px] mx-auto hidden items-center justify-center gap-3 px-6 py-2 sm:flex">
-            {ThemeButton}
-
-            <button
-              onClick={handleBackToSite}
-              disabled={isLeaving}
-              className="flex items-center gap-1.5 rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1.5 text-sm font-medium text-indigo-600 transition hover:bg-indigo-100 disabled:opacity-50 dark:border-indigo-800 dark:bg-indigo-950 dark:text-indigo-300"
-            >
-              {isLeaving
-                ? <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                : <ArrowLeft size={14} />
-              }
-              {isLeaving ? 'Leaving…' : 'Back to Site'}
-            </button>
-
-            <button
-              onClick={handleLogout}
-              disabled={signingOut}
-              className="flex items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-3 py-1.5 text-sm font-medium text-red-600 transition hover:bg-red-100 disabled:opacity-50 dark:border-red-800 dark:bg-red-950 dark:text-red-300"
-            >
-              {signingOut
-                ? <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                : <LogOut size={14} />
-              }
-              {signingOut ? 'Signing out…' : 'Logout'}
-            </button>
-          </div>
-        </div>
-
-        {/* Row 3 — nav links */}
-        <nav className="hidden sm:block">
+        {/* ── Row 2 — nav links ── */}
+        <nav className="hidden sm:block border-t border-slate-100 dark:border-slate-800">
           <div className="max-w-[1280px] mx-auto flex justify-center overflow-x-auto px-6">
             {navItems.map((item) => {
               const isActive =
@@ -266,6 +226,7 @@ function RouteComponent() {
             </div>
           </ScrollArea>
 
+          {/* Mobile drawer footer — back to site + logout */}
           <div className="space-y-1 border-t border-slate-100 p-3 dark:border-slate-800">
             <button
               onClick={handleBackToSite}
@@ -278,9 +239,7 @@ function RouteComponent() {
                   : <ArrowLeft size={16} />
                 }
               </ThemeIcon>
-              <Text size="sm" c="indigo">
-                {isLeaving ? 'Leaving…' : 'Back to Site'}
-              </Text>
+              <Text size="sm" c="indigo">{isLeaving ? 'Leaving…' : 'Back to Site'}</Text>
             </button>
 
             <button
@@ -294,9 +253,7 @@ function RouteComponent() {
                   : <LogOut size={16} />
                 }
               </ThemeIcon>
-              <Text size="sm" c="red">
-                {signingOut ? 'Signing out…' : 'Logout'}
-              </Text>
+              <Text size="sm" c="red">{signingOut ? 'Signing out…' : 'Logout'}</Text>
             </button>
           </div>
         </div>
@@ -308,6 +265,33 @@ function RouteComponent() {
           <Outlet />
         </div>
       </main>
+
+      {/* ✅ Back to Site + Logout fixed to bottom-right */}
+      <div className="fixed bottom-6 right-6 z-50 hidden flex-col gap-2 sm:flex">
+        <button
+          onClick={handleBackToSite}
+          disabled={isLeaving}
+          className="flex items-center gap-1.5 rounded-full border border-indigo-200 bg-indigo-50 px-4 py-2 text-sm font-medium text-indigo-600 shadow-lg transition hover:bg-indigo-100 disabled:opacity-50 dark:border-indigo-800 dark:bg-indigo-950 dark:text-indigo-300"
+        >
+          {isLeaving
+            ? <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+            : <ArrowLeft size={14} />
+          }
+          {isLeaving ? 'Leaving…' : 'Back to Site'}
+        </button>
+
+        <button
+          onClick={handleLogout}
+          disabled={signingOut}
+          className="flex items-center gap-1.5 rounded-full border border-red-200 bg-red-50 px-4 py-2 text-sm font-medium text-red-600 shadow-lg transition hover:bg-red-100 disabled:opacity-50 dark:border-red-800 dark:bg-red-950 dark:text-red-300"
+        >
+          {signingOut
+            ? <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-current border-t-transparent" />
+            : <LogOut size={14} />
+          }
+          {signingOut ? 'Signing out…' : 'Logout'}
+        </button>
+      </div>
     </div>
   )
 }

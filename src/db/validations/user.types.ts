@@ -6,13 +6,13 @@ import z from "zod"
 
 export const SignUpSchema = createSelectSchema(user, {
     name: () => z.string().nonempty("Username is required")
-    .min(3,"At 3 characters for a username")
-    .max(15, "Too long for a Username"),
+        .min(3, "At 3 characters for a username")
+        .max(15, "Too long for a Username"),
     email: z.string().regex(
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         "Must be a valid email address"
     )
-}).pick({ name: true, email: true,image:true})
+}).pick({ name: true, email: true, image: true })
     .extend({
         password: z.string()
             .min(8, "Password must be at least 8 characters")
@@ -31,36 +31,32 @@ export const SignInSchema = createSelectSchema(user, {
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         "Must be a valid email address"
     ),
-   
+
 }).pick({
     email: true,
- 
+
 }).extend({
-        password: z.string()
-            .min(8, "Password must be at least 8 characters")
-            .regex(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
-                "Password must contain uppercase, lowercase, number and special character"
-            ),
-        rememberMe: z.boolean().default(false)
-    })
+    password: z.string()
+        .min(8, "Password must be at least 8 characters")
+        .regex(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
+            "Password must contain uppercase, lowercase, number and special character"
+        ),
+    rememberMe: z.boolean().default(false)
+})
 
 export type SignUpRequest = z.infer<typeof SignUpSchema>
 
 export type SignInRequest = z.infer<typeof SignInSchema>
 
-// export type User = InferSelectModel<typeof user>
-
 export type Role = Pick<InferSelectModel<typeof user>, "role">
-
-// src/features/auth/auth.types.ts
 
 export type DbUser = InferSelectModel<typeof user>
 
-export type SupabaseUser =User
+export type SupabaseUser = User
 
-// export type CurrentUser={
-//     DbUser:DbUser,
-//     SupabaseUser:SupabaseUser
-// }
-
+export const GetUsersSchema = z.object({
+  page: z.number().min(1).default(1),
+  pageSize: z.number().min(1).max(100).default(10),
+  search: z.string().optional(), // ✅ add search
+})

@@ -2,7 +2,7 @@ import { Avatar, Modal, Button, Text } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import moment from 'moment'
 import { notifications } from '@mantine/notifications'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   ArrowLeft, CalendarDays, Edit2Icon, MessageCircle,
   Reply, Tag, ThumbsUp, Share2, Bookmark, Eye,
@@ -11,6 +11,8 @@ import {
 import { Link, useRouter } from '@tanstack/react-router'
 import { dislikeArticle, likeBlog } from '@/server/article-like.functions'
 import { useCreateCommentMutation } from '@/db/mutations/comment.mutations'
+import { getSupabaseBrowserClient } from '@/lib/supabase/client'
+import type { Session, AuthChangeEvent } from '@supabase/supabase-js'
 
 interface CommentForm {
   content: string
@@ -19,11 +21,10 @@ interface CommentForm {
 interface Props {
   slug: string
   data: any
-  userData?: any
   isAdmin?: boolean
 }
 
-export default function ArticleDetails({ slug, data, userData, isAdmin = false }: Props) {
+export default function ArticleDetails({ slug, data, isAdmin = false }: Props) {
   const createCommentMutation = useCreateCommentMutation()
   const router = useRouter()
 
@@ -32,6 +33,24 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
   const [isLikePending, setIsLikePending] = useState(false)
   const [showAllComments, setShowAllComments] = useState(false)
   const [authModalOpen, setAuthModalOpen] = useState(false)
+  const [session, setSession] = useState<Session | null>(null)
+  const supabase = getSupabaseBrowserClient()
+
+  // ✅ fixed — was calling await outside async, and accessing wrong property
+useEffect(() => {
+  supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
+    setSession(data?.session ?? null)
+  })
+
+  const { data: listener } = supabase.auth.onAuthStateChange(
+    (_event: AuthChangeEvent, session: Session | null) => {
+      setSession(session)
+    }
+  )
+
+  return () => listener.subscription.unsubscribe()
+}, [])
+
   const [replyingTo, setReplyingTo] = useState<{
     id: string
     authorName: string | null
@@ -53,7 +72,7 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
   })
 
   const requireAuth = (): boolean => {
-    if (!userData) {
+    if (!session?.user) {
       setAuthModalOpen(true)
       return false
     }
@@ -153,8 +172,8 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
             {isReplyTarget && (
               <div className="mt-3 flex gap-3">
                 <Avatar
-                  src={userData?.image || undefined}
-                  alt={userData?.name || 'You'}
+                  src={session?.user.user_metadata?.avatar_url}
+                  alt={session?.user.user_metadata?.full_name} // ✅ was 'name', should be 'full_name'
                   radius="xl"
                   size="xs"
                   className="shrink-0 mt-1"
@@ -252,7 +271,7 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
                 setAuthModalOpen(false)
                 router.navigate({
                   to: '/account',
-                  search: { callbackUrl: `/blogs/${encodeURIComponent(slug)}/details` },
+                  search: { callbackUrl: `/articles/${encodeURIComponent(slug)}` }, // ✅ fixed wrong path '/blogs/' → '/articles/'
                 })
               }}
             >
@@ -272,34 +291,38 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
             className="flex items-center gap-2 text-gray-500 hover:text-gray-800 dark:hover:text-gray-200 text-sm transition-colors"
           >
             <ArrowLeft size={16} />
-            Back to Articles'
+            Back to Articles {/* ✅ removed stray apostrophe */}
           </Link>
 
-          {/* Edit button — shown to author OR admin */}
-          {(userData?.id === data.userId) && (
-            <Button
-              variant="filled"
-              onClick={() => router.navigate({
-                to: '/articles/$slug/edit',
-                params: { slug: data.slug },
-              })}
-              className="flex items-center gap-2"
-            >
-              Edit Article&nbsp;
-              <Edit2Icon size={14} />
-            </Button>
-          )}
+          <div className="flex items-center gap-2">
+            {/* ✅ show edit button to article author only */}
+            {session?.user?.id === data.userId && (
+              <Button
+                variant="filled"
+                onClick={() => router.navigate({
+                  to: '/articles/$userId/$slug/edit',
+                  params: { slug: data?.slug, userId: session?.user?.id! },
+                  search:{page:1}
+                })}
+                className="flex items-center gap-2"
+              >
+                Edit Article&nbsp;
+                <Edit2Icon size={14} />
+              </Button>
+            )}
 
-          {isAdmin && (
-            <Button
-              variant="filled"
-              // onClick={()=>publish(data.)}
-              className="flex items-center gap-2"
-            >
-              Publish Article&nbsp;
-              <Edit2Icon size={14} />
-            </Button>
-          )}
+            {/* ✅ show publish button to admin only */}
+            {isAdmin && (
+              <Button
+                variant="filled"
+                color="green"
+                className="flex items-center gap-2"
+              >
+                Publish Article&nbsp;
+                <Edit2Icon size={14} />
+              </Button>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_380px] gap-6">
@@ -426,13 +449,19 @@ export default function ArticleDetails({ slug, data, userData, isAdmin = false }
 
               <form onSubmit={commentForm.onSubmit(handleCommentSubmit)}>
                 <div className="flex gap-3">
-                  <Avatar src={userData?.image || undefined} alt={userData?.name || 'You'} radius="xl" size="sm" className="shrink-0 mt-1" />
+                  <Avatar
+                    src={session?.user?.user_metadata?.avatar_url} // ✅ added optional chaining on user
+                    alt={session?.user?.user_metadata?.full_name || 'You'} // ✅ was 'name', should be 'full_name'
+                    radius="xl"
+                    size="sm"
+                    className="shrink-0 mt-1"
+                  />
                   <div className="flex-1">
                     <textarea
                       placeholder="Add a comment..."
                       rows={1}
                       className="w-full text-sm border-b border-gray-300 dark:border-slate-600 focus:border-indigo-500 outline-none resize-none bg-transparent text-gray-800 dark:text-gray-200 py-0.5 placeholder-gray-400"
-                      onFocus={() => { if (!userData) setAuthModalOpen(true) }}
+                      onFocus={() => { if (!session?.user) setAuthModalOpen(true) }}
                       {...commentForm.getInputProps('content')}
                     />
                     {commentForm.values.content && (

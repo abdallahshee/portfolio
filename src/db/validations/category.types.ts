@@ -9,5 +9,9 @@ export const CategorySchema = createSelectSchema(category, {
         .max(20, "Category name should not be more than 20 characters")
 }).pick({ name: true })
 
+export const EditCategorySchema=CategorySchema.pick({name:true}).extend({
+    categoryId:z.string().nonempty()
+})
+export type EditCategoryRequest=z.infer<typeof EditCategorySchema>
 export type CategoryRequest = z.infer<typeof CategorySchema>
 export type Category = InferSelectModel<typeof category>

@@ -7,6 +7,7 @@ import { getArticleBySlugQueryOptions } from "@/db/queries/article.queries"
 import { useArticleUpdateMutationOption } from "@/db/mutations/article.mutations"
 
 export const Route = createFileRoute("/articles/$userId/$slug/edit")({
+   validateSearch: () => ({}), // ✅ explicitly declare no search params
   server: { middleware: [UserEditArticleMiddleware] },
   loader: async ({ params, context }) => {
     return context.queryClient.ensureQueryData(
@@ -34,7 +35,6 @@ function RouteComponent() {
         tags: article?.tags ?? [],
         coverImage: article?.coverImage ?? null,
         categoryId: article?.categoryId ?? null,
-        status: article?.status,
       }}
       loading={loading}
     onSubmit={async (values: ArticleRequest, imageFile: File | null) => {

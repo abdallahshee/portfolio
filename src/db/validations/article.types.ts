@@ -18,12 +18,12 @@ export const ArticleSchema = createSelectSchema(article, {
 })
 .pick({ categoryId: true, title: true, 
     content: true, coverImage: true, 
-    tags: true,status:true,userId:true,
+    tags: true,userId:true,
 
  })
 
 
-export type ArticleRequest = Pick<InferSelectModel<typeof article>,"userId"|"status"| "categoryId" | "title" | "content" | "coverImage" | "tags">
+export type ArticleRequest = Pick<InferSelectModel<typeof article>,"userId"| "categoryId" | "title" | "content" | "coverImage" | "tags">
 export const ArticleUpdateSchema=ArticleSchema
 .extend({slug:z.string()})
 export type ArticleUpdateRequest = z.infer<typeof ArticleUpdateSchema>
