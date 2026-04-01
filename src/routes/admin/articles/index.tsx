@@ -26,7 +26,7 @@ const PAGE_SIZE = 10
 function RouteComponent() {
   const [page, setPage] = useState(1)
   const [searchInput, setSearchInput] = useState('')
-  const [debouncedSearch] = useDebouncedValue(searchInput, 300)
+  const [debouncedSearch] = useDebouncedValue(searchInput, 200)
   const router = useRouter()
 
   const { data, isLoading } = useQuery(getPaginatedArticlesQueryOptions(page, PAGE_SIZE))

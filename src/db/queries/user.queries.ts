@@ -1,4 +1,4 @@
-import { getAllUsers } from "@/server/users.functions";
+import { getAllUsers, getUserById } from "@/server/users.functions";
 import { queryOptions } from "@tanstack/react-query";
 
 export const getAllUsersQueryOptions = (
@@ -9,4 +9,9 @@ export const getAllUsersQueryOptions = (
   queryOptions({
     queryKey: ['users', page, pageSize, search], // ✅ search in key
     queryFn: () => getAllUsers({ data: { page, pageSize, search } }),
+  })
+
+  export const getUserByIdQueryOptions=(userId:string)=>queryOptions({
+    queryKey:["users",userId],
+    queryFn:()=>getUserById({data:{userId}})
   })

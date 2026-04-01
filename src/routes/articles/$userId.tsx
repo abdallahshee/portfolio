@@ -57,7 +57,7 @@ function BlogsPage() {
   const { page } = Route.useSearch()
   const [searchInput, setSearchInput] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
-  const [debouncedSearch] = useDebouncedValue(searchInput, 300)
+  const [debouncedSearch] = useDebouncedValue(searchInput, 200)
   const [session, setSession] = useState<Session | null>(null) 
   const supabase = getSupabaseBrowserClient()
    const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below

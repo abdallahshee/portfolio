@@ -55,7 +55,7 @@ function RouteComponent() {
   const [page, setPage] = useState(1)
   const [searchInput, setSearchInput] = useState("")
   const [filter, setFilter] = useState<FilterValue>('all')
-  const [debouncedSearch] = useDebouncedValue(searchInput, 300)
+  const [debouncedSearch] = useDebouncedValue(searchInput, 200)
 
   const isSearching = debouncedSearch.trim().length > 0
 

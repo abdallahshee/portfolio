@@ -1,5 +1,6 @@
 // src/lib/supabase/server.ts
 import { createServerClient } from '@supabase/ssr'
+import { createClient } from '@supabase/supabase-js'
 import { getCookies,setCookie } from '@tanstack/react-start/server'
 
 
@@ -29,5 +30,9 @@ export function getSupabaseServerClient() {
 }
 
 
+export const getSupabaseAdmin = createClient(
+  process.env.SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY! // 🔥 important
+)
 
 

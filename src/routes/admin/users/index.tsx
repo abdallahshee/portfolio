@@ -13,7 +13,7 @@ export const Route = createFileRoute('/admin/users/')({
 function RouteComponent() {
   const [page, setPage] = useState(1)
   const [searchInput, setSearchInput] = useState('')
-  const [debouncedSearch] = useDebouncedValue(searchInput, 300)
+  const [debouncedSearch] = useDebouncedValue(searchInput, 200)
 
   // ✅ pass debouncedSearch to query — resets page to 1 on new search
   const { data, isLoading, isFetching } = useQuery(
@@ -138,12 +138,12 @@ function RouteComponent() {
                   <Table.Tr key={u.id}>
                     <Table.Td>
                       <Group gap="sm" wrap="nowrap">
-                        <Avatar src={u.user_metadata?.avatar_url || null} radius="xl" size="md" color="indigo">
-                          {u.user_metadata?.full_name?.[0]?.toUpperCase() ?? u.email?.[0]?.toUpperCase() ?? 'U'}
+                        <Avatar src={u.user_metadata?.avatar_url} radius="xl" size="md" color="indigo">
+                          {u.user_metadata?.name?.[0]?.toUpperCase() ?? u.email?.[0]?.toUpperCase() ?? 'U'}
                         </Avatar>
                         <Stack gap={2}>
-                          <Text size="sm" fw={600} className="leading-tight">{u.user_metadata?.full_name ?? '—'}</Text>
-                          <Text size="xs" c="dimmed">{u.id.slice(0, 8)}…</Text>
+                          <Text size="sm" fw={600} className="leading-tight">{u.user_metadata?.name ?? '—'}</Text>
+                          {/* <Text size="xs" c="dimmed">{u.id.slice(0, 8)}…</Text> */}
                         </Stack>
                       </Group>
                     </Table.Td>

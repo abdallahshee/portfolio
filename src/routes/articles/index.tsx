@@ -64,7 +64,7 @@ function BlogsPage() {
   const navigate = useNavigate()
   const { page } = Route.useSearch()
   const [searchInput, setSearchInput] = useState("")
-  const [debouncedSearch] = useDebouncedValue(searchInput, 300)
+  const [debouncedSearch] = useDebouncedValue(searchInput, 200)
   const supabase = getSupabaseBrowserClient()
   const [session, setSession] = useState<Session | null>(null)
   const [isSessionLoading, setIsSessionLoading] = useState(true)
