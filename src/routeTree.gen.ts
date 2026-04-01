@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CategoriesRouteImport } from './routes/categories'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
@@ -45,6 +46,11 @@ import { Route as AdminUsersIdEditRouteImport } from './routes/admin/users/$id.e
 import { Route as AdminProjectsIdEditRouteImport } from './routes/admin/projects/$id.edit'
 import { Route as AdminArticlesUserIdSlugEditRouteImport } from './routes/admin/articles/$userId.$slug.edit'
 
+const ServicesRoute = ServicesRouteImport.update({
+  id: '/services',
+  path: '/services',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ContactRoute = ContactRouteImport.update({
   id: '/contact',
   path: '/contact',
@@ -230,6 +236,7 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
+  '/services': typeof ServicesRoute
   '/admin/articles': typeof AdminArticlesRouteRouteWithChildren
   '/admin/projects': typeof AdminProjectsRouteRouteWithChildren
   '/admin/users': typeof AdminUsersRouteRouteWithChildren
@@ -263,6 +270,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
+  '/services': typeof ServicesRoute
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
@@ -298,6 +306,7 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/categories': typeof CategoriesRoute
   '/contact': typeof ContactRoute
+  '/services': typeof ServicesRoute
   '/admin/articles': typeof AdminArticlesRouteRouteWithChildren
   '/admin/projects': typeof AdminProjectsRouteRouteWithChildren
   '/admin/users': typeof AdminUsersRouteRouteWithChildren
@@ -337,6 +346,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/categories'
     | '/contact'
+    | '/services'
     | '/admin/articles'
     | '/admin/projects'
     | '/admin/users'
@@ -370,6 +380,7 @@ export interface FileRouteTypes {
     | '/'
     | '/categories'
     | '/contact'
+    | '/services'
     | '/account/forgot-password'
     | '/account/register'
     | '/account/reset-password'
@@ -404,6 +415,7 @@ export interface FileRouteTypes {
     | '/projects'
     | '/categories'
     | '/contact'
+    | '/services'
     | '/admin/articles'
     | '/admin/projects'
     | '/admin/users'
@@ -442,10 +454,18 @@ export interface RootRouteChildren {
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
   CategoriesRoute: typeof CategoriesRoute
   ContactRoute: typeof ContactRoute
+  ServicesRoute: typeof ServicesRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/services': {
+      id: '/services'
+      path: '/services'
+      fullPath: '/services'
+      preLoaderRoute: typeof ServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/contact': {
       id: '/contact'
       path: '/contact'
@@ -856,6 +876,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
   CategoriesRoute: CategoriesRoute,
   ContactRoute: ContactRoute,
+  ServicesRoute: ServicesRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

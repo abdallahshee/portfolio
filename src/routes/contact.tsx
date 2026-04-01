@@ -141,56 +141,13 @@ function ContactPage() {
       </Stack>
 
       {/* ── QUICK CONTACT PILLS ── */}
-      <Group justify="center" gap="md" className="flex-wrap">
-        <Anchor href="mailto:developer@email.com" underline="never">
-          <Paper withBorder radius="xl" px="lg" py="sm" className="shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-            <Group gap="sm">
-              <ThemeIcon variant="light" color="indigo" radius="xl" size="md">
-                <Mail size={15} />
-              </ThemeIcon>
-              <Text size="sm" fw={500}>abdallahshee664@email.com</Text>
-            </Group>
-          </Paper>
-        </Anchor>
-        <Anchor href="tel:+254712345678" underline="never">
-          <Paper withBorder radius="xl" px="lg" py="sm" className="shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-            <Group gap="sm">
-              <ThemeIcon variant="light" color="indigo" radius="xl" size="md">
-                <Phone size={15} />
-              </ThemeIcon>
-              <Text size="sm" fw={500}>+254 796515302</Text>
-            </Group>
-          </Paper>
-        </Anchor>
-        <Anchor href="https://github.com/abdallahshee" target="_blank" underline="never">
-          <Paper withBorder radius="xl" px="lg" py="sm" className="shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-            <Group gap="sm">
-              <ThemeIcon variant="light" color="dark" radius="xl" size="md">
-                <Github size={15} />
-              </ThemeIcon>
-              <Text size="sm" fw={500}>GitHub</Text>
-            </Group>
-          </Paper>
-        </Anchor>
-        <Anchor href="https://linkedin.com/in/abdallahshee" target="_blank" underline="never">
-          <Paper withBorder radius="xl" px="lg" py="sm" className="shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-            <Group gap="sm">
-              <ThemeIcon variant="light" color="blue" radius="xl" size="md">
-                <Linkedin size={15} />
-              </ThemeIcon>
-              <Text size="sm" fw={500}>LinkedIn</Text>
-            </Group>
-          </Paper>
-        </Anchor>
-      </Group>
-
       <Divider label="or send a message below" labelPosition="center" />
 
       {/* ── MAIN: FORM + SIDEBAR ── */}
-      <SimpleGrid cols={{ base: 1, md: 2 }} spacing="xl" className="items-start">
+      <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md" className="items-start">
 
         {/* CONTACT FORM */}
-        <Card radius="2xl" withBorder p="xl" className="shadow-sm">
+        <Card radius="xl" withBorder p="xl" className="shadow-sm">
           <Stack gap="lg">
             <Group gap="xs">
               <ThemeIcon variant="light" color="indigo" radius="xl">
@@ -291,89 +248,78 @@ function ContactPage() {
             </form>
           </Stack>
         </Card>
+        {/* Response promise */}
+        <Card radius="xl" withBorder p="xl" className="shadow-sm bg-indigo-50 dark:bg-indigo-950/30">
 
-        {/* SIDEBAR */}
-        <Stack gap="lg">
-
-          {/* Response promise */}
-          <Card radius="2xl" withBorder p="xl" className="shadow-sm bg-indigo-50 dark:bg-indigo-950/30">
-            <Stack gap="md">
-              <Group gap="xs">
-                <ThemeIcon variant="light" color="indigo" radius="xl">
-                  <Clock size={16} />
+          <Stack gap="md">
+            <Text py-1>
+              <Group gap="sm" py-1 >
+                <ThemeIcon variant="transparent" color="green" radius="xl" size="md">
+                  <Mail size={24} />
                 </ThemeIcon>
-                <Title order={4}>Quick to Respond</Title>
+                <Text size="md" fw={500}>abdallahshee664@email.com</Text>
               </Group>
-              <Text size="sm" c="dimmed">
-                I check my inbox daily and aim to reply to every message within
-                <strong> 24 hours</strong>. If your matter is urgent, feel free
-                to call or reach out on LinkedIn directly.
-              </Text>
-              <List
-                spacing="xs"
-                size="sm"
-                icon={
-                  <ThemeIcon color="green" size={18} radius="xl" variant="light">
-                    <CheckCircle size={12} />
-                  </ThemeIcon>
-                }
-              >
-                {WHY_REACH_OUT.map((item) => (
-                  <List.Item key={item}>
-                    <Text size="sm">{item}</Text>
-                  </List.Item>
-                ))}
-              </List>
-            </Stack>
-          </Card>
 
-          {/* What happens next */}
-          <Card radius="2xl" withBorder p="xl" className="shadow-sm">
-            <Stack gap="md">
-              <Group gap="xs">
-                <ThemeIcon variant="light" color="violet" radius="xl">
-                  <Zap size={16} />
+            </Text>
+            <Text py-1>
+
+              <Group gap="sm">
+                <ThemeIcon variant="transparent" color="green" radius="xl" size="md">
+                  <Phone size={24} />
                 </ThemeIcon>
-                <Title order={4}>What Happens Next?</Title>
+                <Text size="md" fw={500}>+254 796515302</Text>
               </Group>
-              <Timeline active={-1} bulletSize={26} lineWidth={2} color="indigo">
-                <Timeline.Item
-                  bullet={<Text size="xs" fw={700}>1</Text>}
-                  title="You send a message"
-                >
-                  <Text size="xs" c="dimmed" mt={2}>
-                    Fill out the form with your details and project idea
-                  </Text>
-                </Timeline.Item>
-                <Timeline.Item
-                  bullet={<Text size="xs" fw={700}>2</Text>}
-                  title="I review and respond"
-                >
-                  <Text size="xs" c="dimmed" mt={2}>
-                    I'll reply within 24 hours with questions or next steps
-                  </Text>
-                </Timeline.Item>
-                <Timeline.Item
-                  bullet={<Text size="xs" fw={700}>3</Text>}
-                  title="We align on scope"
-                >
-                  <Text size="xs" c="dimmed" mt={2}>
-                    A brief conversation to clarify goals, timeline, and budget
-                  </Text>
-                </Timeline.Item>
-                <Timeline.Item
-                  bullet={<Text size="xs" fw={700}>4</Text>}
-                  title="We start building"
-                >
-                  <Text size="xs" c="dimmed" mt={2}>
-                    Kick off with a clear plan and regular updates throughout
-                  </Text>
-                </Timeline.Item>
-              </Timeline>
-            </Stack>
-          </Card>
 
-        </Stack>
+            </Text>
+            <Anchor py-1 href="https://github.com/abdallahshee" target="_blank" underline="never">
+
+              <Group gap="sm">
+                <ThemeIcon variant="transparent" color="green" radius="xl" size="md">
+                  <Github size={24} />
+                </ThemeIcon>
+                <Text size="md" fw={500}>GitHub</Text>
+              </Group>
+
+            </Anchor>
+            <Anchor py-1 href="https://linkedin.com/in/abdallahshee" target="_blank" underline="never">
+
+              <Group gap="sm">
+                <ThemeIcon variant="transparent" color="blue" radius="xl" size="md">
+                  <Linkedin size={24} />
+                </ThemeIcon>
+                <Text size="md" fw={500}>LinkedIn</Text>
+              </Group>
+
+            </Anchor>
+            {/* </Group> */}
+          </Stack>
+          <Stack gap="md" className="mt-6">
+            <Group gap="xs">
+
+              <Title order={3}>Quick to Respond</Title>
+            </Group>
+            <Text size="lg" c="dimmed">
+              I check my inbox daily and aim to reply to every message within
+              <strong> 24 hours</strong>. If your matter is urgent, feel free
+              to call or reach out on LinkedIn directly.
+            </Text>
+            <List
+              spacing="xs"
+              size="md"
+              icon={
+                <ThemeIcon color="green" size={18} radius="xl" variant="light">
+                  <CheckCircle size={16} />
+                </ThemeIcon>
+              }
+            >
+              {WHY_REACH_OUT.map((item) => (
+                <List.Item key={item}>
+                  <Text size="md">{item}</Text>
+                </List.Item>
+              ))}
+            </List>
+          </Stack>
+        </Card>
       </SimpleGrid>
     </Container>
   )

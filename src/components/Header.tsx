@@ -104,8 +104,9 @@ const isAdmin = user?.user_metadata?.role === "admin"
 
   const links = [
     { label: "Home", to: "/" },
+      { label: "Services", to: "/services" },
     { label: "Projects", to: "/projects" },
-    { label: "Articles", to: "/articles" },
+    { label: "Blog", to: "/articles" },
     { label: "Contact", to: "/contact" },
   ]
 
