@@ -1,5 +1,6 @@
 import { getAllArticles, getArticleBySlug, getUserPaginatedArticles, getPaginatedArticles, getTopArticles, searchArticles } from "@/server/article.functions";
 import { queryOptions } from "@tanstack/react-query";
+import type { UserPaginatedArticleRequest } from "../validations/article.types";
 
 export const getAllArticlesQueryOptions = () => queryOptions({
     queryKey: ["blogs"],
@@ -37,12 +38,12 @@ export const searchArticlesQueryOptions = (
         placeholderData: (prev) => prev,
     })
 
-export const getMyPaginatedBlogsQueryOptions = (userId:string,page: number, limit = 6) =>
+export const getMyPaginatedBlogsQueryOptions = (data:UserPaginatedArticleRequest) =>
     queryOptions({
-        queryKey: ['articles', userId,page, limit],
+        queryKey: ['articles', data.userId,data.page, data.limit],
         queryFn: () =>
             getUserPaginatedArticles({
-                data: {userId,page, limit},
+                data
             }),
     })
 

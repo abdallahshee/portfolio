@@ -123,7 +123,6 @@ function ContactPage() {
 
   return (
     <Container size="lg" className="space-y-10 py-10">
-
       {/* ── PAGE HEADER ── */}
       <Stack gap="xs" className="text-center max-w-2xl mx-auto">
 
@@ -139,13 +138,10 @@ function ContactPage() {
           I respond to every message.
         </Text>
       </Stack>
-
       {/* ── QUICK CONTACT PILLS ── */}
       <Divider label="or send a message below" labelPosition="center" />
-
       {/* ── MAIN: FORM + SIDEBAR ── */}
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md" className="items-start">
-
         {/* CONTACT FORM */}
         <Card radius="xl" withBorder p="xl" className="shadow-sm">
           <Stack gap="lg">
@@ -248,9 +244,7 @@ function ContactPage() {
             </form>
           </Stack>
         </Card>
-        {/* Response promise */}
         <Card radius="xl" withBorder p="xl" className="shadow-sm bg-indigo-50 dark:bg-indigo-950/30">
-
           <Stack gap="md">
             <Text py-1>
               <Group gap="sm" py-1 >
@@ -259,43 +253,35 @@ function ContactPage() {
                 </ThemeIcon>
                 <Text size="md" fw={500}>abdallahshee664@email.com</Text>
               </Group>
-
             </Text>
             <Text py-1>
-
               <Group gap="sm">
                 <ThemeIcon variant="transparent" color="green" radius="xl" size="md">
                   <Phone size={24} />
                 </ThemeIcon>
                 <Text size="md" fw={500}>+254 796515302</Text>
               </Group>
-
             </Text>
             <Anchor py-1 href="https://github.com/abdallahshee" target="_blank" underline="never">
-
               <Group gap="sm">
                 <ThemeIcon variant="transparent" color="green" radius="xl" size="md">
                   <Github size={24} />
                 </ThemeIcon>
                 <Text size="md" fw={500}>GitHub</Text>
               </Group>
-
             </Anchor>
             <Anchor py-1 href="https://linkedin.com/in/abdallahshee" target="_blank" underline="never">
-
               <Group gap="sm">
                 <ThemeIcon variant="transparent" color="blue" radius="xl" size="md">
                   <Linkedin size={24} />
                 </ThemeIcon>
                 <Text size="md" fw={500}>LinkedIn</Text>
               </Group>
-
             </Anchor>
             {/* </Group> */}
           </Stack>
           <Stack gap="md" className="mt-6">
             <Group gap="xs">
-
               <Title order={3}>Quick to Respond</Title>
             </Group>
             <Text size="lg" c="dimmed">

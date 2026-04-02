@@ -3,11 +3,11 @@ import { createServerFn } from "@tanstack/react-start";
 import { db } from "../db/index";
 import { and, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { category, comment, user } from "@/db/schema";
-import { ArticleSchema, ArticleUpdateSchema } from "@/db/validations/article.types";
+import { ArticleSchema, ArticleUpdateSchema, UserPaginatedArticlesSchema } from "@/db/validations/article.types";
 import { article } from "@/db/schema/article.schema";
 import { articleLike } from "@/db/schema/article-like.schema";
 import { AuthenticatedMiddleware } from "./middleware/auth.middleware";
-
+import z from "zod"
 
 
 function createSlug(title: string) {
@@ -407,12 +407,10 @@ export const searchArticles = createServerFn({ method: "GET" })
 //         }
 //     })
 
+
 export const getUserPaginatedArticles = createServerFn({ method: 'GET' })
     .middleware([AuthenticatedMiddleware])
-    .inputValidator((data: { page?: number; limit?: number, userId: string }) => ({
-        page: data.page && data.page > 0 ? data.page : 1, userId: data.userId,
-        limit: data.limit && data.limit > 0 ? data.limit : 6
-    }))
+    .inputValidator(UserPaginatedArticlesSchema)
     .handler(async ({ data }) => {
         try {
             const userId = data.userId

@@ -22,7 +22,12 @@ export const ArticleSchema = createSelectSchema(article, {
 
  })
 
-
+export const UserPaginatedArticlesSchema=z.object({
+    userId:z.string().nonempty(),
+    page:z.number().nonnegative().default(1),
+    limit:z.number().nonnegative().default(6)
+})
+export type UserPaginatedArticleRequest=z.infer<typeof UserPaginatedArticlesSchema>
 export type ArticleRequest = Pick<InferSelectModel<typeof article>,"userId"| "categoryId" | "title" | "content" | "coverImage" | "tags">
 export const ArticleUpdateSchema=ArticleSchema
 .extend({slug:z.string()})

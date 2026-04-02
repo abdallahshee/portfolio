@@ -19,5 +19,5 @@ function RouteComponent() {
   const { data } = useSuspenseQuery(getArticleBySlugQueryOptions(slug))
   
 
-  return <ArticleDetails slug={slug} data={data}  isAdmin />
+  return <ArticleDetails slug={slug} data={data}  isAdmin={true}/>
 }

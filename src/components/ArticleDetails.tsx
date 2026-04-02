@@ -101,7 +101,7 @@ useEffect(() => {
     if (!requireAuth()) return
     try {
       await createCommentMutation.mutateAsync({
-        blogId: data?.id, slug, content: values.content, parentId: null,
+        userId:data.userId,articleId: data?.id, content: values.content, parentId: null,
       })
       notifications.show({ title: 'Comment posted', message: 'Your comment was added.', color: 'green' })
       commentForm.reset()
@@ -114,7 +114,7 @@ useEffect(() => {
     if (!replyingTo || !requireAuth()) return
     try {
       await createCommentMutation.mutateAsync({
-        blogId: data?.id, slug, content: values.content, parentId: replyingTo.id,
+        userId:data.userId,articleId: data?.id, content: values.content, parentId: replyingTo.id,
       })
       notifications.show({ title: 'Reply posted', message: 'Your reply was added.', color: 'green' })
       replyForm.reset()
@@ -173,7 +173,7 @@ useEffect(() => {
               <div className="mt-3 flex gap-3">
                 <Avatar
                   src={session?.user.user_metadata?.avatar_url}
-                  alt={session?.user.user_metadata?.full_name} // ✅ was 'name', should be 'full_name'
+                  alt={session?.user.user_metadata?.name} // ✅ was 'name', should be 'full_name'
                   radius="xl"
                   size="xs"
                   className="shrink-0 mt-1"

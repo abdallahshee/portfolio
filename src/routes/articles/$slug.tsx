@@ -40,5 +40,5 @@ function RouteComponent() {
     return () => listener.subscription.unsubscribe()
   }, [])
 
-  return <ArticleDetails slug={slug} data={data} />
+  return <ArticleDetails slug={slug} data={data} isAdmin={false}/>
 }

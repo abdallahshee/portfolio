@@ -1,27 +1,24 @@
 import { createComment } from "@/server/comment.functions"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import type { CommentRequest } from "../validations/comment.types"
 
-interface CreateCommentInput {
-    blogId: string
-    slug: string
-    content: string
-    parentId?: string | null
-}
+
 
 export const useCreateCommentMutation = () => {
     const queryClient = useQueryClient()
 
     return useMutation({
-        mutationFn:(data: CreateCommentInput) => createComment({
+        mutationFn:(data: CommentRequest) => createComment({
                 data: {
-                    articleId: data.blogId,
+                    userId:data.userId,
+                    articleId: data.articleId,
                     content: data.content,
                     parentId: data.parentId ?? null,
                 },
             }),
         onSuccess: (_, variables) => {
             queryClient.invalidateQueries({
-                queryKey: ['blogs', variables.slug],
+                queryKey: ['blogs',variables.articleId],
             })
         },
     })
