@@ -38,7 +38,6 @@ const userId=data.userId
         rating: data.rating,
       })
       .returning()
-
     return {
       message: "Rating added successfully",
       rating: inserted[0],
