@@ -139,7 +139,7 @@ function ContactPage() {
         </Text>
       </Stack>
       {/* ── QUICK CONTACT PILLS ── */}
-      {/* <Divider label="or send a message below" labelPosition="center" /> */}
+      <Divider label="or send a message below" labelPosition="center" />
       {/* ── MAIN: FORM + SIDEBAR ── */}
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md" className="items-start">
         {/* CONTACT FORM */}
