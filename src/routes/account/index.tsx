@@ -85,7 +85,7 @@ const handleSubmit = async (values: SignInRequest) => {
   }
 }
 
- const handleOAuthSignIn = async (provider: "github" | "google") => {
+ const handleOAuthSignIn = async (provider: "google") => {
   try {
     setOauthProvider(provider)
     const { error } = await supabase.auth.signInWithOAuth({
@@ -132,14 +132,14 @@ const handleSubmit = async (values: SignInRequest) => {
           >
             Sign in with Google
           </GoogleButton>
-          <FacebookButton
+          {/* <FacebookButton
             size="md"
             radius="xl"
             loading={oauthProvider === "github"}
             onClick={() => handleOAuthSignIn("github")}
           >
             Sign in with Facebook
-          </FacebookButton>
+          </FacebookButton> */}
         </div>
 
         <Divider label="Or continue with email" labelPosition="center" my="xs" />

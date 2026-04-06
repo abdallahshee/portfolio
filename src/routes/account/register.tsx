@@ -112,7 +112,7 @@ function RouteComponent() {
     }
   }
 
-  const handleOAuthSignUp = async (provider: "github" | "google") => {
+  const handleOAuthSignUp = async (provider: "google") => {
     try {
       setOauthProvider(provider)
       const { error } = await client.auth.signInWithOAuth({
@@ -157,14 +157,14 @@ function RouteComponent() {
           >
             Sign up with Google
           </GoogleButton>
-          <FacebookButton
+          {/* <FacebookButton
             size="md"
             radius="xl"
             loading={oauthProvider === "github"}
             onClick={() => handleOAuthSignUp("github")}
           >
             Sign up with Facebook
-          </FacebookButton>
+          </FacebookButton> */}
         </div>
 
         <Divider label="Or create account with email" labelPosition="center" my="xs" />
