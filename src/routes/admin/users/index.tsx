@@ -210,19 +210,19 @@ function RouteComponent() {
                       <Table.Td>
                         <Group gap="sm" wrap="nowrap">
                           <Avatar
-                            src={u.user_metadata?.avatar_url}
+                            src={u.user_metadata.avatar_url}
                             radius="xl"
                             size="md"
                             color="indigo"
                           >
-                            {u.user_metadata?.name?.[0]?.toUpperCase() ??
+                            {u.user_metadata.name?.[0]?.toUpperCase() ??
                               u.email?.[0]?.toUpperCase() ??
                               'U'}
                           </Avatar>
 
                           <Stack gap={2}>
                             <Text size="sm" fw={600} className="leading-tight">
-                              {u.user_metadata?.name ?? '—'}
+                              {u.user_metadata.name ?? '—'}
                             </Text>
                           </Stack>
                         </Group>
@@ -274,8 +274,8 @@ function RouteComponent() {
                           rightSection={<ArrowRight size={14} />}
                           onClick={() =>
                             navigate({
-                              to: '/admin/users/$id',
-                              params: { id: u.id },
+                              to: '/admin/users/$userId',
+                              params: { userId: u.id },
                             })
                           }
                         >

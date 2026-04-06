@@ -98,6 +98,15 @@ const isAdmin = user?.user_metadata?.role === "admin"
     await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
   }
 
+    const handleSettings = async (userId:string) => {
+      if(isAdmin){
+    await router.navigate({to:"/admin/users/$userId/edit",params:{userId} })
+      }
+          await router.navigate({to:"/$userId/edit",params:{userId} })
+
+  }
+
+
   const handleSignup = () => {
     router.navigate({ to: "/account/register", search: { callbackUrl: "/" } })
   }
@@ -155,15 +164,15 @@ const isAdmin = user?.user_metadata?.role === "admin"
           </>
         )}
 
-        <Menu.Item
+        {/* <Menu.Item
               leftSection={<LayoutDashboard size={16} className="text-blue-600" />}
               onClick={() => router.navigate({ to: "/admin" })}
             >
               Admin Dashboard
-            </Menu.Item>
+            </Menu.Item> */}
             <Menu.Divider />
-        <Menu.Item  leftSection={<Settings size={16} className="text-blue-600"  />} onClick={handleLogout}>
-       Account Settings
+        <Menu.Item  leftSection={<Settings size={16} className="text-blue-600"  />} onClick={()=>handleSettings(user?.id!)}>
+       Edit Profile
         </Menu.Item>
         <Menu.Item leftSection={<LogOut size={16} className="text-blue-600" />} onClick={handleLogout}>
           Logout

@@ -30,9 +30,11 @@ export function getSupabaseServerClient() {
 }
 
 
-export const getSupabaseAdmin = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY! // 🔥 important
-)
+export function getSupabaseAdmin() {
+  return createClient(
+    process.env.SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  )
+}
 
 

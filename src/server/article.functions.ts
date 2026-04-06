@@ -42,7 +42,7 @@ export const createArticle = createServerFn({ method: "POST" })
                 excerpt,
                 userId: data.userId,
             }
-            const [result] = await db.insert(article).values({ ...newData,status:"draft" }).returning()
+            const [result] = await db.insert(article).values({ ...newData, status: "draft" }).returning()
             return result// ✅ single object instead of array
         } catch (err) {
             console.error("Create blog failed:", err)
@@ -306,7 +306,7 @@ export const updateArticle = createServerFn({ method: "POST" })
     })
 
 
-export const searchArticles = createServerFn({ method: "GET" })
+export const searchPaginatedArticles = createServerFn({ method: "GET" })
     .inputValidator((data: { query: string; page: number; pageSize: number }) => data)
     .handler(async ({ data }) => {
         const { query, page, pageSize } = data
@@ -372,40 +372,6 @@ export const searchArticles = createServerFn({ method: "GET" })
             }
         }
     })
-
-// server/blog.functions.ts
-// export const getUserArticles = createServerFn({ method: "GET" })
-//     .inputValidator((data: { userId: string }) => data)
-//     .middleware([AuthenticatedMiddleware])
-//     .handler(async ({ data }) => {
-//         try {
-//             const userId = data.userId
-
-//             const articles = await db
-//                 .select({
-//                     id: article.id,
-//                     title: article.title,
-//                     slug: article.slug,
-//                     excerpt: article.excerpt,
-//                     coverImage: article.coverImage,
-//                     tags: article.tags,
-//                     status: article.status,
-//                     createdAt: article.createdAt,
-//                     categoryName: category.name,
-//                     likes: sql<number>`(select count(*) from article_like where article_id = ${article.id})`,
-//                     comments: sql<number>`(select count(*) from comment where article_id = ${article.id})`,
-//                 })
-//                 .from(article)
-//                 .leftJoin(category, eq(article.categoryId, category.id))
-//                 .where(eq(article.userId, userId!))
-//                 .orderBy(desc(article.createdAt))
-
-//             return articles
-//         } catch (err) {
-//             console.error(err)
-//             throw err
-//         }
-//     })
 
 
 export const getUserPaginatedArticles = createServerFn({ method: 'GET' })

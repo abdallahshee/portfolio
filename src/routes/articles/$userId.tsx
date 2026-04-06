@@ -17,7 +17,7 @@ import {
 } from '@mantine/core'
 
 import {
-  getMyPaginatedBlogsQueryOptions,
+  getUserPaginatedArticlesQueryOptions,
   searchArticlesQueryOptions,
 } from '@/db/queries/article.queries'
 import {  Heart, MessageCircle, Search, X,PenLine, SlidersHorizontal } from "lucide-react"
@@ -42,7 +42,7 @@ export const Route = createFileRoute('/articles/$userId')({
   loaderDeps: ({ search }) => ({ page: search.page }),
   loader: async ({ context, params, deps }) => {
     await context.queryClient.prefetchQuery(
-      getMyPaginatedBlogsQueryOptions(params.userId, deps.page, 6)
+      getUserPaginatedArticlesQueryOptions({userId:params.userId, page:deps.page,limit:6})
     )
   },
   component: BlogsPage,
@@ -81,7 +81,7 @@ function BlogsPage() {
   const isOwner = session?.user?.id === userId
 
   const { data: paginatedData, isLoading: paginatedLoading, isPlaceholderData } = useQuery(
-    getMyPaginatedBlogsQueryOptions(userId, page, PAGE_SIZE)
+    getUserPaginatedArticlesQueryOptions({userId:userId, page:page, limit:PAGE_SIZE})
   )
 
   const { data: searchData, isLoading: searchLoading } = useQuery({

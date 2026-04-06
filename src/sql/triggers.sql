@@ -5,7 +5,7 @@ CREATE OR REPLACE FUNCTION public.handle_new_user()
 RETURNS trigger AS $$
 BEGIN
   INSERT INTO public.user (
-    id, email, name,image,role,
+    id, email, name,image,role
     created_at, updated_at
   )
   VALUES (
@@ -13,7 +13,7 @@ BEGIN
     NEW.email,
     NEW.raw_user_meta_data->>'name',
     NEW.raw_user_meta_data->>'avatar_url',
-    'user',
+    "user",
     NOW(),
     NOW()
   );
@@ -46,3 +46,25 @@ CREATE OR REPLACE TRIGGER on_auth_user_sign_in
   FOR EACH ROW
   WHEN (NEW.last_sign_in_at IS DISTINCT FROM OLD.last_sign_in_at)
   EXECUTE FUNCTION public.handle_user_sign_in();
+
+
+-- Function that fires on auth.users update
+CREATE OR REPLACE FUNCTION sync_user_on_auth_update()
+RETURNS TRIGGER AS $$
+BEGIN
+    UPDATE public.user
+    SET
+        name  = NEW.raw_user_meta_data ->> 'name',
+        image = NEW.raw_user_meta_data ->> 'avatar_url',
+        email = NEW.email
+    WHERE id = NEW.id;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Trigger on auth.users
+CREATE OR REPLACE TRIGGER on_auth_user_updated
+    AFTER UPDATE ON auth.users
+    FOR EACH ROW
+    EXECUTE FUNCTION sync_user_on_auth_update();

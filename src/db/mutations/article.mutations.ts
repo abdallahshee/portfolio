@@ -5,20 +5,18 @@ import { getAllArticlesQueryOptions, getArticleBySlugQueryOptions } from '../que
 import type { Role } from '../validations/user.types'
 import type { ArticleRequest, ArticleUpdateRequest } from '../validations/article.types'
 
-export const useArticleUpdateMutationOption = (role: Role) => {
+export const useArticleUpdateMutationOption = (data: Role) => {
     const queryClient = useQueryClient()
     const router = useRouter()
 
     return useMutation({
-        mutationFn: (form: ArticleUpdateRequest) => updateArticle({
-            data: {...form }
-        }),
+        mutationFn: (data: ArticleUpdateRequest) => updateArticle({data}),
         onSuccess: async (_, variables) => {
             await queryClient.refetchQueries({
                 queryKey: getAllArticlesQueryOptions().queryKey,
             })
 
-            if (role.role ==="admin" ) {
+            if (data.role ==="admin" ) {
                 await router.navigate({
                     to: "/admin/articles/$slug",
                     params: { slug: variables.slug },
@@ -40,8 +38,7 @@ export const useArticleCreateMutation = (role: Role) => {
     const router = useRouter()
 
     return useMutation({
-        mutationFn: (form: ArticleRequest) =>
-            createArticle({ data: form }),
+        mutationFn: (data: ArticleRequest) =>createArticle({ data }),
         onSuccess: async (data) => {
             queryClient.setQueryData(getArticleBySlugQueryOptions(data.slug).queryKey, {
                 ...data,

@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
-import { useQuery } from "@tanstack/react-query"
+import { useSuspenseQuery } from "@tanstack/react-query"
 import {
   Avatar,
   Badge,
@@ -25,65 +25,60 @@ import {
   ShieldCheck,
   UserRound,
   Clock3,
+  Pencil,
 } from "lucide-react"
 import { getUserByIdQueryOptions } from "@/db/queries/user.queries"
+import moment from "moment"
 
-export const Route = createFileRoute("/admin/users/$id")({
+export const Route = createFileRoute("/admin/users/$userId")({
   loader: async ({ context, params }) => {
-    await context.queryClient.prefetchQuery(getUserByIdQueryOptions(params.id))
+    const userId = params.userId
+    await context.queryClient.prefetchQuery(getUserByIdQueryOptions(userId))
   },
+  pendingComponent: () => (
+    <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
+      <Container size="xl">
+        <Stack gap="lg">
+          <Skeleton height={140} radius="xl" />
+          <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
+            <Skeleton height={220} radius="xl" />
+            <Skeleton height={220} radius="xl" />
+          </SimpleGrid>
+          <Skeleton height={140} radius="xl" />
+        </Stack>
+      </Container>
+    </div>
+  ),
+  errorComponent: () => (
+    <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
+      <Container size="lg">
+        <Paper radius="2xl" p="xl" withBorder className="shadow-sm">
+          <Stack gap="md" align="center">
+            <Title order={3}>User not found</Title>
+            <Text c="dimmed" ta="center">
+              We could not load the requested user details.
+            </Text>
+            <Button
+              variant="light"
+              radius="xl"
+              leftSection={<ArrowLeft size={16} />}
+              onClick={() => window.history.back()}
+            >
+              Go Back
+            </Button>
+          </Stack>
+        </Paper>
+      </Container>
+    </div>
+  ),
   component: RouteComponent,
 })
 
 function RouteComponent() {
   const navigate = useNavigate()
-  const { id } = Route.useParams()
+  const { userId } = Route.useParams()
 
-  const { data: user, isLoading, isError } = useQuery(
-    getUserByIdQueryOptions(id)
-  )
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
-        <Container size="lg">
-          <Stack gap="lg">
-            <Skeleton height={140} radius="xl" />
-            <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
-              <Skeleton height={220} radius="xl" />
-              <Skeleton height={220} radius="xl" />
-            </SimpleGrid>
-            <Skeleton height={140} radius="xl" />
-          </Stack>
-        </Container>
-      </div>
-    )
-  }
-
-  if (isError || !user) {
-    return (
-      <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
-        <Container size="lg">
-          <Paper radius="2xl" p="xl" withBorder className="shadow-sm">
-            <Stack gap="md" align="center">
-              <Title order={3}>User not found</Title>
-              <Text c="dimmed" ta="center">
-                We could not load the requested user details.
-              </Text>
-              <Button
-                variant="light"
-                radius="xl"
-                leftSection={<ArrowLeft size={16} />}
-                onClick={() => navigate({ to: "/admin/users" })}
-              >
-                Back to Users
-              </Button>
-            </Stack>
-          </Paper>
-        </Container>
-      </div>
-    )
-  }
+  const { data: user } = useSuspenseQuery(getUserByIdQueryOptions(userId))
 
   const fullName = user.name || "Unnamed User"
   const email = user.email || "No email"
@@ -99,6 +94,8 @@ function RouteComponent() {
     <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
       <Container size="xl">
         <Stack gap="xl">
+
+          {/* ── HEADER ── */}
           <Paper
             radius="2xl"
             p="xl"
@@ -107,12 +104,7 @@ function RouteComponent() {
           >
             <Group justify="space-between" align="flex-start" className="gap-4">
               <Group align="flex-start" gap="lg">
-                <Avatar
-                  src={user.avatar}
-                  size={88}
-                  radius="xl"
-                  color="indigo"
-                >
+                <Avatar src={user.avatar} size={88} radius="xl" color="indigo">
                   {initials}
                 </Avatar>
 
@@ -159,13 +151,14 @@ function RouteComponent() {
                   </Group>
 
                   <Text className="max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
-                    Review this user’s account details, activity timestamps, and
+                    Review this user's account details, activity timestamps, and
                     authored article count from the admin panel.
                   </Text>
                 </Stack>
               </Group>
 
-              <Group gap="sm">
+              {/* ── ACTION BUTTONS ── */}
+              <Group gap="sm" wrap="nowrap">
                 <Button
                   variant="default"
                   radius="xl"
@@ -176,23 +169,41 @@ function RouteComponent() {
                 </Button>
 
                 <Button
+                  variant="light"
+                  color="indigo"
+                  radius="xl"
+                  leftSection={<Pencil size={16} />}
+                  onClick={() =>
+                    navigate({
+                      to: "/admin/users/$userId/edit",
+                      params: { userId },
+                    })
+                  }
+                >
+                  Edit User
+                </Button>
+
+                <Button
                   radius="xl"
                   leftSection={<BookOpen size={16} />}
                   onClick={() =>
                     navigate({
                       to: "/articles/$userId",
-                      params:{userId:id},
-                      search:{page:1}
+                      params: { userId },
+                      search: { page: 1 },
                     })
                   }
                 >
-                  Open User Articles
+                  View Articles
                 </Button>
               </Group>
             </Group>
           </Paper>
 
+          {/* ── INFO CARDS ── */}
           <SimpleGrid cols={{ base: 1, md: 2 }} spacing="lg">
+
+            {/* Account Information */}
             <Card radius="2xl" withBorder p="xl" className="shadow-sm">
               <Stack gap="lg">
                 <div>
@@ -211,11 +222,17 @@ function RouteComponent() {
                   <InfoRow label="Full Name" value={fullName} />
                   <InfoRow label="Email Address" value={email} />
                   <InfoRow label="User ID" value={user.userId} mono />
-                  <InfoRow label="Role" value={user.role} />
+                  <InfoRow
+                    label="Role"
+                    value={user.role}
+                    badge
+                    badgeColor={user.role === "admin" ? "red" : "blue"}
+                  />
                 </Stack>
               </Stack>
             </Card>
 
+            {/* Activity Summary */}
             <Card radius="2xl" withBorder p="xl" className="shadow-sm">
               <Stack gap="lg">
                 <div>
@@ -237,21 +254,34 @@ function RouteComponent() {
                   />
                   <InfoRow
                     label="Last Sign In"
-                    value={formatDate(user.lastSignIn)}
+                    value={
+                      user.lastSignIn
+                        ? `${moment(user.lastSignIn).format("MMM D, YYYY")} (${moment(user.lastSignIn).fromNow()})`
+                        : "Never"
+                    }
                   />
                   <InfoRow
                     label="Created At"
-                    value={formatDate(user.createdAt)}
+                    value={
+                      user.createdAt
+                        ? `${moment(user.createdAt).format("MMM D, YYYY")} (${moment(user.createdAt).fromNow()})`
+                        : "—"
+                    }
                   />
                   <InfoRow
                     label="Updated At"
-                    value={formatDate(user.updatedAt)}
+                    value={
+                      user.updatedAt
+                        ? `${moment(user.updatedAt).format("MMM D, YYYY")} (${moment(user.updatedAt).fromNow()})`
+                        : "—"
+                    }
                   />
                 </Stack>
               </Stack>
             </Card>
           </SimpleGrid>
 
+          {/* ── QUICK ACTIONS ── */}
           <Card radius="2xl" withBorder p="xl" className="shadow-sm">
             <Stack gap="md">
               <Group gap="xs">
@@ -262,35 +292,62 @@ function RouteComponent() {
               </Group>
 
               <Text size="sm" c="dimmed">
-                Jump to the content this user has authored from the admin area.
+                Manage this user or jump to their content from the admin area.
               </Text>
 
               <Divider />
 
+              {/* Edit Profile */}
+              <Group justify="space-between" align="center" className="gap-4">
+                <div>
+                  <Text fw={600}>Edit {fullName}'s Profile</Text>
+                  <Text size="sm" c="dimmed">
+                    Update this user's name, email, avatar, or password.
+                  </Text>
+                </div>
+                <Button
+                  variant="light"
+                  color="indigo"
+                  radius="xl"
+                  leftSection={<Pencil size={16} />}
+                  onClick={() =>
+                    navigate({
+                      to: "/admin/users/$userId/edit",
+                      params: { userId },
+                    })
+                  }
+                >
+                  Edit User
+                </Button>
+              </Group>
+
+              <Divider />
+
+              {/* View Articles */}
               <Group justify="space-between" align="center" className="gap-4">
                 <div>
                   <Text fw={600}>Articles by {fullName}</Text>
                   <Text size="sm" c="dimmed">
-                    Open the articles written by this const [state, dispatch] = useReducer(first, second, third).
+                    View all articles written by this user.
                   </Text>
                 </div>
-
                 <Button
                   radius="xl"
                   leftSection={<BookOpen size={16} />}
                   onClick={() =>
-                  navigate({
+                    navigate({
                       to: "/articles/$userId",
-                      params:{userId:id},
-                      search:{page:1}
+                      params: { userId },
+                      search: { page: 1 },
                     })
                   }
                 >
-                  Open User Articles
+                  View Articles
                 </Button>
               </Group>
             </Stack>
           </Card>
+
         </Stack>
       </Container>
     </div>
@@ -301,28 +358,29 @@ function InfoRow({
   label,
   value,
   mono = false,
+  badge = false,
+  badgeColor = "blue",
 }: {
   label: string
   value: string
   mono?: boolean
+  badge?: boolean
+  badgeColor?: string
 }) {
   return (
     <div className="rounded-2xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-900/40">
       <Text size="sm" c="dimmed" mb={6}>
         {label}
       </Text>
-      <Text fw={600} className={mono ? "break-all font-mono text-sm" : ""}>
-        {value}
-      </Text>
+      {badge ? (
+        <Badge variant="light" color={badgeColor} radius="xl">
+          {value}
+        </Badge>
+      ) : (
+        <Text fw={600} className={mono ? "break-all font-mono text-sm" : ""}>
+          {value}
+        </Text>
+      )}
     </div>
   )
-}
-
-function formatDate(value: string | Date | null | undefined) {
-  if (!value) return "Not available"
-
-  const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return "Not available"
-
-  return date.toLocaleString()
 }

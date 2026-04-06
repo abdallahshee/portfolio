@@ -10,7 +10,7 @@ export const useUpdateProjectMutation = () => {
   const router = useRouter()
 
   return useMutation({
-    mutationFn: (project: UpdateProjectRequest) => updateProject({ data: project }),
+    mutationFn: (data: UpdateProjectRequest) => updateProject({ data}),
     onSuccess: async (data, variables) => {
       // ✅ Wait for fresh data then navigate
       await queryClient.refetchQueries({
@@ -31,7 +31,7 @@ export const useProjectCreateMutation=()=>{
   const queryClient=useQueryClient()
   const router=useRouter()
   return useMutation({
-    mutationFn:(request:ProjectRequest)=>createProject({data:request}),
+    mutationFn:(data:ProjectRequest)=>createProject({data}),
     onSuccess:async(data) =>{
       await queryClient.refetchQueries({queryKey:getAllProjectsQueryOptions(1).queryKey})
       await router.navigate({to:"/projects/$id", params:{id:data.projectId!}})
