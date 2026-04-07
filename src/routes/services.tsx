@@ -195,7 +195,7 @@ function ServicesPage() {
   <Stack gap="xl" className="max-w-3xl">
     <Stack gap="lg">
       <Title className="heading">
-        Software solutions built for real business needs
+        Software solutions for real business needs
       
       </Title>
 
