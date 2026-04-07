@@ -45,6 +45,9 @@ import {
   BarChart3,
   CalendarClock,
   Globe,
+  MessageCircle,
+  Contact,
+  Send,
 } from 'lucide-react'
 
 export const Route = createFileRoute('/')({
@@ -171,11 +174,11 @@ function App() {
                 className="bg-indigo-500 hover:bg-indigo-600"
                 rightSection={<ArrowRight size={18} />}
               >
-                Explore Projects
+                Explore My Projects
               </Button>
             </Link>
             <Link to="/contact">
-              <Button size="md" radius="xl" variant="filled" color='yellow'>Contact Me</Button>
+              <Button size="md" radius="xl" variant="filled" color='yellow'  rightSection={<Send size={18} />}>Contact Me</Button>
             </Link>
           </Group>
         </Stack>

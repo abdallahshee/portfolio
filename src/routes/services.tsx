@@ -36,6 +36,8 @@ import {
   ShieldCheck,
   FolderKanban,
   Lightbulb,
+  Plug,
+  Workflow,
 } from 'lucide-react'
 export const Route = createFileRoute('/services')({
   component: ServicesPage,
@@ -105,6 +107,18 @@ const SERVICES = [
     color: 'grape',
 
   },
+  {
+  icon: <Plug size={24} />,
+  title: 'API Integrations & System Connectivity',
+  desc: 'Seamless integration with third-party services such as payment gateways (M-Pesa, Stripe), SMS/email providers, CRMs, accounting tools, and external APIs — enabling your systems to communicate, automate workflows, and scale efficiently.',
+  color: 'blue',
+},
+{
+  icon: <Workflow size={24} />,
+  title: 'Workflow Automation Systems',
+  desc: 'Automation of repetitive business processes using custom workflows, triggers, and background jobs — reducing manual work, minimizing errors, and improving operational efficiency across your organization.',
+  color: 'teal',
+},
   {
     icon: <ShieldCheck size={24} />,
     title: 'Authentication & Access Systems',
@@ -236,7 +250,7 @@ function ServicesPage() {
                 radius="xl"
                 variant='filled'
                 size="md"
-                leftSection={<Lightbulb size={16} color='yellow'/>}
+                leftSection={<Lightbulb size={16} color='yellow' />}
               >
                 Discuss Your Idea with Me
               </Button>
@@ -436,12 +450,12 @@ function ServicesPage() {
 
 
       {/* ── CTA ── */}
-       <section id="contact" className="mx-auto max-2xl: scroll-mt-20">
+      <section id="contact" className="mx-auto max-2xl: scroll-mt-20">
         <Paper
           radius="24px"
           withBorder
           shadow="sm"
-         className="relative overflow-hidden border border-slate-200/70 bg-gradient-to-br from-white via-indigo-50 to-blue-50 px-6 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
+          className="relative overflow-hidden border border-slate-200/70 bg-gradient-to-br from-white via-indigo-50 to-blue-50 px-6 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
         >
           <Stack align="center" gap="md">
             <Title order={2} className="text-3xl font-bold bg-gradient-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
