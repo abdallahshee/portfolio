@@ -274,7 +274,7 @@ function ServicesPage() {
             radius="10px"
             className="bg-white/95 p-2 backdrop-blur dark:bg-slate-900/90"
           >
-            <Title order={2} className='heading text-center'> Sclable and Maintainable</Title>
+            <Title order={2} className='heading2 text-center'> Sclable and Maintainable</Title>
              
           </Paper>
         </div>
@@ -435,7 +435,7 @@ function ServicesPage() {
 
 
       {/* ── CTA ── */}
-      <section className="max-w-4xl mx-auto">
+      <section className="max-2xl mx-auto">
         <Paper
           radius="2xl"
           withBorder

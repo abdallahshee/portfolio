@@ -473,7 +473,7 @@ function App() {
 
 
       {/* ── CTA ── */}
- <section id="contact" className="mx-auto max-w-5xl scroll-mt-20">
+ <section id="contact" className="mx-auto max-2xl: scroll-mt-20">
   <Paper
     radius="24px"
     withBorder
@@ -489,12 +489,10 @@ function App() {
         <div className="space-y-2">
           <Title
             order={2}
-            className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight text-slate-900 dark:text-white"
+            className="heading2"
           >
-            Let&apos;s turn your
-            <span className="block bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 bg-clip-text text-transparent">
-              idea into a production-ready product
-            </span>
+            Let&apos;s turn your idea into a production-ready product
+          
           </Title>
 
           <Text c="dimmed" size="lg" className="max-w-2xl leading-8">
