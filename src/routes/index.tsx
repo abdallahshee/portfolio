@@ -129,9 +129,9 @@ function App() {
       <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-14 items-center">
         <Stack gap="xl" className="max-w-3xl">
           <div className="rise-in">
-            <Badge variant="filled" color="green" size="lg" radius="xl">
-              Available for new projects
-            </Badge>
+ <div className="bg-green-600 text-center p-2 text-white text-xl rounded-2xl shadow-sm">
+  Available for new projects
+</div>
           </div>
 
           <Stack gap="md" className="max-w-3xl">
@@ -327,7 +327,7 @@ function App() {
 
         <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
           {STRENGTHS.map((strength) => (
-            <Card key={strength.title} radius="xl" withBorder p="lg" className="shadow-sm">
+            <Card key={strength.title} withBorder p="lg" className="shadow-sm ">
               <Group gap="md" align="flex-start">
                 <ThemeIcon variant="light" color={strength.color} radius="xl" size="lg">
                   {strength.icon}
@@ -521,7 +521,7 @@ function App() {
         >
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.14),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_30%)]" />
 
-          <div className="relative grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+          <div className="relative grid gap-4 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <Stack gap="lg" className="max-w-3xl">
               <div className="space-y-2">
                 <Title order={2} className="heading2">
@@ -564,9 +564,9 @@ function App() {
             </Stack>
 
             <Paper
-              radius="20px"
+              radius="24px"
               withBorder
-              className="bg-white/80 p-5 shadow-sm backdrop-blur dark:bg-slate-900/70"
+              className="bg-white/80 p-4 shadow-sm backdrop-blur dark:bg-slate-900/70"
             >
               <Stack gap="md">
                 <Text fw={700} className="text-slate-900 dark:text-white">
