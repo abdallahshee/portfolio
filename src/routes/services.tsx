@@ -34,6 +34,8 @@ import {
   HeartHandshake,
   Quote,
   ShieldCheck,
+  FolderKanban,
+  Lightbulb,
 } from 'lucide-react'
 export const Route = createFileRoute('/services')({
   component: ServicesPage,
@@ -104,11 +106,11 @@ const SERVICES = [
 
   },
   {
-  icon: <ShieldCheck size={24} />,
-  title: 'Authentication & Access Systems',
-  desc: 'Secure authentication systems with role-based access control, multi-tenant permissions, session management, and integrations with OAuth providers — designed to protect data while enabling seamless user experiences.',
-  color: 'red',
-},
+    icon: <ShieldCheck size={24} />,
+    title: 'Authentication & Access Systems',
+    desc: 'Secure authentication systems with role-based access control, multi-tenant permissions, session management, and integrations with OAuth providers — designed to protect data while enabling seamless user experiences.',
+    color: 'red',
+  },
 ]
 
 const PROCESS = [
@@ -191,97 +193,98 @@ function ServicesPage() {
     <Container size="xl" className="space-y-16 py-10">
 
       {/* ── HERO ── */}
-  <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
-  <Stack gap="xl" className="max-w-3xl">
-    <Stack gap="lg">
-      <Title className="heading">
-        Software solutions for real business needs
-      
-      </Title>
+      <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+        <Stack gap="xl" className="max-w-3xl">
+          <Stack gap="lg">
+            <Title className="heading">
+              Software solutions for real business needs
 
-      <Text size="lg" c="dimmed" className="max-w-2xl leading-8">
-        I help businesses and startups turn ideas into reliable, production-ready
-        systems — from management platforms and SaaS products to tailored web
-        applications built for performance, scalability, and long-term growth.
-      </Text>
-    </Stack>
-  <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm" className="pt-2">
-      <Paper withBorder radius="xl" p="md" className="shadow-sm">
-        <Text fw={700} size="sm">Scalable Systems</Text>
-        <Text size="sm" c="dimmed" mt={4}>
-          Designed to grow with your users and workflows.
-        </Text>
-      </Paper>
+            </Title>
 
-      <Paper withBorder radius="xl" p="md" className="shadow-sm">
-        <Text fw={700} size="sm">Clean Architecture</Text>
-        <Text size="sm" c="dimmed" mt={4}>
-          Maintainable codebases built for long-term success.
-        </Text>
-      </Paper>
+            <Text size="lg" c="dimmed" className="max-w-2xl leading-8">
+              I help businesses and startups turn ideas into reliable, production-ready
+              systems — from management platforms and SaaS products to tailored web
+              applications built for performance, scalability, and long-term growth.
+            </Text>
+          </Stack>
+          <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm" className="pt-2">
+            <Paper withBorder radius="xl" p="md" className="shadow-sm">
+              <Text fw={700} size="sm">Scalable Systems</Text>
+              <Text size="sm" c="dimmed" mt={4}>
+                Designed to grow with your users and workflows.
+              </Text>
+            </Paper>
 
-      <Paper withBorder radius="xl" p="md" className="shadow-sm">
-        <Text fw={700} size="sm">Business Focused</Text>
-        <Text size="sm" c="dimmed" mt={4}>
-          Solutions aligned with real operational needs.
-        </Text>
-      </Paper>
-    </SimpleGrid>
-    <Group gap="sm" className="pt-2">
-      <Link to="/contact">
-        <Button
-          color="teal"
-          radius="xl"
-          size="md"
-          rightSection={<ArrowRight size={16} />}
-        >
-          Discuss Your Project
-        </Button>
-      </Link>
+            <Paper withBorder radius="xl" p="md" className="shadow-sm">
+              <Text fw={700} size="sm">Clean Architecture</Text>
+              <Text size="sm" c="dimmed" mt={4}>
+                Maintainable codebases built for long-term success.
+              </Text>
+            </Paper>
 
-      <Button
-        variant="outline"
-        color="indigo"
-        radius="xl"
-        size="md"
-        onClick={() => router.navigate({ to: "/" })}
-      >
-        Back to Home
-      </Button>
-    </Group>
+            <Paper withBorder radius="xl" p="md" className="shadow-sm">
+              <Text fw={700} size="sm">Business Focused</Text>
+              <Text size="sm" c="dimmed" mt={4}>
+                Solutions aligned with real operational needs.
+              </Text>
+            </Paper>
+          </SimpleGrid>
+          <Group gap="sm" className="pt-2">
+            <Link to="/contact">
+              <Button
+                color="green"
+                radius="xl"
+                variant='filled'
+                size="md"
+                leftSection={<Lightbulb size={16} color='yellow'/>}
+              >
+                Discuss Your Idea with Me
+              </Button>
+            </Link>
 
-  
-  </Stack>
+            <Button
+              variant="outline"
+              color="indigo"
+              radius="xl"
+              size="md"
+              onClick={() => router.navigate({ to: "/" })}
+            >
+              Back to Home
+            </Button>
+          </Group>
 
-  <div className="flex justify-center lg:justify-end">
-    <Paper
-      radius="28px"
-      withBorder
-      shadow="md"
-      className="relative w-full max-w-[34rem] overflow-hidden bg-white p-3 dark:bg-slate-900"
-    >
-      <div className="relative overflow-hidden rounded-[22px]">
-        <img
-          src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg"
-          alt="Team planning software services and digital solutions"
-          className="block h-[320px] w-full object-cover sm:h-[380px] lg:h-[420px]"
-        />
 
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-900/20 to-transparent" />
+        </Stack>
 
-        <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
+        <div className="flex justify-center lg:justify-end">
           <Paper
-            radius="10px"
-            className="bg-white/95 p-2 backdrop-blur dark:bg-slate-900/90"
+            radius="28px"
+            withBorder
+            shadow="md"
+            className="relative w-full max-w-[34rem] overflow-hidden bg-white p-3 dark:bg-slate-900"
           >
-            <Title order={2} className='heading2 text-center'> Scalable and Maintainable</Title>
-             
+            <div className="relative overflow-hidden rounded-[22px]">
+              <img
+                src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg"
+                alt="Team planning software services and digital solutions"
+                className="block h-[320px] w-full object-cover sm:h-[380px] lg:h-[420px]"
+              />
+
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-900/20 to-transparent" />
+
+              <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
+                <Paper
+                  radius="10px"
+                  className="bg-white/95 p-2 backdrop-blur dark:bg-slate-900/90"
+                >
+                  <Title order={2} className='heading2 text-center'> Scalable and Maintainable</Title>
+
+                </Paper>
+              </div>
+            </div>
           </Paper>
         </div>
-      </div>
-    </Paper>
-  </div>
-</section>
+      </section>
 
       {/* ── SERVICES GRID ── */}
       <section className="space-y-4">
@@ -324,8 +327,6 @@ function ServicesPage() {
           ))}
         </SimpleGrid>
       </section>
-
-      <Divider />
 
       {/* ── HOW I WORK ── */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
@@ -435,12 +436,12 @@ function ServicesPage() {
 
 
       {/* ── CTA ── */}
-      <section className="max-2xl mx-auto">
+       <section id="contact" className="mx-auto max-2xl: scroll-mt-20">
         <Paper
-          radius="2xl"
+          radius="24px"
           withBorder
           shadow="sm"
-          className="p-8 lg:p-12 text-center bg-gradient-to-br from-teal-50 to-indigo-50 dark:from-slate-900 dark:to-slate-800"
+         className="relative overflow-hidden border border-slate-200/70 bg-gradient-to-br from-white via-indigo-50 to-blue-50 px-6 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
         >
           <Stack align="center" gap="md">
             <Title order={2} className="text-3xl font-bold bg-gradient-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
@@ -459,11 +460,11 @@ function ServicesPage() {
                 leftSection={<Mail size={18} />}
                 onClick={() => router.navigate({ to: '/contact' })}
               >
-                Get in Touch
+                Let's Get Started
               </Button>
               <Link to="/projects">
-                <Button variant="gradient" color="blue" size="md" radius="xl" rightSection={<ArrowRight size={16} />}>
-                  Projects
+                <Button variant="gradient" color="blue" size="md" radius="xl" leftSection={<FolderKanban size={18} />}>
+                  Explore My Projects
                 </Button>
               </Link>
             </Group>

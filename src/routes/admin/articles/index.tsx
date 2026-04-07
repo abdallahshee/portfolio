@@ -38,10 +38,10 @@ function RouteComponent() {
 
   const filtered = debouncedSearch.trim()
     ? allBlogs.filter((b) =>
-        b.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-        b.authorName?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-        b.categoryName?.toLowerCase().includes(debouncedSearch.toLowerCase())
-      )
+      b.title.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+      b.authorName?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+      b.categoryName?.toLowerCase().includes(debouncedSearch.toLowerCase())
+    )
     : allBlogs
 
   return (

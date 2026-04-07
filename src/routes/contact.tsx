@@ -129,7 +129,7 @@ function ContactPage() {
         <Title className="heading">
           Get in Touch
         </Title>
-        
+
         <Text size="lg" c="dimmed" className="leading-8">
           Have a project, idea, or opportunity you'd like to discuss?
           I'd love to hear from you. Fill in the form or reach out directly —
@@ -257,7 +257,7 @@ function ContactPage() {
             </Text>
             <Text py-1>
               <Group gap="sm">
-                <ThemeIcon variant="transparent"  radius="xl" size="md">
+                <ThemeIcon variant="transparent" radius="xl" size="md">
                   <Phone size={24} />
                 </ThemeIcon>
                 <Text size="md" fw={500}>+254 796515302</Text>

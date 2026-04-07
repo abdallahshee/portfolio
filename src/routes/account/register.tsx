@@ -68,7 +68,7 @@ function RouteComponent() {
           data: {
             name: values.name,
             avatar_url: DEFAULT_AVATAR_URL, // ✅ always use default on signup
-            role:"user"
+            role: "user"
           },
         },
       })

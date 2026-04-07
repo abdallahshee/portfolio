@@ -152,7 +152,7 @@ function App() {
             <div className="">
               <Title className="heading">
                 Designing maintainable and scalable web products & software systems
-         
+
               </Title>
             </div>
 
@@ -165,15 +165,15 @@ function App() {
 
           <Group>
             <Link to='/projects'>
-            <Button
-              size="md"
-              radius="xl"
-              className="bg-indigo-500 hover:bg-indigo-600"
-              rightSection={<ArrowRight size={18} />}
-            >
-              Explore Projects
-            </Button>
-              </Link>
+              <Button
+                size="md"
+                radius="xl"
+                className="bg-indigo-500 hover:bg-indigo-600"
+                rightSection={<ArrowRight size={18} />}
+              >
+                Explore Projects
+              </Button>
+            </Link>
             <Link to="/contact">
               <Button size="md" radius="xl" variant="filled" color='yellow'>Contact Me</Button>
             </Link>
@@ -473,126 +473,126 @@ function App() {
 
 
       {/* ── CTA ── */}
- <section id="contact" className="mx-auto max-2xl: scroll-mt-20">
-  <Paper
-    radius="24px"
-    withBorder
-    shadow="sm"
-    className="relative overflow-hidden border border-slate-200/70 bg-gradient-to-br from-white via-indigo-50 to-blue-50 px-6 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
-  >
-    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.14),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_30%)]" />
+      <section id="contact" className="mx-auto max-2xl: scroll-mt-20">
+        <Paper
+          radius="24px"
+          withBorder
+          shadow="sm"
+          className="relative overflow-hidden border border-slate-200/70 bg-gradient-to-br from-white via-indigo-50 to-blue-50 px-6 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
+        >
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.14),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_30%)]" />
 
-    <div className="relative grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-      <Stack gap="lg" className="max-w-3xl">
-      
+          <div className="relative grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+            <Stack gap="lg" className="max-w-3xl">
 
-        <div className="space-y-2">
-          <Title
-            order={2}
-            className="heading2"
-          >
-            Let&apos;s turn your idea into a production-ready product
-          
-          </Title>
 
-          <Text c="dimmed" size="lg" className="max-w-2xl leading-8">
-            I work with businesses, founders, and teams to design and build
-            reliable software systems — from internal tools and business
-            platforms to customer-facing web products.
-          </Text>
-        </div>
+              <div className="space-y-2">
+                <Title
+                  order={2}
+                  className="heading2"
+                >
+                  Let&apos;s turn your idea into a production-ready product
 
-        <Group gap="sm" className="pt-2">
-          <Button
-            size="md"
-            radius="xl"
-            color="yellow"
-            variant='filled'
-            onClick={() => router.navigate({ to: '/contact' })}
-            leftSection={<Mail size={18} />}
-            className="shadow-sm"
-          >
-            Start a Conversation
-          </Button>
+                </Title>
 
-          <Button
-            component="a"
-            href="https://linkedin.com/in/abdallahshee"
-            target="_blank"
-            variant="filled"
-            color='blue'
-            size="md"
-            radius="xl"
-            leftSection={<Linkedin size={18} />}
-          >
-            Connect on LinkedIn
-          </Button>
-        </Group>
-      </Stack>
+                <Text c="dimmed" size="lg" className="max-w-2xl leading-8">
+                  I work with businesses, founders, and teams to design and build
+                  reliable software systems — from internal tools and business
+                  platforms to customer-facing web products.
+                </Text>
+              </div>
 
-      <Paper
-        radius="20px"
-        withBorder
-        className="bg-white/80 p-5 shadow-sm backdrop-blur dark:bg-slate-900/70"
-      >
-        <Stack gap="md">
-          <Text fw={700} className="text-slate-900 dark:text-white">
-            Best fit for:
-          </Text>
+              <Group gap="sm" className="pt-2">
+                <Button
+                  size="md"
+                  radius="xl"
+                  color="yellow"
+                  variant='filled'
+                  onClick={() => router.navigate({ to: '/contact' })}
+                  leftSection={<Mail size={18} />}
+                  className="shadow-sm"
+                >
+                  Start a Conversation
+                </Button>
 
-      <Stack gap="sm">
-  <Group gap="sm" wrap="nowrap">
-    <ThemeIcon size={34} radius="xl" variant="light" color="indigo">
-      <CheckCircle size={18} />
-    </ThemeIcon>
-    <Text size="sm" c="dimmed">
-      Founders building new digital products
-    </Text>
-  </Group>
+                <Button
+                  component="a"
+                  href="https://linkedin.com/in/abdallahshee"
+                  target="_blank"
+                  variant="filled"
+                  color='blue'
+                  size="md"
+                  radius="xl"
+                  leftSection={<Linkedin size={18} />}
+                >
+                  Connect on LinkedIn
+                </Button>
+              </Group>
+            </Stack>
 
-  <Group gap="sm" wrap="nowrap">
-    <ThemeIcon size={34} radius="xl" variant="light" color="blue">
-      <CheckCircle size={18} />
-    </ThemeIcon>
-    <Text size="sm" c="dimmed">
-      Businesses improving operations with custom systems
-    </Text>
-  </Group>
+            <Paper
+              radius="20px"
+              withBorder
+              className="bg-white/80 p-5 shadow-sm backdrop-blur dark:bg-slate-900/70"
+            >
+              <Stack gap="md">
+                <Text fw={700} className="text-slate-900 dark:text-white">
+                  Best fit for:
+                </Text>
 
-  <Group gap="sm" wrap="nowrap">
-    <ThemeIcon size={34} radius="xl" variant="light" color="teal">
-      <CheckCircle size={18} />
-    </ThemeIcon>
-    <Text size="sm" c="dimmed">
-      Teams needing scalable, maintainable web software
-    </Text>
-  </Group>
+                <Stack gap="sm">
+                  <Group gap="sm" wrap="nowrap">
+                    <ThemeIcon size={34} radius="xl" variant="light" color="indigo">
+                      <CheckCircle size={18} />
+                    </ThemeIcon>
+                    <Text size="sm" c="dimmed">
+                      Founders building new digital products
+                    </Text>
+                  </Group>
 
-  {/* NEW */}
-  <Group gap="sm" wrap="nowrap">
-    <ThemeIcon size={34} radius="xl" variant="light" color="orange">
-      <CheckCircle size={18} />
-    </ThemeIcon>
-    <Text size="sm" c="dimmed">
-      Startups validating ideas and launching MVPs quickly
-    </Text>
-  </Group>
+                  <Group gap="sm" wrap="nowrap">
+                    <ThemeIcon size={34} radius="xl" variant="light" color="blue">
+                      <CheckCircle size={18} />
+                    </ThemeIcon>
+                    <Text size="sm" c="dimmed">
+                      Businesses improving operations with custom systems
+                    </Text>
+                  </Group>
 
-  <Group gap="sm" wrap="nowrap">
-    <ThemeIcon size={34} radius="xl" variant="light" color="grape">
-      <CheckCircle size={18} />
-    </ThemeIcon>
-    <Text size="sm" c="dimmed">
-      Organizations modernizing legacy systems and workflows
-    </Text>
-  </Group>
-</Stack>
+                  <Group gap="sm" wrap="nowrap">
+                    <ThemeIcon size={34} radius="xl" variant="light" color="teal">
+                      <CheckCircle size={18} />
+                    </ThemeIcon>
+                    <Text size="sm" c="dimmed">
+                      Teams needing scalable, maintainable web software
+                    </Text>
+                  </Group>
 
-        </Stack>
-      </Paper>
-    </div>
-  </Paper>
-</section>
+                  {/* NEW */}
+                  <Group gap="sm" wrap="nowrap">
+                    <ThemeIcon size={34} radius="xl" variant="light" color="orange">
+                      <CheckCircle size={18} />
+                    </ThemeIcon>
+                    <Text size="sm" c="dimmed">
+                      Startups validating ideas and launching MVPs quickly
+                    </Text>
+                  </Group>
+
+                  <Group gap="sm" wrap="nowrap">
+                    <ThemeIcon size={34} radius="xl" variant="light" color="grape">
+                      <CheckCircle size={18} />
+                    </ThemeIcon>
+                    <Text size="sm" c="dimmed">
+                      Organizations modernizing legacy systems and workflows
+                    </Text>
+                  </Group>
+                </Stack>
+
+              </Stack>
+            </Paper>
+          </div>
+        </Paper>
+      </section>
 
     </Container>
   )
