@@ -107,8 +107,6 @@ const handleSignup = async () => {
     await router.navigate({ to: "/$userId/edit", params: { userId } })
   }
 
-
-
   const links = [
     { label: "Home", to: "/" },
     { label: "Services", to: "/services" },

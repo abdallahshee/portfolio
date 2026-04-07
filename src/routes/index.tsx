@@ -129,9 +129,9 @@ function App() {
       <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-14 items-center">
         <Stack gap="xl" className="max-w-3xl">
           <div className="rise-in">
- <div className="bg-green-600 text-center p-2 text-white text-xl rounded-2xl shadow-sm">
-  Available for new projects
-</div>
+            <div className="bg-green-600 text-center p-2 text-white text-xl rounded-2xl shadow-sm">
+              Available for new projects
+            </div>
           </div>
 
           <Stack gap="md" className="max-w-3xl">

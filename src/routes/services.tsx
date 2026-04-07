@@ -16,7 +16,6 @@ import {
 } from '@mantine/core'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {
-  ArrowRight,
   Mail,
   ShoppingCart,
   Building2,
