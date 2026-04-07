@@ -126,7 +126,7 @@ function ContactPage() {
       {/* ── PAGE HEADER ── */}
       <Stack gap="xs" className="text-center max-w-2xl mx-auto">
 
-        <Title className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] tracking-tight bg-gradient-to-r from-blue-700 to-pink-500 bg-clip-text text-transparent">
+        <Title className="heading">
           Get in Touch
         </Title>
         
@@ -219,7 +219,8 @@ function ContactPage() {
                 <Group justify="space-between" mt="xs">
                   <Button
                     type="button"
-                    variant="default"
+                    variant="outline"
+                    color="blue"
                     radius="xl"
                     size="md"
                     leftSection={<X size={16} />}
@@ -232,6 +233,8 @@ function ContactPage() {
                     type="submit"
                     radius="xl"
                     size="md"
+                    variant="filled"
+                    color="yellow"
                     leftSection={<Send size={16} />}
                     loading={isSubmitting}
                   >
@@ -246,7 +249,7 @@ function ContactPage() {
           <Stack gap="md">
             <Text py-1>
               <Group gap="sm" py-1 >
-                <ThemeIcon variant="transparent" color="green" radius="xl" size="md">
+                <ThemeIcon variant="transparent" radius="xl" size="md">
                   <Mail size={24} />
                 </ThemeIcon>
                 <Text size="md" fw={500}>abdallahshee664@email.com</Text>
@@ -254,7 +257,7 @@ function ContactPage() {
             </Text>
             <Text py-1>
               <Group gap="sm">
-                <ThemeIcon variant="transparent" color="green" radius="xl" size="md">
+                <ThemeIcon variant="transparent"  radius="xl" size="md">
                   <Phone size={24} />
                 </ThemeIcon>
                 <Text size="md" fw={500}>+254 796515302</Text>
@@ -262,7 +265,7 @@ function ContactPage() {
             </Text>
             <Anchor py-1 href="https://github.com/abdallahshee" target="_blank" underline="never">
               <Group gap="sm">
-                <ThemeIcon variant="transparent" color="green" radius="xl" size="md">
+                <ThemeIcon variant="transparent" radius="xl" size="md">
                   <Github size={24} />
                 </ThemeIcon>
                 <Text size="md" fw={500}>GitHub</Text>
@@ -270,7 +273,7 @@ function ContactPage() {
             </Anchor>
             <Anchor py-1 href="https://linkedin.com/in/abdallahshee" target="_blank" underline="never">
               <Group gap="sm">
-                <ThemeIcon variant="transparent" color="blue" radius="xl" size="md">
+                <ThemeIcon variant="transparent" radius="xl" size="md">
                   <Linkedin size={24} />
                 </ThemeIcon>
                 <Text size="md" fw={500}>LinkedIn</Text>

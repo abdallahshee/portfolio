@@ -191,34 +191,97 @@ function ServicesPage() {
     <Container size="xl" className="space-y-16 py-10">
 
       {/* ── HERO ── */}
-      <section className="space-y-4 max-w-3xl">
+  <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
+  <Stack gap="xl" className="max-w-3xl">
+    <Stack gap="lg">
+      <Title className="heading">
+        Software solutions built for real business needs
+      
+      </Title>
 
-        <Title className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] tracking-tight bg-gradient-to-r from-blue-700 to-pink-500 bg-clip-text text-transparent">
-          I Design, Build & Scale Modern Software
-        </Title>
+      <Text size="lg" c="dimmed" className="max-w-2xl leading-8">
+        I help businesses and startups turn ideas into reliable, production-ready
+        systems — from management platforms and SaaS products to tailored web
+        applications built for performance, scalability, and long-term growth.
+      </Text>
+    </Stack>
 
-        <Text size="lg" c="dimmed" className="leading-8 max-w-2xl">
-          I help businesses and startups turn ideas into reliable, production-ready systems — whether it's
-          a management platform, a SaaS product, or a custom web application. Built with clean architecture,
-          performance, and growth in mind.
+    <Group gap="sm" className="pt-2">
+      <Link to="/contact">
+        <Button
+          color="teal"
+          radius="xl"
+          size="md"
+          rightSection={<ArrowRight size={16} />}
+        >
+          Discuss Your Project
+        </Button>
+      </Link>
+
+      <Button
+        variant="outline"
+        color="indigo"
+        radius="xl"
+        size="md"
+        onClick={() => router.navigate({ to: "/" })}
+      >
+        Back to Home
+      </Button>
+    </Group>
+
+    <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm" className="pt-2">
+      <Paper withBorder radius="xl" p="md" className="shadow-sm">
+        <Text fw={700} size="sm">Scalable Systems</Text>
+        <Text size="sm" c="dimmed" mt={4}>
+          Designed to grow with your users and workflows.
         </Text>
-        <Group className='mt-4'>
-          <Link to="/contact">
-            <Button color="teal" radius="xl" size="md" rightSection={<ArrowRight size={16} />}>
-              Discuss Your Project
-            </Button>
-          </Link>
-          <Button
-            variant="outline"
-            color="indigo"
-            radius="xl"
-            size="md"
-            onClick={() => router.navigate({ to: '/' })}
+      </Paper>
+
+      <Paper withBorder radius="xl" p="md" className="shadow-sm">
+        <Text fw={700} size="sm">Clean Architecture</Text>
+        <Text size="sm" c="dimmed" mt={4}>
+          Maintainable codebases built for long-term success.
+        </Text>
+      </Paper>
+
+      <Paper withBorder radius="xl" p="md" className="shadow-sm">
+        <Text fw={700} size="sm">Business Focused</Text>
+        <Text size="sm" c="dimmed" mt={4}>
+          Solutions aligned with real operational needs.
+        </Text>
+      </Paper>
+    </SimpleGrid>
+  </Stack>
+
+  <div className="flex justify-center lg:justify-end">
+    <Paper
+      radius="28px"
+      withBorder
+      shadow="md"
+      className="relative w-full max-w-[34rem] overflow-hidden bg-white p-3 dark:bg-slate-900"
+    >
+      <div className="relative overflow-hidden rounded-[22px]">
+        <img
+          src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg"
+          alt="Team planning software services and digital solutions"
+          className="block h-[320px] w-full object-cover sm:h-[380px] lg:h-[420px]"
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-900/20 to-transparent" />
+
+        <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
+          <Paper
+            radius="10px"
+            className="bg-white/95 p-2 backdrop-blur dark:bg-slate-900/90"
           >
-            Back to Home
-          </Button>
-        </Group>
-      </section>
+            <Title order={2} className='heading text-center'> Sclable and Maintainable</Title>
+             
+          </Paper>
+        </div>
+      </div>
+    </Paper>
+  </div>
+</section>
 
       {/* ── SERVICES GRID ── */}
       <section className="space-y-4">
@@ -390,17 +453,17 @@ function ServicesPage() {
             <Group justify="center" mt="md">
               <Button
                 variant="filled"
-                color="teal"
+                color="yellow"
                 size="md"
                 radius="xl"
                 leftSection={<Mail size={18} />}
                 onClick={() => router.navigate({ to: '/contact' })}
               >
-                Start a Conversation
+                Get in Touch
               </Button>
               <Link to="/projects">
-                <Button variant="outline" color="indigo" size="md" radius="xl" rightSection={<ArrowRight size={16} />}>
-                  View My Projects
+                <Button variant="gradient" color="blue" size="md" radius="xl" rightSection={<ArrowRight size={16} />}>
+                  Projects
                 </Button>
               </Link>
             </Group>

@@ -130,7 +130,7 @@ function BlogsPage() {
 
       {/* Header */}
       <div className="space-y-2">
-        <Title order={1}>Articles & Writing</Title>
+        <Title className="heading">Articles & Writing</Title>
         <Text c="dimmed" className="max-w-2xl">
           Thoughts, tutorials, and practical notes on building modern web applications.
         </Text>

@@ -1,3 +1,4 @@
+import { Title } from "@mantine/core"
 import { useRouter } from "@tanstack/react-router"
 import { Link } from "@tanstack/react-router"
 
@@ -8,9 +9,9 @@ function NotFound() {
     <div className="flex min-h-screen flex-col items-center justify-center gap-4 text-center">
       <div className="space-y-2">
         <h1 className="text-6xl font-bold text-slate-800 dark:text-slate-100">404</h1>
-        <h2 className="text-2xl font-semibold text-slate-600 dark:text-slate-300">
+        <Title className="heading">
           Page Not Found
-        </h2>
+        </Title>
         <p className="max-w-md text-slate-500 dark:text-slate-400">
           The page you are looking for does not exist or has been moved.
         </p>

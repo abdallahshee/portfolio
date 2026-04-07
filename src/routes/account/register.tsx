@@ -142,7 +142,7 @@ function RouteComponent() {
               <UserPlus size={20} />
             </ThemeIcon>
           </Group>
-          <Title order={2} className="text-3xl">Create Account</Title>
+          <Title className="heading">Create Account</Title>
           <Text c="dimmed" size="sm" mt={6}>
             Join and start exploring projects and blogs.
           </Text>

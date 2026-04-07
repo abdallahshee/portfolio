@@ -56,7 +56,7 @@ function RouteComponent() {
               <KeyRound size={20} />
             </ThemeIcon>
           </Group>
-          <Title order={2} className="text-3xl">Reset Password</Title>
+          <Title className="heading">Reset Password</Title>
           <Text c="dimmed" size="sm" mt={6}>
             Enter your registered email and we'll send you a reset link.
           </Text>

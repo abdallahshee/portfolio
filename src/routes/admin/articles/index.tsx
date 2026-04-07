@@ -50,7 +50,7 @@ function RouteComponent() {
       {/* Page header */}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <Title order={2}>Articles</Title>
+          <Title className='heading'>Articles</Title>
           <Text size="sm" c="dimmed">
             {pagination?.total ?? 0} total articles
           </Text>
@@ -152,8 +152,7 @@ function RouteComponent() {
                       <Text size="sm" fw={500} lineClamp={2} className="min-w-0">
                         {article.title}
                       </Text>
-                    </Group>
-                  </Table.Td>
+                    </Group></Table.Td>
 
                   {/* Author */}
                   <Table.Td>

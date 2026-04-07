@@ -133,7 +133,7 @@ export function EditUserForm({ userId, targetUser, role }: EditUserFormProps) {
         {/* ── Avatar Preview ── */}
         <Stack align="center" gap="sm">
           <div className="relative w-fit">
-            {/* <Avatar
+            <Avatar
               src={avatarPreview}
               size={90}
               radius="xl"
@@ -141,7 +141,7 @@ export function EditUserForm({ userId, targetUser, role }: EditUserFormProps) {
               className="border-2 border-gray-200 dark:border-slate-700"
             >
               {targetUser?.user_metadata.name?.[0]?.toUpperCase()}
-            </Avatar> */}
+            </Avatar>
             <div className="absolute -bottom-1 -right-1 bg-white dark:bg-slate-800 rounded-full p-1 shadow border border-gray-200 dark:border-slate-700">
               <Camera size={13} className="text-gray-500" />
             </div>

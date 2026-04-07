@@ -149,14 +149,11 @@ function App() {
               <span className="absolute left-0 -bottom-1 sm:-bottom-2 h-[3px] sm:h-[4px] w-3/5 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 rounded-full"></span>
             </div>
 
-            <div className="py-1">
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white">
-                Designing maintainable and scalable
-                <br />
-                <span className="block mt-2 bg-gradient-to-r from-indigo-600 via-blue-600 to-blue-400 bg-clip-text text-transparent">
-                  web products & software systems
-                </span>
-              </h1>
+            <div className="">
+              <Title className="heading">
+                Designing maintainable and scalable web products & software systems
+         
+              </Title>
             </div>
 
             <Text size="lg" c="dimmed" className="max-w-2xl text-base sm:text-lg leading-7 sm:leading-8">
@@ -167,18 +164,18 @@ function App() {
           </Stack>
 
           <Group>
+            <Link to='/projects'>
             <Button
-              component="a"
-              href="#featured"
               size="md"
               radius="xl"
               className="bg-indigo-500 hover:bg-indigo-600"
               rightSection={<ArrowRight size={18} />}
             >
-              Explore Work
+              Explore Projects
             </Button>
+              </Link>
             <Link to="/contact">
-              <Button size="md" radius="xl" variant="outline">Contact Me</Button>
+              <Button size="md" radius="xl" variant="filled" color='yellow'>Contact Me</Button>
             </Link>
           </Group>
         </Stack>
@@ -279,12 +276,12 @@ function App() {
           <Group>
             <Link to="/contact">
               <Button variant="filled" color="indigo" radius="xl" size="md" rightSection={<ArrowRight size={16} />}>
-                Work With Me
+                Let's Work
               </Button>
             </Link>
             <Link to="/services">
               <Button variant="outline" color="indigo" radius="xl" size="md" rightSection={<ArrowRight size={16} />}>
-                View Services
+                Explore Services
               </Button>
             </Link>
           </Group>
@@ -476,40 +473,128 @@ function App() {
 
 
       {/* ── CTA ── */}
-      <section id="contact" className="max-w-4xl mx-auto">
-        <Paper
-          radius="2xl"
-          withBorder
-          shadow="sm"
-          className="p-8 lg:p-12 text-center bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-slate-900 dark:to-slate-800"
-        >
-          <Stack align="center" gap="md">
-            <Title order={2} className="text-3xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-              Let&apos;s Build Something Great
-            </Title>
-            <Text c="dimmed" size="lg" className="max-w-2xl leading-8">
-              I&apos;m open to freelance work, collaborations, and full-stack product opportunities.
-              If you have an idea, product, or challenge in mind, I&apos;d be glad to connect.
-            </Text>
-            <Group justify="center" mt="md">
-              <Button
-                variant="filled"
-                onClick={() => router.navigate({ to: '/contact' })}
-                leftSection={<Mail size={18} />}
-                color="indigo"
-              >
-                Email Me
-              </Button>
-              <Button component="a" href="https://github.com/abdallahshee" target="_blank" variant="filled" leftSection={<Github size={18} />}>
-                GitHub
-              </Button>
-              <Button component="a" href="https://linkedin.com/in/abdallahshee" target="_blank" variant="filled" leftSection={<Linkedin size={18} />}>
-                LinkedIn
-              </Button>
-            </Group>
-          </Stack>
-        </Paper>
-      </section>
+ <section id="contact" className="mx-auto max-w-5xl scroll-mt-20">
+  <Paper
+    radius="24px"
+    withBorder
+    shadow="sm"
+    className="relative overflow-hidden border border-slate-200/70 bg-gradient-to-br from-white via-indigo-50 to-blue-50 px-6 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
+  >
+    <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.14),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_30%)]" />
+
+    <div className="relative grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
+      <Stack gap="lg" className="max-w-3xl">
+      
+
+        <div className="space-y-2">
+          <Title
+            order={2}
+            className="text-3xl sm:text-4xl lg:text-5xl font-black leading-tight tracking-tight text-slate-900 dark:text-white"
+          >
+            Let&apos;s turn your
+            <span className="block bg-gradient-to-r from-indigo-600 via-blue-600 to-cyan-500 bg-clip-text text-transparent">
+              idea into a production-ready product
+            </span>
+          </Title>
+
+          <Text c="dimmed" size="lg" className="max-w-2xl leading-8">
+            I work with businesses, founders, and teams to design and build
+            reliable software systems — from internal tools and business
+            platforms to customer-facing web products.
+          </Text>
+        </div>
+
+        <Group gap="sm" className="pt-2">
+          <Button
+            size="md"
+            radius="xl"
+            color="yellow"
+            variant='filled'
+            onClick={() => router.navigate({ to: '/contact' })}
+            leftSection={<Mail size={18} />}
+            className="shadow-sm"
+          >
+            Start a Conversation
+          </Button>
+
+          <Button
+            component="a"
+            href="https://linkedin.com/in/abdallahshee"
+            target="_blank"
+            variant="filled"
+            color='blue'
+            size="md"
+            radius="xl"
+            leftSection={<Linkedin size={18} />}
+          >
+            Connect on LinkedIn
+          </Button>
+        </Group>
+      </Stack>
+
+      <Paper
+        radius="20px"
+        withBorder
+        className="bg-white/80 p-5 shadow-sm backdrop-blur dark:bg-slate-900/70"
+      >
+        <Stack gap="md">
+          <Text fw={700} className="text-slate-900 dark:text-white">
+            Best fit for:
+          </Text>
+
+      <Stack gap="sm">
+  <Group gap="sm" wrap="nowrap">
+    <ThemeIcon size={34} radius="xl" variant="light" color="indigo">
+      <CheckCircle size={18} />
+    </ThemeIcon>
+    <Text size="sm" c="dimmed">
+      Founders building new digital products
+    </Text>
+  </Group>
+
+  <Group gap="sm" wrap="nowrap">
+    <ThemeIcon size={34} radius="xl" variant="light" color="blue">
+      <CheckCircle size={18} />
+    </ThemeIcon>
+    <Text size="sm" c="dimmed">
+      Businesses improving operations with custom systems
+    </Text>
+  </Group>
+
+  <Group gap="sm" wrap="nowrap">
+    <ThemeIcon size={34} radius="xl" variant="light" color="teal">
+      <CheckCircle size={18} />
+    </ThemeIcon>
+    <Text size="sm" c="dimmed">
+      Teams needing scalable, maintainable web software
+    </Text>
+  </Group>
+
+  {/* NEW */}
+  <Group gap="sm" wrap="nowrap">
+    <ThemeIcon size={34} radius="xl" variant="light" color="orange">
+      <CheckCircle size={18} />
+    </ThemeIcon>
+    <Text size="sm" c="dimmed">
+      Startups validating ideas and launching MVPs quickly
+    </Text>
+  </Group>
+
+  <Group gap="sm" wrap="nowrap">
+    <ThemeIcon size={34} radius="xl" variant="light" color="grape">
+      <CheckCircle size={18} />
+    </ThemeIcon>
+    <Text size="sm" c="dimmed">
+      Organizations modernizing legacy systems and workflows
+    </Text>
+  </Group>
+</Stack>
+
+        </Stack>
+      </Paper>
+    </div>
+  </Paper>
+</section>
 
     </Container>
   )

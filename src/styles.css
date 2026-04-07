@@ -17,6 +17,10 @@
   --chip-line: #e2e8f0;
   --sea-ink: #1e5a48;
 }
+.heading {
+  @apply 
+text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] tracking-tight bg-gradient-to-r from-blue-700 to-pink-500 bg-clip-text text-transparent
+}
 
 :root.dark,
 [data-mantine-color-scheme='dark'] {
@@ -98,6 +102,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+
 
 body::before {
   content: '';

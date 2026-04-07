@@ -96,7 +96,7 @@ function RouteComponent() {
 
       {/* Page Header */}
       <div className="mb-10 max-w-2xl">
-        <Title order={1} className="mb-4 text-4xl font-bold bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+        <Title className='heading'>
           Projects I've Built
         </Title>
         <Text size="lg" c="dimmed">
