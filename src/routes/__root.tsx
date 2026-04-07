@@ -70,6 +70,7 @@ function AppShell({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
+  // ✅ EXISTING AUTH EFFECT
   useEffect(() => {
     supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
       setSession(data?.session ?? null)
@@ -85,6 +86,21 @@ function AppShell({ children }: { children: React.ReactNode }) {
 
     return () => listener.subscription.unsubscribe()
   }, [supabase])
+
+  // ✅ NEW: Handle Vite dynamic import errors (VERY IMPORTANT)
+  useEffect(() => {
+    const handler = (event: any) => {
+      console.warn("Vite preload error detected → reloading app")
+      event.preventDefault()
+      window.location.reload()
+    }
+
+    window.addEventListener("vite:preloadError", handler)
+
+    return () => {
+      window.removeEventListener("vite:preloadError", handler)
+    }
+  }, [])
 
   const isAdminRoute = useRouterState({
     select: (s) => s.location.pathname.startsWith('/admin'),
