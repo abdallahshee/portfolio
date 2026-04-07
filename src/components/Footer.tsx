@@ -126,13 +126,9 @@ export default function Footer() {
 
         <Divider my="lg" />
 
-        <Group justify="space-between" wrap="wrap">
+        <Group justify="space-around" wrap="wrap">
           <Text size="sm" c="dimmed">
-            © {new Date().getFullYear()} Abdallah Shee
-          </Text>
-
-          <Text size="sm" c="dimmed">
-            Nairobi, Kenya • Available for projects
+            © {new Date().getFullYear()} Abdallah Shee, Nairobi, Kenya
           </Text>
         </Group>
 

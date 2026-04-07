@@ -33,6 +33,7 @@ import {
   Rocket,
   HeartHandshake,
   Quote,
+  ShieldCheck,
 } from 'lucide-react'
 
 export const Route = createFileRoute('/services')({
@@ -103,6 +104,12 @@ const SERVICES = [
     color: 'grape',
 
   },
+  {
+  icon: <ShieldCheck size={24} />,
+  title: 'Authentication & Access Systems',
+  desc: 'Secure authentication systems with role-based access control, multi-tenant permissions, session management, and integrations with OAuth providers — designed to protect data while enabling seamless user experiences.',
+  color: 'red',
+},
 ]
 
 const PROCESS = [
@@ -185,7 +192,7 @@ function ServicesPage() {
     <Container size="xl" className="space-y-16 py-10">
 
       {/* ── HERO ── */}
-      <section className="space-y-5 max-w-3xl">
+      <section className="space-y-4 max-w-3xl">
 
         <Title className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] tracking-tight bg-gradient-to-r from-blue-700 to-pink-500 bg-clip-text text-transparent">
           I Design, Build & Scale Modern Software
@@ -196,7 +203,7 @@ function ServicesPage() {
           a management platform, a SaaS product, or a custom web application. Built with clean architecture,
           performance, and growth in mind.
         </Text>
-        <Group className='mt-3'>
+        <Group className='mt-4'>
           <Link to="/contact">
             <Button color="teal" radius="xl" size="md" rightSection={<ArrowRight size={16} />}>
               Discuss Your Project
@@ -214,15 +221,12 @@ function ServicesPage() {
         </Group>
       </section>
 
-      <Divider />
-
       {/* ── SERVICES GRID ── */}
-      <section className="space-y-6">
+      <section className="space-y-4">
         <div>
-
           <Title order={2} className="text-3xl font-bold">Service Areas</Title>
           <Text c="dimmed" mt={4} className="max-w-2xl">
-            Each project is custom-built to fit your specific requirements — no templates, no shortcuts.
+            I design and build software solutions tailored precisely to your requirements — with a focus on performance, scalability, and long-term reliability.
           </Text>
         </div>
 
