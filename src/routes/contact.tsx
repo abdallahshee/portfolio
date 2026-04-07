@@ -126,12 +126,10 @@ function ContactPage() {
       {/* ── PAGE HEADER ── */}
       <Stack gap="xs" className="text-center max-w-2xl mx-auto">
 
-        <Title className="text-4xl font-extrabold">
-          Get In{" "}
-          <span className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent">
-            Touch
-          </span>
+        <Title className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] tracking-tight bg-gradient-to-r from-blue-700 to-pink-500 bg-clip-text text-transparent">
+          Get in Touch
         </Title>
+        
         <Text size="lg" c="dimmed" className="leading-8">
           Have a project, idea, or opportunity you'd like to discuss?
           I'd love to hear from you. Fill in the form or reach out directly —

@@ -3,14 +3,10 @@ import {
   Burger, Drawer, ScrollArea, Button, Avatar,
   Text, Menu, UnstyledButton, Group, Skeleton,
 } from "@mantine/core"
-import { Link, useRouter,useRouterState } from "@tanstack/react-router"
+import { Link, useRouter, useRouterState } from "@tanstack/react-router"
 import { ChevronDown, LogOut, Sun, Moon, LayoutDashboard, Settings } from "lucide-react"
-import { useQueryClient } from "@tanstack/react-query"
-
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import type { Session, AuthChangeEvent } from "@supabase/supabase-js"
-
-
 
 type ThemeMode = 'light' | 'dark'
 
@@ -30,7 +26,6 @@ function applyThemeMode(mode: ThemeMode) {
   root.setAttribute('data-theme', mode)
 }
 
-// ✅ only expect a session if supabase has stored one
 function hasStoredSession(): boolean {
   if (typeof window === 'undefined') return false
   return Object.keys(localStorage).some(
@@ -41,16 +36,14 @@ function hasStoredSession(): boolean {
 export default function Header() {
   const [opened, setOpened] = useState(false)
   const router = useRouter()
- 
   const supabase = getSupabaseBrowserClient()
 
   const [session, setSession] = useState<Session | null>(null)
-  // ✅ only show skeleton if there's a stored session to wait for
   const [isSessionLoading, setIsSessionLoading] = useState(() => hasStoredSession())
 
   const currentPath = useRouterState({
-  select: (state) => state.location.pathname,
-})
+    select: (state) => state.location.pathname,
+  })
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
@@ -69,7 +62,7 @@ export default function Header() {
   }, [])
 
   const user = session?.user ?? null
-const isAdmin = user?.user_metadata?.role === "admin"
+  const isAdmin = user?.user_metadata?.role === "admin"
 
   const [themeMode, setThemeMode] = useState<ThemeMode>('light')
 
@@ -88,32 +81,37 @@ const isAdmin = user?.user_metadata?.role === "admin"
     window.localStorage.setItem('theme', next)
   }
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
-    // await queryClient.invalidateQueries({ queryKey: getSessionQueryOptions().queryKey })
+const handleLogout = async () => {
+  setOpened(false)
+  await supabase.auth.signOut()
+  await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
+}
+
+const handleLogin = async () => {
+  setOpened(false)
+  await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
+}
+
+const handleSignup = async () => {
+  setOpened(false)
+  await router.navigate({ to: "/account/register", search: { callbackUrl: "/" } })
+}
+
+  const handleSettings = async (userId: string) => {
+    if (isAdmin) {
+      setOpened(false)
+      await router.navigate({ to: "/admin/users/$userId/edit", params: { userId } })
+      return
+    }
+
+    await router.navigate({ to: "/$userId/edit", params: { userId } })
   }
 
-  const handleLogin = async () => {
-    await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
-  }
 
-    const handleSettings = async (userId:string) => {
-      if(isAdmin){
-    await router.navigate({to:"/admin/users/$userId/edit",params:{userId} })
-      }
-          await router.navigate({to:"/$userId/edit",params:{userId} })
-
-  }
-
-
-  const handleSignup = () => {
-    router.navigate({ to: "/account/register", search: { callbackUrl: "/" } })
-  }
 
   const links = [
     { label: "Home", to: "/" },
-      { label: "Services", to: "/services" },
+    { label: "Services", to: "/services" },
     { label: "Projects", to: "/projects" },
     { label: "Blog", to: "/articles" },
     { label: "Contact", to: "/contact" },
@@ -150,8 +148,10 @@ const isAdmin = user?.user_metadata?.role === "admin"
           </Group>
         </UnstyledButton>
       </Menu.Target>
+
       <Menu.Dropdown>
         <Menu.Label>Account</Menu.Label>
+
         {isAdmin && (
           <>
             <Menu.Item
@@ -164,17 +164,19 @@ const isAdmin = user?.user_metadata?.role === "admin"
           </>
         )}
 
-        {/* <Menu.Item
-              leftSection={<LayoutDashboard size={16} className="text-blue-600" />}
-              onClick={() => router.navigate({ to: "/admin" })}
-            >
-              Admin Dashboard
-            </Menu.Item> */}
-            <Menu.Divider />
-        <Menu.Item  leftSection={<Settings size={16} className="text-blue-600"  />} onClick={()=>handleSettings(user?.id!)}>
-       Edit Profile
+        <Menu.Divider />
+
+        <Menu.Item
+          leftSection={<Settings size={16} className="text-blue-600" />}
+          onClick={() => handleSettings(user?.id!)}
+        >
+          Edit Profile
         </Menu.Item>
-        <Menu.Item leftSection={<LogOut size={16} className="text-blue-600" />} onClick={handleLogout}>
+
+        <Menu.Item
+          leftSection={<LogOut size={16} className="text-blue-600" />}
+          onClick={handleLogout}
+        >
           Logout
         </Menu.Item>
       </Menu.Dropdown>
@@ -184,24 +186,30 @@ const isAdmin = user?.user_metadata?.role === "admin"
   const AuthButtons = (
     <span className="flex flex-shrink-0 items-center gap-2">
       <Link to="/account" search={{ callbackUrl: "/" }}>
-        <Button variant="outline" color="blue" size="sm" onClick={handleLogin}>Sign in</Button>
+        <Button variant="outline" color="blue" size="sm" onClick={handleLogin}>
+          Sign in
+        </Button>
       </Link>
       <Link to="/account/register" search={{ callbackUrl: "/" }}>
-        <Button variant="filled" color="blue" size="sm" onClick={handleSignup}>Sign up</Button>
+        <Button variant="filled" color="blue" size="sm" onClick={handleSignup}>
+          Sign up
+        </Button>
       </Link>
     </span>
   )
 
   return (
-    <header className="fixed left-0 top-0 z-[100] w-full bg-slate-50 dark:bg-slate-700 border-b-2 border-blue-500 shadow-lg">
-      <div className="container mx-auto flex items-center justify-end p-4">
-
-
-        {/* Desktop nav */}
+    <header className="fixed left-0 top-0 z-[100] h-20 w-full border-b-2 border-blue-500 bg-slate-50 shadow-lg dark:bg-slate-700">
+      <div className="container mx-auto flex h-full items-center justify-end px-4">
         <nav className="hidden min-w-0 items-center space-x-6 md:flex">
           {ThemeButton}
           {links.map((link) => (
-            <Link key={link.label} to={link.to} className="whitespace-nowrap">
+            <Link
+              key={link.label}
+              to={link.to}
+              className="whitespace-nowrap"
+              activeProps={{ className: "text-blue-600 font-semibold" }}
+            >
               {link.label}
             </Link>
           ))}
@@ -210,15 +218,20 @@ const isAdmin = user?.user_metadata?.role === "admin"
           ) : user ? UserMenu : AuthButtons}
         </nav>
 
-        {/* Mobile — theme toggle + burger */}
         <div className="flex items-center gap-2 md:hidden">
           {ThemeButton}
           <Burger opened={opened} onClick={() => setOpened(!opened)} size="sm" color="#6366f1" />
         </div>
       </div>
 
-      {/* Mobile drawer */}
-      <Drawer opened={opened} onClose={() => setOpened(false)} size="100%" padding="md" title="Menu" className="md:hidden">
+      <Drawer
+        opened={opened}
+        onClose={() => setOpened(false)}
+        size="100%"
+        padding="md"
+        title="Menu"
+        className="md:hidden"
+      >
         <ScrollArea style={{ height: "100%" }}>
           <div className="mt-4 flex flex-col space-y-4 text-lg">
             {links.map((link) => (
@@ -227,6 +240,7 @@ const isAdmin = user?.user_metadata?.role === "admin"
                 to={link.to}
                 className="text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
                 onClick={() => setOpened(false)}
+                activeProps={{ className: "text-indigo-500 font-semibold dark:text-indigo-400" }}
               >
                 {link.label}
               </Link>
@@ -249,15 +263,28 @@ const isAdmin = user?.user_metadata?.role === "admin"
                       {isAdmin && <Text size="xs" c="indigo" fw={500}>Administrator</Text>}
                     </div>
                   </div>
+
+                  {isAdmin && (
+                    <Button
+                      variant="light"
+                      color="indigo"
+                      radius="xl"
+                      fullWidth
+                      leftSection={<LayoutDashboard size={15} />}
+                      onClick={() => {
+                        router.navigate({ to: "/admin" })
+                        setOpened(false)
+                      }}
+                    >
+                      Admin Dashboard
+                    </Button>
+                  )}
+
                   <Button
-                    variant="light" color="indigo" radius="xl" fullWidth
-                    leftSection={<LayoutDashboard size={15} />}
-                    onClick={() => { router.navigate({ to: "/admin" }); setOpened(false) }}
-                  >
-                    Admin Dashboard
-                  </Button>
-                  <Button
-                    variant="outline" color="red" radius="xl" fullWidth
+                    variant="outline"
+                    color="red"
+                    radius="xl"
+                    fullWidth
                     leftSection={<LogOut size={15} />}
                     onClick={handleLogout}
                   >

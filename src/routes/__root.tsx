@@ -8,26 +8,24 @@ import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
 import Footer from '../components/Footer'
 
-import '@mantine/core/styles.css';
+import '@mantine/core/styles.css'
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-import { MantineProvider} from '@mantine/core';
+import { MantineProvider } from '@mantine/core'
 import '@mantine/notifications/styles.css'
 import "@mantine/tiptap/styles.css"
 import appCss from '../styles.css?url'
 
-import { useQuery, type QueryClient } from '@tanstack/react-query'
+import type { QueryClient } from '@tanstack/react-query'
 import { Notifications } from '@mantine/notifications'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollTop'
 import NotFound from "../components/NotFound"
-import { useRouterState } from '@tanstack/react-router';
-import { getSupabaseBrowserClient } from '@/lib/supabase/client';
-import { useEffect, useState } from 'react';
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js';
-
-
-
+import { useRouterState } from '@tanstack/react-router'
+import { getSupabaseBrowserClient } from '@/lib/supabase/client'
+import { useEffect, useState } from 'react'
+import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
+import { ScrollToTopOnRouteChange } from '@/components/ScrollTopOnRouteChnage'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -44,7 +42,6 @@ const THEME_INIT_SCRIPT = `(function(){
     root.setAttribute('data-mantine-color-scheme', resolved);
     root.setAttribute('data-theme', resolved);
 
-    // Reapply after DOM loads to win against Mantine hydration
     document.addEventListener('DOMContentLoaded', function() {
       root.setAttribute('data-mantine-color-scheme', resolved);
       root.classList.remove('light', 'dark');
@@ -63,22 +60,18 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
     links: [{ rel: 'stylesheet', href: appCss }],
   }),
-  // loader: async ({ context }) => {
-  //   await context.queryClient.prefetchQuery(getSessionQueryOptions())
-  // },
   shellComponent: RootDocument,
   notFoundComponent: NotFound,
-  errorComponent:ErrorComponent
+  errorComponent: ErrorComponent,
 })
 
 function AppShell({ children }: { children: React.ReactNode }) {
   const supabase = getSupabaseBrowserClient()
   const [session, setSession] = useState<Session | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // ✅ getSession inside async callback, not directly in useEffect
-    supabase.auth.getSession().then(( data:any ) => {
+    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
       setSession(data?.session ?? null)
       setIsLoading(false)
     })
@@ -91,7 +84,7 @@ function AppShell({ children }: { children: React.ReactNode }) {
     )
 
     return () => listener.subscription.unsubscribe()
-  }, [])
+  }, [supabase])
 
   const isAdminRoute = useRouterState({
     select: (s) => s.location.pathname.startsWith('/admin'),
@@ -102,12 +95,17 @@ function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <Notifications position="top-right" />
+
       {showHeader && <Header />}
-      <main className={showHeader || isLoading ? "pt-10" : ""}>
+
+      <main className={showHeader ? "pt-20" : ""}>
+        <ScrollToTopOnRouteChange />
         {children}
         <ScrollToTop />
       </main>
+
       {!isAdminRoute && <Footer />}
+
       <TanStackDevtools
         config={{ position: 'bottom-right' }}
         plugins={[
@@ -119,7 +117,6 @@ function AppShell({ children }: { children: React.ReactNode }) {
   )
 }
 
-// ✅ RootDocument just sets up providers — no hooks here
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -128,14 +125,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
-          <MantineProvider
-          defaultColorScheme="auto"
-      
-        >
+        <MantineProvider defaultColorScheme="auto">
           <TanStackQueryProvider>
-            <AppShell>
-              {children}
-            </AppShell>
+            <AppShell>{children}</AppShell>
           </TanStackQueryProvider>
           <Scripts />
         </MantineProvider>

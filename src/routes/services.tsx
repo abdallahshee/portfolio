@@ -66,7 +66,7 @@ const SERVICES = [
     title: 'Business & Inventory Systems',
     desc: 'Custom ERP-lite solutions for SMEs — stock management, purchase orders, supplier tracking, sales reporting, and real-time business insights that help you make faster, smarter decisions.',
     color: 'blue',
-  
+
   },
   {
     icon: <CalendarClock size={24} />,
@@ -186,17 +186,15 @@ function ServicesPage() {
 
       {/* ── HERO ── */}
       <section className="space-y-5 max-w-3xl">
-      
-        <Title className="text-3xl sm:text-4xl font-black leading-tight tracking-tight text-slate-900 dark:text-white">
-          Software I Design{' '}
-          <span className="bg-gradient-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
-            & Deliver
-          </span>
+
+        <Title className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-black leading-[1.1] tracking-tight bg-gradient-to-r from-blue-700 to-pink-500 bg-clip-text text-transparent">
+          I Design, Build & Scale Modern Software
         </Title>
+
         <Text size="lg" c="dimmed" className="leading-8 max-w-2xl">
-          I build custom web software for businesses, startups, and institutions across Kenya and beyond.
-          Whether it's a management system, a customer-facing product, or a full SaaS platform — I
-          take it from idea to production.
+          I help businesses and startups turn ideas into reliable, production-ready systems — whether it's
+          a management platform, a SaaS product, or a custom web application. Built with clean architecture,
+          performance, and growth in mind.
         </Text>
         <Group className='mt-3'>
           <Link to="/contact">
@@ -221,14 +219,14 @@ function ServicesPage() {
       {/* ── SERVICES GRID ── */}
       <section className="space-y-6">
         <div>
-         
+
           <Title order={2} className="text-3xl font-bold">Service Areas</Title>
           <Text c="dimmed" mt={4} className="max-w-2xl">
             Each project is custom-built to fit your specific requirements — no templates, no shortcuts.
           </Text>
         </div>
 
-        <SimpleGrid cols={{ base: 1, md:2 }} spacing="md">
+        <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
           {SERVICES.map((service) => (
             <Card
               key={service.title}
@@ -239,19 +237,19 @@ function ServicesPage() {
             >
               <Stack gap="md" h="100%">
                 <Group className='flex '>
-                <ThemeIcon
-                  variant="light"
-                  color={service.color}
-                  radius="lg"
-                  size={42}
-                  className="transition-transform duration-300 group-hover:scale-110"
-                >
-                  {service.icon}
-                </ThemeIcon>
-<Text fw={700}>{service.title}</Text>
-</Group>
+                  <ThemeIcon
+                    variant="light"
+                    color={service.color}
+                    radius="lg"
+                    size={42}
+                    className="transition-transform duration-300 group-hover:scale-110"
+                  >
+                    {service.icon}
+                  </ThemeIcon>
+                  <Text fw={700}>{service.title}</Text>
+                </Group>
                 <Stack gap={4} className="flex-1">
-                  
+
                   <Text size="md" c="dimmed" className="leading-6">{service.desc}</Text>
                 </Stack>
 
@@ -264,84 +262,84 @@ function ServicesPage() {
       <Divider />
 
       {/* ── HOW I WORK ── */}
-<div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-  <section className="space-y-8">
-    <div>
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
+        <section className="space-y-8">
+          <div>
 
-      <Title order={2} className="text-3xl font-bold">
-        How I Work
-      </Title>
-      <Text c="dimmed" mt={4} className="max-w-2xl">
-        A clear, collaborative process from first conversation to final handover — so you always
-        know what's happening and what comes next.
-      </Text>
-    </div>
-
-    <Timeline active={4} bulletSize={40} lineWidth={2} color="indigo">
-      {PROCESS.map((step, i) => (
-        <Timeline.Item
-          key={step.title}
-          bullet={
-            <ThemeIcon size={40} radius="xl" variant="filled" color={step.color}>
-              {step.icon}
-            </ThemeIcon>
-          }
-          title={
-            <Text fw={700} size="md" mb={4}>
-              {i + 1}. {step.title}
+            <Title order={2} className="text-3xl font-bold">
+              How I Work
+            </Title>
+            <Text c="dimmed" mt={4} className="max-w-2xl">
+              A clear, collaborative process from first conversation to final handover — so you always
+              know what's happening and what comes next.
             </Text>
-          }
-        >
-          <Text size="sm" c="dimmed" className="mb-6 max-w-xl leading-6">
-            {step.desc}
-          </Text>
-        </Timeline.Item>
-      ))}
-    </Timeline>
-  </section>
+          </div>
 
-  <section className="space-y-6 border-l-4 pl-4 border-blue-500">
-    <div>
+          <Timeline active={4} bulletSize={40} lineWidth={2} color="indigo">
+            {PROCESS.map((step, i) => (
+              <Timeline.Item
+                key={step.title}
+                bullet={
+                  <ThemeIcon size={40} radius="xl" variant="filled" color={step.color}>
+                    {step.icon}
+                  </ThemeIcon>
+                }
+                title={
+                  <Text fw={700} size="md" mb={4}>
+                    {i + 1}. {step.title}
+                  </Text>
+                }
+              >
+                <Text size="sm" c="dimmed" className="mb-6 max-w-xl leading-6">
+                  {step.desc}
+                </Text>
+              </Timeline.Item>
+            ))}
+          </Timeline>
+        </section>
 
-      <Title order={2} className="text-3xl font-bold">
-        Tools & Tech Stack
-      </Title>
-      <Text c="dimmed" mt={4} className="max-w-2xl">
-        I use a modern, production-proven stack chosen for reliability, developer experience,
-        and long-term maintainability.
-      </Text>
-    </div>
+        <section className="space-y-6 border-l-4 pl-4 border-blue-500">
+          <div>
 
-    <SimpleGrid cols={{ base: 2, sm: 3, lg: 4 }} spacing="sm">
-      {TECH_STACK.map((tech) => (
-        <Paper
-          key={tech.name}
-          radius="lg"
-          withBorder
-          p="md"
-          className="group transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-        >
-          <Stack gap={4}>
-            <Text fw={700} size="sm">
-              {tech.name}
+            <Title order={2} className="text-3xl font-bold">
+              Tools & Tech Stack
+            </Title>
+            <Text c="dimmed" mt={4} className="max-w-2xl">
+              I use a modern, production-proven stack chosen for reliability, developer experience,
+              and long-term maintainability.
             </Text>
-        
-          </Stack>
-        </Paper>
-      ))}
-    </SimpleGrid>
-  </section>
-</div>
-  
+          </div>
+
+          <SimpleGrid cols={{ base: 2, sm: 3, lg: 4 }} spacing="sm">
+            {TECH_STACK.map((tech) => (
+              <Paper
+                key={tech.name}
+                radius="lg"
+                withBorder
+                p="md"
+                className="group transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+              >
+                <Stack gap={4}>
+                  <Text fw={700} size="sm">
+                    {tech.name}
+                  </Text>
+
+                </Stack>
+              </Paper>
+            ))}
+          </SimpleGrid>
+        </section>
+      </div>
+
 
       {/* ── TECH STACK ── */}
-    
+
 
 
       {/* ── TESTIMONIALS ── */}
       <section className="space-y-6">
         <div>
-        
+
           <Title order={2} className="text-3xl font-bold">What Clients Say</Title>
           <Text c="dimmed" mt={4} className="max-w-2xl">
             Relationships built on clear communication, reliable delivery, and software that actually works.
@@ -373,7 +371,7 @@ function ServicesPage() {
         </SimpleGrid>
       </section>
 
-     
+
 
       {/* ── CTA ── */}
       <section className="max-w-4xl mx-auto">
