@@ -103,7 +103,7 @@ const STRENGTHS = [
   {
     icon: <Sparkles size={20} />,
     title: 'AI-Augmented Development',
-    desc: 'Leverage AI to accelerate development, improve code quality, and enhance product capabilities — from AI-assisted coding and automation to integrating intelligent features like chatbots, recommendations, and data-driven insights into your applications.',
+    desc: 'Leverage AI to accelerate development, improve code quality, and enhance product capabilities.',
     color: 'grape',
   },
 ]
@@ -440,7 +440,7 @@ function App() {
                 <div>
                   <Title order={3}>Featured Articles</Title>
                   <Text size="sm" c="dimmed">
-                    A few of the most engaging pieces I’ve written
+                    A few of the most engaging pieces written by users
                   </Text>
                 </div>
                 <Link to="/articles" search={{ page: 1 }}>
