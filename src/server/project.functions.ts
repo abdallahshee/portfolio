@@ -195,7 +195,7 @@ export const getTopProjects = createServerFn({ method: "GET" })
         .leftJoin(projectRating, eq(project.id, projectRating.projectId))
         .groupBy(project.id)
         .orderBy(desc(avg(projectRating.rating)))
-        .limit(5); // top 5 projects
+        .limit(3); // top 5 projects
 
       return topProjects;
     } catch (err) {

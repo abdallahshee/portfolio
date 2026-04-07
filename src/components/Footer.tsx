@@ -9,32 +9,28 @@ import {
   ActionIcon,
   Title,
   Avatar,
-  Badge,
 } from "@mantine/core"
-
 import {
   Github,
   Linkedin,
   Mail,
   Phone,
 } from "lucide-react"
-
 import { Link, useRouter } from "@tanstack/react-router"
 
 export default function Footer() {
-  const router=useRouter()
+  const router = useRouter()
+
   return (
-    <footer className="mt-20 border-t border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-950">
-      <Container size="xl" className="py-14">
-
+    <footer className="mt-24 border-t border-slate-200 bg-gradient-to-b from-white to-slate-50 dark:border-slate-800 dark:from-slate-950 dark:to-slate-900">
+      <Container size="xl" className="py-16">
         <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing="xl">
-
-          {/* Identity */}
+          {/* First Column: Identity */}
           <Stack gap="md">
             <Group align="center" wrap="nowrap">
               <Avatar
                 src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
-                size={54}
+                size={62}
                 radius="xl"
               />
               <div>
@@ -42,48 +38,48 @@ export default function Footer() {
                   Abdallah Shee
                 </Title>
                 <Text size="sm" c="dimmed">
-                  Full-Stack Software Developer 🇰🇪
+                  Software Developer, Nairobi, Kenya  🇰🇪.
                 </Text>
               </div>
             </Group>
-
-
           </Stack>
 
-          {/* Navigation */}
+          {/* Second Column: Explore */}
           <Stack gap="sm">
-            {/* <Title order={5}>Navigation</Title> */}
-
-            <Anchor component={Link} to="/" className="hover:text-indigo-500 transition-colors">
+            {/* <Anchor component={Link} to="/" className="transition-colors hover:text-indigo-500">
               Home
+            </Anchor> */}
+            <Anchor component={Link} to="/services" className="transition-colors hover:text-indigo-500">
+              Services
             </Anchor>
-            <Anchor component={Link} to="/projects" className="hover:text-indigo-500 transition-colors">
+            <Anchor component={Link} to="/projects" className="transition-colors hover:text-indigo-500">
               Projects
             </Anchor>
-            <Anchor component={Link} to="/articles"  className="hover:text-indigo-500 transition-colors">
-              Articles
-            </Anchor>
-            <Anchor component={Link} to="/contact" className="hover:text-indigo-500 transition-colors">
+
+            <Anchor component={Link} to="/contact" className="transition-colors hover:text-indigo-500">
               Contact
+            </Anchor>
+            <Anchor component={Link} to="/articles" className="transition-colors hover:text-indigo-500">
+              Blog
             </Anchor>
           </Stack>
 
-          {/* Contact */}
+          {/* Third Column: Contact */}
           <Stack gap="sm">
             <Title order={5}>Contact</Title>
 
-            <Group gap="xs">
+            <Group gap="xs" wrap="nowrap">
               <Phone size={16} className="text-slate-500" />
-              <Text size="sm">+254 796515302</Text>
+              <Text size="sm">+254 796 515 302</Text>
             </Group>
 
-            <Group gap="xs">
+            <Group gap="xs" wrap="nowrap">
               <Mail size={16} className="text-slate-500" />
               <Text size="sm">abdallahshee664@email.com</Text>
             </Group>
           </Stack>
 
-          {/* Social */}
+          {/* Fourth Column: Connect */}
           <Stack gap="sm">
             <Title order={5}>Connect</Title>
 
@@ -92,7 +88,8 @@ export default function Footer() {
                 component="a"
                 href="https://github.com/abdallahshee"
                 target="_blank"
-                variant="subtle"
+                rel="noopener noreferrer"
+                variant="light"
                 radius="xl"
                 size="lg"
               >
@@ -103,7 +100,8 @@ export default function Footer() {
                 component="a"
                 href="https://linkedin.com/in/abdallahshee"
                 target="_blank"
-                variant="subtle"
+                rel="noopener noreferrer"
+                variant="light"
                 radius="xl"
                 size="lg"
               >
@@ -111,9 +109,8 @@ export default function Footer() {
               </ActionIcon>
 
               <ActionIcon
-                component="a"
-                onClick={()=>router.navigate({to:"/contact"})}
-                variant="subtle"
+                onClick={() => router.navigate({ to: "/contact" })}
+                variant="light"
                 radius="xl"
                 size="lg"
               >
@@ -121,17 +118,19 @@ export default function Footer() {
               </ActionIcon>
             </Group>
           </Stack>
-
         </SimpleGrid>
 
-        <Divider my="lg" />
+        <Divider my="xl" />
 
-        <Group justify="space-around" wrap="wrap">
+        <Group justify="space-between" wrap="wrap" gap="sm">
           <Text size="sm" c="dimmed">
-            © {new Date().getFullYear()} Abdallah Shee, Nairobi, Kenya
+            © {new Date().getFullYear()} Abdallah Shee. All rights reserved.
+          </Text>
+
+          <Text size="sm" c="dimmed">
+            Crafted with professionalism, precision, and pride in workmanship.
           </Text>
         </Group>
-
       </Container>
     </footer>
   )

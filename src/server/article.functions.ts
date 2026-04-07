@@ -264,8 +264,7 @@ export const getTopArticles = createServerFn({ method: "GET" })
                 .leftJoin(articleLike, eq(article.id, articleLike.articleId))
                 .leftJoin(comment, eq(article.id, comment.articleId))
                 .groupBy(article.id, user.image, category.name)
-                .limit(5)
-
+                .limit(3)
             return topArticles
         } catch (err) {
             console.log(err)

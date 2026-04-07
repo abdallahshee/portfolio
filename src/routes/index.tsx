@@ -22,7 +22,6 @@ import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {
   ArrowRight,
   Mail,
-  Github,
   Linkedin,
   FolderKanban,
   FileText,
@@ -39,14 +38,6 @@ import {
   Network,
   Gauge,
   Sparkles,
-  ShoppingCart,
-  Building2,
-  GraduationCap,
-  BarChart3,
-  CalendarClock,
-  Globe,
-  MessageCircle,
-  Contact,
   Send,
 } from 'lucide-react'
 
@@ -58,8 +49,14 @@ export const Route = createFileRoute('/')({
     ])
 
     return {
-      projects: projectsResult.status === 'fulfilled' ? projectsResult.value : [],
-      blogs: blogsResult.status === 'fulfilled' ? blogsResult.value : [],
+      projects:
+        projectsResult.status === 'fulfilled'
+          ? projectsResult.value?.slice(0, 3)
+          : [],
+      blogs:
+        blogsResult.status === 'fulfilled'
+          ? blogsResult.value?.slice(0, 3)
+          : [],
     }
   },
   component: App,
@@ -105,24 +102,16 @@ const STRENGTHS = [
   },
   {
     icon: <Sparkles size={20} />,
-    title: 'AI-Assisted Development',
-    desc: 'AI tools to accelerate delivery and improve quality while maintaining strong engineering standards.',
+    title: 'AI-Augmented Development',
+    desc: 'Leverage AI to accelerate development, improve code quality, and enhance product capabilities — from AI-assisted coding and automation to integrating intelligent features like chatbots, recommendations, and data-driven insights into your applications.',
     color: 'grape',
   },
-]
-
-const SERVICE_TEASER = [
-  { icon: <ShoppingCart size={20} />, title: 'E-Commerce Platforms', color: 'orange' },
-  { icon: <Building2 size={20} />, title: 'Rental Management Software', color: 'teal' },
-  { icon: <GraduationCap size={20} />, title: 'School Management Systems', color: 'violet' },
-  { icon: <BarChart3 size={20} />, title: 'Business & Inventory Systems', color: 'blue' },
-  { icon: <CalendarClock size={20} />, title: 'Booking & Scheduling Apps', color: 'cyan' },
-  { icon: <Globe size={20} />, title: 'Portals & SaaS Products', color: 'indigo' },
 ]
 
 const CORE_SKILLS = [
   'TypeScript',
   'React 19 & TanStack Start',
+  'TanStack Query & TanStack Router',
   'PostgreSQL & Drizzle ORM',
   'Supabase (Auth, Storage, Realtime)',
   'Mantine UI & Tailwind CSS',
@@ -136,7 +125,6 @@ function App() {
 
   return (
     <Container size="xl" className="space-y-12 py-10">
-
       {/* ── HERO ── */}
       <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-14 items-center">
         <Stack gap="xl" className="max-w-3xl">
@@ -152,10 +140,9 @@ function App() {
               <span className="absolute left-0 -bottom-1 sm:-bottom-2 h-[3px] sm:h-[4px] w-3/5 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 rounded-full"></span>
             </div>
 
-            <div className="">
+            <div>
               <Title className="heading">
                 Designing maintainable and scalable web products & software systems
-
               </Title>
             </div>
 
@@ -167,7 +154,7 @@ function App() {
           </Stack>
 
           <Group>
-            <Link to='/projects'>
+            <Link to="/projects">
               <Button
                 size="md"
                 radius="xl"
@@ -178,7 +165,9 @@ function App() {
               </Button>
             </Link>
             <Link to="/contact">
-              <Button size="md" radius="xl" variant="filled" color='yellow'  rightSection={<Send size={18} />}>Contact Me</Button>
+              <Button size="md" radius="xl" variant="filled" color="yellow" rightSection={<Send size={18} />}>
+                Contact Me
+              </Button>
             </Link>
           </Group>
         </Stack>
@@ -238,13 +227,23 @@ function App() {
             className="group shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-white to-gray-50 dark:from-slate-900 dark:to-slate-800"
           >
             <Group align="center" gap="md" wrap="nowrap">
-              <ThemeIcon variant="light" color={stat.color} radius="xl" size={42} className="shadow-sm transition-transform group-hover:scale-110">
+              <ThemeIcon
+                variant="light"
+                color={stat.color}
+                radius="xl"
+                size={42}
+                className="shadow-sm transition-transform group-hover:scale-110"
+              >
                 {stat.icon}
               </ThemeIcon>
               <div>
-                <Title order={2} className="text-2xl font-extrabold leading-none tracking-tight">{stat.value}</Title>
+                <Title order={2} className="text-2xl font-extrabold leading-none tracking-tight">
+                  {stat.value}
+                </Title>
                 <div className="w-11 h-[1px] bg-gradient-to-r from-indigo-500 to-transparent rounded-full my-2" />
-                <Text size="sm" c="dimmed">{stat.label}</Text>
+                <Text size="sm" c="dimmed">
+                  {stat.label}
+                </Text>
               </div>
             </Group>
           </Paper>
@@ -256,71 +255,74 @@ function App() {
       {/* ── ABOUT ── */}
       <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-start">
         <Stack gap="lg">
-          <Title order={2} className="text-3xl font-bold tracking-tight">About Me</Title>
+          <Title order={2} className="text-3xl font-bold tracking-tight">
+            About Me
+          </Title>
 
           <Text size="lg" c="dimmed" className="leading-8">
-            I'm <strong>Abdallah Shee</strong>, a full-stack developer based in Nairobi, Kenya 🇰🇪.
-            I build modern web applications that are fast, scalable, and reliable — turning complex
-            ideas into clean, intuitive products that deliver real value to users.
+            I'm <strong>Abdallah Shee</strong>, a software developer based in Nairobi, Kenya 🇰🇪.
+            I help businesses and startups turn ideas into reliable, easy-to-use digital products —
+            whether it’s a platform, a system, or a custom solution tailored to their needs.
           </Text>
 
           <Text size="lg" c="dimmed" className="leading-8">
-            I work across the full JavaScript and TypeScript stack — from designing relational
-            databases and type-safe APIs to crafting responsive, user-friendly interfaces. My
-            approach emphasizes clean architecture, maintainability, and strong developer experience,
-            so products remain easy to scale and evolve over time.
+            From planning how everything should work to building and refining the final product,
+            I focus on creating systems that are simple to use, efficient, and built to handle growth.
+            My goal is always to make things clear, practical, and valuable for the people who use them.
           </Text>
 
           <Text size="lg" c="dimmed" className="leading-8">
-            I care about writing software that lasts — systems that are understandable, adaptable,
-            and built to perform well in real-world production environments.
+            I believe good software should feel effortless — it should solve real problems,
+            adapt as your business grows, and continue working smoothly long after it’s launched.
           </Text>
 
           <Group>
             <Link to="/contact">
               <Button variant="filled" color="indigo" radius="xl" size="md" rightSection={<ArrowRight size={16} />}>
-                Let's Work
+                Let's Work Together
               </Button>
             </Link>
             <Link to="/services">
               <Button variant="outline" color="indigo" radius="xl" size="md" rightSection={<ArrowRight size={16} />}>
-                Explore Services
+                Explore My Services
               </Button>
             </Link>
           </Group>
         </Stack>
 
-        <Card radius="2xl" p="xl" className="shadow-sm h-full border-l-4 border-blue-400" >
-          <Stack gap="lg">
-            <Title order={4}>Core Skills & Technologies</Title>
-            <List
-              spacing="sm"
-              size="lg"
-              icon={
-                <ThemeIcon color="indigo" size={22} radius="xl" variant="light">
-                  <CheckCircle size={16} />
-                </ThemeIcon>
-              }
-            >
-              {CORE_SKILLS.map((skill) => (
-                <List.Item key={skill}>
-                  <Text size="md" fw={500}>{skill}</Text>
-                </List.Item>
-              ))}
-            </List>
-
-
-          </Stack>
-        </Card>
+        <Stack gap="lg" className="border-l-4 border-blue-500 pl-4">
+          <Title order={2} className="text-3xl font-bold tracking-tight">
+            Core Skills & Technologies
+          </Title>
+          <List
+            spacing="sm"
+            size="lg"
+            icon={
+              <ThemeIcon color="indigo" size={22} radius="xl" variant="light">
+                <CheckCircle size={16} />
+              </ThemeIcon>
+            }
+          >
+            {CORE_SKILLS.map((skill) => (
+              <List.Item key={skill}>
+                <Text size="md" c="dimmed">
+                  {skill}
+                </Text>
+              </List.Item>
+            ))}
+          </List>
+        </Stack>
       </section>
-
-
 
       {/* ── STRENGTHS ── */}
       <section className="space-y-6">
         <div>
-          <Title order={2} className="text-3xl font-bold">Core Strengths</Title>
-          <Text c="dimmed" mt={4}>The areas where I consistently deliver the most impact and value.</Text>
+          <Title order={2} className="text-3xl font-bold">
+            Core Strengths
+          </Title>
+          <Text c="dimmed" mt={4}>
+            The areas where I consistently deliver the most impact and value.
+          </Text>
         </div>
 
         <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
@@ -332,7 +334,9 @@ function App() {
                 </ThemeIcon>
                 <Stack gap={4} className="flex-1">
                   <Text fw={700}>{strength.title}</Text>
-                  <Text size="sm" c="dimmed">{strength.desc}</Text>
+                  <Text size="sm" c="dimmed">
+                    {strength.desc}
+                  </Text>
                 </Stack>
               </Group>
             </Card>
@@ -340,31 +344,36 @@ function App() {
         </SimpleGrid>
       </section>
 
-
       {/* ── FEATURED ── */}
-      <section id="featured" className="space-y-10">
+      <section id="featured" className="space-y-8">
         <div className="space-y-2">
-          <Title order={2} className="text-3xl font-bold">Top Work & Writing</Title>
+          <Title order={2} className="text-3xl font-bold">
+            Featured Work & Writing
+          </Title>
           <Text c="dimmed" className="max-w-3xl">
-            A snapshot of the highest rated projects and most popular articles.
+            A curated selection of projects and articles that best reflect the quality of my work.
           </Text>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-10 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
           {/* PROJECTS */}
           <Paper withBorder radius="xl" shadow="sm" className="p-5">
             <Stack gap="md">
               <Group justify="space-between" align="end">
                 <div>
-                  <Title order={3}>Top Rated Projects</Title>
-                  <Text size="sm" c="dimmed">Highest-rated builds from my portfolio</Text>
+                  <Title order={3}>Featured Projects</Title>
+                  <Text size="sm" c="dimmed">
+                    A selection of standout builds from my portfolio
+                  </Text>
                 </div>
                 <Link to="/projects">
-                  <Button variant="subtle" rightSection={<ArrowRight size={16} />}>View All</Button>
+                  <Button variant="subtle" rightSection={<ArrowRight size={16} />}>
+                    View All
+                  </Button>
                 </Link>
               </Group>
 
-              <Table highlightOnHover withTableBorder verticalSpacing="md" horizontalSpacing="md">
+              <Table highlightOnHover withTableBorder verticalSpacing="sm" horizontalSpacing="sm">
                 <Table.Tbody>
                   {projects && projects.length > 0 ? (
                     projects.map((project) => {
@@ -372,7 +381,9 @@ function App() {
                       return (
                         <Table.Tr
                           key={project.id}
-                          onClick={() => router.navigate({ to: '/projects/$id', params: { id: project.id } })}
+                          onClick={() =>
+                            router.navigate({ to: '/projects/$id', params: { id: project.id } })
+                          }
                           className="cursor-pointer transition hover:bg-gray-50"
                         >
                           <Table.Td>
@@ -385,25 +396,34 @@ function App() {
                                 </ThemeIcon>
                               )}
                               <Stack gap={2} className="min-w-0">
-                                <Text fw={600} truncate>{project.title}</Text>
+                                <Text fw={600} truncate>
+                                  {project.title}
+                                </Text>
                                 <Rating value={rating} readOnly size="sm" />
                               </Stack>
                             </Group>
                           </Table.Td>
-                          <Table.Td />
-                          <Table.Td><Text c="blue" size="sm" fw={600}>View</Text></Table.Td>
+                          <Table.Td w={60}>
+                            <Text c="blue" size="sm" fw={600}>
+                              View
+                            </Text>
+                          </Table.Td>
                         </Table.Tr>
                       )
                     })
                   ) : (
                     <Table.Tr>
-                      <Table.Td colSpan={3}>
+                      <Table.Td colSpan={2}>
                         <Stack align="center" gap="xs" py="xl">
                           <ThemeIcon size={56} radius="xl" variant="light" color="gray">
                             <FolderOpen size={28} />
                           </ThemeIcon>
-                          <Text fw={600} size="md">No projects yet</Text>
-                          <Text size="sm" c="dimmed" ta="center">Projects will appear here once they are added.</Text>
+                          <Text fw={600} size="md">
+                            No projects yet
+                          </Text>
+                          <Text size="sm" c="dimmed" ta="center">
+                            Projects will appear here once they are added.
+                          </Text>
                         </Stack>
                       </Table.Td>
                     </Table.Tr>
@@ -418,21 +438,27 @@ function App() {
             <Stack gap="md">
               <Group justify="space-between" align="end">
                 <div>
-                  <Title order={3}>Most Popular Articles</Title>
-                  <Text size="sm" c="dimmed">Articles with the strongest engagement</Text>
+                  <Title order={3}>Featured Articles</Title>
+                  <Text size="sm" c="dimmed">
+                    A few of the most engaging pieces I’ve written
+                  </Text>
                 </div>
                 <Link to="/articles" search={{ page: 1 }}>
-                  <Button variant="subtle" rightSection={<ArrowRight size={16} />}>View All</Button>
+                  <Button variant="subtle" rightSection={<ArrowRight size={16} />}>
+                    View All
+                  </Button>
                 </Link>
               </Group>
 
-              <Table highlightOnHover withTableBorder verticalSpacing="md" horizontalSpacing="md">
+              <Table highlightOnHover withTableBorder verticalSpacing="sm" horizontalSpacing="sm">
                 <Table.Tbody>
                   {blogs && blogs.length > 0 ? (
                     blogs.map((blog) => (
                       <Table.Tr
                         key={blog.id}
-                        onClick={() => router.navigate({ to: '/articles/$slug', params: { slug: blog.slug } })}
+                        onClick={() =>
+                          router.navigate({ to: '/articles/$slug', params: { slug: blog.slug } })
+                        }
                         className="cursor-pointer transition hover:bg-gray-50"
                       >
                         <Table.Td>
@@ -445,12 +471,20 @@ function App() {
                               </ThemeIcon>
                             )}
                             <div className="min-w-0">
-                              <Text fw={600} truncate>{blog.title}</Text>
-                              <Badge variant="light" color="pink" size="sm">❤️ {blog.likes} Likes</Badge>
+                              <Text fw={600} truncate>
+                                {blog.title}
+                              </Text>
+                              <Badge variant="light" color="pink" size="sm">
+                                ❤️ {blog.likes} Likes
+                              </Badge>
                             </div>
                           </Group>
                         </Table.Td>
-                        <Table.Td><Text c="blue" size="sm" fw={600}>Read</Text></Table.Td>
+                        <Table.Td w={60}>
+                          <Text c="blue" size="sm" fw={600}>
+                            Read
+                          </Text>
+                        </Table.Td>
                       </Table.Tr>
                     ))
                   ) : (
@@ -460,8 +494,12 @@ function App() {
                           <ThemeIcon size={56} radius="xl" variant="light" color="grape">
                             <BookOpen size={28} />
                           </ThemeIcon>
-                          <Text fw={600} size="md">No articles yet</Text>
-                          <Text size="sm" c="dimmed" ta="center">Articles will appear here once they are published.</Text>
+                          <Text fw={600} size="md">
+                            No articles yet
+                          </Text>
+                          <Text size="sm" c="dimmed" ta="center">
+                            Articles will appear here once they are published.
+                          </Text>
                         </Stack>
                       </Table.Td>
                     </Table.Tr>
@@ -472,8 +510,6 @@ function App() {
           </Paper>
         </div>
       </section>
-
-
 
       {/* ── CTA ── */}
       <section id="contact" className="mx-auto max-2xl: scroll-mt-20">
@@ -487,15 +523,9 @@ function App() {
 
           <div className="relative grid gap-8 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
             <Stack gap="lg" className="max-w-3xl">
-
-
               <div className="space-y-2">
-                <Title
-                  order={2}
-                  className="heading2"
-                >
+                <Title order={2} className="heading2">
                   Let&apos;s turn your idea into a production-ready product
-
                 </Title>
 
                 <Text c="dimmed" size="lg" className="max-w-2xl leading-8">
@@ -510,7 +540,7 @@ function App() {
                   size="md"
                   radius="xl"
                   color="yellow"
-                  variant='filled'
+                  variant="filled"
                   onClick={() => router.navigate({ to: '/contact' })}
                   leftSection={<Mail size={18} />}
                   className="shadow-sm"
@@ -523,7 +553,7 @@ function App() {
                   href="https://linkedin.com/in/abdallahshee"
                   target="_blank"
                   variant="filled"
-                  color='blue'
+                  color="blue"
                   size="md"
                   radius="xl"
                   leftSection={<Linkedin size={18} />}
@@ -571,7 +601,6 @@ function App() {
                     </Text>
                   </Group>
 
-                  {/* NEW */}
                   <Group gap="sm" wrap="nowrap">
                     <ThemeIcon size={34} radius="xl" variant="light" color="orange">
                       <CheckCircle size={18} />
@@ -590,13 +619,11 @@ function App() {
                     </Text>
                   </Group>
                 </Stack>
-
               </Stack>
             </Paper>
           </div>
         </Paper>
       </section>
-
     </Container>
   )
 }
