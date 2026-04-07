@@ -205,7 +205,28 @@ function ServicesPage() {
         applications built for performance, scalability, and long-term growth.
       </Text>
     </Stack>
+  <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm" className="pt-2">
+      <Paper withBorder radius="xl" p="md" className="shadow-sm">
+        <Text fw={700} size="sm">Scalable Systems</Text>
+        <Text size="sm" c="dimmed" mt={4}>
+          Designed to grow with your users and workflows.
+        </Text>
+      </Paper>
 
+      <Paper withBorder radius="xl" p="md" className="shadow-sm">
+        <Text fw={700} size="sm">Clean Architecture</Text>
+        <Text size="sm" c="dimmed" mt={4}>
+          Maintainable codebases built for long-term success.
+        </Text>
+      </Paper>
+
+      <Paper withBorder radius="xl" p="md" className="shadow-sm">
+        <Text fw={700} size="sm">Business Focused</Text>
+        <Text size="sm" c="dimmed" mt={4}>
+          Solutions aligned with real operational needs.
+        </Text>
+      </Paper>
+    </SimpleGrid>
     <Group gap="sm" className="pt-2">
       <Link to="/contact">
         <Button
@@ -229,28 +250,7 @@ function ServicesPage() {
       </Button>
     </Group>
 
-    <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm" className="pt-2">
-      <Paper withBorder radius="xl" p="md" className="shadow-sm">
-        <Text fw={700} size="sm">Scalable Systems</Text>
-        <Text size="sm" c="dimmed" mt={4}>
-          Designed to grow with your users and workflows.
-        </Text>
-      </Paper>
-
-      <Paper withBorder radius="xl" p="md" className="shadow-sm">
-        <Text fw={700} size="sm">Clean Architecture</Text>
-        <Text size="sm" c="dimmed" mt={4}>
-          Maintainable codebases built for long-term success.
-        </Text>
-      </Paper>
-
-      <Paper withBorder radius="xl" p="md" className="shadow-sm">
-        <Text fw={700} size="sm">Business Focused</Text>
-        <Text size="sm" c="dimmed" mt={4}>
-          Solutions aligned with real operational needs.
-        </Text>
-      </Paper>
-    </SimpleGrid>
+  
   </Stack>
 
   <div className="flex justify-center lg:justify-end">
@@ -274,7 +274,7 @@ function ServicesPage() {
             radius="10px"
             className="bg-white/95 p-2 backdrop-blur dark:bg-slate-900/90"
           >
-            <Title order={2} className='heading2 text-center'> Sclable and Maintainable</Title>
+            <Title order={2} className='heading2 text-center'> Scalable and Maintainable</Title>
              
           </Paper>
         </div>
