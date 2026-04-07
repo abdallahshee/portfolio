@@ -182,34 +182,48 @@ function App() {
           </Group>
         </Stack>
 
-        <div className="flex justify-center lg:justify-end">
-          <div className="relative">
-            <img
-              src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
-              alt="Abdallah Shee"
-              className="w-72 h-72 sm:w-80 sm:h-80 lg:w-[25rem] lg:h-[25rem] object-cover rounded-3xl shadow-2xl"
-            />
-            <Paper
-              shadow="md"
-              radius="xl"
-              withBorder
-              className="absolute -bottom-5 left-1/2 -translate-x-1/2 lg:-bottom-6 lg:-left-6 lg:left-auto lg:translate-x-0 px-4 py-3 sm:px-5 sm:py-4 bg-white/95 backdrop-blur dark:bg-slate-900/95 w-max max-w-[90vw]"
-            >
-              <Group gap="sm" wrap="nowrap">
-                <ThemeIcon size={36} radius="xl" variant="light" color="indigo" className="sm:size-11 flex-shrink-0">
-                  <Code2 size={16} className="sm:size-5" />
-                </ThemeIcon>
-                <div className="min-w-0">
-                  <Group gap="xs" align="center" wrap="nowrap">
-                    <Text fw={700} size="sm" className="sm:text-base truncate">Abdallah Shee</Text>
-                    <span className="text-sm sm:text-base flex-shrink-0">🇰🇪</span>
-                  </Group>
-                  <Text size="xs" c="dimmed" className="sm:text-sm leading-5 truncate">Nairobi, Kenya</Text>
-                </div>
-              </Group>
-            </Paper>
-          </div>
+    <div className="flex justify-center lg:justify-end">
+  <div className="relative w-full max-w-[18rem] sm:max-w-[20rem] lg:max-w-[25rem]">
+    <div className="aspect-square overflow-hidden rounded-3xl shadow-2xl">
+      <img
+        src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
+        alt="Abdallah Shee"
+        className="block h-full w-full object-cover"
+      />
+    </div>
+
+    <Paper
+      shadow="md"
+      radius="xl"
+      withBorder
+      className="absolute -bottom-5 left-1/2 -translate-x-1/2 lg:-bottom-6 lg:-left-6 lg:left-auto lg:translate-x-0 px-4 py-3 sm:px-5 sm:py-4 bg-white/95 backdrop-blur dark:bg-slate-900/95 w-max max-w-[90vw]"
+    >
+      <Group gap="sm" wrap="nowrap">
+        <ThemeIcon
+          size={36}
+          radius="xl"
+          variant="light"
+          color="indigo"
+          className="sm:size-11 flex-shrink-0"
+        >
+          <Code2 size={16} className="sm:size-5" />
+        </ThemeIcon>
+
+        <div className="min-w-0">
+          <Group gap="xs" align="center" wrap="nowrap">
+            <Text fw={700} size="sm" className="sm:text-base truncate">
+              Abdallah Shee
+            </Text>
+            <span className="text-sm sm:text-base flex-shrink-0">🇰🇪</span>
+          </Group>
+          <Text size="xs" c="dimmed" className="sm:text-sm leading-5 truncate">
+            Nairobi, Kenya
+          </Text>
         </div>
+      </Group>
+    </Paper>
+  </div>
+</div>
       </section>
 
       {/* ── STATS ── */}
