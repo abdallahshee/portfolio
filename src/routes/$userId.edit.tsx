@@ -121,9 +121,9 @@ function RouteComponent() {
                 </Text>
               </div>
 
-              <Badge variant="light" color="teal" radius="xl" ml="auto">
+              {/* <Badge variant="light" color="teal" radius="xl" ml="auto">
                 Profile
-              </Badge>
+              </Badge> */}
             </Group>
 
             <Divider />

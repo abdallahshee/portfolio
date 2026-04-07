@@ -130,7 +130,6 @@ function BlogsPage() {
 
       {/* Header */}
       <div className="space-y-2">
-        <Badge variant="light" color="grape">Blog</Badge>
         <Title order={1}>Articles & Writing</Title>
         <Text c="dimmed" className="max-w-2xl">
           Thoughts, tutorials, and practical notes on building modern web applications.

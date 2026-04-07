@@ -199,7 +199,7 @@ const handleSignup = async () => {
   )
 
   return (
-    <header className="fixed left-0 top-0 z-[100] h-20 w-full border-b-2 border-blue-500 bg-slate-50 shadow-lg dark:bg-slate-700">
+    <header className="fixed left-0 top-0 z-[100] h-15 w-full border-b-1 border-green-500 bg-slate-50 shadow-lg dark:bg-slate-700">
       <div className="container mx-auto flex h-full items-center justify-end px-4">
         <nav className="hidden min-w-0 items-center space-x-6 md:flex">
           {ThemeButton}

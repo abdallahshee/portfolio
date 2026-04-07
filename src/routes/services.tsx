@@ -331,11 +331,6 @@ function ServicesPage() {
         </section>
       </div>
 
-
-      {/* ── TECH STACK ── */}
-
-
-
       {/* ── TESTIMONIALS ── */}
       <section className="space-y-6">
         <div>
