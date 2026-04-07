@@ -149,15 +149,15 @@ function App() {
               <span className="absolute left-0 -bottom-1 sm:-bottom-2 h-[3px] sm:h-[4px] w-3/5 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 rounded-full"></span>
             </div>
 
-<div className="py-1">
-  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white">
-    Designing maintainable and scalable
-    <br />
-    <span className="block mt-2 bg-gradient-to-r from-indigo-600 via-blue-600 to-blue-400 bg-clip-text text-transparent">
-      web products & software systems
-    </span>
-  </h1>
-</div>
+            <div className="py-1">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white">
+                Designing maintainable and scalable
+                <br />
+                <span className="block mt-2 bg-gradient-to-r from-indigo-600 via-blue-600 to-blue-400 bg-clip-text text-transparent">
+                  web products & software systems
+                </span>
+              </h1>
+            </div>
 
             <Text size="lg" c="dimmed" className="max-w-2xl text-base sm:text-lg leading-7 sm:leading-8">
               I build modern digital products with a strong focus on architecture,
