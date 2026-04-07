@@ -89,7 +89,7 @@ function RouteComponent() {
               <KeyRound size={20} />
             </ThemeIcon>
           </Group>
-          <Title  className="heading">Set New Password</Title>
+          <Title order={2} className="heading">Set New Password</Title>
           <Text c="dimmed" size="sm" mt={6}>
             Choose a strong password for your account.
           </Text>

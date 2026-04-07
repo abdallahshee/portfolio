@@ -97,14 +97,14 @@ const handleSignup = async () => {
   await router.navigate({ to: "/account/register", search: { callbackUrl: "/" } })
 }
 
-  const handleSettings = async (userId: string) => {
+  const handleProfileChange = async (userId: string) => {
     if (isAdmin) {
       setOpened(false)
       await router.navigate({ to: "/admin/users/$userId/edit", params: { userId } })
       return
     }
 
-    await router.navigate({ to: "/$userId/edit", params: { userId } })
+    await router.navigate({ to: "/account/$userId/edit", params: { userId } })
   }
 
   const links = [
@@ -166,7 +166,7 @@ const handleSignup = async () => {
 
         <Menu.Item
           leftSection={<Settings size={16} className="text-blue-600" />}
-          onClick={() => handleSettings(user?.id!)}
+          onClick={() => handleProfileChange(user?.id!)}
         >
           Edit Profile
         </Menu.Item>

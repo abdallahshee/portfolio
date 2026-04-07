@@ -107,17 +107,17 @@ const SERVICES = [
 
   },
   {
-  icon: <Plug size={24} />,
-  title: 'API Integrations & System Connectivity',
-  desc: 'Seamless integration with third-party services such as payment gateways (M-Pesa, Stripe), SMS/email providers, CRMs, accounting tools, and external APIs — enabling your systems to communicate, automate workflows, and scale efficiently.',
-  color: 'blue',
-},
-{
-  icon: <Workflow size={24} />,
-  title: 'Workflow Automation Systems',
-  desc: 'Automation of repetitive business processes using custom workflows, triggers, and background jobs — reducing manual work, minimizing errors, and improving operational efficiency across your organization.',
-  color: 'teal',
-},
+    icon: <Plug size={24} />,
+    title: 'API Integrations & System Connectivity',
+    desc: 'Seamless integration with third-party services such as payment gateways (M-Pesa, Stripe), SMS/email providers, CRMs, accounting tools, and external APIs — enabling your systems to communicate, automate workflows, and scale efficiently.',
+    color: 'blue',
+  },
+  {
+    icon: <Workflow size={24} />,
+    title: 'Workflow Automation Systems',
+    desc: 'Automation of repetitive business processes using custom workflows, triggers, and background jobs — reducing manual work, minimizing errors, and improving operational efficiency across your organization.',
+    color: 'teal',
+  },
   {
     icon: <ShieldCheck size={24} />,
     title: 'Authentication & Access Systems',
@@ -342,74 +342,74 @@ function ServicesPage() {
       </section>
 
       {/* ── HOW I WORK ── */}
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-        <section className="space-y-8">
-          <div>
+    <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-start">
+  {/* LEFT */}
+<section className="space-y-8 border-r-4 border-blue-500 pr-4 lg:pr-6">
+  <div>
+    <Title order={2} className="text-3xl font-bold">
+      How I Work
+    </Title>
+    <Text c="dimmed" mt={4} className="max-w-2xl leading-7">
+      A clear, collaborative process from first conversation to final handover — so you always
+      know what&apos;s happening and what comes next.
+    </Text>
+  </div>
 
-            <Title order={2} className="text-3xl font-bold">
-              How I Work
-            </Title>
-            <Text c="dimmed" mt={4} className="max-w-2xl">
-              A clear, collaborative process from first conversation to final handover — so you always
-              know what's happening and what comes next.
+  <Timeline active={4} bulletSize={40} lineWidth={2} color="indigo">
+    {PROCESS.map((step, i) => (
+      <Timeline.Item
+        key={step.title}
+        bullet={
+          <ThemeIcon size={40} radius="xl" variant="filled" color={step.color}>
+            {step.icon}
+          </ThemeIcon>
+        }
+        title={
+          <Text fw={700} size="md" mb={6}>
+            {i + 1}. {step.title}
+          </Text>
+        }
+      >
+        <Text size="sm" c="dimmed" className="mb-8 leading-7">
+          {step.desc}
+        </Text>
+      </Timeline.Item>
+    ))}
+  </Timeline>
+</section>
+
+  {/* RIGHT */}
+  <section className="space-y-6 ">
+    <div>
+      <Title order={2} className="text-3xl font-bold">
+        Tools & Tech Stack
+      </Title>
+      <Text c="dimmed" mt={4} className="max-w-md leading-7">
+        I use a modern, production-proven stack chosen for reliability, developer experience,
+        and long-term maintainability.
+      </Text>
+    </div>
+
+    <SimpleGrid cols={{ base: 2, sm: 2, lg: 2 }} spacing="md">
+      {TECH_STACK.map((tech) => (
+        <Paper
+          key={tech.name}
+          radius="xl"
+          withBorder
+          p="md"
+          className="group h-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+        >
+          <Group justify="space-between" align="center" wrap="nowrap">
+            <Text fw={700} size="sm">
+              {tech.name}
             </Text>
-          </div>
-
-          <Timeline active={4} bulletSize={40} lineWidth={2} color="indigo">
-            {PROCESS.map((step, i) => (
-              <Timeline.Item
-                key={step.title}
-                bullet={
-                  <ThemeIcon size={40} radius="xl" variant="filled" color={step.color}>
-                    {step.icon}
-                  </ThemeIcon>
-                }
-                title={
-                  <Text fw={700} size="md" mb={4}>
-                    {i + 1}. {step.title}
-                  </Text>
-                }
-              >
-                <Text size="sm" c="dimmed" className="mb-6 max-w-xl leading-6">
-                  {step.desc}
-                </Text>
-              </Timeline.Item>
-            ))}
-          </Timeline>
-        </section>
-
-        <section className="space-y-6 border-l-4 pl-4 border-blue-500">
-          <div>
-
-            <Title order={2} className="text-3xl font-bold">
-              Tools & Tech Stack
-            </Title>
-            <Text c="dimmed" mt={4} className="max-w-2xl">
-              I use a modern, production-proven stack chosen for reliability, developer experience,
-              and long-term maintainability.
-            </Text>
-          </div>
-
-          <SimpleGrid cols={{ base: 2, sm: 3, lg: 4 }} spacing="sm">
-            {TECH_STACK.map((tech) => (
-              <Paper
-                key={tech.name}
-                radius="lg"
-                withBorder
-                p="md"
-                className="group transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-              >
-                <Stack gap={4}>
-                  <Text fw={700} size="sm">
-                    {tech.name}
-                  </Text>
-
-                </Stack>
-              </Paper>
-            ))}
-          </SimpleGrid>
-        </section>
-      </div>
+            <div className="h-2 w-2 rounded-full bg-blue-500 opacity-70" />
+          </Group>
+        </Paper>
+      ))}
+    </SimpleGrid>
+  </section>
+</div>
 
       {/* ── TESTIMONIALS ── */}
       <section className="space-y-6">

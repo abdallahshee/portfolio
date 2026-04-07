@@ -39,7 +39,7 @@ function RouteComponent() {
   const router = useRouter()
   const redirectTo = callbackUrl === "/" ? "/projects" : callbackUrl
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(null)
+  const [oauthProvider, setOauthProvider] = useState<"facebook" | "google" | null>(null)
   const [formError, setFormError] = useState<string | null>(null) // ← new
   const supabase = getSupabaseBrowserClient()
   const form = useForm<SignInRequest>({
@@ -53,58 +53,58 @@ function RouteComponent() {
   })
 
 
-const handleSubmit = async (values: SignInRequest) => {
-  setFormError(null)
-  try {
-    setIsSubmitting(true)
+  const handleSubmit = async (values: SignInRequest) => {
+    setFormError(null)
+    try {
+      setIsSubmitting(true)
 
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: values.email,
-      password: values.password,
-    })
-
-    if (error) {
-      setFormError(error.message)
-      return
-    }
-
-    // ✅ if rememberMe is false, clear session when browser closes
-    if (!values.rememberMe) {
-      await supabase.auth.updateUser({
-        data: { session_expiry: 'browser' }
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: values.email,
+        password: values.password,
       })
+
+      if (error) {
+        setFormError(error.message)
+        return
+      }
+
+      // ✅ if rememberMe is false, clear session when browser closes
+      if (!values.rememberMe) {
+        await supabase.auth.updateUser({
+          data: { session_expiry: 'browser' }
+        })
+      }
+
+      await router.navigate({ to: redirectTo })
+      return data
+
+    } catch (err: any) {
+      setFormError(err?.message ?? "Something went wrong")
+    } finally {
+      setIsSubmitting(false)
     }
-
-    await router.navigate({ to: redirectTo })
-    return data
-
-  } catch (err: any) {
-    setFormError(err?.message ?? "Something went wrong")
-  } finally {
-    setIsSubmitting(false)
   }
-}
 
- const handleOAuthSignIn = async (provider: "google") => {
-  try {
-    setOauthProvider(provider)
-    const { error } = await supabase.auth.signInWithOAuth({
-      provider,
-      options: {
-        redirectTo: `${window.location.origin}${redirectTo}`,
-      },
-    })
-    if (error) throw error
-  } catch (err: any) {
-    notifications.show({
-      title: "OAuth login failed",
-      message: err?.message ?? `Could not continue with ${provider}`,
-      color: "red",
-    })
-  } finally {
-    setOauthProvider(null)
+  const handleOAuthSignIn = async (provider: "google"|"facebook") => {
+    try {
+      setOauthProvider(provider)
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}${redirectTo}`,
+        },
+      })
+      if (error) throw error
+    } catch (err: any) {
+      notifications.show({
+        title: "OAuth login failed",
+        message: err?.message ?? `Could not continue with ${provider}`,
+        color: "red",
+      })
+    } finally {
+      setOauthProvider(null)
+    }
   }
-}
 
   return (
     <Paper radius="2xl" p="xl" withBorder className="w-full shadow-lg md:p-8">
@@ -117,7 +117,7 @@ const handleSubmit = async (values: SignInRequest) => {
               <LogIn size={20} />
             </ThemeIcon>
           </Group>
-          <Title order={2} className="text-3xl">Sign In</Title>
+          <Title order={2} className="heading">Sign In</Title>
           <Text c="dimmed" size="sm" mt={6}>
             Welcome back. Sign in to continue.
           </Text>
@@ -132,14 +132,14 @@ const handleSubmit = async (values: SignInRequest) => {
           >
             Sign in with Google
           </GoogleButton>
-          {/* <FacebookButton
+          <FacebookButton
             size="md"
             radius="xl"
-            loading={oauthProvider === "github"}
-            onClick={() => handleOAuthSignIn("github")}
+            loading={oauthProvider === "facebook"}
+            onClick={() => handleOAuthSignIn("facebook")}
           >
             Sign in with Facebook
-          </FacebookButton> */}
+          </FacebookButton>
         </div>
 
         <Divider label="Or continue with email" labelPosition="center" my="xs" />
@@ -215,7 +215,7 @@ const handleSubmit = async (values: SignInRequest) => {
           <Link
             to="/account/register"
             search={{ callbackUrl }}
-            className="font-medium text-indigo-600 hover:underline dark:text-indigo-400"
+            className="font-large text-indigo-600 hover:underline dark:text-indigo-400"
           >
             Sign Up
           </Link>

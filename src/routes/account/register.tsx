@@ -40,7 +40,7 @@ function RouteComponent() {
   const router = useRouter()
   const client = getSupabaseBrowserClient()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [oauthProvider, setOauthProvider] = useState<"github" | "google" | null>(null)
+  const [oauthProvider, setOauthProvider] = useState<"facebook" | "google" | null>(null)
   const [formError, setFormError] = useState<string | null>(null)
 
   const form = useForm<SignUpRequest>({
@@ -112,7 +112,7 @@ function RouteComponent() {
     }
   }
 
-  const handleOAuthSignUp = async (provider: "google") => {
+  const handleOAuthSignUp = async (provider: "google"|"facebook") => {
     try {
       setOauthProvider(provider)
       const { error } = await client.auth.signInWithOAuth({
@@ -142,7 +142,7 @@ function RouteComponent() {
               <UserPlus size={20} />
             </ThemeIcon>
           </Group>
-          <Title className="heading">Create Account</Title>
+          <Title order={2} className="heading">Create Account</Title>
           <Text c="dimmed" size="sm" mt={6}>
             Join and start exploring projects and blogs.
           </Text>
@@ -157,14 +157,14 @@ function RouteComponent() {
           >
             Sign up with Google
           </GoogleButton>
-          {/* <FacebookButton
+          <FacebookButton
             size="md"
             radius="xl"
-            loading={oauthProvider === "github"}
-            onClick={() => handleOAuthSignUp("github")}
+            loading={oauthProvider === "facebook"}
+            onClick={() => handleOAuthSignUp("facebook")}
           >
             Sign up with Facebook
-          </FacebookButton> */}
+          </FacebookButton>
         </div>
 
         <Divider label="Or create account with email" labelPosition="center" my="xs" />

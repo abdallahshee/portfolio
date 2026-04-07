@@ -111,7 +111,7 @@ const STRENGTHS = [
 const CORE_SKILLS = [
   'TypeScript',
   'React 19 & TanStack Start',
-  'TanStack Query & TanStack Router',
+  // 'TanStack Query & TanStack Router',
   'PostgreSQL & Drizzle ORM',
   'Supabase (Auth, Storage, Realtime)',
   'Mantine UI & Tailwind CSS',
@@ -254,7 +254,7 @@ function App() {
 
       {/* ── ABOUT ── */}
       <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-start">
-        <Stack gap="lg">
+        <Stack gap="lg" className="border-r-4 border-blue-500 pr-4">
           <Title order={2} className="text-3xl font-bold tracking-tight">
             About Me
           </Title>
@@ -276,7 +276,7 @@ function App() {
             adapt as your business grows, and continue working smoothly long after it’s launched.
           </Text>
 
-          <Group>
+          {/* <Group>
             <Link to="/contact">
               <Button variant="filled" color="indigo" radius="xl" size="md" rightSection={<ArrowRight size={16} />}>
                 Let's Work Together
@@ -287,10 +287,10 @@ function App() {
                 Explore My Services
               </Button>
             </Link>
-          </Group>
+          </Group> */}
         </Stack>
 
-        <Stack gap="lg" className="border-l-4 border-blue-500 pl-4">
+        <Stack gap="lg">
           <Title order={2} className="text-3xl font-bold tracking-tight">
             Core Skills & Technologies
           </Title>
@@ -312,6 +312,34 @@ function App() {
             ))}
           </List>
         </Stack>
+
+      </section>
+      <section className="flex ">
+        <Group justify="center" gap="lg" wrap="wrap">
+          <Link to="/contact">
+            <Button
+              variant="filled"
+              color="indigo"
+              radius="xl"
+              size="md"
+              rightSection={<ArrowRight size={16} />}
+            >
+              Let&apos;s Work Together
+            </Button>
+          </Link>
+
+          <Link to="/services">
+            <Button
+              variant="outline"
+              color="indigo"
+              radius="xl"
+              size="md"
+              rightSection={<ArrowRight size={16} />}
+            >
+              Explore My Services
+            </Button>
+          </Link>
+        </Group>
       </section>
 
       {/* ── STRENGTHS ── */}
@@ -512,6 +540,7 @@ function App() {
       </section>
 
       {/* ── CTA ── */}
+      {/* <section id="contact" className="mx-auto max-w-3xl scroll-mt-20"> */}
       <section id="contact" className="mx-auto max-2xl: scroll-mt-20">
         <Paper
           radius="24px"
@@ -521,21 +550,22 @@ function App() {
         >
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.14),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_30%)]" />
 
-          <div className="relative grid gap-4 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
-            <Stack gap="lg" className="max-w-3xl">
+          {/* Center everything */}
+          <div className="relative flex justify-center">
+            <Stack gap="lg" align="center" className="text-center max-w-2xl">
               <div className="space-y-2">
                 <Title order={2} className="heading2">
                   Let&apos;s turn your idea into a production-ready product
                 </Title>
 
-                <Text c="dimmed" size="lg" className="max-w-2xl leading-8">
+                <Text c="dimmed" size="lg" className="leading-8">
                   I work with businesses, founders, and teams to design and build
                   reliable software systems — from internal tools and business
                   platforms to customer-facing web products.
                 </Text>
               </div>
 
-              <Group gap="sm" className="pt-2">
+              <Group gap="sm" className="pt-2" justify="center">
                 <Button
                   size="md"
                   radius="xl"
@@ -562,65 +592,6 @@ function App() {
                 </Button>
               </Group>
             </Stack>
-
-            <Paper
-              radius="24px"
-              withBorder
-              className="bg-white/80 p-4 shadow-sm backdrop-blur dark:bg-slate-900/70"
-            >
-              <Stack gap="md">
-                <Text fw={700} className="text-slate-900 dark:text-white">
-                  Best fit for:
-                </Text>
-
-                <Stack gap="sm">
-                  <Group gap="sm" wrap="nowrap">
-                    <ThemeIcon size={34} radius="xl" variant="light" color="indigo">
-                      <CheckCircle size={18} />
-                    </ThemeIcon>
-                    <Text size="sm" c="dimmed">
-                      Founders building new digital products
-                    </Text>
-                  </Group>
-
-                  <Group gap="sm" wrap="nowrap">
-                    <ThemeIcon size={34} radius="xl" variant="light" color="blue">
-                      <CheckCircle size={18} />
-                    </ThemeIcon>
-                    <Text size="sm" c="dimmed">
-                      Businesses improving operations with custom systems
-                    </Text>
-                  </Group>
-
-                  <Group gap="sm" wrap="nowrap">
-                    <ThemeIcon size={34} radius="xl" variant="light" color="teal">
-                      <CheckCircle size={18} />
-                    </ThemeIcon>
-                    <Text size="sm" c="dimmed">
-                      Teams needing scalable, maintainable web software
-                    </Text>
-                  </Group>
-
-                  <Group gap="sm" wrap="nowrap">
-                    <ThemeIcon size={34} radius="xl" variant="light" color="orange">
-                      <CheckCircle size={18} />
-                    </ThemeIcon>
-                    <Text size="sm" c="dimmed">
-                      Startups validating ideas and launching MVPs quickly
-                    </Text>
-                  </Group>
-
-                  <Group gap="sm" wrap="nowrap">
-                    <ThemeIcon size={34} radius="xl" variant="light" color="grape">
-                      <CheckCircle size={18} />
-                    </ThemeIcon>
-                    <Text size="sm" c="dimmed">
-                      Organizations modernizing legacy systems and workflows
-                    </Text>
-                  </Group>
-                </Stack>
-              </Stack>
-            </Paper>
           </div>
         </Paper>
       </section>
