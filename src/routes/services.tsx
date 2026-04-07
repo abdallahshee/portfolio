@@ -35,7 +35,6 @@ import {
   Quote,
   ShieldCheck,
 } from 'lucide-react'
-
 export const Route = createFileRoute('/services')({
   component: ServicesPage,
 })
