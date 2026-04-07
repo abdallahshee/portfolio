@@ -143,20 +143,21 @@ function App() {
             </Badge>
           </div>
 
-          <Stack gap="lg" className="max-w-3xl">
-            <div className="relative inline-block text-xl sm:text-2xl lg:text-3xl font-bold leading-tight">
+          <Stack gap="md" className="max-w-3xl">
+            <div className="relative inline-block text-xl sm:text-2xl lg:text-3xl font-bold leading-tight mb-2">
               <span className="text-blue-500">Full-Stack Software Developer</span>
               <span className="absolute left-0 -bottom-1 sm:-bottom-2 h-[3px] sm:h-[4px] w-3/5 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 rounded-full"></span>
             </div>
 
-            <div className="space-y-2 py-3">
-              <div className="text-xl sm:text-2xl lg:text-3xl font-black leading-[1.02] tracking-tight text-slate-900 dark:text-white">
-                Designing maintainable and scalable{' '}
-                <span className="bg-gradient-to-r from-indigo-600 via-30% via-blue-600 to-blue-400 bg-clip-text text-transparent">
-                  web products and software systems
-                </span>
-              </div>
-            </div>
+<div className="py-1">
+  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold leading-tight tracking-tight text-slate-900 dark:text-white">
+    Designing maintainable and scalable
+    <br />
+    <span className="block mt-2 bg-gradient-to-r from-indigo-600 via-blue-600 to-blue-400 bg-clip-text text-transparent">
+      web products & software systems
+    </span>
+  </h1>
+</div>
 
             <Text size="lg" c="dimmed" className="max-w-2xl text-base sm:text-lg leading-7 sm:leading-8">
               I build modern digital products with a strong focus on architecture,
@@ -227,7 +228,7 @@ function App() {
       </section>
 
       {/* ── STATS ── */}
-      <SimpleGrid cols={{ base: 2, sm: 4 }} spacing="md">
+      <SimpleGrid cols={{ base: 2, sm: 4 }} spacing="sm">
         {STATS.map((stat) => (
           <Paper
             key={stat.label}
@@ -237,12 +238,12 @@ function App() {
             className="group shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-white to-gray-50 dark:from-slate-900 dark:to-slate-800"
           >
             <Group align="center" gap="md" wrap="nowrap">
-              <ThemeIcon variant="light" color={stat.color} radius="xl" size={46} className="shadow-sm transition-transform group-hover:scale-110">
+              <ThemeIcon variant="light" color={stat.color} radius="xl" size={42} className="shadow-sm transition-transform group-hover:scale-110">
                 {stat.icon}
               </ThemeIcon>
               <div>
-                <Title order={2} className="text-3xl font-extrabold leading-none tracking-tight">{stat.value}</Title>
-                <div className="w-10 h-[2px] bg-gradient-to-r from-indigo-500 to-transparent rounded-full my-2" />
+                <Title order={2} className="text-2xl font-extrabold leading-none tracking-tight">{stat.value}</Title>
+                <div className="w-11 h-[1px] bg-gradient-to-r from-indigo-500 to-transparent rounded-full my-2" />
                 <Text size="sm" c="dimmed">{stat.label}</Text>
               </div>
             </Group>
