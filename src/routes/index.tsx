@@ -555,13 +555,12 @@ function App() {
             <Stack gap="lg" align="center" className="text-center max-w-2xl">
               <div className="space-y-2">
                 <Title order={2} className="heading2">
-                  Let&apos;s turn your idea into a production-ready product
+                     Let me turn your idea into reality
                 </Title>
 
                 <Text c="dimmed" size="lg" className="leading-8">
-                  I work with businesses, founders, and teams to design and build
-                  reliable software systems — from internal tools and business
-                  platforms to customer-facing web products.
+              I turn ideas into practical software solutions that work
+               reliably and grow with your business.
                 </Text>
               </div>
 

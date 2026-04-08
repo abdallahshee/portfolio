@@ -54,8 +54,16 @@ RETURNS TRIGGER AS $$
 BEGIN
     UPDATE public.user
     SET
-        name  = NEW.raw_user_meta_data ->> 'name',
-        image = NEW.raw_user_meta_data ->> 'avatar_url',
+        name = CASE
+            WHEN NEW.raw_user_meta_data ? 'name'
+            THEN NEW.raw_user_meta_data ->> 'name'
+            ELSE name
+        END,
+        image = CASE
+            WHEN NEW.raw_user_meta_data ? 'avatar_url'
+            THEN NEW.raw_user_meta_data ->> 'avatar_url'
+            ELSE image
+        END,
         email = NEW.email
     WHERE id = NEW.id;
 

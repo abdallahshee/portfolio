@@ -1,36 +1,44 @@
 import { useState, useEffect } from "react"
 import {
-  Burger, Drawer, ScrollArea, Button, Avatar,
-  Text, Menu, UnstyledButton, Group, Skeleton,
+  Burger,
+  Drawer,
+  ScrollArea,
+  Button,
+  Avatar,
+  Text,
+  Menu,
+  UnstyledButton,
+  Group,
+  Skeleton,
 } from "@mantine/core"
 import { Link, useRouter, useRouterState } from "@tanstack/react-router"
-import { ChevronDown, LogOut, Sun, Moon, LayoutDashboard, Settings } from "lucide-react"
+import {
+  ChevronDown,
+  LogOut,
+  Sun,
+  Moon,
+  LayoutDashboard,
+  Settings,
+} from "lucide-react"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import type { Session, AuthChangeEvent } from "@supabase/supabase-js"
 
-type ThemeMode = 'light' | 'dark'
+type ThemeMode = "light" | "dark"
 
 function getInitialMode(): ThemeMode {
-  if (typeof window === 'undefined') return 'light'
-  const stored = window.localStorage.getItem('theme')
-  if (stored === 'dark') return 'dark'
-  return 'light'
+  if (typeof window === "undefined") return "light"
+  const stored = window.localStorage.getItem("theme")
+  if (stored === "dark") return "dark"
+  return "light"
 }
 
 function applyThemeMode(mode: ThemeMode) {
   const root = document.documentElement
-  root.classList.remove('light', 'dark')
+  root.classList.remove("light", "dark")
   root.classList.add(mode)
   root.style.colorScheme = mode
-  root.setAttribute('data-mantine-color-scheme', mode)
-  root.setAttribute('data-theme', mode)
-}
-
-function hasStoredSession(): boolean {
-  if (typeof window === 'undefined') return false
-  return Object.keys(localStorage).some(
-    (k) => k.startsWith('sb-') && k.endsWith('-auth-token')
-  )
+  root.setAttribute("data-mantine-color-scheme", mode)
+  root.setAttribute("data-theme", mode)
 }
 
 export default function Header() {
@@ -39,32 +47,41 @@ export default function Header() {
   const supabase = getSupabaseBrowserClient()
 
   const [session, setSession] = useState<Session | null>(null)
-  const [isSessionLoading, setIsSessionLoading] = useState(() => hasStoredSession())
+  const [isSessionLoading, setIsSessionLoading] = useState(true)
 
-  const currentPath = useRouterState({
-    select: (state) => state.location.pathname,
+  const isNavigating = useRouterState({
+    select: (state) => state.isLoading,
   })
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
-      setSession(data?.session ?? null)
-      setIsSessionLoading(false)
-    })
+    let mounted = true
+
+    supabase.auth
+      .getSession()
+      .then(({ data }: { data: { session: Session | null } }) => {
+        if (!mounted) return
+        setSession(data?.session ?? null)
+        setIsSessionLoading(false)
+      })
 
     const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event: AuthChangeEvent, session: Session | null) => {
-        setSession(session)
+      (_event: AuthChangeEvent, nextSession: Session | null) => {
+        if (!mounted) return
+        setSession(nextSession)
         setIsSessionLoading(false)
       }
     )
 
-    return () => listener.subscription.unsubscribe()
-  }, [])
+    return () => {
+      mounted = false
+      listener.subscription.unsubscribe()
+    }
+  }, [supabase])
 
   const user = session?.user ?? null
   const isAdmin = user?.user_metadata?.role === "admin"
 
-  const [themeMode, setThemeMode] = useState<ThemeMode>('light')
+  const [themeMode, setThemeMode] = useState<ThemeMode>("light")
 
   useEffect(() => {
     const initial = getInitialMode()
@@ -75,36 +92,40 @@ export default function Header() {
   }, [])
 
   const handleThemeChange = () => {
-    const next: ThemeMode = themeMode === 'light' ? 'dark' : 'light'
+    const next: ThemeMode = themeMode === "light" ? "dark" : "light"
     setThemeMode(next)
     applyThemeMode(next)
-    window.localStorage.setItem('theme', next)
+    window.localStorage.setItem("theme", next)
   }
 
-const handleLogout = async () => {
-  setOpened(false)
-  await supabase.auth.signOut()
-  await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
-}
+  const handleLogout = async () => {
+    setOpened(false)
+    setIsSessionLoading(true)
+    await supabase.auth.signOut()
+    await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
+  }
 
-const handleLogin = async () => {
-  setOpened(false)
-  await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
-}
+  const handleLogin = async () => {
+    setOpened(false)
+    setIsSessionLoading(true)
+    await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
+  }
 
-const handleSignup = async () => {
-  setOpened(false)
-  await router.navigate({ to: "/account/register", search: { callbackUrl: "/" } })
-}
+  const handleSignup = async () => {
+    setOpened(false)
+    setIsSessionLoading(true)
+    await router.navigate({ to: "/account/register", search: { callbackUrl: "/" } })
+  }
 
   const handleProfileChange = async (userId: string) => {
+    setOpened(false)
+
     if (isAdmin) {
-      setOpened(false)
       await router.navigate({ to: "/admin/users/$userId/edit", params: { userId } })
       return
     }
 
-    await router.navigate({ to: "/account/$userId/edit", params: { userId } })
+    await router.navigate({ to: "/account/profile/edit" })
   }
 
   const links = [
@@ -118,14 +139,32 @@ const handleSignup = async () => {
   const ThemeButton = (
     <UnstyledButton
       onClick={handleThemeChange}
-      title={themeMode === 'light' ? 'Switch to Dark Mode' : 'Switch to Light Mode'}
+      title={themeMode === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
       className="flex items-center justify-center rounded-full px-4 pt-1 transition hover:bg-slate-100 dark:hover:bg-slate-800"
     >
-      {themeMode === 'dark'
-        ? <Moon size={24} className="text-indigo-400" />
-        : <Sun size={24} className="text-indigo-500" />
-      }
+      {themeMode === "dark" ? (
+        <Moon size={24} className="text-indigo-400" />
+      ) : (
+        <Sun size={24} className="text-indigo-500" />
+      )}
     </UnstyledButton>
+  )
+
+  const DesktopUserSkeleton = (
+    <Group gap="sm" className="ml-4 flex-shrink-0">
+      <Skeleton height={30} circle />
+      <Skeleton height={10} width={80} radius="xl" />
+    </Group>
+  )
+
+  const MobileUserSkeleton = (
+    <div className="flex items-center space-x-3">
+      <Skeleton height={32} circle />
+      <div className="flex-1 space-y-2">
+        <Skeleton height={10} width="60%" radius="xl" />
+        <Skeleton height={8} width="40%" radius="xl" />
+      </div>
+    </div>
   )
 
   const UserMenu = (
@@ -201,6 +240,7 @@ const handleSignup = async () => {
       <div className="container mx-auto flex h-full items-center justify-end px-4">
         <nav className="hidden min-w-0 items-center space-x-6 md:flex">
           {ThemeButton}
+
           {links.map((link) => (
             <Link
               key={link.label}
@@ -211,14 +251,18 @@ const handleSignup = async () => {
               {link.label}
             </Link>
           ))}
-          {isSessionLoading ? (
-            <Skeleton height={34} width={120} radius="xl" className="ml-4 flex-shrink-0" />
-          ) : user ? UserMenu : AuthButtons}
+
+          {isSessionLoading || isNavigating ? DesktopUserSkeleton : user ? UserMenu : AuthButtons}
         </nav>
 
         <div className="flex items-center gap-2 md:hidden">
           {ThemeButton}
-          <Burger opened={opened} onClick={() => setOpened(!opened)} size="sm" color="#6366f1" />
+          <Burger
+            opened={opened}
+            onClick={() => setOpened(!opened)}
+            size="sm"
+            color="#6366f1"
+          />
         </div>
       </div>
 
@@ -245,20 +289,26 @@ const handleSignup = async () => {
             ))}
 
             <div className="border-t border-slate-100 pt-4 dark:border-slate-700">
-              {isSessionLoading ? (
-                <Skeleton height={40} radius="xl" />
+              {isSessionLoading || isNavigating ? (
+                MobileUserSkeleton
               ) : user ? (
                 <div className="flex flex-col space-y-3">
                   <div className="flex items-center space-x-3">
                     <Avatar
                       src={user?.user_metadata?.avatar_url || "https://i.pravatar.cc/100"}
-                      alt={user?.user_metadata?.full_name}
+                      alt={user?.user_metadata?.name}
                       radius="xl"
                       size="sm"
                     />
                     <div className="flex-1">
-                      <Text fw={600} size="sm">{user.user_metadata?.full_name}</Text>
-                      {isAdmin && <Text size="xs" c="indigo" fw={500}>Administrator</Text>}
+                      <Text fw={600} size="sm">
+                        {user.user_metadata?.name}
+                      </Text>
+                      {isAdmin && (
+                        <Text size="xs" c="indigo" fw={500}>
+                          Administrator
+                        </Text>
+                      )}
                     </div>
                   </div>
 
@@ -279,6 +329,17 @@ const handleSignup = async () => {
                   )}
 
                   <Button
+                    variant="light"
+                    color="blue"
+                    radius="xl"
+                    fullWidth
+                    leftSection={<Settings size={15} />}
+                    onClick={() => handleProfileChange(user.id)}
+                  >
+                    Edit Profile
+                  </Button>
+
+                  <Button
                     variant="outline"
                     color="red"
                     radius="xl"
@@ -293,6 +354,9 @@ const handleSignup = async () => {
                 <div className="flex flex-col gap-3">
                   <Button variant="outline" color="blue" size="md" fullWidth onClick={handleLogin}>
                     Login
+                  </Button>
+                  <Button variant="filled" color="blue" size="md" fullWidth onClick={handleSignup}>
+                    Sign Up
                   </Button>
                 </div>
               )}

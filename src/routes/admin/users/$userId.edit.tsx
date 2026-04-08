@@ -1,5 +1,6 @@
 import { EditUserForm } from '@/components/EditUser'
-import { getAuthUserByIdQueryOptions } from '@/db/queries/user.queries'
+import { getAuthUserByIdQueryOptions } from '@/db/queries/admin.queries'
+
 import { Container } from '@mantine/core'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute } from '@tanstack/react-router'
@@ -17,7 +18,7 @@ function RouteComponent() {
 
   // ✅ Use the prefetched query directly — no useState/useEffect needed
   // since the loader already prefetched this data
-  const { data: theUser } = useSuspenseQuery(getAuthUserByIdQueryOptions(userId))
+  const { data: theUser,error } = useSuspenseQuery(getAuthUserByIdQueryOptions(userId))
 
   return (
     <Container size="sm" className="py-10">

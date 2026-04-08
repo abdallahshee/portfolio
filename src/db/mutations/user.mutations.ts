@@ -1,20 +1,16 @@
-import { UpdateUserProfile } from "@/server/users.functions"
+
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import type { Role, UserUpdateRequest } from "../validations/user.types"
-import { useRouter } from "@tanstack/react-router"
+import type {UserUpdateProfileRequest} from "../validations/user.types"
 import { getAllUsersQueryOptions } from "../queries/user.queries"
+import { userUpdateProfile } from "@/server/users.functions"
 
 
-export const useUserUpdateMutation=()=>{
+export const useUserUpdateProfileMutation=()=>{
     const queryClient=useQueryClient()
-    const router=useRouter()
     return useMutation({
-        mutationFn:(data:UserUpdateRequest)=>UpdateUserProfile({data}),
-        onSuccess:async(_,variables)=>{
+        mutationFn:(data:UserUpdateProfileRequest)=>userUpdateProfile({data}),
+        onSuccess:async()=>{
             await queryClient.invalidateQueries({queryKey:getAllUsersQueryOptions().queryKey})
-                await router.navigate({
-                    to: "/",
-                })  
         }
     })
 }

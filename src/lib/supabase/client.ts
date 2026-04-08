@@ -1,20 +1,29 @@
 
 
-import { createBrowserClient } from '@supabase/ssr'
+// import { createBrowserClient } from '@supabase/ssr'
 import { nanoid } from 'nanoid'
 
-let browserClient: ReturnType<typeof createBrowserClient> | null = null
+// let browserClient: ReturnType<typeof createBrowserClient> | null = null
 
-export function getSupabaseBrowserClient() {
-  if (browserClient) return browserClient
+// export function getSupabaseBrowserClient() {
+//   if (browserClient) return browserClient
 
-  browserClient = createBrowserClient(
+//   browserClient = createBrowserClient(
+//     import.meta.env.VITE_SUPABASE_URL!,
+//     import.meta.env.VITE_SUPABASE_ANON_KEY!
+//   )
+//   return browserClient
+// }
+
+import { createBrowserClient } from '@supabase/ssr'
+import type { SupabaseClient } from '@supabase/supabase-js'
+
+export function getSupabaseBrowserClient(): SupabaseClient {
+  return createBrowserClient(
     import.meta.env.VITE_SUPABASE_URL!,
     import.meta.env.VITE_SUPABASE_ANON_KEY!
   )
-  return browserClient
 }
-
 
 export async function uploadArticleImage(file: File, userId: string): Promise<string> {
   const supabase = getSupabaseBrowserClient()

@@ -3,6 +3,7 @@ import { user } from "../schema";
 import { createSelectSchema } from "drizzle-zod";
 import type { User } from '@supabase/supabase-js'
 import z from "zod"
+import { UserUpdateSchema } from "./admin.types";
 
 export const SignUpSchema = createSelectSchema(user, {
     name: z.string().nonempty("Username is required")
@@ -55,29 +56,13 @@ export type DbUser = InferSelectModel<typeof user>
 
 export type SupabaseUser = User
 
-export const GetUsersSchema = z.object({
-    page: z.number().min(1).default(1),
-    pageSize: z.number().min(1).max(100).default(10),
-    search: z.string().optional(), // ✅ add search
-})
 
 
-export const UserUpdateSchema = SignInSchema.omit({ rememberMe: true, password: true }).extend({
-    name: z.string().nonempty("Username is required")
+export const UserUpdateProfileSchema=createSelectSchema(user,{
+   name: z.string().nonempty("Username is required")
         .min(3, "At 3 characters for a username")
         .max(15, "Too long for a Username"),
-    image: z.string().min(1),
-    userId: z.string().min(6)
-})
+        image:z.string().min(3)
+}).pick({ name:true,image:true})
 
-export type UserUpdateRequest = z.infer<typeof UserUpdateSchema>
-// export const UserUpdateWithPasswordSchema=UserUpdateSchema.extend({
-//     password: z.string()
-//         .min(8, "Password must be at least 8 characters")
-//         .regex(
-//             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
-//             "Password must contain uppercase, lowercase, number and special character"
-//         ),
-// })
-
-// export type UserUpdateRequestWithPassword=z.infer<typeof UserUpdateWithPasswordSchema>
+export type UserUpdateProfileRequest=z.infer<typeof UserUpdateProfileSchema>

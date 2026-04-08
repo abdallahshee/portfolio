@@ -15,7 +15,7 @@ import {
   FileInput,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { useUserUpdateMutation } from '@/db/mutations/user.mutations'
+import { useUserUpdateProfileMutation } from '@/db/mutations/user.mutations'
 import { useState } from 'react'
 import { Camera, User, Mail, Lock, ShieldCheck, Save } from 'lucide-react'
 import { notifications } from '@mantine/notifications'
@@ -45,7 +45,7 @@ export function EditUserForm({ userId, targetUser, role }: EditUserFormProps) {
     targetUser?.user_metadata.avatar_url ?? null
   )
 
-  const { mutate, isPending } = useUserUpdateMutation()
+  const { mutate, isPending } = useUserUpdateProfileMutation()
 
   const form = useForm<FormValues>({
     validate: zod4Resolver(UserUpdateSchema.omit({ userId: true })),

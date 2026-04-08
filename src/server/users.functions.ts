@@ -1,55 +1,15 @@
 
 import { article, db, user } from "@/db";
-import {  GetUsersSchema, UserUpdateSchema } from "@/db/validations/user.types";
-import { getSupabaseAdmin } from "@/lib/supabase/server";
+
+import { getSupabaseServerClient } from "@/lib/supabase/server";
 import { createServerFn } from "@tanstack/react-start";
 import { count, eq } from "drizzle-orm";
-import { AdminMiddleware, AuthenticatedMiddleware } from "./middleware/auth.middleware";
-
-
-
-
-export const getAllUsers = createServerFn({ method: "GET" })
-// .middleware([AdminMiddleware])
-  .inputValidator(GetUsersSchema)
-  .handler(async ({ data }) => {
-    try {
-      const supabase = getSupabaseAdmin()
-      const { page, pageSize, search } = data
-
-      const { data: usersData, error } = await supabase.auth.admin.listUsers({
-        page,
-        perPage: pageSize,
-      })
-
-      if (error) throw new Error(error.message)
-
-      // ✅ filter by search on the full list
-      const allUsers = usersData.users
-      const filtered = search?.trim()
-        ? allUsers.filter((u) =>
-            u.email?.toLowerCase().includes(search.toLowerCase()) ||
-            u.user_metadata?.name?.toLowerCase().includes(search.toLowerCase())
-          )
-        : allUsers
-      return {
-        users: filtered,
-        total: filtered.length,
-        page,
-        pageSize,
-        totalPages: Math.ceil(filtered.length / pageSize),
-        hasNextPage: page * pageSize < filtered.length,
-        hasPrevPage: page > 1,
-      }
-    } catch (err: any) {
-      console.error("Failed to get users:", err)
-      throw new Error(err?.message ?? "Failed to fetch users")
-    }
-  })
+import { AuthenticatedMiddleware } from "./middleware/auth.middleware";
+import { UserUpdateProfileSchema } from "@/db/validations/user.types";
 
 
 export const getUserById = createServerFn({ method: "GET" })
-// .middleware([AdminMiddleware])
+  // .middleware([AdminMiddleware])
   .inputValidator((data: { userId: string }) => data)
   .handler(async ({ data }) => {
     console.log("Get user by id method Started")
@@ -79,7 +39,7 @@ export const getUserById = createServerFn({ method: "GET" })
           user.updatedAt,
           user.role
         )
-        console.log(JSON.stringify(theUser))
+      console.log(JSON.stringify(theUser))
       return theUser ?? null
     } catch (err) {
       console.error("Failed to get user by id:", err)
@@ -87,55 +47,57 @@ export const getUserById = createServerFn({ method: "GET" })
     }
   })
 
-
- export const UpdateUserProfile = createServerFn({ method: "POST" })
-    .middleware([AuthenticatedMiddleware])
-    .inputValidator(UserUpdateSchema)
-    .handler(async ({ data }) => {
-        try {
-            const supabase = getSupabaseAdmin()
-            // Updating auth.users — the SQL trigger will sync the public user table
-            const { error: authError } = await supabase.auth.admin.updateUserById(
-                data.userId,
-                {
-                    email: data.email,
-                    user_metadata: {
-                        avatar_url: data.image,
-                        name: data.name,
-                    }
-                }
-            )
-            if (authError) {
-                throw new Error(`Auth update failed: ${authError.message}`)
-            }
-
-            return { success: true }
-
-        } catch (err) {
-            const message = err instanceof Error ? err.message : "Failed to update user"
-            throw err
-        }
-    })
-
-export const getAuthUserById = createServerFn({ method: "GET" })
-  .inputValidator((data: { userId: string }) => data)
+export const getAuthUser = createServerFn({ method: "GET" })
   .middleware([AuthenticatedMiddleware])
-  .handler(async ({ data }) => {
-    try{
-      const supabase=getSupabaseAdmin()
- const { data: result, error } = await supabase.auth.admin.getUserById(data.userId)
+  .handler(async () => {
+    try {
+      const supabase = getSupabaseServerClient()
+      const { data: result, error } = await supabase.auth.getUser()
 
-    if (error) throw new Error(error.message)
-    if (!result.user) throw new Error("User not found")
+      if (error) throw new Error(error.message)
+      if (!result.user) throw new Error("User not found")
 
-    const { user } = result
-    console.log("Auth User is found "+JSON.stringify(user))
-  return user
-   
-    }catch(err){
+      const { user } = result
+      return user
+
+    } catch (err) {
       throw err
     }
-   
   })
 
- 
+export const userUpdateProfile = createServerFn({ method: 'POST' })
+  .middleware([AuthenticatedMiddleware])
+  .inputValidator(UserUpdateProfileSchema)
+  .handler(async ({ data }) => {
+    try {
+      const supabase = getSupabaseServerClient()
+
+      const nextName = data.name.trim()
+      const nextImage = data.image.trim()
+
+      const { data: updatedUser, error } = await supabase.auth.updateUser({
+        data: {
+          name: nextName,
+          avatar_url: nextImage,
+        },
+      })
+
+      if (error) {
+        throw new Error(error.message)
+      }
+
+      return {
+       
+        user: updatedUser.user,
+      }
+    } catch (err) {
+      throw new Error(
+        err instanceof Error ? err.message : 'Failed to update profile.'
+      )
+    }
+  })
+
+
+
+
+

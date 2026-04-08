@@ -1,6 +1,6 @@
 // queries/admin.queries.ts
 import { queryOptions } from "@tanstack/react-query"
-import {getAdminStats} from "@/server/admin.functions"
+import {getAdminStats, getAuthUserById} from "@/server/admin.functions"
 
 export const adminStatsQueryOptions = queryOptions({
   queryKey: ["admin", "stats"],
@@ -8,6 +8,9 @@ export const adminStatsQueryOptions = queryOptions({
 })
 
 
-
+export const getAuthUserByIdQueryOptions=(userId:string)=>queryOptions({
+  queryKey:['authUsers',userId],
+  queryFn:()=>getAuthUserById({data:{userId}})
+})
 
 
