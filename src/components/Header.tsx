@@ -270,7 +270,7 @@ export default function Header() {
             </Link>
           ))}
 
-          <div className="flex w-[160px] flex-shrink-0 items-center justify-end">
+          <div className="flex w-[160px] flex-shrink-0 items-center justify-end ml-2">
             {showSkeleton ? DesktopUserSkeleton : user ? UserMenu : AuthButtons}
           </div>
         </nav>

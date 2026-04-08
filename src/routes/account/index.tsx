@@ -53,37 +53,37 @@ function RouteComponent() {
   })
 
 
-  const handleSubmit = async (values: SignInRequest) => {
-    setFormError(null)
-    try {
-      setIsSubmitting(true)
+const handleSubmit = async (values: SignInRequest) => {
+  setFormError(null)
+  try {
+    setIsSubmitting(true)
 
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: values.email,
-        password: values.password,
-      })
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: values.email,
+      password: values.password,
+    })
 
-      if (error) {
-        setFormError(error.message)
-        return
-      }
-
-      // ✅ if rememberMe is false, clear session when browser closes
-      if (!values.rememberMe) {
-        await supabase.auth.updateUser({
-          data: { session_expiry: 'browser' }
-        })
-      }
-
-      await router.navigate({ to: redirectTo })
-      return data
-
-    } catch (err: any) {
-      setFormError(err?.message ?? "Something went wrong")
-    } finally {
-      setIsSubmitting(false)
+    if (error) {
+      setFormError(error.message)
+      return
     }
+
+    if (!values.rememberMe) {
+      await supabase.auth.updateUser({
+        data: { session_expiry: 'browser' }
+      })
+    }
+
+    // ✅ navigate directly — header will handle isNavigatingAway via router state
+    await router.navigate({ to: redirectTo })
+    return data
+
+  } catch (err: any) {
+    setFormError(err?.message ?? "Something went wrong")
+  } finally {
+    setIsSubmitting(false)
   }
+}
 
   const handleOAuthSignIn = async (provider: "google"|"facebook") => {
     try {

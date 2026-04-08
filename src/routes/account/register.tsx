@@ -55,62 +55,62 @@ function RouteComponent() {
     validateInputOnBlur: true,
   })
 
-  const handleSubmit = async (values: SignUpRequest) => {
-    setFormError(null)
-    try {
-      setIsSubmitting(true)
+ const handleSubmit = async (values: SignUpRequest) => {
+  setFormError(null)
+  try {
+    setIsSubmitting(true)
 
-      const { data, error } = await client.auth.signUp({
-        email: values.email.trim().toLowerCase(),
-        password: values.password,
-        options: {
-          emailRedirectTo: `${window.location.origin}`,
-          data: {
-            name: values.name,
-            avatar_url: DEFAULT_AVATAR_URL, // ✅ always use default on signup
-            role: "user"
-          },
+    const { data, error } = await client.auth.signUp({
+      email: values.email.trim().toLowerCase(),
+      password: values.password,
+      options: {
+        emailRedirectTo: `${window.location.origin}`,
+        data: {
+          name: values.name,
+          avatar_url: DEFAULT_AVATAR_URL,
+          role: "user"
         },
-      })
+      },
+    })
 
-      if (error) {
-        setFormError(error.message)
-        return
-      }
-
-      if (data.user && !data.session) {
-        // ✅ email confirmation required
-        notifications.show({
-          title: "Almost there!",
-          message: "Check your email and click the confirmation link to activate your account.",
-          color: "blue",
-          autoClose: false,
-        })
-        await router.navigate({
-          to: "/account",
-          search: { callbackUrl },
-        })
-        return
-      }
-
-      if (data.user && data.session) {
-        notifications.show({
-          title: "Account created",
-          message: "Your account has been created successfully 🎉",
-          color: "green",
-        })
-        await router.navigate({
-          to: "/account",
-          search: { callbackUrl },
-        })
-      }
-
-    } catch (err: any) {
-      setFormError(err?.message ?? "Something went wrong")
-    } finally {
-      setIsSubmitting(false)
+    if (error) {
+      setFormError(error.message)
+      return
     }
+
+    if (data.user && !data.session) {
+      notifications.show({
+        title: "Almost there!",
+        message: "Check your email and click the confirmation link to activate your account.",
+        color: "blue",
+        autoClose: false,
+      })
+      // ✅ no isNavigatingAway needed here — just navigate
+      await router.navigate({
+        to: "/account",
+        search: { callbackUrl },
+      })
+      return
+    }
+
+    if (data.user && data.session) {
+      notifications.show({
+        title: "Account created",
+        message: "Your account has been created successfully 🎉",
+        color: "green",
+      })
+      await router.navigate({
+        to: "/account",
+        search: { callbackUrl },
+      })
+    }
+
+  } catch (err: any) {
+    setFormError(err?.message ?? "Something went wrong")
+  } finally {
+    setIsSubmitting(false)
   }
+}
 
   const handleOAuthSignUp = async (provider: "google"|"facebook") => {
     try {
