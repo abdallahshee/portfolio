@@ -63,7 +63,7 @@ export const Route = createFileRoute('/')({
 })
 
 const STATS = [
-  { icon: <Briefcase size={18} />, value: '3+', label: 'Years Experience', color: 'indigo' },
+  { icon: <Briefcase size={18} />, value: '4+', label: 'Years Experience', color: 'indigo' },
   { icon: <FolderKanban size={18} />, value: '20+', label: 'Projects Delivered', color: 'blue' },
   { icon: <Users size={18} />, value: '10+', label: 'Happy Clients', color: 'green' },
   { icon: <Star size={18} />, value: '100%', label: 'On-Time Delivery', color: 'yellow' },

@@ -300,7 +300,7 @@ export default function Header() {
               <Link
                 key={link.label}
                 to={link.to}
-                className="font-semibold text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
+                className="font-normal text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
                 onClick={() => setOpened(false)}
                 activeProps={{ className: "text-indigo-500 dark:text-indigo-400" }}
               >
@@ -315,7 +315,7 @@ export default function Header() {
                 <div className="flex flex-col space-y-3">
                   <div className="flex items-center space-x-3">
                     <Avatar
-                      src={user?.user_metadata?.avatar_url || "https://i.pravatar.cc/100"}
+                      src={user?.user_metadata?.avatar_url }
                       alt={user?.user_metadata?.name}
                       radius="xl"
                       size="sm"
