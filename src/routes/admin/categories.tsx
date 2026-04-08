@@ -194,13 +194,15 @@ function RouteComponent() {
                         label="Category Name"
                         placeholder="e.g. Technology"
                         radius="md"
+                         size="sm"
                         leftSection={<Tag size={16} />}
                         {...form.getInputProps("name")}
                       />
 
                       <Button
                         type="submit"
-                        radius="xl"
+                        radius="md"
+                         size="sm"
                         loading={createCategoryMutation.isPending}
                       >
                         Create Category
@@ -258,7 +260,7 @@ function RouteComponent() {
                           <Paper
                             key={category.id}
                             withBorder
-                            radius="xl"
+                            radius="md"
                             p="md"
                             className="transition hover:shadow-sm"
                           >
@@ -276,6 +278,7 @@ function RouteComponent() {
                                         onChange={(e) => setEditingName(e.currentTarget.value)}
                                         placeholder="Enter category name"
                                         radius="md"
+                                         size="sm"
                                       />
                                       <Text size="xs" c="dimmed">
                                         ID: {category.id}
@@ -298,8 +301,8 @@ function RouteComponent() {
                                     <ActionIcon
                                       variant="light"
                                       color="green"
-                                      radius="xl"
-                                      size="lg"
+                                      radius="md"
+                                      size="sm"
                                       loading={isEditingCurrent(category.id)}
                                       onClick={() =>
                                         handleEdit({
@@ -315,8 +318,8 @@ function RouteComponent() {
                                     <ActionIcon
                                       variant="light"
                                       color="gray"
-                                      radius="xl"
-                                      size="lg"
+                                      radius="md"
+                                     size="sm"
                                       onClick={cancelEdit}
                                     >
                                       <X size={16} />
@@ -327,8 +330,8 @@ function RouteComponent() {
                                     <ActionIcon
                                       variant="light"
                                       color="blue"
-                                      radius="xl"
-                                      size="lg"
+                                      radius="md"
+                                      size="sm"
                                       onClick={() => startEdit(category.id, category.name)}
                                     >
                                       <Pencil size={16} />
@@ -337,8 +340,8 @@ function RouteComponent() {
                                     <ActionIcon
                                       variant="light"
                                       color="red"
-                                      radius="xl"
-                                      size="lg"
+                                      radius="md"
+                                     size="sm"
                                       loading={
                                         deleteCategoryMutation.isPending &&
                                         deleteCategoryMutation.variables === category.id
@@ -387,14 +390,16 @@ function RouteComponent() {
           <Group justify="flex-end">
             <Button
               variant="default"
-              radius="xl"
+              radius="md"
+               size="sm"
               onClick={() => setDeleteTarget(null)}
             >
               Cancel
             </Button>
             <Button
               color="red"
-              radius="xl"
+              radius="md"
+               size="sm"
               loading={deleteCategoryMutation.isPending}
               onClick={confirmDelete}
             >

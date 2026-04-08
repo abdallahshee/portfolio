@@ -130,7 +130,8 @@ useEffect(() => {
             <Button
               variant="light"
               color="indigo"
-              radius="xl"
+              radius="md"
+              size="sm"
               onClick={() => router.navigate({ to: '/account', search: { callbackUrl: '/' } })}
             >
               Go to Sign In
@@ -159,7 +160,7 @@ useEffect(() => {
                   label="New Password"
                   placeholder="At least 8 characters"
                   radius="md"
-                  size="md"
+                size="sm"
                   visible={passwordVisible}
                   onVisibilityChange={togglePassword}
                   visibilityToggleButtonProps={{
@@ -174,7 +175,7 @@ useEffect(() => {
                   label="Confirm New Password"
                   placeholder="Repeat your new password"
                   radius="md"
-                  size="md"
+                size="sm"
                   visible={confirmVisible}
                   onVisibilityChange={toggleConfirm}
                   visibilityToggleButtonProps={{
@@ -189,8 +190,8 @@ useEffect(() => {
                   type="submit"
                   fullWidth
                   mt="xs"
-                  radius="xl"
-                  size="md"
+                  radius="md"
+                size="sm"
                   loading={isSubmitting}
                   disabled={!isRecoverySession}
                   leftSection={<KeyRound size={18} />}

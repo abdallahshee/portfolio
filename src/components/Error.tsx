@@ -25,14 +25,15 @@ export default function ErrorComponent({ reset }: ErrorComponentProps) {
         <Stack gap="sm" align="center">
           {reset && (
             <Button
-              radius="xl"
+              radius="md"
+              size="sm"
               leftSection={<RefreshCw size={16} />}
               onClick={reset}
             >
               Try Again
             </Button>
           )}
-          <Button radius="xl" variant="subtle" component="a" href="/">
+          <Button radius="md" size="sm" variant="subtle" component="a" href="/">
             Go Home
           </Button>
         </Stack>

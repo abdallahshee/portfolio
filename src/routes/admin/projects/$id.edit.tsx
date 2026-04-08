@@ -128,7 +128,8 @@ function RouteComponent() {
 
               <Button
                 variant="light"
-                radius="xl"
+                radius="md"
+                 size="sm"
                 leftSection={<ArrowLeft size={16} />}
                 onClick={() => router.history.back()}
               >
@@ -159,7 +160,7 @@ function RouteComponent() {
                         label="Project Title"
                         placeholder="My Awesome Project"
                         radius="md"
-                        size="md"
+                        size="sm"
                         {...form.getInputProps("title")}
                       />
 
@@ -169,7 +170,7 @@ function RouteComponent() {
                         minRows={6}
                         autosize
                         radius="md"
-                        size="md"
+                        size="sm"
                         {...form.getInputProps("description")}
                       />
 
@@ -198,7 +199,7 @@ function RouteComponent() {
                         label="URL"
                         placeholder="https://myproject.com"
                         radius="md"
-                        size="md"
+                         size="sm"
                         leftSection={<Globe size={16} />}
                         {...form.getInputProps("url")}
                       />
@@ -223,7 +224,7 @@ function RouteComponent() {
                         label="Image URL"
                         placeholder="https://myproject.com/screenshot.png"
                         radius="md"
-                        size="md"
+                        size="sm"
                         {...form.getInputProps("imageUrl")}
                       />
 
@@ -232,7 +233,7 @@ function RouteComponent() {
                           <Image
                             src={previewImage}
                             alt={form.values.title || "Project preview"}
-                            radius="xl"
+                            radius="md"
                             fit="contain"
                             h={320}
                           />
@@ -259,7 +260,7 @@ function RouteComponent() {
                           <Button
                             type="button"
                             variant="light"
-                            radius="xl"
+                            radius="md"
                             size="sm"
                             leftSection={<Plus size={16} />}
                             onClick={addTechnology}
@@ -283,6 +284,7 @@ function RouteComponent() {
                               label={`Technology ${index + 1}`}
                               placeholder="e.g. React, Node.js, Tailwind"
                               radius="md"
+                               size="sm"
                               className="flex-1"
                               {...form.getInputProps(`technologies.${index}`)}
                             />
@@ -290,8 +292,8 @@ function RouteComponent() {
                             <ActionIcon
                               color="red"
                               variant="light"
-                              radius="xl"
-                              size="lg"
+                              radius="md"
+                              size="sm"
                               onClick={() => removeTechnology(index)}
                               disabled={form.values.technologies.length === 1}
                             >
@@ -316,7 +318,8 @@ function RouteComponent() {
                         <Button
                           type="button"
                           variant="default"
-                          radius="xl"
+                          radius="md"
+                           size="sm"
                           onClick={() => router.history.back()}
                         >
                           Cancel
@@ -324,7 +327,8 @@ function RouteComponent() {
 
                         <Button
                           type="submit"
-                          radius="xl"
+                          radius="md"
+                           size="sm"
                           loading={loading}
                           leftSection={<Save size={16} />}
                         >
@@ -421,7 +425,7 @@ function RouteComponent() {
                   <Badge
                     variant="light"
                     color={form.values.isPublic ? "green" : "gray"}
-                    radius="xl"
+                    radius="md"
                     w="fit-content"
                   >
                     {form.values.isPublic ? "Public" : "Private"}

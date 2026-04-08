@@ -221,21 +221,21 @@ function ServicesPage() {
             </Text>
           </Stack>
           <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm" className="pt-2">
-            <Paper withBorder radius="xl" p="md" className="shadow-sm">
+            <Paper withBorder radius="md" p="md" className="shadow-sm">
               <Text fw={700} size="sm">Scalable Systems</Text>
               <Text size="sm" c="dimmed" mt={4}>
                 Designed to grow with your users and workflows.
               </Text>
             </Paper>
 
-            <Paper withBorder radius="xl" p="md" className="shadow-sm">
+            <Paper withBorder radius="md" p="md" className="shadow-sm">
               <Text fw={700} size="sm">Clean Architecture</Text>
               <Text size="sm" c="dimmed" mt={4}>
                 Maintainable codebases built for long-term success.
               </Text>
             </Paper>
 
-            <Paper withBorder radius="xl" p="md" className="shadow-sm">
+            <Paper withBorder radius="md" p="md" className="shadow-sm">
               <Text fw={700} size="sm">Business Focused</Text>
               <Text size="sm" c="dimmed" mt={4}>
                 Solutions aligned with real operational needs.
@@ -246,9 +246,9 @@ function ServicesPage() {
             <Link to="/contact">
               <Button
                 color="green"
-                radius="xl"
+                radius="md"
                 variant='filled'
-                size="md"
+               size="sm"
                 leftSection={<Lightbulb size={16} color='yellow' />}
               >
                 Discuss Your Idea with Me
@@ -258,8 +258,8 @@ function ServicesPage() {
             <Button
               variant="outline"
               color="indigo"
-              radius="xl"
-              size="md"
+              radius="md"
+              size="sm"
               onClick={() => router.navigate({ to: "/" })}
             >
               Back to Home
@@ -277,17 +277,17 @@ function ServicesPage() {
             className="relative w-full max-w-[26rem] overflow-hidden bg-white p-3 dark:bg-slate-900"
           >
             <div className="relative overflow-hidden rounded-[20px]">
-             <img
-src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg"
-  alt="Software developer working on code"
-  className="block h-[240px] w-full object-cover sm:h-[280px] lg:h-[320px]"
-/>
+              <img
+                src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg"
+                alt="Software developer working on code"
+                className="block h-[240px] w-full object-cover sm:h-[280px] lg:h-[320px]"
+              />
 
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-900/20 to-transparent" />
 
               <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
                 <Paper
-                  radius="10px"
+                  radius="6px"
                   className="bg-white/95 p-1 backdrop-blur dark:bg-slate-900/90"
                 >
                   <Title order={3} className='heading2 text-center'> Scalable and Maintainable</Title>
@@ -312,7 +312,7 @@ src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg"
           {SERVICES.map((service) => (
             <Card
               key={service.title}
-              radius="xl"
+              radius="md"
               withBorder
               p="lg"
               className="group shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
@@ -322,7 +322,7 @@ src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg"
                   <ThemeIcon
                     variant="light"
                     color={service.color}
-                    radius="lg"
+                    radius="md"
                     size={42}
                     className="transition-transform duration-300 group-hover:scale-110"
                   >
@@ -394,13 +394,13 @@ src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg"
             {TECH_STACK.map((tech) => (
               <Paper
                 key={tech.name}
-                radius="xl"
+                radius="md"
                 withBorder
                 p="md"
                 className="group h-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
               >
                 <Group justify="space-between" align="center" wrap="nowrap">
-                  <Text fw={700} size="sm">
+                  <Text fw={700} size="sm" >
                     {tech.name}
                   </Text>
                   {/* <div className="h-2 w-2 rounded-full bg-blue-500 opacity-70" /> */}
@@ -423,9 +423,9 @@ src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg"
 
         <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
           {TESTIMONIALS.map((t) => (
-            <Card key={t.name} radius="xl" withBorder p="xl" className="shadow-sm">
+            <Card key={t.name} radius="lg" withBorder p="xl" className="shadow-sm">
               <Stack gap="lg">
-                <ThemeIcon variant="light" color="pink" radius="xl" size={36} className="opacity-60">
+                <ThemeIcon variant="light" color="pink" radius="md" size={36} className="opacity-60">
                   <Quote size={18} />
                 </ThemeIcon>
 
@@ -434,7 +434,7 @@ src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg"
                 </Text>
 
                 <Group gap="sm">
-                  <Avatar color={t.color} radius="xl" size={42}>{t.avatar}</Avatar>
+                  <Avatar color={t.color} radius="md" size={42}>{t.avatar}</Avatar>
                   <div>
                     <Text fw={700} size="md">{t.name}</Text>
                     <Text size="sm" c="dimmed">{t.role}</Text>
@@ -468,15 +468,15 @@ src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg"
               <Button
                 variant="filled"
                 color="yellow"
-                size="md"
-                radius="xl"
+               size="sm"
+                radius="md"
                 leftSection={<Mail size={18} />}
                 onClick={() => router.navigate({ to: '/contact' })}
               >
                 Let's Get Started
               </Button>
               <Link to="/projects">
-                <Button variant="gradient" color="blue" size="md" radius="xl" leftSection={<FolderKanban size={18} />}>
+                <Button variant="gradient" color="blue"  size="sm" radius="md" leftSection={<FolderKanban size={18} />}>
                   Explore My Projects
                 </Button>
               </Link>

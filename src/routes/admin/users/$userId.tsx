@@ -60,7 +60,8 @@ export const Route = createFileRoute("/admin/users/$userId")({
             </Text>
             <Button
               variant="light"
-              radius="xl"
+              radius="md"
+               size="sm"
               leftSection={<ArrowLeft size={16} />}
               onClick={() => window.history.back()}
             >
@@ -126,8 +127,8 @@ function RouteComponent() {
                     <Badge
                       variant="light"
                       color={user.role === "admin" ? "red" : "blue"}
-                      radius="xl"
-                      size="lg"
+                      radius="md"
+                     size="sm"
                       leftSection={
                         user.role === "admin" ? (
                           <ShieldCheck size={14} />
@@ -142,8 +143,8 @@ function RouteComponent() {
                     <Badge
                       variant="light"
                       color="grape"
-                      radius="xl"
-                      size="lg"
+                      radius="md"
+                    size="sm"
                       leftSection={<FileText size={14} />}
                     >
                       {user.articleCount} articles
@@ -161,7 +162,8 @@ function RouteComponent() {
               <Group gap="sm" wrap="nowrap">
                 <Button
                   variant="default"
-                  radius="xl"
+                  radius="md"
+                   size="sm"
                   leftSection={<ArrowLeft size={16} />}
                   onClick={() => navigate({ to: "/admin/users" })}
                 >
@@ -171,7 +173,8 @@ function RouteComponent() {
                 <Button
                   variant="light"
                   color="indigo"
-                  radius="xl"
+                  radius="md"
+                   size="sm"
                   leftSection={<Pencil size={16} />}
                   onClick={() =>
                     navigate({
@@ -184,7 +187,8 @@ function RouteComponent() {
                 </Button>
 
                 <Button
-                  radius="xl"
+                  radius="md"
+                   size="sm"
                   leftSection={<BookOpen size={16} />}
                   onClick={() =>
                     navigate({
@@ -308,7 +312,8 @@ function RouteComponent() {
                 <Button
                   variant="light"
                   color="indigo"
-                  radius="xl"
+                  radius="md"
+                   size="sm"
                   leftSection={<Pencil size={16} />}
                   onClick={() =>
                     navigate({
@@ -332,7 +337,8 @@ function RouteComponent() {
                   </Text>
                 </div>
                 <Button
-                  radius="xl"
+                  radius="md"
+                   size="sm"
                   leftSection={<BookOpen size={16} />}
                   onClick={() =>
                     navigate({

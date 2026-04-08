@@ -161,7 +161,7 @@ function RouteComponent() {
                         src={article.authorImage || undefined}
                         alt={article.authorName || 'Author'}
                         size={28}
-                        radius="xl"
+                        radius="md"
                       />
                       <Text size="sm" className="whitespace-nowrap">
                         {article.authorName ?? '—'}
@@ -211,8 +211,8 @@ function RouteComponent() {
                         <ActionIcon
                           variant="light"
                           color="red"
-                          radius="lg"
-                          size="md"
+                          radius="md"
+                          size="sm"
                           onClick={() => {
                             // wire up delete mutation here
                           }}

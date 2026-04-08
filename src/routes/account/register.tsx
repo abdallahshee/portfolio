@@ -150,16 +150,16 @@ function RouteComponent() {
 
         <div className="flex flex-col gap-3">
           <GoogleButton
-            radius="xl"
-            size="md"
+            radius="md"
+          size="sm"
             loading={oauthProvider === "google"}
             onClick={() => handleOAuthSignUp("google")}
           >
             Sign up with Google
           </GoogleButton>
           <FacebookButton
-            size="md"
-            radius="xl"
+          size="sm"
+            radius="md"
             loading={oauthProvider === "facebook"}
             onClick={() => handleOAuthSignUp("facebook")}
           >
@@ -186,9 +186,10 @@ function RouteComponent() {
           <Stack gap="md">
             <TextInput
               label="Full Name"
+           
               placeholder="John Doe"
               radius="md"
-              size="md"
+              size="sm"
               {...form.getInputProps("name")}
             />
 
@@ -196,7 +197,7 @@ function RouteComponent() {
               label="Email"
               placeholder="you@example.com"
               radius="md"
-              size="md"
+             size="sm"
               {...form.getInputProps("email")}
             />
 
@@ -204,7 +205,7 @@ function RouteComponent() {
               label="Password"
               placeholder="Create a password"
               radius="md"
-              size="md"
+         size="sm"
               {...form.getInputProps("password")}
             />
 
@@ -212,7 +213,7 @@ function RouteComponent() {
               label="Confirm Password"
               placeholder="Repeat password"
               radius="md"
-              size="md"
+             size="sm"
               {...form.getInputProps("confirmPassword")}
             />
 
@@ -220,8 +221,8 @@ function RouteComponent() {
               type="submit"
               fullWidth
               mt="sm"
-              radius="xl"
-              size="md"
+              radius="md"
+             size="sm"
               loading={isSubmitting}
               leftSection={<UserPlus size={18} />}
             >

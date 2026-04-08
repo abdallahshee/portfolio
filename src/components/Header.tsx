@@ -172,7 +172,7 @@ export default function Header() {
   const DesktopUserSkeleton = (
     <Group gap="sm" className="flex-shrink-0">
       <Skeleton height={30} circle />
-      <Skeleton height={10} width={80} radius="xl" />
+      <Skeleton height={10} width={80} radius="md" />
     </Group>
   )
 
@@ -180,8 +180,8 @@ export default function Header() {
     <div className="flex items-center space-x-3">
       <Skeleton height={32} circle />
       <div className="flex-1 space-y-2">
-        <Skeleton height={10} width="60%" radius="xl" />
-        <Skeleton height={8} width="40%" radius="xl" />
+        <Skeleton height={10} width="60%" radius="md" />
+        <Skeleton height={8} width="40%" radius="md" />
       </div>
     </div>
   )
@@ -194,7 +194,7 @@ export default function Header() {
             <Avatar
               src={user?.user_metadata?.avatar_url}
               alt={user?.user_metadata?.name}
-              radius="xl"
+              radius="md"
               size="sm"
             />
             <Text size="sm" fw={600} className="whitespace-nowrap leading-tight">
@@ -254,7 +254,7 @@ export default function Header() {
   )
 
   return (
-    <header className="fixed left-0 top-0 z-[100] h-15 w-full border-b-1 border-green-500 bg-slate-50 shadow-lg dark:bg-slate-700">
+    <header className="fixed left-0 top-0 z-[100] h-15 w-full border-b-2 border-blue-700 bg-slate-50 shadow-lg dark:bg-slate-700">
       <div className="container mx-auto flex h-full items-center justify-end px-4">
         <nav className="hidden min-w-0 items-center space-x-6 md:flex">
           {ThemeButton}
@@ -317,7 +317,7 @@ export default function Header() {
                     <Avatar
                       src={user?.user_metadata?.avatar_url }
                       alt={user?.user_metadata?.name}
-                      radius="xl"
+                      radius="md"
                       size="sm"
                     />
                     <div className="flex-1">
@@ -336,7 +336,8 @@ export default function Header() {
                     <Button
                       variant="light"
                       color="indigo"
-                      radius="xl"
+                      radius="md"
+                       size="sm"
                       fullWidth
                       leftSection={<LayoutDashboard size={15} />}
                       onClick={() => {
@@ -351,7 +352,8 @@ export default function Header() {
                   <Button
                     variant="light"
                     color="blue"
-                    radius="xl"
+                    radius="md"
+                     size="sm"
                     fullWidth
                     leftSection={<Settings size={15} />}
                     onClick={() => handleProfileChange(user.id)}
@@ -362,7 +364,8 @@ export default function Header() {
                   <Button
                     variant="outline"
                     color="red"
-                    radius="xl"
+                    radius="md"
+                     size="sm"
                     fullWidth
                     leftSection={<LogOut size={15} />}
                     onClick={handleLogout}
@@ -372,10 +375,10 @@ export default function Header() {
                 </div>
               ) : (
                 <div className="flex flex-col gap-3">
-                  <Button variant="outline" color="blue" size="md" fullWidth onClick={handleLogin}>
+                  <Button variant="outline" color="blue" size="sm" fullWidth onClick={handleLogin}>
                     Login
                   </Button>
-                  <Button variant="filled" color="blue" size="md" fullWidth onClick={handleSignup}>
+                  <Button variant="filled" color="blue" size="sm" fullWidth onClick={handleSignup}>
                     Sign Up
                   </Button>
                 </div>

@@ -22,7 +22,7 @@ function RouteComponent() {
                 <Paper radius="2xl" withBorder shadow="sm" p="xl">
                     <Stack align="center" gap="lg" py="xl">
 
-                        <ThemeIcon size={80} radius="xl" variant="light" color="red" className="animate-pulse">
+                        <ThemeIcon size={80} radius="md" variant="light" color="red" className="animate-pulse">
                             <ShieldX size={40} />
                         </ThemeIcon>
 
@@ -51,7 +51,8 @@ function RouteComponent() {
 
                             <Button
                                 fullWidth
-                                radius="xl"
+                                radius="md"
+                                 size="sm"
                                 variant="outline"
                                 color="gray"
                                 leftSection={<Home size={16} />}

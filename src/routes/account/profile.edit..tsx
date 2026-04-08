@@ -118,7 +118,7 @@ function RouteComponent() {
               <Avatar
                 src={avatarPreview}
                 size={90}
-                radius="xl"
+                radius="md"
                 color="teal"
                 className="border-2 border-slate-200 dark:border-slate-700"
               >
@@ -149,7 +149,7 @@ function RouteComponent() {
                 label="Display Name"
                 placeholder="John Doe"
                 radius="md"
-                size="md"
+               size="sm"
                 leftSection={<ProfileUserIcon size={16} />}
                 {...form.getInputProps('name')}
               />
@@ -159,7 +159,7 @@ function RouteComponent() {
                 label="Profile Picture"
                 placeholder="Upload image"
                 radius="md"
-                size="md"
+              size="sm"
                 accept="image/*"
                 leftSection={<Camera size={16} />}
                 onChange={handleImageChange}
@@ -170,8 +170,8 @@ function RouteComponent() {
                 type="submit"
                 fullWidth
                 mt="sm"
-                radius="xl"
-                size="md"
+                radius="md"
+              size="sm"
                 loading={isPending}
                 leftSection={<Save size={18} />}
               >

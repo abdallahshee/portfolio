@@ -139,7 +139,7 @@ function BlogsPage() {
       {/* Search + Buttons row */}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex-1" style={{ minWidth: 220, maxWidth: 400 }}>
-          <Text size="xs" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
+          <Text size="sm" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
             Search
           </Text>
           <TextInput
@@ -158,7 +158,7 @@ function BlogsPage() {
             onChange={(e) => handleSearchChange(e.currentTarget.value)}
           />
           {hasSearch && (
-            <Text size="xs" c="dimmed" mt={4}>
+            <Text size="sm" c="dimmed" mt={4}>
               {isFetching
                 ? "Searching…"
                 : `${pagination.total ?? 0} result${(pagination.total ?? 0) !== 1 ? "s" : ""} for "${debouncedSearch}"`
@@ -175,12 +175,12 @@ function BlogsPage() {
               params={{ userId: session.user.id }}
               className="no-underline"
             >
-              <Button variant="light" color="grape" radius="xl" leftSection={<BookMarked size={15} />}>
+              <Button variant="light" color="grape" radius="md" leftSection={<BookMarked size={15} />}>
                 My Articles
               </Button>
             </Link>
             <Link to="/articles/create" className="no-underline">
-              <Button variant="filled" color="grape" radius="xl" leftSection={<PenLine size={15} />}>
+              <Button variant="filled" color="grape" radius="md" leftSection={<PenLine size={15} />}>
                 Write Article
               </Button>
             </Link>
@@ -199,7 +199,7 @@ function BlogsPage() {
         // ✅ empty state
         <div className="flex justify-center py-24">
           <Stack align="center" gap="md">
-            <ThemeIcon size={72} radius="xl" variant="light" color="grape">
+            <ThemeIcon size={72} radius="md" variant="light" color="grape">
               <BookOpen size={36} />
             </ThemeIcon>
             <Title order={3}>
@@ -211,12 +211,12 @@ function BlogsPage() {
                 : "No articles have been published yet. Check back soon."}
             </Text>
             {hasSearch ? (
-              <Button variant="light" color="grape" onClick={() => handleSearchChange("")}>
+              <Button variant="light" color="grape" radius="md" onClick={() => handleSearchChange("")}>
                 Clear Search
               </Button>
             ) : isAuthenticated ? (
               <Link to="/articles/create" className="no-underline">
-                <Button variant="light" color="grape" leftSection={<PenLine size={15} />}>
+                <Button variant="light" color="grape" radius="md" leftSection={<PenLine size={15} />}>
                   Write the first article
                 </Button>
               </Link>

@@ -130,21 +130,20 @@ function ContactPage() {
           Get in Touch
         </Title>
 
-        <Text size="lg" c="dimmed" className="leading-8">
+        <Text size="md" c="dimmed" className="leading-8">
           Have a project, idea, or opportunity you'd like to discuss?
           I'd love to hear from you. Fill in the form or reach out directly —
           I respond to every message.
         </Text>
       </Stack>
-      {/* ── QUICK CONTACT PILLS ── */}
-      <Divider label="or send a message below" labelPosition="center" />
+    
       {/* ── MAIN: FORM + SIDEBAR ── */}
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md" className="items-start">
         {/* CONTACT FORM */}
         <Card radius="xl" withBorder p="xl" className="shadow-sm">
           <Stack gap="lg">
             <Group gap="xs">
-              <ThemeIcon variant="light" color="indigo" radius="xl">
+              <ThemeIcon variant="light" color="indigo" radius="md">
                 <MessageSquare size={16} />
               </ThemeIcon>
               <Title order={3}>Send a Message</Title>
@@ -170,14 +169,14 @@ function ContactPage() {
                     label="Your Name"
                     placeholder="John Doe"
                     radius="md"
-                    size="md"
+                   size="sm"
                     {...form.getInputProps("name")}
                   />
                   <TextInput
                     label="Email Address"
                     placeholder="john@email.com"
                     radius="md"
-                    size="md"
+                  size="sm"
                     {...form.getInputProps("email")}
                   />
                 </SimpleGrid>
@@ -187,7 +186,7 @@ function ContactPage() {
                   placeholder="Select a subject"
                   data={SUBJECT_OPTIONS}
                   radius="md"
-                  size="md"
+                 size="sm"
                   value={selectedSubject}
                   onChange={(value) => {
                     setSelectedSubject(value)
@@ -200,7 +199,7 @@ function ContactPage() {
                     label="Please specify"
                     placeholder="Tell me what this is about..."
                     radius="md"
-                    size="md"
+                     size="sm"
                     {...form.getInputProps("subject")}
                   />
                 )}
@@ -212,7 +211,7 @@ function ContactPage() {
                   h={200}
                   styles={{ input: { height: '100%', overflowY: 'auto', resize: 'none' } }}
                   radius="md"
-                  size="md"
+                  size="sm"
                   {...form.getInputProps("message")}
                 />
 
@@ -221,8 +220,8 @@ function ContactPage() {
                     type="button"
                     variant="outline"
                     color="blue"
-                    radius="xl"
-                    size="md"
+                    radius="md"
+                  size="sm"
                     leftSection={<X size={16} />}
                     onClick={() => { form.reset(); setSelectedSubject(null) }}
                     disabled={isSubmitting}
@@ -231,8 +230,8 @@ function ContactPage() {
                   </Button>
                   <Button
                     type="submit"
-                    radius="xl"
-                    size="md"
+                    radius="md"
+                  size="sm"
                     variant="filled"
                     color="yellow"
                     leftSection={<Send size={16} />}
@@ -249,34 +248,34 @@ function ContactPage() {
           <Stack gap="md">
             <Text py-1>
               <Group gap="sm" py-1 >
-                <ThemeIcon variant="transparent" radius="xl" size="md">
+                <ThemeIcon variant="transparent" radius="md"  size="sm">
                   <Mail size={24} />
                 </ThemeIcon>
-                <Text size="md" fw={500}>abdallahshee664@email.com</Text>
+                <Text size="sm" fw={500}>abdallahshee664@email.com</Text>
               </Group>
             </Text>
             <Text py-1>
               <Group gap="sm">
-                <ThemeIcon variant="transparent" radius="xl" size="md">
+                <ThemeIcon variant="transparent" radius="md"  size="sm">
                   <Phone size={24} />
                 </ThemeIcon>
-                <Text size="md" fw={500}>+254 796515302</Text>
+                <Text size="sm" fw={500}>+254 796515302</Text>
               </Group>
             </Text>
             <Anchor py-1 href="https://github.com/abdallahshee" target="_blank" underline="never">
               <Group gap="sm">
-                <ThemeIcon variant="transparent" radius="xl" size="md">
+                <ThemeIcon variant="transparent" radius="md"  size="sm">
                   <Github size={24} />
                 </ThemeIcon>
-                <Text size="md" fw={500}>GitHub</Text>
+                <Text size="sm" fw={500}>GitHub</Text>
               </Group>
             </Anchor>
             <Anchor py-1 href="https://linkedin.com/in/abdallahshee" target="_blank" underline="never">
               <Group gap="sm">
-                <ThemeIcon variant="transparent" radius="xl" size="md">
+                <ThemeIcon variant="transparent" radius="md" size="sm">
                   <Linkedin size={24} />
                 </ThemeIcon>
-                <Text size="md" fw={500}>LinkedIn</Text>
+                <Text size="sm" fw={500}>LinkedIn</Text>
               </Group>
             </Anchor>
             {/* </Group> */}
@@ -285,7 +284,7 @@ function ContactPage() {
             <Group gap="xs">
               <Title order={3}>Quick to Respond</Title>
             </Group>
-            <Text size="lg" c="dimmed">
+            <Text size="md" c="dimmed">
               I check my inbox daily and aim to reply to every message within
               <strong> 24 hours</strong>. If your matter is urgent, feel free
               to call or reach out on LinkedIn directly.
@@ -294,14 +293,14 @@ function ContactPage() {
               spacing="xs"
               size="md"
               icon={
-                <ThemeIcon color="green" size={18} radius="xl" variant="light">
+                <ThemeIcon color="green" size={18} radius="md" variant="light">
                   <CheckCircle size={16} />
                 </ThemeIcon>
               }
             >
               {WHY_REACH_OUT.map((item) => (
                 <List.Item key={item}>
-                  <Text size="md">{item}</Text>
+                  <Text size="md" c="dimmed">{item}</Text>
                 </List.Item>
               ))}
             </List>

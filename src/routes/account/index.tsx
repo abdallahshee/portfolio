@@ -125,16 +125,16 @@ const handleSubmit = async (values: SignInRequest) => {
 
         <div className="flex flex-col gap-3">
           <GoogleButton
-            radius="xl"
-            size="md"
+            radius="md"
+           size="sm"
             loading={oauthProvider === "google"}
             onClick={() => handleOAuthSignIn("google")}
           >
             Sign in with Google
           </GoogleButton>
           <FacebookButton
-            size="md"
-            radius="xl"
+            size="sm"
+            radius="md"
             loading={oauthProvider === "facebook"}
             onClick={() => handleOAuthSignIn("facebook")}
           >
@@ -165,7 +165,7 @@ const handleSubmit = async (values: SignInRequest) => {
               label="Email"
               placeholder="you@example.com"
               radius="md"
-              size="md"
+             size="sm"
               {...form.getInputProps("email")}
               required
             />
@@ -175,7 +175,7 @@ const handleSubmit = async (values: SignInRequest) => {
                 label="Password"
                 placeholder="Your password"
                 radius="md"
-                size="md"
+              size="sm"
                 {...form.getInputProps("password")}
                 required
               />
@@ -198,8 +198,8 @@ const handleSubmit = async (values: SignInRequest) => {
               type="submit"
               fullWidth
               mt="xs"
-              radius="xl"
-              size="md"
+              radius="md"
+            size="sm"
               loading={isSubmitting}
               leftSection={<LogIn size={18} />}
             >

@@ -137,7 +137,7 @@ export function EditUserForm({ userId, targetUser, role }: EditUserFormProps) {
             <Avatar
               src={avatarPreview}
               size={90}
-              radius="xl"
+              radius="md"
               color={isAdmin ? 'indigo' : 'teal'}
               className="border-2 border-gray-200 dark:border-slate-700"
             >
@@ -158,6 +158,7 @@ export function EditUserForm({ userId, targetUser, role }: EditUserFormProps) {
 
             <TextInput
               label="Display Name"
+              size="sm"
               placeholder="e.g. John Doe"
               leftSection={<User size={16} />}
               {...form.getInputProps('name')}
@@ -166,6 +167,7 @@ export function EditUserForm({ userId, targetUser, role }: EditUserFormProps) {
             <TextInput
               label="Email Address"
               placeholder="you@example.com"
+              size="sm"
               leftSection={<Mail size={16} />}
               {...form.getInputProps('email')}
             />
@@ -174,6 +176,7 @@ export function EditUserForm({ userId, targetUser, role }: EditUserFormProps) {
               label="Profile Image"
               placeholder="Click to upload an image"
               accept="image/*"
+              size="sm"
               leftSection={<Camera size={16} />}
               onChange={handleImageChange}
               description="JPG, PNG or WEBP. Used as your avatar."
@@ -184,7 +187,8 @@ export function EditUserForm({ userId, targetUser, role }: EditUserFormProps) {
             <Button
               type="submit"
               loading={isPending}
-              radius="xl"
+              radius="md"
+              size="sm"
               color={isAdmin ? 'indigo' : 'teal'}
               leftSection={<Save size={16} />}
               fullWidth

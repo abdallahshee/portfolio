@@ -36,7 +36,7 @@ import { ProjectSchema, type ProjectRequest } from "@/db/validations/project.typ
 import { useProjectCreateMutation } from "@/db/mutations/project.mutations"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { AdminMiddleware } from "@/server/middleware/auth.middleware"
-import { uploadProjectImage } from "@/lib/supabase/client"
+
 
 
 
@@ -138,7 +138,8 @@ function RouteComponent() {
 
             <Button
               variant="light"
-              radius="xl"
+              radius="md"
+               size="sm"
               leftSection={<ArrowLeft size={16} />}
               onClick={() => router.history.back()}
             >
@@ -162,7 +163,7 @@ function RouteComponent() {
                   label="Project Title"
                   placeholder="My Awesome Project"
                   radius="md"
-                  size="md"
+                  size="sm"
                   {...form.getInputProps("title")}
                 />
 
@@ -170,7 +171,7 @@ function RouteComponent() {
                   label="Duration"
                   placeholder="Enter Project duration"
                   radius="md"
-                  size="md"
+                 size="sm"
                   {...form.getInputProps("duration")}
                 />
 
@@ -180,7 +181,7 @@ function RouteComponent() {
                   minRows={5}
                   autosize
                   radius="md"
-                  size="md"
+                   size="sm"
                   {...form.getInputProps("description")}
                 />
 
@@ -194,7 +195,7 @@ function RouteComponent() {
                   minRows={5}
                   autosize
                   radius="md"
-                  size="md"
+                   size="sm"
                   {...form.getInputProps("caseStudy")}
                 />
               </Stack>
@@ -213,7 +214,7 @@ function RouteComponent() {
                   label="Website URL"
                   placeholder="https://myproject.com"
                   radius="md"
-                  size="md"
+                  size="sm"
                   leftSection={<Globe size={16} />}
                   {...form.getInputProps("websiteUrl")}
                 />
@@ -222,7 +223,7 @@ function RouteComponent() {
                   label="GitHub URL"
                   placeholder="https://github.com/username/project"
                   radius="md"
-                  size="md"
+                  size="sm"
                   leftSection={<Github size={16} />}
                   {...form.getInputProps("githubUrl")}
                 />
@@ -242,7 +243,7 @@ function RouteComponent() {
                   label="Upload Image"
                   placeholder="Choose project image"
                   radius="md"
-                  size="md"
+                  size="sm"
                   leftSection={<ImagePlus size={16} />}
                   accept="image/*"
                   onChange={(e)=>setFile(e)}
@@ -253,7 +254,7 @@ function RouteComponent() {
                     <Image
                       src={previewUrl}
                       alt={form.values.title || "Project preview"}
-                      radius="xl"
+                      radius="md"
                       fit="contain"
                       h={320}
                     />
@@ -279,7 +280,7 @@ function RouteComponent() {
                   <Button
                     type="button"
                     variant="light"
-                    radius="xl"
+                    radius="md"
                     size="sm"
                     leftSection={<Plus size={16} />}
                     onClick={addTechnology}
@@ -302,6 +303,7 @@ function RouteComponent() {
                         label={`Technology ${index + 1}`}
                         placeholder="e.g. React, Node.js, Tailwind"
                         radius="md"
+                         size="sm"
                         className="flex-1"
                         {...form.getInputProps(`technologies.${index}`)}
                       />
@@ -309,8 +311,8 @@ function RouteComponent() {
                       <ActionIcon
                         color="red"
                         variant="light"
-                        radius="xl"
-                        size="lg"
+                        radius="md"
+                       size="sm"
                         onClick={() => removeTechnology(index)}
                         disabled={form.values.technologies.length === 1}
                       >
@@ -335,7 +337,8 @@ function RouteComponent() {
                   <Button
                     type="button"
                     variant="default"
-                    radius="xl"
+                    radius="md"
+                     size="sm"
                     onClick={() => router.history.back()}
                   >
                     Cancel
@@ -343,7 +346,8 @@ function RouteComponent() {
 
                   <Button
                     type="submit"
-                    radius="xl"
+                    radius="md"
+                     size="sm"
                     loading={loading}
                     leftSection={<Save size={16} />}
                   >

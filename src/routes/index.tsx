@@ -150,8 +150,8 @@ function App() {
           <Group>
             <Link to="/projects">
               <Button
-                size="md"
-                radius="xl"
+               size="sm"
+                radius="md"
                 className="bg-indigo-500 hover:bg-indigo-600"
                 rightSection={<ArrowRight size={18} />}
               >
@@ -159,7 +159,7 @@ function App() {
               </Button>
             </Link>
             <Link to="/contact">
-              <Button size="md" radius="xl" variant="filled" color="yellow" rightSection={<Send size={18} />}>
+              <Button size="sm" radius="md" variant="filled" color="yellow" rightSection={<Send size={18} />}>
                 Contact Me
               </Button>
             </Link>
@@ -193,7 +193,7 @@ function App() {
               <ThemeIcon
                 variant="light"
                 color={stat.color}
-                radius="xl"
+                radius="md"
                 size={42}
                 className="shadow-sm transition-transform group-hover:scale-110"
               >
@@ -213,7 +213,7 @@ function App() {
         ))}
       </SimpleGrid>
 
-      <Divider />
+      {/* <Divider /> */}
 
       {/* ── ABOUT ── */}
       <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-start">
@@ -259,9 +259,9 @@ function App() {
           </Title>
           <List
             spacing="sm"
-            size="lg"
+            size="md"
             icon={
-              <ThemeIcon color="indigo" size={22} radius="xl" variant="light">
+              <ThemeIcon color="indigo" size={22} radius="md" variant="light">
                 <CheckCircle size={16} />
               </ThemeIcon>
             }
@@ -283,8 +283,8 @@ function App() {
             <Button
               variant="filled"
               color="indigo"
-              radius="xl"
-              size="md"
+              radius="md"
+              size="sm"
               rightSection={<ArrowRight size={16} />}
             >
               Let&apos;s Work Together
@@ -295,8 +295,8 @@ function App() {
             <Button
               variant="outline"
               color="indigo"
-              radius="xl"
-              size="md"
+              radius="md"
+              size="sm"
               rightSection={<ArrowRight size={16} />}
             >
               Explore My Services
@@ -318,9 +318,9 @@ function App() {
 
         <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
           {STRENGTHS.map((strength) => (
-            <Card key={strength.title} withBorder p="lg" className="shadow-sm ">
+            <Card key={strength.title} withBorder p="lg" radius="lg" className="shadow-sm ">
               <Group gap="md" align="flex-start">
-                <ThemeIcon variant="light" color={strength.color} radius="xl" size="lg">
+                <ThemeIcon variant="light" color={strength.color} radius="md" size="lg">
                   {strength.icon}
                 </ThemeIcon>
                 <Stack gap={4} className="flex-1">
@@ -348,7 +348,7 @@ function App() {
 
         <div className="grid lg:grid-cols-2 gap-8 items-start">
           {/* PROJECTS */}
-          <Paper withBorder radius="xl" shadow="sm" className="p-5">
+          <Paper withBorder radius="lg" className="p-4">
             <Stack gap="md">
               <Group justify="space-between" align="end">
                 <div>
@@ -358,7 +358,7 @@ function App() {
                   </Text>
                 </div>
                 <Link to="/projects">
-                  <Button variant="subtle" rightSection={<ArrowRight size={16} />}>
+                  <Button variant="subtle"  size="sm" radius="md" rightSection={<ArrowRight size={16} />}>
                     View All
                   </Button>
                 </Link>
@@ -406,7 +406,7 @@ function App() {
                     <Table.Tr>
                       <Table.Td colSpan={2}>
                         <Stack align="center" gap="xs" py="xl">
-                          <ThemeIcon size={56} radius="xl" variant="light" color="gray">
+                          <ThemeIcon size={56} radius="md" variant="light" color="gray">
                             <FolderOpen size={28} />
                           </ThemeIcon>
                           <Text fw={600} size="md">
@@ -425,7 +425,7 @@ function App() {
           </Paper>
 
           {/* ARTICLES */}
-          <Paper withBorder radius="xl" shadow="sm" className="p-5">
+         <Paper withBorder radius="lg" className="p-4">
             <Stack gap="md">
               <Group justify="space-between" align="end">
                 <div>
@@ -435,7 +435,7 @@ function App() {
                   </Text>
                 </div>
                 <Link to="/articles" search={{ page: 1 }}>
-                  <Button variant="subtle" rightSection={<ArrowRight size={16} />}>
+                  <Button variant="subtle" radius="md" rightSection={<ArrowRight size={16} />}>
                     View All
                   </Button>
                 </Link>
@@ -457,7 +457,7 @@ function App() {
                             {blog.coverImage ? (
                               <Image src={blog.coverImage} w={46} h={46} radius="md" className="object-cover" />
                             ) : (
-                              <ThemeIcon size={40} radius="xl" variant="light" color="grape">
+                              <ThemeIcon size={40} radius="md" variant="light" color="grape">
                                 <FileText size={18} />
                               </ThemeIcon>
                             )}
@@ -465,7 +465,7 @@ function App() {
                               <Text fw={600} truncate>
                                 {blog.title}
                               </Text>
-                              <Badge variant="light" color="pink" size="sm">
+                              <Badge variant="light"  radius="md" color="pink" size="sm">
                                 ❤️ {blog.likes} Likes
                               </Badge>
                             </div>
@@ -482,7 +482,7 @@ function App() {
                     <Table.Tr>
                       <Table.Td colSpan={2}>
                         <Stack align="center" gap="xs" py="xl">
-                          <ThemeIcon size={56} radius="xl" variant="light" color="grape">
+                          <ThemeIcon size={56} radius="md" variant="light" color="grape">
                             <BookOpen size={28} />
                           </ThemeIcon>
                           <Text fw={600} size="md">
@@ -529,8 +529,8 @@ function App() {
 
               <Group gap="sm" className="pt-2" justify="center">
                 <Button
-                  size="md"
-                  radius="xl"
+                  size="sm"
+                  radius="md"
                   color="yellow"
                   variant="filled"
                   onClick={() => router.navigate({ to: '/contact' })}
@@ -546,8 +546,8 @@ function App() {
                   target="_blank"
                   variant="filled"
                   color="blue"
-                  size="md"
-                  radius="xl"
+                  size="sm"
+                  radius="md"
                   leftSection={<Linkedin size={18} />}
                 >
                   Connect on LinkedIn

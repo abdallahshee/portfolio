@@ -57,7 +57,7 @@ function CategoriesPage() {
       {/* Page Header */}
       <div className="space-y-4">
         <Group gap="xs">
-          <Badge variant="light" color="grape" size="sm" tt="uppercase" fw={700}>
+          <Badge variant="light" radius="md" color="grape" size="sm" tt="uppercase" fw={700}>
             Admin
           </Badge>
         </Group>
@@ -69,7 +69,7 @@ function CategoriesPage() {
                 <LayoutList size={18} />
               </ThemeIcon>
               <Title order={1} fw={700}>
-                Blog Categories
+                Article Categories
               </Title>
             </Group>
             <Text c="dimmed" size="sm" ml={46}>
@@ -80,7 +80,8 @@ function CategoriesPage() {
           <Button
             leftSection={<FolderPlus size={15} />}
             color="grape"
-            radius="xl"
+            radius="md"
+          
             variant="filled"
             className="flex-shrink-0 self-start"
             onClick={open}
@@ -105,7 +106,7 @@ function CategoriesPage() {
           <Text size="xs" c="dimmed" tt="uppercase" fw={600} className="tracking-widest">
             Status
           </Text>
-          <Badge color="green" variant="light" size="md">
+          <Badge color="green" radius="md" variant="light" size="md">
             Active
           </Badge>
         </div>
@@ -132,7 +133,7 @@ function CategoriesPage() {
         {/* Empty State */}
         {categories?.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-20 text-center space-y-3">
-            <ThemeIcon variant="light" color="gray" size={56} radius="xl">
+            <ThemeIcon variant="light" color="gray" size={56} radius="md">
               <Tag size={24} />
             </ThemeIcon>
             <div className="space-y-1">
@@ -143,7 +144,8 @@ function CategoriesPage() {
             </div>
             <Button
               mt="xs"
-              size="xs"
+              size="sm"
+              radius="md"
               variant="light"
               color="grape"
               leftSection={<FolderPlus size={13} />}
@@ -233,21 +235,23 @@ function CategoriesPage() {
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="md" pt="xs">
             <TextInput
+             size="sm"
+             radius="md"
               label="Category name"
               description="Use a clear, concise name like React, DevOps, or Career."
               placeholder="e.g. React, TypeScript, Career…"
-              radius="md"
+           
               leftSection={<Tag size={14} />}
               {...form.getInputProps("name")}
             />
             <Group justify="flex-end" mt="xs">
-              <Button variant="subtle" color="gray" radius="xl" size="sm" onClick={close}>
+              <Button variant="subtle" color="gray" radius="md" size="sm" onClick={close}>
                 Cancel
               </Button>
               <Button
                 type="submit"
                 color="grape"
-                radius="xl"
+                radius="md"
                 size="sm"
                 loading={createCategoryMutation.isPending}
                 leftSection={<FolderPlus size={14} />}

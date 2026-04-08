@@ -124,7 +124,7 @@ function RouteComponent() {
           <Group gap="sm">
             <Avatar
               size={32}
-              radius="xl"
+              radius="md"
               src={user?.user_metadata?.avatar_url || null}
               color="indigo"
             >
@@ -211,7 +211,8 @@ function RouteComponent() {
                   >
                     <ThemeIcon
                       size={32}
-                      radius="lg"
+                      radius="md"
+                      
                       variant={isActive ? 'filled' : 'light'}
                       color={isActive ? 'indigo' : item.color}
                     >
@@ -233,7 +234,7 @@ function RouteComponent() {
               disabled={isLeaving}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-indigo-600 transition hover:bg-indigo-50 disabled:opacity-50 dark:text-indigo-400 dark:hover:bg-indigo-950"
             >
-              <ThemeIcon size={32} radius="lg" variant="light" color="indigo">
+              <ThemeIcon size={32} radius="md" variant="light" color="indigo">
                 {isLeaving
                   ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                   : <ArrowLeft size={16} />
@@ -247,7 +248,7 @@ function RouteComponent() {
               disabled={signingOut}
               className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-red-500 transition hover:bg-red-50 disabled:opacity-50 dark:hover:bg-red-950"
             >
-              <ThemeIcon size={32} radius="lg" variant="light" color="red">
+              <ThemeIcon size={32} radius="md" variant="light" color="red">
                 {signingOut
                   ? <span className="h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
                   : <LogOut size={16} />

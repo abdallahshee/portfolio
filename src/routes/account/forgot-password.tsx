@@ -96,7 +96,7 @@ function RouteComponent() {
             {formError && (
               <Alert
                 color="red"
-                radius="md"
+           
                 icon={<AlertCircle size={24} />}
                 title="Request failed"
                 withCloseButton
@@ -113,7 +113,7 @@ function RouteComponent() {
                   label="Email"
                   placeholder="you@example.com"
                   radius="md"
-                  size="md"
+              size="sm"
                   leftSection={<Mail size={16} />}
                   {...form.getInputProps("email")}
                 />
@@ -122,8 +122,8 @@ function RouteComponent() {
                   type="submit"
                   fullWidth
                   mt="xs"
-                  radius="xl"
-                  size="md"
+                  radius="md"
+                size="sm"
                   loading={isSubmitting}
                   leftSection={<KeyRound size={18} />}
                 >

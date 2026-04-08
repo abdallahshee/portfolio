@@ -110,7 +110,7 @@ function RouteComponent() {
       {/* Search & Filter */}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex-1" style={{ minWidth: 240, maxWidth: 420 }}>
-          <Text size="xs" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
+          <Text size="sm" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
             Search
           </Text>
           <TextInput
@@ -141,7 +141,7 @@ function RouteComponent() {
         <div>
           <Group gap="xs" mb={5} align="center">
             <ListFilter size={12} className="text-slate-400" />
-            <Text size="xs" fw={500} c="dimmed" className="uppercase tracking-widest">
+            <Text size="sm" fw={500} c="dimmed" className="uppercase tracking-widest">
               Filter by status
             </Text>
           </Group>
@@ -154,8 +154,8 @@ function RouteComponent() {
                   key={value}
                   variant={isActive ? 'filled' : 'light'}
                   color="blue"
-                  radius="xl"
-                  size="lg"
+                  radius="md"
+                  size="md"
                   style={{ cursor: 'pointer', userSelect: 'none' }}
                   onClick={() => handleFilterChange(value)}
                 >
@@ -204,7 +204,7 @@ function RouteComponent() {
       ) : projects.length === 0 ? (
         <div className="flex justify-center py-24">
           <Stack align="center" gap="md">
-            <ThemeIcon size={72} radius="xl" variant="light" color="indigo">
+            <ThemeIcon size={72} radius="md"  variant="light" color="indigo">
               <FolderOpen size={36} />
             </ThemeIcon>
             <Title order={3}>No projects found</Title>
@@ -259,7 +259,7 @@ function RouteComponent() {
                       className="h-full w-full transition-transform duration-300 hover:scale-105"
                     />
                   ) : (
-                    <ThemeIcon size={56} radius="xl" variant="light" color="gray">
+                    <ThemeIcon size={56} radius="md"  variant="light" color="gray">
                       <FolderKanban size={28} />
                     </ThemeIcon>
                   )}
@@ -280,6 +280,8 @@ function RouteComponent() {
                   <Badge
                     color={project.isPublic ? "blue" : "green"}
                     variant="light"
+                     size="sm"
+                     radius="md"
                     className="w-fit"
                   >
                     {project.isPublic ? "Open Source" : "Private Project"}
@@ -317,6 +319,7 @@ function RouteComponent() {
               <Stack mt="md" gap="xs">
                 <Link to="/projects/$id" params={{ id: project.id }} className="no-underline">
                   <Button
+                  radius="md"
                     leftSection={<FolderKanban size={16} />}
                     variant="gradient"
                     fullWidth

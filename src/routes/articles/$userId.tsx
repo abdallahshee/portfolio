@@ -189,8 +189,8 @@ function BlogsPage() {
                   key={status}
                   variant={statusFilter === status ? 'filled' : 'light'}
                   color="blue"
-                  radius="xl"
-                  size="lg"
+                  radius="md"
+                  size="sm"
                   style={{ cursor: 'pointer', userSelect: 'none' }}
                   onClick={() => setStatusFilter(status)}
                 >
@@ -203,8 +203,8 @@ function BlogsPage() {
             {isOwner && (
               <Link to="/articles/create" className="no-underline">
                 <Button
-                  size="xs"
-                  radius="xl"
+                  size="sm"
+                  radius="md"
                   variant="filled"
                   color="grape"
                   leftSection={<PenLine size={14} />}
@@ -249,6 +249,8 @@ function BlogsPage() {
           {(isSearching || statusFilter !== 'all') && (
             <Button
               variant="subtle"
+               size="sm"
+               radius="md"
               color="grape"
               onClick={() => { handleSearchChange(''); setStatusFilter('all') }}
             >
@@ -257,7 +259,7 @@ function BlogsPage() {
           )}
           {isOwner && !isSearching && statusFilter === 'all' && (
             <Link to="/articles/create" className="no-underline">
-              <Button variant="light" color="grape" leftSection={<PenLine size={15} />}>
+              <Button variant="light" radius="md" color="grape" leftSection={<PenLine size={15} />}>
                 Write your first article
               </Button>
             </Link>

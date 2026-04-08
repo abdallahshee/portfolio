@@ -96,6 +96,7 @@ export function FacebookButton(
     <Button
       leftSection={<FacebookIcon />}
       color="blue"
+      size="sm"
       variant="light"
       {...props}
     />

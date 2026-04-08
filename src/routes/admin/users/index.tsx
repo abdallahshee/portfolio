@@ -73,6 +73,7 @@ function RouteComponent() {
 
         <TextInput
           placeholder="Search by name or email…"
+    
           leftSection={<Search size={14} />}
           rightSection={
             searchInput ? (
@@ -81,7 +82,7 @@ function RouteComponent() {
               </button>
             ) : null
           }
-          radius="xl"
+          radius="md"
           size="sm"
           value={searchInput}
           onChange={(e) => setSearchInput(e.currentTarget.value)}
@@ -236,7 +237,8 @@ function RouteComponent() {
                         <Badge
                           variant="light"
                           color={isAdmin ? 'indigo' : 'gray'}
-                          radius="xl"
+                          radius="md"
+                           size="sm"
                           leftSection={isAdmin ? <ShieldCheck size={11} /> : <User size={11} />}
                         >
                           {isAdmin ? 'Admin' : 'User'}
@@ -247,7 +249,8 @@ function RouteComponent() {
                         <Badge
                           variant="light"
                           color={isConfirmed ? 'green' : 'yellow'}
-                          radius="xl"
+                          radius="md"
+                           size="sm"
                         >
                           {isConfirmed ? 'Verified' : 'Unverified'}
                         </Badge>
@@ -269,8 +272,8 @@ function RouteComponent() {
                         <Button
                           variant="filled"
                           color="blue"
-                          radius="sm"
-                          size="xs"
+                          radius="md"
+                          size="sm"
                           rightSection={<ArrowRight size={14} />}
                           onClick={() =>
                             navigate({
@@ -297,7 +300,7 @@ function RouteComponent() {
             value={page}
             onChange={handlePageChange}
             total={totalPages}
-            radius="xl"
+            radius="md"
             withEdges
             color="indigo"
           />

@@ -17,8 +17,8 @@ export default function ScrollToTop() {
         {(styles) => (
           <ActionIcon
             style={styles}
-            size="xl"
-            radius="xl"
+            size="sm"
+            radius="md"
             variant="filled"
             color="indigo"
             onClick={() => scrollTo({ y: 0})}

@@ -269,7 +269,8 @@ export default function ArticleEditor({
 
               <Button
                 variant="light"
-                radius="xl"
+                radius="md"
+                size="sm"
                 leftSection={<ArrowLeft size={16} />}
                 onClick={onCancel}
               >
@@ -312,7 +313,7 @@ export default function ArticleEditor({
                         placeholder="My awesome blog"
                         leftSection={<FileText size={16} />}
                         radius="md"
-                        size="md"
+                        size="sm"
                 
                         {...form.getInputProps("title")}
                       />
@@ -322,7 +323,7 @@ export default function ArticleEditor({
                         placeholder="Select a category"
                         leftSection={<FileText size={16} />}
                         radius="md"
-                        size="md"
+                        size="sm"
                         data={categories?.map((cat) => ({
                           label: cat.name,
                           value: cat.id,
@@ -344,7 +345,7 @@ export default function ArticleEditor({
                         leftSection={<ImagePlus size={16} />}
                         accept="image/*"
                         radius="md"
-                        size="md"
+                        size="sm"
                         value={imageFile}
                         onChange={setImageFile}
                       />
@@ -458,6 +459,7 @@ export default function ArticleEditor({
                         <Group align="flex-end">
                           <TextInput
                             label="New Tag"
+                            size="sm"
                             placeholder="Enter a tag"
                             value={tagInput}
                             onChange={(e) => setTagInput(e.currentTarget.value)}
@@ -497,7 +499,8 @@ export default function ArticleEditor({
                         <Button
                           variant="default"
                           type="button"
-                          radius="xl"
+                          radius="md"
+                          size="sm"
                           onClick={onCancel}
                         >
                           Cancel
@@ -505,7 +508,8 @@ export default function ArticleEditor({
 
                         <Button
                           type="submit"
-                          radius="xl"
+                          radius="md"
+                          size="sm"
                           loading={loading}
                           leftSection={<Save size={16} />}
                         >

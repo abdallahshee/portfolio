@@ -90,8 +90,8 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="light"
-                radius="xl"
-                size="lg"
+                radius="md"
+                 size="sm"
               >
                 <Github size={18} />
               </ActionIcon>
@@ -102,8 +102,8 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 variant="light"
-                radius="xl"
-                size="lg"
+                radius="md"
+                size="sm"
               >
                 <Linkedin size={18} />
               </ActionIcon>
@@ -111,8 +111,8 @@ export default function Footer() {
               <ActionIcon
                 onClick={() => router.navigate({ to: "/contact" })}
                 variant="light"
-                radius="xl"
-                size="lg"
+                radius="md"
+                size="sm"
               >
                 <Mail size={18} />
               </ActionIcon>

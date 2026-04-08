@@ -114,7 +114,7 @@ function ProjectDetails() {
           <Group justify="space-between" align="flex-start" className="gap-4">
             <Stack gap={6}>
               <Group gap="xs">
-                <ThemeIcon variant="light" color="indigo" radius="xl" size="lg">
+                <ThemeIcon variant="light" color="indigo" radius="md" size="sm">
                   <WandSparkles size={18} />
                 </ThemeIcon>
                 <Text fw={600} c="dimmed" size="sm">
@@ -136,7 +136,8 @@ function ProjectDetails() {
               <Link to="/projects">
                 <Button
                   variant="light"
-                  radius="xl"
+                  radius="md"
+                   size="sm"
                   leftSection={<ArrowLeft size={16} />}
                 >
                   Back to Projects
@@ -148,7 +149,8 @@ function ProjectDetails() {
                   <Button
                     variant="light"
                     color="indigo"
-                    radius="xl"
+                    radius="md"
+                     size="sm"
                     leftSection={<Pencil size={16} />}
                   >
                     Edit Project
@@ -171,7 +173,7 @@ function ProjectDetails() {
                 <Image
                   src={project.imageUrl}
                   alt={project.title}
-                  radius="xl"
+                  radius="md"
                   fit="cover"
                   className="max-h-[460px] w-full"
                 />
@@ -197,7 +199,7 @@ function ProjectDetails() {
 
                 <div>
                   <Group gap="xs" mb="sm">
-                    <ThemeIcon variant="light" color="indigo" radius="xl">
+                    <ThemeIcon variant="light" color="indigo" radius="md">
                       <ShieldCheck size={16} />
                     </ThemeIcon>
                     <Text fw={700}>Main Technologies Used</Text>
@@ -226,7 +228,7 @@ function ProjectDetails() {
               <Stack gap="lg">
                 <Group justify="space-between">
                   <Group gap="xs">
-                    <ThemeIcon variant="light" color="yellow" radius="xl">
+                    <ThemeIcon variant="light" color="yellow" radius="md">
                       <Star size={16} />
                     </ThemeIcon>
                     <Text fw={700} size="lg">
@@ -234,7 +236,7 @@ function ProjectDetails() {
                     </Text>
                   </Group>
 
-                  <Badge variant="light" color="yellow" radius="xl">
+                  <Badge variant="light" color="yellow" radius="md"  size="sm">
                     {project.totalRatings} votes
                   </Badge>
                 </Group>
@@ -278,7 +280,7 @@ function ProjectDetails() {
                         {hasRated ? "Your Rating" : "Rate this project"}
                       </Text>
                       {hasRated && (
-                        <Badge radius="xl" color="green" variant="light">
+                        <Badge radius="md"  size="sm" color="green" variant="light">
                           {project.userRating}/10
                         </Badge>
                       )}
@@ -323,7 +325,8 @@ function ProjectDetails() {
                           {rating ? `Selected rating: ${rating}/10` : "Tap a star to select your rating"}
                         </Text>
                         <Button
-                          radius="xl"
+                          radius="md"
+                           size="sm"
                           onClick={handleSubmitRating}
                           loading={rateMutation.isPending}
                           disabled={!rating}
@@ -341,7 +344,7 @@ function ProjectDetails() {
                     className="border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/60"
                   >
                     <Group align="flex-start" gap="sm">
-                      <ThemeIcon variant="light" color="gray" radius="xl">
+                      <ThemeIcon variant="light" color="gray" radius="md"  size="sm">
                         <Lock size={16} />
                       </ThemeIcon>
                       <div>
@@ -385,6 +388,7 @@ function ProjectDetails() {
                     href={project.url}
                     target="_blank"
                     radius="md"
+                     size="sm"
                     leftSection={<Globe size={16} />}
                   >
                     {project.isPublic ? "View Source Code" : "Live URL"}
@@ -400,7 +404,8 @@ function ProjectDetails() {
               <Button
                 fullWidth
                 variant="subtle"
-                radius="xl"
+                radius="md"
+                 size="sm"
                 rightSection={<ExternalLink size={16} />}
               >
                 View More Projects
