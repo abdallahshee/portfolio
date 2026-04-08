@@ -15,13 +15,14 @@ import {
   FileInput,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { useUserUpdateProfileMutation } from '@/db/mutations/user.mutations'
+import { useAdminUserUpdateMutation, useUserUpdateProfileMutation } from '@/db/mutations/user.mutations'
 import { useState } from 'react'
 import { Camera, User, Mail, Lock, ShieldCheck, Save } from 'lucide-react'
 import { notifications } from '@mantine/notifications'
-import { UserUpdateSchema, type SupabaseUser } from '@/db/validations/user.types'
 import { zod4Resolver } from 'mantine-form-zod-resolver'
 import z from 'zod'
+import { AdminUserUpdateSchema } from '@/db/validations/admin.types'
+import type { SupabaseUser } from '@/db/validations/user.types'
 
 // export type TargetUser = {
 //   id: string
@@ -37,7 +38,7 @@ type EditUserFormProps = {
 }
 
 // Infer the form values type directly from the schema (without userId)
-type FormValues = z.infer<ReturnType<typeof UserUpdateSchema.omit<{ userId: true }>>>
+type FormValues = z.infer<ReturnType<typeof AdminUserUpdateSchema.omit<{ userId: true }>>>
 
 export function EditUserForm({ userId, targetUser, role }: EditUserFormProps) {
   const isAdmin = role === 'admin'
@@ -45,10 +46,10 @@ export function EditUserForm({ userId, targetUser, role }: EditUserFormProps) {
     targetUser?.user_metadata.avatar_url ?? null
   )
 
-  const { mutate, isPending } = useUserUpdateProfileMutation()
+  const { mutate, isPending } = useAdminUserUpdateMutation()
 
   const form = useForm<FormValues>({
-    validate: zod4Resolver(UserUpdateSchema.omit({ userId: true })),
+    validate: zod4Resolver(AdminUserUpdateSchema.omit({ userId: true })),
     initialValues: {
       name: targetUser?.user_metadata.name ?? '',
       email: targetUser?.email ?? '',

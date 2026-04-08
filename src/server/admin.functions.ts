@@ -6,7 +6,7 @@ import { db } from "@/db"
 import { AdminMiddleware, AuthenticatedMiddleware } from "./middleware/auth.middleware"
 import { PublishArticleSchema } from "@/db/validations/article.types"
 import { getSupabaseAdmin } from "@/lib/supabase/server"
-import { GetUsersSchema, UserUpdateSchema } from "@/db/validations/admin.types"
+import { GetUsersSchema, AdminUserUpdateSchema } from "@/db/validations/admin.types"
 import { dataTagErrorSymbol } from "@tanstack/react-query"
 
 // ── Dashboard stats ──
@@ -72,9 +72,9 @@ export const publishArticle = createServerFn({ method: "POST" })
   })
 
 
-export const UpdateUserProfile = createServerFn({ method: "POST" })
+export const adminUpdateUserProfile = createServerFn({ method: "POST" })
   .middleware([AdminMiddleware])
-  .inputValidator(UserUpdateSchema)
+  .inputValidator(AdminUserUpdateSchema)
   .handler(async ({ data }) => {
     try {
       const supabase = getSupabaseAdmin()

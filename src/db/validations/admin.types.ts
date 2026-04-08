@@ -1,7 +1,7 @@
 
 import z from "zod"
 
-export const UserUpdateSchema = z.object({
+export const AdminUserUpdateSchema = z.object({
    email: z.string().regex(
            /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
            "Must be a valid email address"
@@ -19,4 +19,4 @@ export const GetUsersSchema = z.object({
     search: z.string().optional(), // ✅ add search
 })
 
-export type UserUpdateRequest = z.infer<typeof UserUpdateSchema>
+export type AdminUserUpdateRequest = z.infer<typeof AdminUserUpdateSchema>

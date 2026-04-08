@@ -3,7 +3,7 @@ import { user } from "../schema";
 import { createSelectSchema } from "drizzle-zod";
 import type { User } from '@supabase/supabase-js'
 import z from "zod"
-import { UserUpdateSchema } from "./admin.types";
+import { AdminUserUpdateSchema } from "./admin.types";
 
 export const SignUpSchema = createSelectSchema(user, {
     name: z.string().nonempty("Username is required")
