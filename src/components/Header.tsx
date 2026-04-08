@@ -11,7 +11,7 @@ import {
   Group,
   Skeleton,
 } from "@mantine/core"
-import { Link, useRouter } from "@tanstack/react-router"
+import { Link, useRouter, useRouterState } from "@tanstack/react-router"
 import {
   ChevronDown,
   LogOut,
@@ -48,6 +48,12 @@ export default function Header() {
 
   const [session, setSession] = useState<Session | null>(null)
   const [isSessionLoading, setIsSessionLoading] = useState(true)
+  const [isNavigatingAway, setIsNavigatingAway] = useState(false)
+
+  // ✅ only watch navigation state for auth-triggered navigations
+  const isRouterNavigating = useRouterState({
+    select: (state) => state.isLoading,
+  })
 
   useEffect(() => {
     let mounted = true
@@ -61,8 +67,19 @@ export default function Header() {
       })
 
     const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event: AuthChangeEvent, nextSession: Session | null) => {
+      (event: AuthChangeEvent, nextSession: Session | null) => {
         if (!mounted) return
+
+        // ✅ when signing in or out, mark as navigating away
+        // so we don't flash the new state before redirect completes
+        if (
+          event === "SIGNED_IN" ||
+          event === "SIGNED_OUT" ||
+          event === "TOKEN_REFRESHED"
+        ) {
+          setIsNavigatingAway(true)
+        }
+
         setSession(nextSession)
         setIsSessionLoading(false)
       }
@@ -73,6 +90,13 @@ export default function Header() {
       listener.subscription.unsubscribe()
     }
   }, [supabase])
+
+  // ✅ clear navigating away once router finishes navigating
+  useEffect(() => {
+    if (!isRouterNavigating && isNavigatingAway) {
+      setIsNavigatingAway(false)
+    }
+  }, [isRouterNavigating, isNavigatingAway])
 
   const user = session?.user ?? null
   const isAdmin = user?.user_metadata?.role === "admin"
@@ -96,6 +120,7 @@ export default function Header() {
 
   const handleLogout = async () => {
     setOpened(false)
+    setIsNavigatingAway(true)
     await supabase.auth.signOut()
     await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
   }
@@ -127,6 +152,9 @@ export default function Header() {
     { label: "Contact", to: "/contact" },
   ]
 
+  // ✅ show skeleton when session is loading OR during auth-triggered navigation
+  const showSkeleton = isSessionLoading || isNavigatingAway
+
   const ThemeButton = (
     <UnstyledButton
       onClick={handleThemeChange}
@@ -142,7 +170,7 @@ export default function Header() {
   )
 
   const DesktopUserSkeleton = (
-    <Group gap="sm" className="ml-4 flex-shrink-0">
+    <Group gap="sm" className="flex-shrink-0">
       <Skeleton height={30} circle />
       <Skeleton height={10} width={80} radius="xl" />
     </Group>
@@ -228,25 +256,24 @@ export default function Header() {
   return (
     <header className="fixed left-0 top-0 z-[100] h-15 w-full border-b-1 border-green-500 bg-slate-50 shadow-lg dark:bg-slate-700">
       <div className="container mx-auto flex h-full items-center justify-end px-4">
-   <nav className="hidden min-w-0 items-center space-x-6 md:flex">
-  {ThemeButton}
+        <nav className="hidden min-w-0 items-center space-x-6 md:flex">
+          {ThemeButton}
 
- {links.map((link) => (
-  <Link
-    key={link.label}
-    to={link.to}
-    className="whitespace-nowrap font-semibold text-slate-600 dark:text-slate-300 transition-colors hover:text-indigo-500 dark:hover:text-indigo-400"
-    activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
-  >
-    {link.label}
-  </Link>
-))}
+          {links.map((link) => (
+            <Link
+              key={link.label}
+              to={link.to}
+              className="whitespace-nowrap font-semibold text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
+              activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
+            >
+              {link.label}
+            </Link>
+          ))}
 
-  {/* ✅ fixed width wrapper prevents layout shift */}
-  <div className="flex w-[160px] flex-shrink-0 items-center justify-end">
-    {isSessionLoading ? DesktopUserSkeleton : user ? UserMenu : AuthButtons}
-  </div>
-</nav>
+          <div className="flex w-[160px] flex-shrink-0 items-center justify-end">
+            {showSkeleton ? DesktopUserSkeleton : user ? UserMenu : AuthButtons}
+          </div>
+        </nav>
 
         <div className="flex items-center gap-2 md:hidden">
           {ThemeButton}
@@ -273,17 +300,16 @@ export default function Header() {
               <Link
                 key={link.label}
                 to={link.to}
-                className="text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
+                className="font-semibold text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
                 onClick={() => setOpened(false)}
-                activeProps={{ className: "text-indigo-500 font-semibold dark:text-indigo-400" }}
+                activeProps={{ className: "text-indigo-500 dark:text-indigo-400" }}
               >
                 {link.label}
               </Link>
             ))}
 
             <div className="border-t border-slate-100 pt-4 dark:border-slate-700">
-              {/* ✅ removed isNavigating here too */}
-              {isSessionLoading ? (
+              {showSkeleton ? (
                 MobileUserSkeleton
               ) : user ? (
                 <div className="flex flex-col space-y-3">
