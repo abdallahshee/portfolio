@@ -11,7 +11,7 @@ import {
   Group,
   Skeleton,
 } from "@mantine/core"
-import { Link, useRouter, useRouterState } from "@tanstack/react-router"
+import { Link, useRouter } from "@tanstack/react-router"
 import {
   ChevronDown,
   LogOut,
@@ -48,10 +48,6 @@ export default function Header() {
 
   const [session, setSession] = useState<Session | null>(null)
   const [isSessionLoading, setIsSessionLoading] = useState(true)
-
-  const isNavigating = useRouterState({
-    select: (state) => state.isLoading,
-  })
 
   useEffect(() => {
     let mounted = true
@@ -100,31 +96,26 @@ export default function Header() {
 
   const handleLogout = async () => {
     setOpened(false)
-    setIsSessionLoading(true)
     await supabase.auth.signOut()
     await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
   }
 
   const handleLogin = async () => {
     setOpened(false)
-    setIsSessionLoading(true)
     await router.navigate({ to: "/account", search: { callbackUrl: "/" } })
   }
 
   const handleSignup = async () => {
     setOpened(false)
-    setIsSessionLoading(true)
     await router.navigate({ to: "/account/register", search: { callbackUrl: "/" } })
   }
 
   const handleProfileChange = async (userId: string) => {
     setOpened(false)
-
     if (isAdmin) {
       await router.navigate({ to: "/admin/users/$userId/edit", params: { userId } })
       return
     }
-
     await router.navigate({ to: "/account/profile/edit" })
   }
 
@@ -201,8 +192,6 @@ export default function Header() {
           </>
         )}
 
-        <Menu.Divider />
-
         <Menu.Item
           leftSection={<Settings size={16} className="text-blue-600" />}
           onClick={() => handleProfileChange(user?.id!)}
@@ -211,7 +200,8 @@ export default function Header() {
         </Menu.Item>
 
         <Menu.Item
-          leftSection={<LogOut size={16} className="text-blue-600" />}
+          leftSection={<LogOut size={16} className="text-red-500" />}
+          color="red"
           onClick={handleLogout}
         >
           Logout
@@ -223,12 +213,12 @@ export default function Header() {
   const AuthButtons = (
     <span className="flex flex-shrink-0 items-center gap-2">
       <Link to="/account" search={{ callbackUrl: "/" }}>
-        <Button variant="outline" color="blue" size="sm" onClick={handleLogin}>
+        <Button variant="outline" color="blue" size="sm">
           Sign in
         </Button>
       </Link>
       <Link to="/account/register" search={{ callbackUrl: "/" }}>
-        <Button variant="filled" color="blue" size="sm" onClick={handleSignup}>
+        <Button variant="filled" color="blue" size="sm">
           Sign up
         </Button>
       </Link>
@@ -238,22 +228,25 @@ export default function Header() {
   return (
     <header className="fixed left-0 top-0 z-[100] h-15 w-full border-b-1 border-green-500 bg-slate-50 shadow-lg dark:bg-slate-700">
       <div className="container mx-auto flex h-full items-center justify-end px-4">
-        <nav className="hidden min-w-0 items-center space-x-6 md:flex">
-          {ThemeButton}
+   <nav className="hidden min-w-0 items-center space-x-6 md:flex">
+  {ThemeButton}
 
-          {links.map((link) => (
-            <Link
-              key={link.label}
-              to={link.to}
-              className="whitespace-nowrap"
-              activeProps={{ className: "text-blue-600 font-semibold" }}
-            >
-              {link.label}
-            </Link>
-          ))}
+ {links.map((link) => (
+  <Link
+    key={link.label}
+    to={link.to}
+    className="whitespace-nowrap font-semibold text-slate-600 dark:text-slate-300 transition-colors hover:text-indigo-500 dark:hover:text-indigo-400"
+    activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
+  >
+    {link.label}
+  </Link>
+))}
 
-          {isSessionLoading || isNavigating ? DesktopUserSkeleton : user ? UserMenu : AuthButtons}
-        </nav>
+  {/* ✅ fixed width wrapper prevents layout shift */}
+  <div className="flex w-[160px] flex-shrink-0 items-center justify-end">
+    {isSessionLoading ? DesktopUserSkeleton : user ? UserMenu : AuthButtons}
+  </div>
+</nav>
 
         <div className="flex items-center gap-2 md:hidden">
           {ThemeButton}
@@ -289,7 +282,8 @@ export default function Header() {
             ))}
 
             <div className="border-t border-slate-100 pt-4 dark:border-slate-700">
-              {isSessionLoading || isNavigating ? (
+              {/* ✅ removed isNavigating here too */}
+              {isSessionLoading ? (
                 MobileUserSkeleton
               ) : user ? (
                 <div className="flex flex-col space-y-3">
