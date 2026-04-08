@@ -34,11 +34,11 @@ export default function Footer() {
                 radius="xl"
               />
               <div>
-                <Title order={4} className="tracking-tight">
+                <Title order={6} className="tracking-tight">
                   Abdallah Shee
                 </Title>
                 <Text size="sm" c="dimmed">
-                  Software Developer, Nairobi, Kenya  🇰🇪.
+                  <span className="text-md">Software Developer,</span> <br></br><span className="text-sm">Nairobi, Kenya  🇰🇪.</span>
                 </Text>
               </div>
             </Group>
