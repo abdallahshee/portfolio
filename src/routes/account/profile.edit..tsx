@@ -103,9 +103,9 @@ function RouteComponent() {
               </ThemeIcon>
             </Group>
 
-            <Title order={2} className="heading">Edit Profile</Title>
+            <Title order={3} className="heading">Edit Profile</Title>
 
-            <Text c="dimmed" size="md" mt={6}>
+            <Text c="dimmed" size="sm" mt={6}>
               Update your personal information and profile picture.
             </Text>
           </div>

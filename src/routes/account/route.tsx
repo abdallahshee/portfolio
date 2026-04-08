@@ -19,9 +19,9 @@ function RouteComponent() {
       <div className="relative w-full max-w-lg">
         <div className="text-center mb-3 space-y-1">
           <div className="flex justify-center">
-            <div className="flex items-center gap-2 rounded-full bg-white-50 px-8 py-2 text-blue-600 dark:text-red-300">
-              <ShieldCheck size={26} />
-              <Title order={2} className="tracking-tight">
+            <div className="flex items-center gap-2 rounded-full bg-white-50 px-5 py-2 text-blue-600 dark:text-red-300">
+              <ShieldCheck size={20} />
+              <Title order={3} className="tracking-tight">
                 Account Management
               </Title>
             </div>
@@ -37,7 +37,7 @@ function RouteComponent() {
         </div>
 
         <div className="text-center mt-2">
-          <Text size="md" c="dimmed">
+          <Text size="sm" c="dimmed">
             Secure authentication powered for a seamless experience.
           </Text>
         </div>

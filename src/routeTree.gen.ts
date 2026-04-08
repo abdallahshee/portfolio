@@ -28,7 +28,6 @@ import { Route as ArticlesUserIdRouteImport } from './routes/articles/$userId'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
 import { Route as AdminCategoriesRouteImport } from './routes/admin/categories'
 import { Route as AccountVerifyRouteImport } from './routes/account/verify'
-import { Route as AccountSettingsRouteImport } from './routes/account/settings'
 import { Route as AccountResetPasswordRouteImport } from './routes/account/reset-password'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
 import { Route as AccountForgotPasswordRouteImport } from './routes/account/forgot-password'
@@ -143,11 +142,6 @@ const AccountVerifyRoute = AccountVerifyRouteImport.update({
   path: '/verify',
   getParentRoute: () => AccountRouteRoute,
 } as any)
-const AccountSettingsRoute = AccountSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
-  getParentRoute: () => AccountRouteRoute,
-} as any)
 const AccountResetPasswordRoute = AccountResetPasswordRouteImport.update({
   id: '/reset-password',
   path: '/reset-password',
@@ -256,7 +250,6 @@ export interface FileRoutesByFullPath {
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
-  '/account/settings': typeof AccountSettingsRoute
   '/account/verify': typeof AccountVerifyRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/articles/$slug': typeof ArticlesSlugRoute
@@ -289,7 +282,6 @@ export interface FileRoutesByTo {
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
-  '/account/settings': typeof AccountSettingsRoute
   '/account/verify': typeof AccountVerifyRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/articles/$slug': typeof ArticlesSlugRoute
@@ -330,7 +322,6 @@ export interface FileRoutesById {
   '/account/forgot-password': typeof AccountForgotPasswordRoute
   '/account/register': typeof AccountRegisterRoute
   '/account/reset-password': typeof AccountResetPasswordRoute
-  '/account/settings': typeof AccountSettingsRoute
   '/account/verify': typeof AccountVerifyRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/articles/$slug': typeof ArticlesSlugRoute
@@ -372,7 +363,6 @@ export interface FileRouteTypes {
     | '/account/forgot-password'
     | '/account/register'
     | '/account/reset-password'
-    | '/account/settings'
     | '/account/verify'
     | '/admin/categories'
     | '/articles/$slug'
@@ -405,7 +395,6 @@ export interface FileRouteTypes {
     | '/account/forgot-password'
     | '/account/register'
     | '/account/reset-password'
-    | '/account/settings'
     | '/account/verify'
     | '/admin/categories'
     | '/articles/$slug'
@@ -445,7 +434,6 @@ export interface FileRouteTypes {
     | '/account/forgot-password'
     | '/account/register'
     | '/account/reset-password'
-    | '/account/settings'
     | '/account/verify'
     | '/admin/categories'
     | '/articles/$slug'
@@ -617,13 +605,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountVerifyRouteImport
       parentRoute: typeof AccountRouteRoute
     }
-    '/account/settings': {
-      id: '/account/settings'
-      path: '/settings'
-      fullPath: '/account/settings'
-      preLoaderRoute: typeof AccountSettingsRouteImport
-      parentRoute: typeof AccountRouteRoute
-    }
     '/account/reset-password': {
       id: '/account/reset-password'
       path: '/reset-password'
@@ -757,7 +738,6 @@ interface AccountRouteRouteChildren {
   AccountForgotPasswordRoute: typeof AccountForgotPasswordRoute
   AccountRegisterRoute: typeof AccountRegisterRoute
   AccountResetPasswordRoute: typeof AccountResetPasswordRoute
-  AccountSettingsRoute: typeof AccountSettingsRoute
   AccountVerifyRoute: typeof AccountVerifyRoute
   AccountIndexRoute: typeof AccountIndexRoute
   AccountProfileEditRoute: typeof AccountProfileEditRoute
@@ -767,7 +747,6 @@ const AccountRouteRouteChildren: AccountRouteRouteChildren = {
   AccountForgotPasswordRoute: AccountForgotPasswordRoute,
   AccountRegisterRoute: AccountRegisterRoute,
   AccountResetPasswordRoute: AccountResetPasswordRoute,
-  AccountSettingsRoute: AccountSettingsRoute,
   AccountVerifyRoute: AccountVerifyRoute,
   AccountIndexRoute: AccountIndexRoute,
   AccountProfileEditRoute: AccountProfileEditRoute,

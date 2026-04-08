@@ -164,12 +164,12 @@ const TECH_STACK = [
   { name: 'React 19', category: 'Frontend', color: 'cyan' },
   { name: 'TanStack Start', category: 'Framework', color: 'orange' },
   { name: 'TanStack Query', category: 'Data Fetching', color: 'red' },
-  { name: 'Tailwind CSS v4', category: 'Styling', color: 'teal' },
+  { name: 'Tailwind CSS', category: 'Styling', color: 'teal' },
   { name: 'PostgreSQL', category: 'Database', color: 'blue' },
   { name: 'Drizzle ORM', category: 'ORM', color: 'green' },
   { name: 'Supabase', category: 'Backend-as-a-Service', color: 'green' },
   { name: 'Zod', category: 'Validation', color: 'violet' },
-  { name: 'Vercel / Railway', category: 'Deployment', color: 'gray' },
+  { name: 'Vercel', category: 'Deployment', color: 'gray' },
 ]
 
 const TESTIMONIALS = [
@@ -274,23 +274,23 @@ function ServicesPage() {
             radius="28px"
             withBorder
             shadow="md"
-            className="relative w-full max-w-[34rem] overflow-hidden bg-white p-3 dark:bg-slate-900"
+            className="relative w-full max-w-[26rem] overflow-hidden bg-white p-3 dark:bg-slate-900"
           >
-            <div className="relative overflow-hidden rounded-[22px]">
-              <img
-                src="https://images.pexels.com/photos/3183150/pexels-photo-3183150.jpeg"
-                alt="Team planning software services and digital solutions"
-                className="block h-[320px] w-full object-cover sm:h-[380px] lg:h-[420px]"
-              />
+            <div className="relative overflow-hidden rounded-[20px]">
+             <img
+src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg"
+  alt="Software developer working on code"
+  className="block h-[240px] w-full object-cover sm:h-[280px] lg:h-[320px]"
+/>
 
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-900/20 to-transparent" />
 
               <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
                 <Paper
                   radius="10px"
-                  className="bg-white/95 p-2 backdrop-blur dark:bg-slate-900/90"
+                  className="bg-white/95 p-1 backdrop-blur dark:bg-slate-900/90"
                 >
-                  <Title order={2} className='heading2 text-center'> Scalable and Maintainable</Title>
+                  <Title order={3} className='heading2 text-center'> Scalable and Maintainable</Title>
 
                 </Paper>
               </div>
@@ -342,74 +342,74 @@ function ServicesPage() {
       </section>
 
       {/* ── HOW I WORK ── */}
-    <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-start">
-  {/* LEFT */}
-<section className="space-y-8 border-r-4 border-blue-500 pr-4 lg:pr-6">
-  <div>
-    <Title order={2} className="text-3xl font-bold">
-      How I Work
-    </Title>
-    <Text c="dimmed" mt={4} className="max-w-2xl leading-7">
-      A clear, collaborative process from first conversation to final handover — so you always
-      know what&apos;s happening and what comes next.
-    </Text>
-  </div>
-
-  <Timeline active={4} bulletSize={40} lineWidth={2} color="indigo">
-    {PROCESS.map((step, i) => (
-      <Timeline.Item
-        key={step.title}
-        bullet={
-          <ThemeIcon size={40} radius="xl" variant="filled" color={step.color}>
-            {step.icon}
-          </ThemeIcon>
-        }
-        title={
-          <Text fw={700} size="md" mb={6}>
-            {i + 1}. {step.title}
-          </Text>
-        }
-      >
-        <Text size="sm" c="dimmed" className="mb-8 leading-7">
-          {step.desc}
-        </Text>
-      </Timeline.Item>
-    ))}
-  </Timeline>
-</section>
-
-  {/* RIGHT */}
-  <section className="space-y-6 ">
-    <div>
-      <Title order={2} className="text-3xl font-bold">
-        Tools & Tech Stack
-      </Title>
-      <Text c="dimmed" mt={4} className="max-w-md leading-7">
-        I use a modern, production-proven stack chosen for reliability, developer experience,
-        and long-term maintainability.
-      </Text>
-    </div>
-
-    <SimpleGrid cols={{ base: 2, sm: 2, lg: 2 }} spacing="md">
-      {TECH_STACK.map((tech) => (
-        <Paper
-          key={tech.name}
-          radius="xl"
-          withBorder
-          p="md"
-          className="group h-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-        >
-          <Group justify="space-between" align="center" wrap="nowrap">
-            <Text fw={700} size="sm">
-              {tech.name}
+      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-start">
+        {/* LEFT */}
+        <section className="space-y-8 border-r-4 border-blue-500 pr-4 lg:pr-6">
+          <div>
+            <Title order={2} className="text-3xl font-bold">
+              How I Work
+            </Title>
+            <Text c="dimmed" mt={4} className="max-w-2xl leading-7">
+              A clear, collaborative process from first conversation to final handover — so you always
+              know what&apos;s happening and what comes next.
             </Text>
-            <div className="h-2 w-2 rounded-full bg-blue-500 opacity-70" />
-          </Group>
-        </Paper>
-      ))}
-    </SimpleGrid>
-  </section>
-</div>
+          </div>
+
+          <Timeline active={4} bulletSize={40} lineWidth={2} color="indigo">
+            {PROCESS.map((step, i) => (
+              <Timeline.Item
+                key={step.title}
+                bullet={
+                  <ThemeIcon size={40} radius="xl" variant="filled" color={step.color}>
+                    {step.icon}
+                  </ThemeIcon>
+                }
+                title={
+                  <Text fw={700} size="md" mb={6}>
+                    {i + 1}. {step.title}
+                  </Text>
+                }
+              >
+                <Text size="sm" c="dimmed" className="mb-8 leading-7">
+                  {step.desc}
+                </Text>
+              </Timeline.Item>
+            ))}
+          </Timeline>
+        </section>
+
+        {/* RIGHT */}
+        <section className="space-y-6 ">
+          <div>
+            <Title order={2} className="text-3xl font-bold">
+              Tools & Tech Stack
+            </Title>
+            <Text c="dimmed" mt={4} className="max-w-md leading-7">
+              I use a modern, production-proven stack chosen for reliability, developer experience,
+              and long-term maintainability.
+            </Text>
+          </div>
+
+          <SimpleGrid cols={{ base: 2, sm: 2, lg: 2 }} spacing="md">
+            {TECH_STACK.map((tech) => (
+              <Paper
+                key={tech.name}
+                radius="xl"
+                withBorder
+                p="md"
+                className="group h-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+              >
+                <Group justify="space-between" align="center" wrap="nowrap">
+                  <Text fw={700} size="sm">
+                    {tech.name}
+                  </Text>
+                  {/* <div className="h-2 w-2 rounded-full bg-blue-500 opacity-70" /> */}
+                </Group>
+              </Paper>
+            ))}
+          </SimpleGrid>
+        </section>
+      </div>
 
       {/* ── TESTIMONIALS ── */}
       <section className="space-y-6">

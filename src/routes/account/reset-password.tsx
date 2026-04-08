@@ -33,14 +33,15 @@ function RouteComponent() {
   const [confirmVisible, { toggle: toggleConfirm }] = useDisclosure(false)
 
   // ✅ listen for PASSWORD_RECOVERY event — required for updateUser to work
-  useEffect(() => {
-    const { data: listener } = supabase.auth.onAuthStateChange((event: AuthChangeEvent, session:Session) => {
-      if (event === 'PASSWORD_RECOVERY') {
-        setIsRecoverySession(true)
-      }
-    })
-    return () => listener.subscription.unsubscribe()
-  }, [])
+useEffect(() => {
+  const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
+    if (event === 'PASSWORD_RECOVERY') {
+      setIsRecoverySession(true)
+    }
+  })
+
+  return () => listener.subscription.unsubscribe()
+}, [supabase])
 
   const form = useForm<{ password: string; confirmPassword: string }>({
     initialValues: {

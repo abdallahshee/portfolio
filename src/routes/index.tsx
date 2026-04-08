@@ -128,12 +128,6 @@ function App() {
       {/* ── HERO ── */}
       <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-14 items-center">
         <Stack gap="xl" className="max-w-3xl">
-          <div className="rise-in">
-            <div className="bg-green-600 text-center p-2 text-white text-xl rounded-2xl shadow-sm">
-              Available for new projects
-            </div>
-          </div>
-
           <Stack gap="md" className="max-w-3xl">
             <div className="relative inline-block text-xl sm:text-2xl lg:text-3xl font-bold leading-tight mb-2">
               <span className="text-blue-500">Full-Stack Software Developer</span>
@@ -173,46 +167,15 @@ function App() {
         </Stack>
 
         <div className="flex justify-center lg:justify-end">
-          <div className="relative w-full max-w-[18rem] sm:max-w-[20rem] lg:max-w-[25rem]">
-            <div className="aspect-square overflow-hidden rounded-3xl shadow-2xl">
-              <img
-                src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
-                alt="Abdallah Shee"
-                className="block h-full w-full object-cover"
-              />
-            </div>
-
-            <Paper
-              shadow="md"
-              radius="xl"
-              withBorder
-              className="absolute -bottom-5 left-1/2 -translate-x-1/2 lg:-bottom-6 lg:-left-6 lg:left-auto lg:translate-x-0 px-4 py-3 sm:px-5 sm:py-4 bg-white/95 backdrop-blur dark:bg-slate-900/95 w-max max-w-[90vw]"
-            >
-              <Group gap="sm" wrap="nowrap">
-                <ThemeIcon
-                  size={36}
-                  radius="xl"
-                  variant="light"
-                  color="indigo"
-                  className="sm:size-11 flex-shrink-0"
-                >
-                  <Code2 size={16} className="sm:size-5" />
-                </ThemeIcon>
-
-                <div className="min-w-0">
-                  <Group gap="xs" align="center" wrap="nowrap">
-                    <Text fw={700} size="sm" className="sm:text-base truncate">
-                      Abdallah Shee
-                    </Text>
-                    <span className="text-sm sm:text-base flex-shrink-0">🇰🇪</span>
-                  </Group>
-                  <Text size="xs" c="dimmed" className="sm:text-sm leading-5 truncate">
-                    Nairobi, Kenya
-                  </Text>
-                </div>
-              </Group>
-            </Paper>
-          </div>
+        <div className="relative w-full max-w-[14rem] sm:max-w-[16rem] lg:max-w-[20rem]">
+  <div className="aspect-square overflow-hidden rounded-2xl shadow-xl">
+    <img
+      src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
+      alt="Abdallah Shee"
+      className="block h-full w-full object-cover"
+    />
+  </div>
+</div>
         </div>
       </section>
 

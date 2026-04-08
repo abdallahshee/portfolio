@@ -30,7 +30,7 @@ export default function Footer() {
             <Group align="center" wrap="nowrap">
               <Avatar
                 src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
-                size={62}
+                size={60}
                 radius="xl"
               />
               <div>
@@ -122,14 +122,12 @@ export default function Footer() {
 
         <Divider my="xl" />
 
-        <Group justify="space-between" wrap="wrap" gap="sm">
+        <Group justify="center" wrap="wrap" gap="sm">
           <Text size="sm" c="dimmed">
             © {new Date().getFullYear()} Abdallah Shee. All rights reserved.
           </Text>
 
-          <Text size="sm" c="dimmed">
-            Crafted with professionalism, precision, and pride in workmanship.
-          </Text>
+      
         </Group>
       </Container>
     </footer>

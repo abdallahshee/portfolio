@@ -263,7 +263,7 @@ export default function Header() {
             <Link
               key={link.label}
               to={link.to}
-              className="whitespace-nowrap font-semibold text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
+              className="whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
               activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
             >
               {link.label}
