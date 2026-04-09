@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { Text, Title } from '@mantine/core'
+import { Avatar, Text, Title } from '@mantine/core'
 import { ShieldCheck } from 'lucide-react'
 import { Image } from '@mantine/core'
 
@@ -28,13 +28,11 @@ function RouteComponent() {
 
           {/* Logo + brand header inside the card */}
           <div className="flex flex-row items-center gap-3 mb-2">
-            <Image
+            <Avatar
               src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
               alt="Abdallah logo"
-              radius="xs"
-              w={20}
-              h={20}
-              fit="cover"
+       size={30}
+           
             />
             <Text className='text-cente'>Abdallah Shee's Portfolio Website & Blog</Text>
           </div>
