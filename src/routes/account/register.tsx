@@ -141,7 +141,7 @@ function RouteComponent() {
                  Create Account
                 </Text>
                 <Text c="dimmed" size="sm" mt={4}>
-                Join and start exploring projects and blogs.
+                Join and contribute to community blog.
                 </Text>
               </div>
      

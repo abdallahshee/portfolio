@@ -32,15 +32,15 @@ function RouteComponent() {
               src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
               alt="Abdallah logo"
               radius="xs"
-              w={30}
-              h={30}
+              w={20}
+              h={20}
               fit="cover"
             />
-            <Text>Abdallah Shee's Portfolio Website & Blog</Text>
+            <Text className='text-cente'>Abdallah Shee's Portfolio Website & Blog</Text>
           </div>
 
           {/* Divider */}
-          <div className="border-t border-slate-100 dark:border-slate-700 mb-6" />
+          <div className="border-t-1  border-blue-400 dark:border-white mb-6" />
 
           {/* Child route content */}
           <Outlet />
