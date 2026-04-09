@@ -1,14 +1,11 @@
 import ServiceComponent from '@/components/ServiceComponent'
 import {
-  Badge,
   Button,
   Card,
   Container,
   Text,
-  Title,
   Group,
   Stack,
-  Divider,
   Paper,
   ThemeIcon,
   SimpleGrid,
@@ -19,7 +16,6 @@ import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {
   Mail,
   ShoppingCart,
-  Building2,
   GraduationCap,
   BarChart3,
   CalendarClock,
@@ -33,7 +29,6 @@ import {
   Rocket,
   HeartHandshake,
   Quote,
-  ShieldCheck,
   FolderKanban,
   Lightbulb,
   Plug,
@@ -49,13 +44,6 @@ const SERVICES = [
     title: 'E-Commerce Platforms',
     desc: 'Full-featured online stores with product management, cart, checkout, payments (M-Pesa, Stripe), order tracking, inventory control, and admin dashboards — built to convert visitors into customers.',
     color: 'orange',
-
-  },
-  {
-    icon: <Building2 size={24} />,
-    title: 'Rental Management Software',
-    desc: 'End-to-end property and rental systems covering tenant onboarding, lease management, rent collection, maintenance request tracking, unit availability, and detailed landlord reporting.',
-    color: 'teal',
 
   },
   {
@@ -119,12 +107,7 @@ const SERVICES = [
     desc: 'Automation of repetitive business processes using custom workflows, triggers, and background jobs — reducing manual work, minimizing errors, and improving operational efficiency across your organization.',
     color: 'teal',
   },
-  {
-    icon: <ShieldCheck size={24} />,
-    title: 'Authentication & Access Systems',
-    desc: 'Secure authentication systems with role-based access control, multi-tenant permissions, session management, and integrations with OAuth providers — designed to protect data while enabling seamless user experiences.',
-    color: 'red',
-  },
+
 ]
 
 const PROCESS = [
@@ -212,7 +195,6 @@ function ServicesPage() {
           <Stack gap="lg">
             <div className="heading">
               Software solutions for real business needs
-
             </div>
 
             <Text size="lg" c="dimmed" className="max-w-2xl leading-8">
@@ -276,7 +258,7 @@ function ServicesPage() {
       {/* ── SERVICES GRID ── */}
       <section className="space-y-4">
         <div>
-          <Title order={2} className="text-3xl font-bold">Service Areas</Title>
+          <div className="title2">Service Areas</div>
           <Text c="dimmed" mt={4} className="max-w-2xl">
             I design and build software solutions tailored precisely to your requirements — with a focus on performance, scalability, and long-term reliability.
           </Text>
@@ -320,9 +302,9 @@ function ServicesPage() {
         {/* LEFT */}
         <section className="space-y-8 border-r-4 border-blue-500 pr-4 lg:pr-6">
           <div>
-            <Title order={2} className="text-3xl font-bold">
+            <div className="title2">
               How I Work
-            </Title>
+            </div>
             <Text c="dimmed" mt={4} className="max-w-2xl leading-7">
               A clear, collaborative process from first conversation to final handover — so you always
               know what&apos;s happening and what comes next.
@@ -355,9 +337,9 @@ function ServicesPage() {
         {/* RIGHT */}
         <section className="space-y-6 ">
           <div>
-            <Title order={2} className="text-3xl font-bold">
+            <div className="title2">
               Tools & Tech Stack
-            </Title>
+            </div>
             <Text c="dimmed" mt={4} className="max-w-md leading-7">
               I use a modern, production-proven stack chosen for reliability, developer experience,
               and long-term maintainability.
@@ -395,8 +377,7 @@ function ServicesPage() {
       {/* ── TESTIMONIALS ── */}
       <section className="space-y-6">
         <div>
-
-          <Title order={2} className="text-3xl font-bold">What Clients Say</Title>
+          <div className="title2">What Clients Say</div>
           <Text c="dimmed" mt={4} className="max-w-2xl">
             Relationships built on clear communication, reliable delivery, and software that actually works.
           </Text>
@@ -435,9 +416,9 @@ function ServicesPage() {
           className="relative overflow-hidden border border-slate-200/70 bg-gradient-to-br from-white via-indigo-50 to-blue-50 px-6 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
         >
           <Stack align="center" gap="md">
-            <Title order={2} className="text-3xl font-bold bg-gradient-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
+            <div className="title3 bg-gradient-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
               Ready to Build Your Product?
-            </Title>
+            </div>
             <Text c="dimmed" size="lg" className="max-w-2xl leading-8">
               Tell me about your project — what you need, your timeline, and your budget.
               I&apos;ll get back to you within 24 hours with my thoughts and next steps.

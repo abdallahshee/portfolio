@@ -6,14 +6,10 @@ import {
   Anchor,
   Button,
   Divider,
-  Group,
-  Paper,
   PasswordInput,
   Stack,
   Text,
   TextInput,
-  ThemeIcon,
-  Title,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { AlertCircle, UserPlus } from "lucide-react"
@@ -238,6 +234,5 @@ function RouteComponent() {
         </Anchor>
       </Text>
     </Stack>
-
   )
 }

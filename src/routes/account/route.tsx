@@ -1,7 +1,5 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
-import { Avatar, Text, Title } from '@mantine/core'
-import { ShieldCheck } from 'lucide-react'
-import { Image } from '@mantine/core'
+import { Avatar, Text } from '@mantine/core'
 
 export const Route = createFileRoute('/account')({
   component: RouteComponent,

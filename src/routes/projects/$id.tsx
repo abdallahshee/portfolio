@@ -80,7 +80,7 @@ function ProjectDetails() {
   if (!project) {
     return (
       <Container className="py-20 text-center">
-        <Title order={2}>Project not found</Title>
+        <div className="title2">Project not found</div>
       </Container>
     )
   }
@@ -187,15 +187,14 @@ function ProjectDetails() {
             <Paper radius="2xl" withBorder p="xl" mt="lg" className="shadow-sm">
               <Stack gap="lg">
                 <div>
-                  <Title order={3} className="mb-2">
+                  <div className="title2 mb-2">
                     About this project
-                  </Title>
+                  </div>
                   <Text className="leading-8 text-slate-700 dark:text-slate-300">
                     {project.description}
                   </Text>
                 </div>
-
-                <Divider />
+           <Divider />
 
                 <div>
                   <Group gap="xs" mb="sm">
@@ -247,9 +246,9 @@ function ProjectDetails() {
                       <Text size="sm" c="dimmed">
                         Average rating
                       </Text>
-                      <Title order={2} className="text-4xl">
+                      <div className="title2">
                         {project.averageRating}/10
-                      </Title>
+                      </div>
                     </div>
 
                     <div className="text-right">

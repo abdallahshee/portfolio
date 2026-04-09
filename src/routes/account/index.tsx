@@ -135,8 +135,6 @@ function RouteComponent() {
         </FacebookButton>
       </div>
 
-      {/* <Divider label="or continue with email" labelPosition="center" /> */}
-
       {/* Error alert */}
       {formError && (
         <Alert

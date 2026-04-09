@@ -56,8 +56,6 @@ export type DbUser = InferSelectModel<typeof user>
 
 export type SupabaseUser = User
 
-
-
 export const UserUpdateProfileSchema=createSelectSchema(user,{
    name: z.string().nonempty("Username is required")
         .min(3, "At 3 characters for a username")

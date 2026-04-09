@@ -1,5 +1,5 @@
 import { getSupabaseBrowserClient } from '@/lib/supabase/client'
-import { Alert, Button, Divider, Group, Paper, Stack, Text, TextInput, ThemeIcon, Title } from '@mantine/core'
+import { Alert, Button, Divider, Stack, Text, TextInput, ThemeIcon } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { AlertCircle, CheckCircle, KeyRound, Mail } from 'lucide-react'
@@ -66,7 +66,7 @@ function RouteComponent() {
           <ThemeIcon variant="light" color="green" radius="md" size={64}>
             <CheckCircle size={32} />
           </ThemeIcon>
-          <Title order={3} ta="center">Check your inbox</Title>
+          <div className='title3 text-center'>Check your inbox</div>
           <Text c="dimmed" size="sm" ta="center" maw={340}>
             We sent a password reset link to{" "}
             <strong>{form.values.email}</strong>.

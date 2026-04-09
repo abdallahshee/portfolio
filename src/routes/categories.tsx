@@ -9,7 +9,6 @@ import {
   Table,
   Text,
   TextInput,
-  Title,
   ActionIcon,
   Stack,
   ThemeIcon,
@@ -68,9 +67,9 @@ function CategoriesPage() {
               <ThemeIcon variant="light" color="grape" size="lg" radius="md">
                 <LayoutList size={18} />
               </ThemeIcon>
-              <Title order={1} fw={700}>
+              <div className="title2" >
                 Article Categories
-              </Title>
+              </div>
             </Group>
             <Text c="dimmed" size="sm" ml={46}>
               Organise your content by managing the categories that blogs are assigned to.

@@ -7,7 +7,6 @@ import {
   SimpleGrid,
   Divider,
   ActionIcon,
-  Title,
   Image,
 } from "@mantine/core"
 import {
@@ -38,9 +37,9 @@ export default function Footer() {
                 style={{ flexShrink: 0 }}
               />
               <div>
-                <Title order={6} className="tracking-tight">
+                <div className="title3">
                   Abdallah Shee
-                </Title>
+                </div>
                 <Text size="sm" c="dimmed">
                   <span className="text-md">Software Developer,</span> <br /><span className="text-sm">Nairobi, Kenya 🇰🇪.</span>
                 </Text>
@@ -66,7 +65,7 @@ export default function Footer() {
 
           {/* Third Column: Contact */}
           <Stack gap="sm">
-            <Title order={5}>Contact</Title>
+            <div className="title3">Contact</div>
 
             <Group gap="xs" wrap="nowrap">
               <Phone size={16} className="text-slate-500" />
@@ -81,7 +80,7 @@ export default function Footer() {
 
           {/* Fourth Column: Connect */}
           <Stack gap="sm">
-            <Title order={5}>Connect</Title>
+            <div className="title3">Connect</div>
 
             <Group gap="sm">
               <ActionIcon

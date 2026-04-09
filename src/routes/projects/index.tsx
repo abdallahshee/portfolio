@@ -206,7 +206,7 @@ function RouteComponent() {
             <ThemeIcon size={72} radius="md" variant="light" color="indigo">
               <FolderOpen size={36} />
             </ThemeIcon>
-            <Title order={3}>No projects found</Title>
+            <div className='title2'>No projects found</div>
             {isSearching ? (
               <>
                 <Text c="dimmed" ta="center" maw={400}>

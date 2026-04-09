@@ -126,9 +126,9 @@ function RouteComponent() {
                 </Text>
               </Group>
 
-              <Title order={1} className="text-3xl md:text-4xl">
+              <div className="title3">
                 Create New Project
-              </Title>
+              </div>
 
               <Text className="max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300">
                 Add a new project with its details, links, image, visibility, and
@@ -207,7 +207,7 @@ function RouteComponent() {
                   <ThemeIcon variant="light" color="grape" radius="xl">
                     <Globe size={16} />
                   </ThemeIcon>
-                  <Title order={3}>Project Links</Title>
+                  <div className="title3">Project Links</div>
                 </Group>
 
                 <TextInput
@@ -236,7 +236,7 @@ function RouteComponent() {
                   <ThemeIcon variant="light" color="orange" radius="xl">
                     <ImagePlus size={16} />
                   </ThemeIcon>
-                  <Title order={3}>Project Image</Title>
+                  <div className="title3">Project Image</div>
                 </Group>
 
                 <FileInput
@@ -274,7 +274,7 @@ function RouteComponent() {
                     <ThemeIcon variant="light" color="teal" radius="xl">
                       <Wrench size={16} />
                     </ThemeIcon>
-                    <Title order={3}>Technologies</Title>
+                    <div className="title3">Technologies</div>
                   </Group>
 
                   <Button

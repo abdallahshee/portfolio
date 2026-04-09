@@ -116,9 +116,9 @@ function RouteComponent() {
                   </Text>
                 </Group>
 
-                <Title order={1} className="text-3xl md:text-5xl">
+                <div className="title2">
                   Edit Project
-                </Title>
+                </div>
 
                 <Text className="max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
                   Update your project details, refine the description, adjust the
@@ -188,7 +188,7 @@ function RouteComponent() {
                           <ThemeIcon variant="light" color="grape" radius="xl">
                             <Globe size={16} />
                           </ThemeIcon>
-                          <Title order={3}>Project Link</Title>
+                          <div className="title3">Project Link</div>
                         </Group>
                         <Text size="sm" c="dimmed">
                           Update the main public link for this project.
@@ -213,7 +213,7 @@ function RouteComponent() {
                           <ThemeIcon variant="light" color="orange" radius="xl">
                             <ImageIcon size={16} />
                           </ThemeIcon>
-                          <Title order={3}>Project Image</Title>
+                          <div className="title3">Project Image</div>
                         </Group>
                         <Text size="sm" c="dimmed">
                           Update the image URL and check the preview before saving.
@@ -254,7 +254,7 @@ function RouteComponent() {
                             <ThemeIcon variant="light" color="teal" radius="xl">
                               <Wrench size={16} />
                             </ThemeIcon>
-                            <Title order={3}>Technologies</Title>
+                            <div className="title3">Technologies</div>
                           </Group>
 
                           <Button
@@ -371,7 +371,7 @@ function RouteComponent() {
                   <ThemeIcon variant="light" color="gray" radius="xl">
                     <Clock3 size={16} />
                   </ThemeIcon>
-                  <Title order={4}>Change Summary</Title>
+                  <div className="title3">Change Summary</div>
                 </Group>
 
                 <Stack gap="xs">
@@ -401,7 +401,7 @@ function RouteComponent() {
                   <ThemeIcon variant="light" color="indigo" radius="xl">
                     <Eye size={16} />
                   </ThemeIcon>
-                  <Title order={4}>Quick Preview</Title>
+                  <div className="title3">Quick Preview</div>
                 </Group>
 
                 <Stack gap="sm">

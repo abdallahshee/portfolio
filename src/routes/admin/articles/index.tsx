@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { useState } from 'react'
 import {
-  Avatar, Badge, Pagination, Text, Title,
+  Avatar, Badge, Pagination, Text,
   TextInput, Group, Paper, Skeleton, Table,
   Tooltip, ActionIcon,
 } from '@mantine/core'

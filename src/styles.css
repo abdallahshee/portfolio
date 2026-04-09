@@ -3,7 +3,29 @@
 @plugin '@tailwindcss/typography';
 
 @import 'tw-animate-css';
+.title1 {
+  @apply 
+  font-semibold 
+  text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 
+  leading-tight 
+  tracking-tight;
+}
 
+.title2 {
+  @apply 
+  font-semibold
+  text-2xl sm:text-3xl lg:text-4xl 
+  leading-snug 
+  tracking-tight;
+}
+
+.title3 {
+  @apply 
+  font-normal
+  text-lg sm:text-xl lg:text-2xl 
+  leading-snug 
+  tracking-tight;
+}
 /* This replaces darkMode: 'class' in the old config */
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -19,12 +41,16 @@
 }
 .heading {
   @apply 
- font-medium 
-  text-2xl sm:text-3xl lg:text-4xl  leading-[1.1] tracking-tight bg-gradient-to-l from-teal-600 via-indigo-500 to-teal-500 bg-clip-text text-transparent
+ font-semibold 
+  text-2xl sm:text-3xl lg:text-4xl 
+  leading-snug 
+  tracking-tight bg-linear-to-l from-teal-600 via-indigo-500 to-teal-500 bg-clip-text text-transparent
 }
 .heading2 {
   @apply 
-font-medium text-xl leading-[1.1] tracking-tight bg-gradient-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent
+   font-semibold 
+  text-2xl sm:text-3xl lg:text-4xl 
+  leading-snug  bg-gradient-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent
 }
 
 :root.dark,

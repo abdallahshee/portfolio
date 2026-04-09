@@ -2,14 +2,12 @@ import { createFileRoute } from "@tanstack/react-router"
 import {
   Alert,
   Anchor,
-  Badge,
   Button,
   Card,
   Container,
   Divider,
   Group,
   List,
-  Paper,
   Select,
   SimpleGrid,
   Stack,
@@ -17,21 +15,18 @@ import {
   Textarea,
   TextInput,
   ThemeIcon,
-  Timeline,
-  Title,
 } from "@mantine/core"
 import {
   AlertCircle,
   CheckCircle,
-  Clock,
+  Contact,
   Github,
   Linkedin,
   Mail,
   MessageSquare,
   Phone,
   Send,
-  X,
-  Zap,
+  X
 } from "lucide-react"
 import { useForm } from "@mantine/form"
 import { notifications } from "@mantine/notifications"
@@ -146,9 +141,9 @@ function ContactPage() {
               <ThemeIcon variant="light" color="indigo" radius="md">
                 <MessageSquare size={16} />
               </ThemeIcon>
-              <Title order={3}>Send a Message</Title>
+              <div className="title3">Send a Message</div>
             </Group>
-
+            <Divider color="blue"/>
             {formError && (
               <Alert
                 color="red"
@@ -218,8 +213,8 @@ function ContactPage() {
                 <Group justify="space-between" mt="xs">
                   <Button
                     type="button"
-                    variant="outline"
-                    color="blue"
+                    variant="filled"
+                    color="red"
                     radius="md"
                     size="sm"
                     leftSection={<X size={16} />}
@@ -246,23 +241,29 @@ function ContactPage() {
         </Card>
         <Card radius="xl" withBorder p="xl" className="shadow-sm bg-indigo-50 dark:bg-indigo-950/30">
           <Stack gap="md">
-            <Text py-1>
-              <Group gap="sm" py-1 >
-                <ThemeIcon variant="transparent" radius="md" size="sm">
-                  <Mail size={24} />
-                </ThemeIcon>
-                <Text size="sm" fw={500}>abdallahshee664@email.com</Text>
-              </Group>
-            </Text>
-            <Text py-1>
-              <Group gap="sm">
-                <ThemeIcon variant="transparent" radius="md" size="sm">
-                  <Phone size={24} />
-                </ThemeIcon>
-                <Text size="sm" fw={500}>+254 796515302</Text>
-              </Group>
-            </Text>
-            <Anchor py-1 href="https://github.com/abdallahshee" target="_blank" underline="never">
+            <Group gap="sm" align="center">
+              <ThemeIcon variant="transparent" radius="md" size="sm">
+                <Contact size={20} />
+              </ThemeIcon>
+              <div className="title3">Contacts</div>
+
+            </Group>
+            <Divider color="blue"/>
+            <Group gap="sm">
+              <ThemeIcon variant="transparent" radius="md" size="sm">
+                <Mail size={24} />
+              </ThemeIcon>
+              <Text size="sm" fw={500}>abdallahshee664@email.com</Text>
+            </Group>
+
+            <Group gap="sm">
+              <ThemeIcon variant="transparent" radius="md" size="sm">
+                <Phone size={24} />
+              </ThemeIcon>
+              <Text size="sm" fw={500}>+254 796515302</Text>
+            </Group>
+
+            <Anchor href="https://github.com/abdallahshee" target="_blank" underline="never">
               <Group gap="sm">
                 <ThemeIcon variant="transparent" radius="md" size="sm">
                   <Github size={24} />
@@ -270,7 +271,8 @@ function ContactPage() {
                 <Text size="sm" fw={500}>GitHub</Text>
               </Group>
             </Anchor>
-            <Anchor py-1 href="https://linkedin.com/in/abdallahshee" target="_blank" underline="never">
+
+            <Anchor href="https://linkedin.com/in/abdallahshee" target="_blank" underline="never">
               <Group gap="sm">
                 <ThemeIcon variant="transparent" radius="md" size="sm">
                   <Linkedin size={24} />
@@ -278,11 +280,11 @@ function ContactPage() {
                 <Text size="sm" fw={500}>LinkedIn</Text>
               </Group>
             </Anchor>
-            {/* </Group> */}
           </Stack>
+
           <Stack gap="md" className="mt-6">
             <Group gap="xs">
-              <Title order={3}>Quick to Respond</Title>
+              <div className="title3">Quick to Respond</div>
             </Group>
             <Text size="md" c="dimmed">
               I check my inbox daily and aim to reply to every message within

@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
-import { Container, Stack, Title, Text, Button, ThemeIcon, Paper } from '@mantine/core'
+import { Container, Stack, Text, Button, ThemeIcon, Paper } from '@mantine/core'
 import { ShieldX, ArrowLeft, Home } from 'lucide-react'
 import z from 'zod'
 
@@ -27,12 +27,12 @@ function RouteComponent() {
                         </ThemeIcon>
 
                         <Stack align="center" gap="xs">
-                            <Title order={1} className="text-4xl font-black tracking-tight text-slate-900 dark:text-white">
+                            <div className="title1 text-slate-900 dark:text-white">
                                 401
-                            </Title>
-                            <Title order={2} className="text-xl font-bold text-slate-700 dark:text-slate-300">
+                            </div>
+                            <div className="title2 text-slate-700 dark:text-slate-300">
                                 Unauthorized
-                            </Title>
+                            </div>
                             <Text c="dimmed" ta="center" size="md" className="max-w-sm leading-7">
                                 You don't have permission to access this page. Please sign in
                                 with an account that has the required permissions.

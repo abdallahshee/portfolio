@@ -1,5 +1,5 @@
 // src/components/ErrorComponent.tsx
-import { Button, Container, Stack, Text, ThemeIcon, Title } from "@mantine/core"
+import { Button, Container, Stack, Text, ThemeIcon } from "@mantine/core"
 import { AlertTriangle, RefreshCw } from "lucide-react"
 
 interface ErrorComponentProps {
@@ -16,7 +16,7 @@ export default function ErrorComponent({ reset }: ErrorComponentProps) {
         </ThemeIcon>
 
         <Stack gap="xs" align="center">
-          <Title order={2}>Something went wrong</Title>
+          <div className="title2">Something went wrong</div>
           <Text c="dimmed" size="md" className="max-w-md">
             An unexpected error occurred. Please try again or go back home.
           </Text>

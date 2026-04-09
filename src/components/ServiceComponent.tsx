@@ -1,10 +1,6 @@
 import { Paper } from '@mantine/core'
-
-
 const ServiceComponent = () => {
     return (
-
-
         <Paper
             radius={8}
             shadow="none"
@@ -16,7 +12,6 @@ const ServiceComponent = () => {
                     alt="Distributed software system with multiple connected services"
                     className="block h-full w-full object-cover"
                 />
-
                 {/* overlays */}
                 <div className="absolute inset-0 bg-slate-950/45" />
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/25 via-transparent to-teal-500/20" />
@@ -69,8 +64,6 @@ const ServiceComponent = () => {
                 <div className="node-float absolute left-[55%] top-[80%] h-2.5 w-2.5 rounded-full bg-fuchsia-300 shadow-[0_0_16px_rgba(240,171,252,0.9)]" />
             </div>
         </Paper>
-
-
     )
 }
 

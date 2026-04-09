@@ -6,13 +6,11 @@ import {
   Card,
   Container,
   Text,
-  Title,
   Table,
   Image,
   Group,
   Stack,
   Rating,
-  Divider,
   Paper,
   ThemeIcon,
   SimpleGrid,
@@ -66,7 +64,7 @@ const STATS = [
   { icon: <Briefcase size={18} />, value: '4+', label: 'Years Experience', color: 'indigo' },
   { icon: <FolderKanban size={18} />, value: '20+', label: 'Projects Delivered', color: 'blue' },
   { icon: <Users size={18} />, value: '10+', label: 'Happy Clients', color: 'green' },
-  { icon: <Star size={18} />, value: '100%', label: 'On-Time Delivery', color: 'yellow' },
+  // { icon: <Star size={18} />, value: '100%', label: 'On-Time Delivery', color: 'yellow' },
 ]
 
 const STRENGTHS = [
@@ -129,7 +127,7 @@ function App() {
       <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-14 items-center">
         <Stack gap="xl" className="max-w-3xl">
           <Stack gap="md" className="max-w-3xl">
-            <div className="relative inline-block text-xl sm:text-2xl lg:text-3xl font-bold leading-tight mb-2">
+            <div className="relative inline-block title2 mb-2">
               <span className="text-blue-500">Full-Stack Software Developer</span>
               <span className="absolute left-0 -bottom-1 sm:-bottom-2 h-[3px] sm:h-[4px] w-3/5 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 rounded-full"></span>
             </div>
@@ -167,29 +165,29 @@ function App() {
         </Stack>
 
         <div className="flex justify-center lg:justify-end">
-          <div className="relative w-full max-w-[14rem] sm:max-w-[16rem] lg:max-w-[20rem]">
-            <div className="aspect-square overflow-hidden rounded-2xl shadow-xl">
-              <img
-                src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
-                alt="Abdallah Shee"
-                className="block h-full w-full object-cover"
-              />
-            </div>
+          <div className="relative h-[240px] overflow-hidden sm:h-[280px] lg:h-[320px]">
+            {/* <div className="aspect-square overflow-hidden rounded-2xl shadow-xl"> */}
+            <img
+              src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
+              alt="Abdallah Shee"
+              className="block h-full w-full object-cover"
+            />
+            {/* </div> */}
           </div>
         </div>
       </section>
 
       {/* ── STATS ── */}
-      <SimpleGrid cols={{ base: 2, sm: 4 }} spacing="sm">
+      <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm">
         {STATS.map((stat) => (
           <Paper
             key={stat.label}
-            radius="2xl"
-            withBorder
+            radius="md"
+
             p="sm"
             className="group shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-white to-gray-50 dark:from-slate-900 dark:to-slate-800"
           >
-            <Group align="center" gap="md" wrap="nowrap">
+            <Group align="center" gap="sm" wrap="nowrap">
               <ThemeIcon
                 variant="light"
                 color={stat.color}
@@ -199,11 +197,14 @@ function App() {
               >
                 {stat.icon}
               </ThemeIcon>
-              <div>
-                <Title order={2} className="text-2xl font-extrabold leading-none tracking-tight">
+
+              <div className="flex items-center gap-3">
+                <div className="text-2xl font-extrabold leading-none tracking-tight">
                   {stat.value}
-                </Title>
-                <div className="w-11 h-[1px] bg-gradient-to-r from-indigo-500 to-transparent rounded-full my-2" />
+                </div>
+
+                <div className="w-8 h-[1px] bg-gradient-to-r from-indigo-500 to-transparent" />
+
                 <Text size="sm" c="dimmed">
                   {stat.label}
                 </Text>
@@ -218,9 +219,9 @@ function App() {
       {/* ── ABOUT ── */}
       <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-start">
         <Stack gap="lg" className="border-r-4 border-blue-500 pr-4">
-          <Title order={2} className="text-3xl font-bold tracking-tight">
+          <div className="title2">
             About Me
-          </Title>
+          </div>
 
           <Text size="lg" c="dimmed" className="leading-8">
             I'm <strong>Abdallah Shee</strong>, a software developer based in Nairobi, Kenya 🇰🇪.
@@ -254,9 +255,9 @@ function App() {
         </Stack>
 
         <Stack gap="lg">
-          <Title order={2} className="text-3xl font-bold tracking-tight">
+          <div className="title2">
             Core Skills & Technologies
-          </Title>
+          </div>
           <List
             spacing="sm"
             size="md"
@@ -308,9 +309,9 @@ function App() {
       {/* ── STRENGTHS ── */}
       <section className="space-y-6">
         <div>
-          <Title order={2} className="text-3xl font-bold">
+          <div className="title2">
             Core Strengths
-          </Title>
+          </div>
           <Text c="dimmed" mt={4}>
             The areas where I consistently deliver the most impact and value.
           </Text>
@@ -338,9 +339,9 @@ function App() {
       {/* ── FEATURED ── */}
       <section id="featured" className="space-y-8">
         <div className="space-y-2">
-          <Title order={2} className="text-3xl font-bold">
+          <div className="title2">
             Featured Work & Writing
-          </Title>
+          </div>
           <Text c="dimmed" className="max-w-3xl">
             A curated selection of projects and articles that best reflect the quality of my work.
           </Text>
@@ -352,7 +353,7 @@ function App() {
             <Stack gap="md">
               <Group justify="space-between" align="end">
                 <div>
-                  <Title order={3}>Featured Projects</Title>
+                  <div className='title3'>Featured Projects</div>
                   <Text size="sm" c="dimmed">
                     A selection of standout builds from my portfolio
                   </Text>
@@ -429,7 +430,7 @@ function App() {
             <Stack gap="md">
               <Group justify="space-between" align="end">
                 <div>
-                  <Title order={3}>Featured Articles</Title>
+                  <div className='title3'>Featured Articles</div>
                   <Text size="sm" c="dimmed">
                     A few of the most engaging pieces written by users
                   </Text>
@@ -517,9 +518,9 @@ function App() {
           <div className="relative flex justify-center">
             <Stack gap="lg" align="center" className="text-center max-w-2xl">
               <div className="space-y-2">
-                <Title order={2} className="heading2">
+                <div className="title3">
                   Let me turn your idea into reality
-                </Title>
+                </div>
 
                 <Text c="dimmed" size="lg" className="leading-8">
                   I turn ideas into practical software solutions that work

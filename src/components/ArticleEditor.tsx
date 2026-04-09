@@ -4,7 +4,6 @@ import {
   TextInput,
   Button,
   Paper,
-  Title,
   Stack,
   FileInput,
   Group,
@@ -256,9 +255,9 @@ export default function ArticleEditor({
                   </Text>
                 </Group>
 
-                <Title order={1} className="text-3xl md:text-5xl">
+                <div className="title2">
                   {isEdit ? "Edit Blog Post" : "Create a New Blog Post"}
-                </Title>
+                </div>
 
                 <Text className="max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
                   {isEdit
@@ -299,7 +298,7 @@ export default function ArticleEditor({
                           <ThemeIcon variant="light" color="blue" radius="xl">
                             <FileText size={16} />
                           </ThemeIcon>
-                          <Title order={3}>Post Details</Title>
+                          <div className="title3">Post Details</div>
                         </Group>
                         <Text size="sm" c="dimmed">
                           {isEdit
@@ -375,7 +374,7 @@ export default function ArticleEditor({
                           <ThemeIcon variant="light" color="grape" radius="xl">
                             <PenSquare size={16} />
                           </ThemeIcon>
-                          <Title order={3}>Content</Title>
+                          <div className="title3">Content</div>
                         </Group>
                         <Text size="sm" c="dimmed">
                           {isEdit
@@ -446,7 +445,7 @@ export default function ArticleEditor({
                           <ThemeIcon variant="light" color="teal" radius="xl">
                             <Tags size={16} />
                           </ThemeIcon>
-                          <Title order={3}>Tags</Title>
+                          <div className="title3">Tags</div>
                         </Group>
                         <Text size="sm" c="dimmed">
                           {isEdit
@@ -528,7 +527,7 @@ export default function ArticleEditor({
                   <ThemeIcon variant="light" color="yellow" radius="xl">
                     <Sparkles size={16} />
                   </ThemeIcon>
-                  <Title order={4}>{isEdit ? "Editing Tips" : "Writing Tips"}</Title>
+                  <div className="title3">{isEdit ? "Editing Tips" : "Writing Tips"}</div>
                 </Group>
 
                 <Stack gap="sm">
@@ -571,9 +570,9 @@ export default function ArticleEditor({
                   <ThemeIcon variant="light" color="gray" radius="xl">
                     <Clock3 size={16} />
                   </ThemeIcon>
-                  <Title order={4}>
+                  <div className="title3">
                     {isEdit ? "Edit Summary" : "Publishing Checklist"}
-                  </Title>
+                  </div>
                 </Group>
 
                 <Stack gap="xs">
@@ -611,9 +610,9 @@ export default function ArticleEditor({
               </Card>
 
               <Card radius="2xl" withBorder p="xl" className="shadow-sm">
-                <Title order={4} mb="sm">
+                <div className="title3 mb-1">
                   Quick Preview
-                </Title>
+                </div>
 
                 <Stack gap="xs">
                   <Text fw={600}>

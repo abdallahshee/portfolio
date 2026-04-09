@@ -3,17 +3,13 @@ import {
   Alert,
   Button,
   Divider,
-  Group,
-  Paper,
   PasswordInput,
   Stack,
   Text,
   ThemeIcon,
-  Title,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { useDisclosure } from '@mantine/hooks'
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { AlertCircle, CheckCircle, KeyRound } from 'lucide-react'
 import { useEffect, useState } from 'react'
@@ -118,7 +114,7 @@ function RouteComponent() {
           <ThemeIcon variant="light" color="green" radius="md" size={64}>
             <CheckCircle size={32} />
           </ThemeIcon>
-          <Title order={3} ta="center">Password Updated!</Title>
+          <div className='title3 text-center'>Password Updated!</div>
           <Text c="dimmed" size="sm" ta="center" maw={340}>
             Your password has been reset successfully.
             You'll be redirected to sign in shortly.
@@ -200,7 +196,6 @@ function RouteComponent() {
       )}
 
       <Divider my="xs" />
-
       <Text ta="center" size="md" c="dimmed">
         Remember your password?{" "}
         <Link
@@ -211,8 +206,6 @@ function RouteComponent() {
           Back to Sign In
         </Link>
       </Text>
-
     </Stack>
-
   )
 }

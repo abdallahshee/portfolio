@@ -14,7 +14,6 @@ import {
   Text,
   TextInput,
   ThemeIcon,
-  Title,
 } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { useQuery } from "@tanstack/react-query"
@@ -56,9 +55,9 @@ function RouteComponent() {
             <ThemeIcon variant="light" color="indigo" radius="xl" size="lg">
               <Users size={18} />
             </ThemeIcon>
-            <Title order={2} className="text-2xl font-bold">
+            <div className="title2">
               Users
-            </Title>
+            </div>
           </Group>
 
           <Text c="dimmed" size="sm">

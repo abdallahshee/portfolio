@@ -1,20 +1,4 @@
-
-
-// import { createBrowserClient } from '@supabase/ssr'
 import { nanoid } from 'nanoid'
-
-// let browserClient: ReturnType<typeof createBrowserClient> | null = null
-
-// export function getSupabaseBrowserClient() {
-//   if (browserClient) return browserClient
-
-//   browserClient = createBrowserClient(
-//     import.meta.env.VITE_SUPABASE_URL!,
-//     import.meta.env.VITE_SUPABASE_ANON_KEY!
-//   )
-//   return browserClient
-// }
-
 import { createBrowserClient } from '@supabase/ssr'
 import type { SupabaseClient } from '@supabase/supabase-js'
 

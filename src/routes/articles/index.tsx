@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
 import {
-  Avatar, Badge, Box, Button, Card, Container, Group,
-  Image, Pagination, Skeleton, Stack, Text, TextInput, Title, ThemeIcon,
+  Avatar, Box, Button, Card, Container, Group,
+  Image, Pagination, Skeleton, Stack, Text, TextInput, ThemeIcon,
 } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { useQuery } from "@tanstack/react-query"
@@ -202,9 +202,9 @@ function BlogsPage() {
             <ThemeIcon size={72} radius="md" variant="light" color="grape">
               <BookOpen size={36} />
             </ThemeIcon>
-            <Title order={3}>
+            <div className="title3">
               {hasSearch ? `No results for "${debouncedSearch}"` : "No articles yet"}
-            </Title>
+            </div>
             <Text c="dimmed" ta="center" maw={400}>
               {hasSearch
                 ? "Try a different search term or clear the search to browse all articles."

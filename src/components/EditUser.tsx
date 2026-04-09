@@ -1,23 +1,20 @@
 
 import {
   TextInput,
-  PasswordInput,
   Button,
   Stack,
   Avatar,
-  Title,
   Text,
   Paper,
-  Container,
   Divider,
   Badge,
   Group,
   FileInput,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { useAdminUserUpdateMutation, useUserUpdateProfileMutation } from '@/db/mutations/user.mutations'
+import { useAdminUserUpdateMutation} from '@/db/mutations/user.mutations'
 import { useState } from 'react'
-import { Camera, User, Mail, Lock, ShieldCheck, Save } from 'lucide-react'
+import { Camera, User, Mail, ShieldCheck, Save } from 'lucide-react'
 import { notifications } from '@mantine/notifications'
 import { zod4Resolver } from 'mantine-form-zod-resolver'
 import z from 'zod'
@@ -109,9 +106,9 @@ export function EditUserForm({ userId, targetUser, role }: EditUserFormProps) {
             ) : (
               <User size={22} className="text-teal-500" />
             )}
-            <Title order={3} className="font-bold">
+            <div className="title3">
               {isAdmin ? 'Edit User' : 'My Profile'}
-            </Title>
+            </div>
             <Badge
               variant="light"
               color={isAdmin ? 'indigo' : 'teal'}

@@ -8,14 +8,10 @@ import {
   Group,
   Image,
   Pagination,
-  Stack,
   Box,
   Text,
   TextInput,
-  Title,
-  SegmentedControl,
 } from '@mantine/core'
-
 import {
   getUserPaginatedArticlesQueryOptions,
   searchArticlesQueryOptions,
@@ -127,9 +123,9 @@ function BlogsPage() {
           >
             Back to All Articles
           </Button>
-          <Title order={1}>
+          <div className='title1'>
             {isOwner ? 'My Articles' : 'Articles & Writing'}
-          </Title>
+          </div>
           <Text c="dimmed" className="max-w-2xl">
             {isOwner
               ? `You have written ${Allarticles.length} article${Allarticles.length !== 1 ? 's' : ''}.`
@@ -230,7 +226,7 @@ function BlogsPage() {
       {/* Empty state */}
       {!isLoading && articles.length === 0 && (
         <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 py-24 text-center dark:border-slate-700">
-          <Title order={3} c="dimmed" mb="xs">
+          <div className='title3 mb-2'>
             {isSearching
               ? `No articles found for "${debouncedSearch}"`
               : statusFilter !== 'all'
@@ -238,7 +234,7 @@ function BlogsPage() {
                 : isOwner
                   ? "You haven't written any articles yet"
                   : 'No articles yet'}
-          </Title>
+          </div>
           <Text size="sm" c="dimmed" mb="lg">
             {statusFilter !== 'all'
               ? 'Try a different status filter.'

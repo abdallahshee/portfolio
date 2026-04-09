@@ -7,16 +7,10 @@ import {
   Alert,
   Avatar,
   Button,
-  Container,
-  Divider,
   FileInput,
-  Paper,
   Stack,
   Text,
   TextInput,
-  Title,
-  Group,
-  ThemeIcon,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { zod4Resolver } from 'mantine-form-zod-resolver'
@@ -174,7 +168,5 @@ function RouteComponent() {
         </Stack>
       </form>
     </Stack>
-
-
   )
 }

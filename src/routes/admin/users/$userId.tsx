@@ -54,7 +54,7 @@ export const Route = createFileRoute("/admin/users/$userId")({
       <Container size="lg">
         <Paper radius="2xl" p="xl" withBorder className="shadow-sm">
           <Stack gap="md" align="center">
-            <Title order={3}>User not found</Title>
+            <div className="title3">User not found</div>
             <Text c="dimmed" ta="center">
               We could not load the requested user details.
             </Text>
@@ -119,9 +119,9 @@ function RouteComponent() {
                     </Text>
                   </Group>
 
-                  <Title order={1} className="text-3xl md:text-5xl">
+                  <div className="title2">
                     {fullName}
-                  </Title>
+                  </div>
 
                   <Group gap="sm">
                     <Badge
@@ -215,7 +215,7 @@ function RouteComponent() {
                     <ThemeIcon variant="light" color="blue" radius="xl">
                       <Mail size={16} />
                     </ThemeIcon>
-                    <Title order={3}>Account Information</Title>
+                    <div className="title3">Account Information</div>
                   </Group>
                   <Text size="sm" c="dimmed">
                     Basic account details for this user.
