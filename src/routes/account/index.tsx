@@ -113,7 +113,7 @@ const handleSubmit = async (values: SignInRequest) => {
         {/* Header */}
         <div className="text-center">
           <Group justify="center" mb="sm">
-            <ThemeIcon variant="light" color="indigo" radius="xl" size="xl">
+            <ThemeIcon variant="light" color="indigo" radius="md" size="xl">
               <LogIn size={20} />
             </ThemeIcon>
           </Group>

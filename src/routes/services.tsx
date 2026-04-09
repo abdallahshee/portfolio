@@ -269,34 +269,60 @@ function ServicesPage() {
 
         </Stack>
 
-        <div className="flex justify-center lg:justify-end">
-          <Paper
-            radius="28px"
-            withBorder
-            shadow="md"
-            className="relative w-full max-w-[26rem] overflow-hidden bg-white p-3 dark:bg-slate-900"
-          >
-            <div className="relative overflow-hidden rounded-[20px]">
-              <img
-                src="https://images.pexels.com/photos/546819/pexels-photo-546819.jpeg"
-                alt="Software developer working on code"
-                className="block h-[240px] w-full object-cover sm:h-[280px] lg:h-[320px]"
-              />
+<div className="flex justify-center lg:justify-end">
+  <Paper
+    radius={8}
+    shadow="none"
+    className="relative w-full max-w-[26rem] overflow-hidden bg-white p-0 dark:bg-slate-900 shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
+  >
+    <div className="relative h-[240px] overflow-hidden sm:h-[280px] lg:h-[320px]">
+      <img
+      src="https://images.pexels.com/photos/6424585/pexels-photo-6424585.jpeg"
+        alt="Distributed software system with multiple connected services"
+        className="block h-full w-full object-cover"
+      />
 
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-900/20 to-transparent" />
+      {/* overlays */}
+      <div className="absolute inset-0 bg-slate-950/45" />
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/25 via-transparent to-teal-500/20" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(99,102,241,0.30),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(20,184,166,0.22),transparent_32%)]" />
 
-              <div className="absolute inset-x-0 bottom-0 p-3 sm:p-4">
-                <Paper
-                  radius="6px"
-                  className="bg-white/95 p-1 backdrop-blur dark:bg-slate-900/90"
-                >
-                  <Title order={3} className='heading2 text-center'> Scalable and Maintainable</Title>
+      {/* animated connection lines */}
+      <div className="absolute inset-0 opacity-50">
+        <div className="flow-line absolute left-[18%] top-[22%] h-px w-[30%] rotate-[18deg] bg-gradient-to-r from-transparent via-indigo-300 to-transparent" />
+        <div className="flow-line flow-delay-1 absolute left-[42%] top-[28%] h-px w-[24%] rotate-[-22deg] bg-gradient-to-r from-transparent via-cyan-200 to-transparent" />
+        <div className="flow-line flow-delay-2 absolute left-[28%] top-[56%] h-px w-[34%] rotate-[10deg] bg-gradient-to-r from-transparent via-teal-200 to-transparent" />
+        <div className="flow-line flow-delay-3 absolute left-[54%] top-[64%] h-px w-[18%] rotate-[-28deg] bg-gradient-to-r from-transparent via-indigo-200 to-transparent" />
+      </div>
 
-                </Paper>
-              </div>
-            </div>
-          </Paper>
-        </div>
+      {/* floating system nodes */}
+     {/* floating system nodes */}
+<div className="node-float absolute left-[16%] top-[20%] h-4 w-4 rounded-full bg-indigo-400 shadow-[0_0_26px_rgba(99,102,241,0.95)]" />
+
+<div className="node-float-slow absolute left-[46%] top-[26%] h-3.5 w-3.5 rounded-full bg-cyan-300 shadow-[0_0_24px_rgba(103,232,249,0.95)]" />
+
+<div className="node-float-delayed absolute left-[68%] top-[18%] h-4 w-4 rounded-full bg-teal-300 shadow-[0_0_26px_rgba(45,212,191,0.95)]" />
+
+<div className="node-float-slow-delayed absolute left-[30%] top-[58%] h-4 w-4 rounded-full bg-blue-300 shadow-[0_0_26px_rgba(147,197,253,0.95)]" />
+
+<div className="node-float absolute left-[62%] top-[62%] h-3.5 w-3.5 rounded-full bg-indigo-300 shadow-[0_0_24px_rgba(165,180,252,0.95)]" />
+
+{/* existing extra nodes */}
+<div className="node-float-extra absolute left-[78%] top-[42%] h-3 w-3 rounded-full bg-sky-300 shadow-[0_0_22px_rgba(125,211,252,0.9)]" />
+
+<div className="node-float-slow absolute left-[22%] top-[72%] h-3 w-3 rounded-full bg-emerald-300 shadow-[0_0_22px_rgba(110,231,183,0.9)]" />
+
+{/* NEW NODES (4 added) */}
+<div className="node-float-delayed absolute left-[10%] top-[50%] h-3.5 w-3.5 rounded-full bg-indigo-400 shadow-[0_0_22px_rgba(99,102,241,0.9)]" />
+
+<div className="node-float-slow absolute left-[85%] top-[20%] h-3 w-3 rounded-full bg-cyan-300 shadow-[0_0_20px_rgba(103,232,249,0.9)]" />
+
+<div className="node-float-extra absolute left-[50%] top-[10%] h-3.5 w-3.5 rounded-full bg-teal-300 shadow-[0_0_22px_rgba(45,212,191,0.9)]" />
+
+<div className="node-float-slow-delayed absolute left-[70%] top-[75%] h-3 w-3 rounded-full bg-indigo-400 shadow-[0_0_20px_rgba(99,102,241,0.9)]" />
+    </div>
+  </Paper>
+</div>
       </section>
 
       {/* ── SERVICES GRID ── */}
@@ -391,22 +417,29 @@ function ServicesPage() {
           </div>
 
           <SimpleGrid cols={{ base: 2, sm: 2, lg: 2 }} spacing="md">
-            {TECH_STACK.map((tech) => (
-              <Paper
-                key={tech.name}
-                radius="md"
-                withBorder
-                p="md"
-                className="group h-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-              >
-                <Group justify="space-between" align="center" wrap="nowrap">
-                  <Text fw={700} size="sm" >
-                    {tech.name}
-                  </Text>
-                  {/* <div className="h-2 w-2 rounded-full bg-blue-500 opacity-70" /> */}
-                </Group>
-              </Paper>
-            ))}
+          {TECH_STACK.map((tech) => (
+  <Paper
+    key={tech.name}
+    radius="md"
+    withBorder
+    p="md"
+    className="group h-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+  >
+    <div className="flex items-center gap-1">
+      
+      {/* icon / bullet */}
+      <div className="flex items-center justify-center w-6 h-6 text-blue-500 text-2xl font-bold">
+        •
+      </div>
+
+      {/* text */}
+      <Text fw={600} size="sm" className="leading-none">
+        {tech.name}
+      </Text>
+
+    </div>
+  </Paper>
+))}
           </SimpleGrid>
         </section>
       </div>

@@ -52,7 +52,7 @@ function RouteComponent() {
         {/* Header */}
         <div className="text-center">
           <Group justify="center" mb="sm">
-            <ThemeIcon variant="light" color="indigo" radius="xl" size="xl">
+            <ThemeIcon variant="light" color="indigo" radius="md" size="xl">
               <KeyRound size={20} />
             </ThemeIcon>
           </Group>
@@ -67,7 +67,7 @@ function RouteComponent() {
         {/* ✅ success state — shown after email is sent */}
         {emailSent ? (
           <Stack gap="md" align="center" py="md">
-            <ThemeIcon variant="light" color="green" radius="xl" size={64}>
+            <ThemeIcon variant="light" color="green" radius="md" size={64}>
               <CheckCircle size={32} />
             </ThemeIcon>
             <Title order={3} ta="center">Check your inbox</Title>
@@ -96,7 +96,6 @@ function RouteComponent() {
             {formError && (
               <Alert
                 color="red"
-           
                 icon={<AlertCircle size={24} />}
                 title="Request failed"
                 withCloseButton

@@ -86,7 +86,7 @@ useEffect(() => {
         {/* Header */}
         <div className="text-center">
           <Group justify="center" mb="sm">
-            <ThemeIcon variant="light" color="indigo" radius="xl" size="xl">
+            <ThemeIcon variant="light" color="indigo" radius="md" size="xl">
               <KeyRound size={20} />
             </ThemeIcon>
           </Group>
@@ -119,7 +119,7 @@ useEffect(() => {
         {/* ✅ success state */}
         {passwordReset ? (
           <Stack gap="md" align="center" py="md">
-            <ThemeIcon variant="light" color="green" radius="xl" size={64}>
+            <ThemeIcon variant="light" color="green" radius="md" size={64}>
               <CheckCircle size={32} />
             </ThemeIcon>
             <Title order={3} ta="center">Password Updated!</Title>

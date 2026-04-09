@@ -138,7 +138,7 @@ function RouteComponent() {
       <Stack gap="lg">
         <div className="text-center">
           <Group justify="center" mb="sm">
-            <ThemeIcon variant="light" color="indigo" radius="xl" size="xl">
+            <ThemeIcon variant="light" color="indigo" radius="md" size="xl">
               <UserPlus size={20} />
             </ThemeIcon>
           </Group>

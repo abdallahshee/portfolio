@@ -26,8 +26,8 @@ import { Camera, Save, User as ProfileUserIcon } from 'lucide-react'
 import { AuthenticatedMiddleware } from '@/server/middleware/auth.middleware'
 
 export const Route = createFileRoute('/account/profile/edit/')({
-  server:{
-    middleware:[AuthenticatedMiddleware]
+  server: {
+    middleware: [AuthenticatedMiddleware]
   },
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(
@@ -36,8 +36,6 @@ export const Route = createFileRoute('/account/profile/edit/')({
   },
   component: RouteComponent,
 })
-
-
 
 function RouteComponent() {
   const { data: user } = useSuspenseQuery(
@@ -54,8 +52,8 @@ function RouteComponent() {
   const form = useForm<UserUpdateProfileRequest>({
     validate: zod4Resolver(UserUpdateProfileSchema),
     initialValues: {
-      name: user.user_metadata.name ?? '',
-      image: user.user_metadata.avatar_url ?? '',
+      name: user.user_metadata.name,
+      image: user.user_metadata.avatar_url,
     },
   })
 
@@ -92,95 +90,95 @@ function RouteComponent() {
   }
 
   return (
-    <Container size="sm" >
-      <Paper radius="2xl" p="xl" withBorder className="shadow-lg md:p-8">
-        <Stack gap="lg">
-          {/* Header (matches register page style) */}
-          <div className="text-center">
-            <Group justify="center" mb="sm">
-              <ThemeIcon variant="light" color="teal" radius="xl" size="xl">
-                <ProfileUserIcon size={20} />
-              </ThemeIcon>
-            </Group>
 
-            <Title order={3} className="heading">Edit Profile</Title>
+    <Paper radius="2xl" p="xl" withBorder className="w-full shadow-lg md:p-8">
+      <Stack gap="lg">
+        {/* Header (matches register page style) */}
+        <div className="text-center">
+          <Group justify="center" mb="sm">
+            <ThemeIcon variant="light" color="teal" radius="md" size="xl">
+              <ProfileUserIcon size={20} />
+            </ThemeIcon>
+          </Group>
 
-            <Text c="dimmed" size="sm" mt={6}>
-              Update your personal information and profile picture.
-            </Text>
+          <Title order={3} className="heading">Edit Profile</Title>
+
+          <Text c="dimmed" size="sm" mt={6}>
+            Update your personal information and profile picture.
+          </Text>
+        </div>
+
+        <Divider />
+
+        {/* Avatar section */}
+        <Stack align="center" gap="xs">
+          <div className="relative w-fit">
+            <Avatar
+              src={avatarPreview}
+              size={90}
+              radius="md"
+              color="teal"
+              className="border-2 border-slate-200 dark:border-slate-700"
+            >
+              {user.user_metadata.name?.[0]?.toUpperCase() ?? 'U'}
+            </Avatar>
+
+            <div className="absolute -bottom-1 -right-1 rounded-full border border-slate-200 bg-white p-1 shadow dark:border-slate-700 dark:bg-slate-800">
+              <Camera size={12} className="text-slate-500" />
+            </div>
           </div>
 
-          <Divider />
-
-          {/* Avatar section */}
-          <Stack align="center" gap="xs">
-            <div className="relative w-fit">
-              <Avatar
-                src={avatarPreview}
-                size={90}
-                radius="md"
-                color="teal"
-                className="border-2 border-slate-200 dark:border-slate-700"
-              >
-                {user.user_metadata.name?.[0]?.toUpperCase() ?? 'U'}
-              </Avatar>
-
-              <div className="absolute -bottom-1 -right-1 rounded-full border border-slate-200 bg-white p-1 shadow dark:border-slate-700 dark:bg-slate-800">
-                <Camera size={12} className="text-slate-500" />
-              </div>
-            </div>
-
-            <Text size="md" c="dimmed">
-              {avatarPreview ? 'Image ready to save' : 'No image uploaded'}
-            </Text>
-          </Stack>
-
-          {/* Error */}
-          {formError && (
-            <Alert color="red" radius="md" title="Update failed">
-              {formError}
-            </Alert>
-          )}
-
-          {/* Form */}
-          <form onSubmit={form.onSubmit(handleSubmit)}>
-            <Stack gap="md">
-              <TextInput
-                label="Display Name"
-                placeholder="John Doe"
-                radius="md"
-               size="sm"
-                leftSection={<ProfileUserIcon size={16} />}
-                {...form.getInputProps('name')}
-              />
-
-
-              <FileInput
-                label="Profile Picture"
-                placeholder="Upload image"
-                radius="md"
-              size="sm"
-                accept="image/*"
-                leftSection={<Camera size={16} />}
-                onChange={handleImageChange}
-                description="JPG, PNG or WEBP"
-              />
-
-              <Button
-                type="submit"
-                fullWidth
-                mt="sm"
-                radius="md"
-              size="sm"
-                loading={isPending}
-                leftSection={<Save size={18} />}
-              >
-                Save Changes
-              </Button>
-            </Stack>
-          </form>
+          <Text size="md" c="dimmed">
+            {avatarPreview ? 'Image ready to save' : 'No image uploaded'}
+          </Text>
         </Stack>
-      </Paper>
-    </Container>
+
+        {/* Error */}
+        {formError && (
+          <Alert color="red" radius="md" title="Update failed">
+            {formError}
+          </Alert>
+        )}
+
+        {/* Form */}
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <Stack gap="md">
+            <TextInput
+              label="Display Name"
+              placeholder="John Doe"
+              radius="md"
+              size="sm"
+              leftSection={<ProfileUserIcon size={16} />}
+              {...form.getInputProps('name')}
+            />
+
+
+            <FileInput
+              label="Profile Picture"
+              placeholder="Upload image"
+              radius="md"
+              size="sm"
+              accept="image/*"
+              leftSection={<Camera size={16} />}
+              onChange={handleImageChange}
+              description="JPG, PNG or WEBP"
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              mt="sm"
+              radius="md"
+              size="sm"
+              loading={isPending}
+              leftSection={<Save size={18} />}
+            >
+              Save Changes
+            </Button>
+          </Stack>
+        </form>
+      </Stack>
+    </Paper>
+
   )
 }
