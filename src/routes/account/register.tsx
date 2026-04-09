@@ -134,7 +134,7 @@ function RouteComponent() {
   }
 
   return (
-    <Paper radius="2xl" p="xl" withBorder className="w-full shadow-lg md:p-8">
+
       <Stack gap="lg">
         <div className="text-center">
           <Group justify="center" mb="sm">
@@ -240,6 +240,6 @@ function RouteComponent() {
           </Anchor>
         </Text>
       </Stack>
-    </Paper>
+  
   )
 }

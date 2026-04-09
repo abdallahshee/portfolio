@@ -46,7 +46,7 @@ function RouteComponent() {
   }
 
   return (
-    <Paper radius="2xl" p="xl" withBorder className="w-full shadow-lg md:p-8">
+   
       <Stack gap="lg">
 
         {/* Header */}
@@ -147,6 +147,6 @@ function RouteComponent() {
         </Text>
 
       </Stack>
-    </Paper>
+ 
   )
 }

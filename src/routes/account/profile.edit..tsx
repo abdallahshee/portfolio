@@ -91,7 +91,7 @@ function RouteComponent() {
 
   return (
 
-    <Paper radius="2xl" p="xl" withBorder className="w-full shadow-lg md:p-8">
+
       <Stack gap="lg">
         {/* Header (matches register page style) */}
         <div className="text-center">
@@ -178,7 +178,7 @@ function RouteComponent() {
           </Stack>
         </form>
       </Stack>
-    </Paper>
+  
 
   )
 }

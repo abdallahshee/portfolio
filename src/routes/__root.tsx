@@ -117,7 +117,7 @@ function AppShell({ children }: { children: React.ReactNode }) {
 
       {showHeader && <Header />}
 
-      <main className={showHeader ? "pt-20" : ""}>
+      <main className={showHeader ? "pt-16" : ""}>
         <ScrollToTopOnRouteChange />
         {children}
         <ScrollToTop />

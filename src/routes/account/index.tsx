@@ -5,13 +5,10 @@ import {
   Checkbox,
   Divider,
   Group,
-  Paper,
   PasswordInput,
   Stack,
   Text,
   TextInput,
-  ThemeIcon,
-  Title,
 } from "@mantine/core"
 import { notifications } from "@mantine/notifications"
 import { AlertCircle, LogIn } from "lucide-react"
@@ -40,8 +37,9 @@ function RouteComponent() {
   const redirectTo = callbackUrl === "/" ? "/projects" : callbackUrl
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [oauthProvider, setOauthProvider] = useState<"facebook" | "google" | null>(null)
-  const [formError, setFormError] = useState<string | null>(null) // ← new
+  const [formError, setFormError] = useState<string | null>(null)
   const supabase = getSupabaseBrowserClient()
+
   const form = useForm<SignInRequest>({
     initialValues: {
       email: "",
@@ -52,40 +50,38 @@ function RouteComponent() {
     validateInputOnBlur: true,
   })
 
+  const handleSubmit = async (values: SignInRequest) => {
+    setFormError(null)
+    try {
+      setIsSubmitting(true)
 
-const handleSubmit = async (values: SignInRequest) => {
-  setFormError(null)
-  try {
-    setIsSubmitting(true)
-
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: values.email,
-      password: values.password,
-    })
-
-    if (error) {
-      setFormError(error.message)
-      return
-    }
-
-    if (!values.rememberMe) {
-      await supabase.auth.updateUser({
-        data: { session_expiry: 'browser' }
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email: values.email,
+        password: values.password,
       })
+
+      if (error) {
+        setFormError(error.message)
+        return
+      }
+
+      if (!values.rememberMe) {
+        await supabase.auth.updateUser({
+          data: { session_expiry: 'browser' }
+        })
+      }
+
+      await router.navigate({ to: redirectTo })
+      return data
+
+    } catch (err: any) {
+      setFormError(err?.message ?? "Something went wrong")
+    } finally {
+      setIsSubmitting(false)
     }
-
-    // ✅ navigate directly — header will handle isNavigatingAway via router state
-    await router.navigate({ to: redirectTo })
-    return data
-
-  } catch (err: any) {
-    setFormError(err?.message ?? "Something went wrong")
-  } finally {
-    setIsSubmitting(false)
   }
-}
 
-  const handleOAuthSignIn = async (provider: "google"|"facebook") => {
+  const handleOAuthSignIn = async (provider: "google" | "facebook") => {
     try {
       setOauthProvider(provider)
       const { error } = await supabase.auth.signInWithOAuth({
@@ -107,121 +103,117 @@ const handleSubmit = async (values: SignInRequest) => {
   }
 
   return (
-    <Paper radius="2xl" p="xl" withBorder className="w-full shadow-lg md:p-8">
-      <Stack gap="lg">
+    <Stack gap="lg">
 
-        {/* Header */}
-        <div className="text-center">
-          <Group justify="center" mb="sm">
-            <ThemeIcon variant="light" color="indigo" radius="md" size="xl">
-              <LogIn size={20} />
-            </ThemeIcon>
-          </Group>
-          <Title order={2} className="heading">Sign In</Title>
-          <Text c="dimmed" size="sm" mt={6}>
-            Welcome back. Sign in to continue.
-          </Text>
-        </div>
+      {/* Page title */}
+      <div className="text-center">
+        <Text fw={500} size="lg" className="text-slate-800 dark:text-slate-100">
+          Sign in
+        </Text>
+        <Text c="dimmed" size="sm" mt={4}>
+          Welcome back. Enter your details to continue.
+        </Text>
+      </div>
 
-        <div className="flex flex-col gap-3">
-          <GoogleButton
+      {/* OAuth buttons */}
+      <div className="flex flex-col gap-3">
+        <GoogleButton
+          radius="md"
+          size="sm"
+          loading={oauthProvider === "google"}
+          onClick={() => handleOAuthSignIn("google")}
+        >
+          Continue with Google
+        </GoogleButton>
+        <FacebookButton
+          size="sm"
+          radius="md"
+          loading={oauthProvider === "facebook"}
+          onClick={() => handleOAuthSignIn("facebook")}
+        >
+          Continue with Facebook
+        </FacebookButton>
+      </div>
+
+      <Divider label="or continue with email" labelPosition="center" />
+
+      {/* Error alert */}
+      {formError && (
+        <Alert
+          color="red"
+          radius="md"
+          icon={<AlertCircle size={16} />}
+          title="Sign in failed"
+          withCloseButton
+          onClose={() => setFormError(null)}
+        >
+          {formError}
+        </Alert>
+      )}
+
+      {/* Email form */}
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack gap="md">
+          <TextInput
+            label="Email"
+            placeholder="you@example.com"
             radius="md"
-           size="sm"
-            loading={oauthProvider === "google"}
-            onClick={() => handleOAuthSignIn("google")}
-          >
-            Sign in with Google
-          </GoogleButton>
-          <FacebookButton
             size="sm"
-            radius="md"
-            loading={oauthProvider === "facebook"}
-            onClick={() => handleOAuthSignIn("facebook")}
-          >
-            Sign in with Facebook
-          </FacebookButton>
-        </div>
+            {...form.getInputProps("email")}
+            required
+          />
 
-        <Divider label="Or continue with email" labelPosition="center" my="xs" />
-
-        {/* ← Error alert shown above the form fields */}
-        {formError && (
-          <Alert
-            color="red"
-            radius="md"
-            icon={<AlertCircle size={24} />}
-            title="Sign in failed"
-            withCloseButton
-            onClose={() => setFormError(null)} // ← allow user to dismiss it
-          >
-            {formError}
-          </Alert>
-        )}
-
-        {/* Email form */}
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack gap="md">
-            <TextInput
-              label="Email"
-              placeholder="you@example.com"
+          <div>
+            <PasswordInput
+              label="Password"
+              placeholder="Your password"
               radius="md"
-             size="sm"
-              {...form.getInputProps("email")}
+              size="sm"
+              {...form.getInputProps("password")}
               required
             />
-
-            <div>
-              <PasswordInput
-                label="Password"
-                placeholder="Your password"
-                radius="md"
-              size="sm"
-                {...form.getInputProps("password")}
-                required
+            <Group justify="space-between" mt="xs">
+              <Checkbox
+                label="Remember me"
+                size="sm"
+                {...form.getInputProps("rememberMe", { type: "checkbox" })}
               />
-              <Group justify="space-between" mt="xs">
-                <Checkbox
-                  label="Remember me"
-                  size="sm"
-                  {...form.getInputProps("rememberMe", { type: "checkbox" })}
-                />
-                <Link
-                  to="/account/forgot-password"
-                  className="text-sm text-indigo-600 hover:underline dark:text-indigo-400"
-                >
-                  Forgot password?
-                </Link>
-              </Group>
-            </div>
+              <Link
+                to="/account/forgot-password"
+                className="text-sm text-indigo-600 hover:underline dark:text-indigo-400"
+              >
+                Forgot password?
+              </Link>
+            </Group>
+          </div>
 
-            <Button
-              type="submit"
-              fullWidth
-              mt="xs"
-              radius="md"
+          <Button
+            type="submit"
+            fullWidth
+            mt="xs"
+            radius="md"
             size="sm"
-              loading={isSubmitting}
-              leftSection={<LogIn size={18} />}
-            >
-              Sign In
-            </Button>
-          </Stack>
-        </form>
-
-        <Divider my="xs" />
-
-        <Text ta="center" size="md" c="dimmed">
-          Don't have an account?{" "}
-          <Link
-            to="/account/register"
-            search={{ callbackUrl }}
-            className="font-large text-indigo-600 hover:underline dark:text-indigo-400"
+            loading={isSubmitting}
+            leftSection={<LogIn size={16} />}
           >
-            Sign Up
-          </Link>
-        </Text>
+            Sign in
+          </Button>
+        </Stack>
+      </form>
 
-      </Stack>
-    </Paper>
+      <Divider />
+
+      <Text ta="center" size="sm" c="dimmed">
+        Don't have an account?{" "}
+        <Link
+          to="/account/register"
+          search={{ callbackUrl }}
+          className="text-indigo-600 hover:underline dark:text-indigo-400"
+        >
+          Sign up
+        </Link>
+      </Text>
+
+    </Stack>
   )
 }
