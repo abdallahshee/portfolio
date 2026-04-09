@@ -27,15 +27,16 @@ function RouteComponent() {
         <div className="relative rounded-2xl border border-slate-200 bg-white px-8 pt-8 pb-8 shadow-sm dark:border-slate-700 dark:bg-slate-900">
 
           {/* Logo + brand header inside the card */}
-          <div className="flex flex-col items-center gap-3 mb-6">
+          <div className="flex flex-row items-center gap-3 mb-2">
             <Image
               src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
               alt="Abdallah logo"
-              radius="xl"
-              w={200}
-              h={160}
+              radius="xs"
+              w={30}
+              h={30}
               fit="cover"
             />
+            <Text>Abdallah Shee's Portfolio Website & Blog</Text>
           </div>
 
           {/* Divider */}
