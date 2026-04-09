@@ -202,7 +202,7 @@ function BlogsPage() {
             <ThemeIcon size={72} radius="md" variant="light" color="grape">
               <BookOpen size={36} />
             </ThemeIcon>
-            <div className="title3">
+            <div className="title2">
               {hasSearch ? `No results for "${debouncedSearch}"` : "No articles yet"}
             </div>
             <Text c="dimmed" ta="center" maw={400}>

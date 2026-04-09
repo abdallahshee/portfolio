@@ -15,7 +15,6 @@ import {
   TextInput,
   Textarea,
   ThemeIcon,
-  Title,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import {
@@ -156,7 +155,7 @@ function RouteComponent() {
                   <ThemeIcon variant="light" color="blue" radius="xl">
                     <FolderPlus size={16} />
                   </ThemeIcon>
-                  <Title order={3}>Basic Information</Title>
+                  <div className="title3">Basic Information</div>
                 </Group>
 
                 <TextInput

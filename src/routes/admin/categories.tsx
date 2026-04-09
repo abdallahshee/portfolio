@@ -12,7 +12,6 @@ import {
   Text,
   TextInput,
   ThemeIcon,
-  Title,
   Badge,
   ActionIcon,
   Divider,
@@ -157,9 +156,9 @@ function RouteComponent() {
                   </Text>
                 </Group>
 
-                <Title order={1} className="text-3xl md:text-5xl">
+                <div className="title2">
                   Manage Categories
-                </Title>
+                </div>
 
                 <Text className="max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
                   Create, edit, and delete categories from one place.
@@ -181,7 +180,7 @@ function RouteComponent() {
                       <ThemeIcon variant="light" color="blue" radius="xl">
                         <FolderPlus size={16} />
                       </ThemeIcon>
-                      <Title order={3}>Create Category</Title>
+                      <div className="title3">Create Category</div>
                     </Group>
                     <Text size="sm" c="dimmed">
                       Add a new category that can be used when creating articles.
@@ -221,7 +220,7 @@ function RouteComponent() {
                       <ThemeIcon variant="light" color="teal" radius="xl">
                         <Tag size={16} />
                       </ThemeIcon>
-                      <Title order={3}>All Categories</Title>
+                      <div className="title3">All Categories</div>
                     </Group>
                     <Text size="sm" c="dimmed">
                       View and manage all available categories.

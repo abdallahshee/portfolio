@@ -8,7 +8,6 @@ import {
   Group,
   Stack,
   Badge,
-  Title,
   Container,
   Rating,
   Pagination,
@@ -263,7 +262,7 @@ function RouteComponent() {
                   )}
                 </div>
 
-                <Title order={4}>{project.title}</Title>
+                <div className='title3'>{project.title}</div>
 
                 <Group gap="xs">
                   <Rating value={project.averageRating} fractions={2} readOnly size="sm" />

@@ -14,7 +14,6 @@ import {
   TextInput,
   Textarea,
   ThemeIcon,
-  Title,
   Badge,
   SimpleGrid,
 } from "@mantine/core"
@@ -149,7 +148,7 @@ function RouteComponent() {
                           <ThemeIcon variant="light" color="blue" radius="xl">
                             <LayoutPanelTop size={16} />
                           </ThemeIcon>
-                          <Title order={3}>Basic Information</Title>
+                          <div className="title3">Basic Information</div>
                         </Group>
                         <Text size="sm" c="dimmed">
                           Update the core identity of the project.
@@ -347,7 +346,7 @@ function RouteComponent() {
                   <ThemeIcon variant="light" color="yellow" radius="xl">
                     <Sparkles size={16} />
                   </ThemeIcon>
-                  <Title order={4}>Editing Tips</Title>
+                  <div className="title3">Editing Tips</div>
                 </Group>
 
                 <Stack gap="sm">

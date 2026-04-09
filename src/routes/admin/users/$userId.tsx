@@ -14,7 +14,6 @@ import {
   Stack,
   Text,
   ThemeIcon,
-  Title,
 } from "@mantine/core"
 import {
   ArrowLeft,
@@ -244,7 +243,7 @@ function RouteComponent() {
                     <ThemeIcon variant="light" color="teal" radius="xl">
                       <Clock3 size={16} />
                     </ThemeIcon>
-                    <Title order={3}>Activity Summary</Title>
+                    <div className="title3">Activity Summary</div>
                   </Group>
                   <Text size="sm" c="dimmed">
                     Track article count and account activity timestamps.
@@ -292,7 +291,7 @@ function RouteComponent() {
                 <ThemeIcon variant="light" color="grape" radius="xl">
                   <CalendarDays size={16} />
                 </ThemeIcon>
-                <Title order={3}>Quick Actions</Title>
+                <div className="title3" >Quick Actions</div>
               </Group>
 
               <Text size="sm" c="dimmed">
