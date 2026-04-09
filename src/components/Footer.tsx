@@ -8,7 +8,7 @@ import {
   Divider,
   ActionIcon,
   Title,
-  Avatar,
+  Image,
 } from "@mantine/core"
 import {
   Github,
@@ -28,17 +28,21 @@ export default function Footer() {
           {/* First Column: Identity */}
           <Stack gap="md">
             <Group align="center" wrap="nowrap">
-              <Avatar
+              <Image
                 src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
-                size={60}
-                radius="xl"
+                alt="Abdallah Shee"
+                w={60}
+                h={60}
+                radius="sm"
+                fit="cover"
+                style={{ flexShrink: 0 }}
               />
               <div>
                 <Title order={6} className="tracking-tight">
                   Abdallah Shee
                 </Title>
                 <Text size="sm" c="dimmed">
-                  <span className="text-md">Software Developer,</span> <br></br><span className="text-sm">Nairobi, Kenya  🇰🇪.</span>
+                  <span className="text-md">Software Developer,</span> <br /><span className="text-sm">Nairobi, Kenya 🇰🇪.</span>
                 </Text>
               </div>
             </Group>
@@ -46,16 +50,12 @@ export default function Footer() {
 
           {/* Second Column: Explore */}
           <Stack gap="sm">
-            {/* <Anchor component={Link} to="/" className="transition-colors hover:text-indigo-500">
-              Home
-            </Anchor> */}
             <Anchor component={Link} to="/services" className="transition-colors hover:text-indigo-500">
               Services
             </Anchor>
             <Anchor component={Link} to="/projects" className="transition-colors hover:text-indigo-500">
               Projects
             </Anchor>
-
             <Anchor component={Link} to="/contact" className="transition-colors hover:text-indigo-500">
               Contact
             </Anchor>
@@ -91,7 +91,7 @@ export default function Footer() {
                 rel="noopener noreferrer"
                 variant="light"
                 radius="md"
-                 size="sm"
+                size="sm"
               >
                 <Github size={18} />
               </ActionIcon>
@@ -126,8 +126,6 @@ export default function Footer() {
           <Text size="sm" c="dimmed">
             © {new Date().getFullYear()} Abdallah Shee. All rights reserved.
           </Text>
-
-      
         </Group>
       </Container>
     </footer>
