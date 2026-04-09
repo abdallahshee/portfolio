@@ -8,10 +8,10 @@ const ServiceComponent = () => {
         >
             <div className="relative h-[240px] overflow-hidden sm:h-[280px] lg:h-[320px]">
                 <img
-                    src="https://images.pexels.com/photos/6424585/pexels-photo-6424585.jpeg"
-                    alt="Distributed software system with multiple connected services"
-                    className="block h-full w-full object-cover"
-                />
+      src="https://images.pexels.com/photos/6424585/pexels-photo-6424585.jpeg"
+      alt="Distributed software system with multiple connected services"
+      className="block h-full w-full rounded-lg object-cover"
+    />
                 {/* overlays */}
                 <div className="absolute inset-0 bg-slate-950/45" />
                 <div className="absolute inset-0 bg-gradient-to-br from-indigo-600/25 via-transparent to-teal-500/20" />

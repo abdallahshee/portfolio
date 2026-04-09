@@ -30,7 +30,7 @@ function RouteComponent() {
                             <div className="title1 text-slate-900 dark:text-white">
                                 401
                             </div>
-                            <div className="title2 text-slate-700 dark:text-slate-300">
+                            <div  className="title2 text-slate-700 dark:text-slate-300">
                                 Unauthorized
                             </div>
                             <Text c="dimmed" ta="center" size="md" className="max-w-sm leading-7">

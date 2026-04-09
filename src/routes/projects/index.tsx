@@ -165,7 +165,7 @@ function RouteComponent() {
         </div>
       </div>
 
-      <div className="mb-12 border-b border-gray-200" />
+      <div className="mb-12 border-b border-blue-500" />
 
       {/* Result count */}
       {!showSkeleton && projects.length > 0 && (

@@ -187,7 +187,7 @@ function BlogsPage() {
           </Group>
         )}
       </div>
-
+ <div className="mb-12 border-b border-blue-500" />
       {/* ✅ loading skeletons */}
       {isLoading ? (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">

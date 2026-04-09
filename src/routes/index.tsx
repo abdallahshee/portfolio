@@ -23,11 +23,9 @@ import {
   Linkedin,
   FolderKanban,
   FileText,
-  Code2,
   FolderOpen,
   BookOpen,
   Briefcase,
-  Star,
   Users,
   CheckCircle,
   Database,
@@ -164,17 +162,15 @@ function App() {
           </Group>
         </Stack>
 
-        <div className="flex justify-center lg:justify-end">
-          <div className="relative h-[240px] overflow-hidden sm:h-[280px] lg:h-[320px]">
-            {/* <div className="aspect-square overflow-hidden rounded-2xl shadow-xl"> */}
-            <img
-              src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
-              alt="Abdallah Shee"
-              className="block h-full w-full object-cover"
-            />
-            {/* </div> */}
-          </div>
-        </div>
+     <div className="flex justify-center lg:justify-end">
+  <div className="relative h-[240px] overflow-hidden rounded-2xl sm:h-[280px] lg:h-[320px]">
+    <img
+      src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
+      alt="Abdallah Shee"
+      className="block h-full w-full rounded-2xl object-cover"
+    />
+  </div>
+</div>
       </section>
 
       {/* ── STATS ── */}

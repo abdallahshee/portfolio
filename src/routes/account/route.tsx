@@ -8,7 +8,7 @@ export const Route = createFileRoute('/account')({
 function RouteComponent() {
   return (
     <div
-      className="relative min-h-screen flex items-center justify-center px-4 py-12 overflow-hidden"
+      className="relative min-h-screen flex items-center justify-center px-4 py-overflow-hidden"
       style={{
         background:
           'radial-gradient(ellipse at 60% 20%, rgba(99,102,241,0.08) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(168,85,247,0.07) 0%, transparent 50%)',
