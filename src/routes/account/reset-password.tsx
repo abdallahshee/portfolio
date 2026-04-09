@@ -82,21 +82,17 @@ useEffect(() => {
   return (
 
       <Stack gap="lg">
+  <div className="text-center">
+        <Text fw={500} size="lg" className="text-slate-800 dark:text-slate-100">
+        Set New Password
+        </Text>
+        <Text c="dimmed" size="sm" mt={4}>
+             Choose a strong password for your account.
+        </Text>
+      </div>
+   
 
-        {/* Header */}
-        <div className="text-center">
-          <Group justify="center" mb="sm">
-            <ThemeIcon variant="light" color="indigo" radius="md" size="xl">
-              <KeyRound size={20} />
-            </ThemeIcon>
-          </Group>
-          <Title order={2} className="heading">Set New Password</Title>
-          <Text c="dimmed" size="sm" mt={6}>
-            Choose a strong password for your account.
-          </Text>
-        </div>
-
-        <Divider my="xs" />
+        {/* <Divider my="xs" /> */}
 
         {/* ✅ invalid recovery session warning */}
         {!isRecoverySession && !passwordReset && (

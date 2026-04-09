@@ -31,20 +31,11 @@ function RouteComponent() {
             <Image
               src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
               alt="Abdallah logo"
-              radius="md"
-              w={56}
-              h={56}
+              radius="xl"
+              w={200}
+              h={160}
               fit="cover"
             />
-            <div className="flex items-center gap-2 text-blue-600 dark:text-blue-300">
-              <ShieldCheck size={17} />
-              <Title order={4} className="tracking-tight">
-                Your Account
-              </Title>
-            </div>
-            <Text size="xs" c="dimmed" className="text-center -mt-1">
-              Your information is encrypted and never shared with third parties.
-            </Text>
           </div>
 
           {/* Divider */}

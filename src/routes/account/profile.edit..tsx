@@ -93,22 +93,18 @@ function RouteComponent() {
 
 
       <Stack gap="lg">
+          <div className="text-center">
+                <Text fw={500} size="lg" className="text-slate-800 dark:text-slate-100">
+                  Edit Profile
+                </Text>
+                <Text c="dimmed" size="sm" mt={4}>
+                Update your personal information and profile picture.
+                </Text>
+              </div>
         {/* Header (matches register page style) */}
-        <div className="text-center">
-          <Group justify="center" mb="sm">
-            <ThemeIcon variant="light" color="teal" radius="md" size="xl">
-              <ProfileUserIcon size={20} />
-            </ThemeIcon>
-          </Group>
+     
 
-          <Title order={3} className="heading">Edit Profile</Title>
-
-          <Text c="dimmed" size="sm" mt={6}>
-            Update your personal information and profile picture.
-          </Text>
-        </div>
-
-        <Divider />
+        {/* <Divider /> */}
 
         {/* Avatar section */}
         <Stack align="center" gap="xs">

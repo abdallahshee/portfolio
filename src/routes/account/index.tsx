@@ -135,7 +135,7 @@ function RouteComponent() {
         </FacebookButton>
       </div>
 
-      <Divider label="or continue with email" labelPosition="center" />
+      {/* <Divider label="or continue with email" labelPosition="center" /> */}
 
       {/* Error alert */}
       {formError && (
@@ -160,7 +160,7 @@ function RouteComponent() {
             radius="md"
             size="sm"
             {...form.getInputProps("email")}
-            required
+           
           />
 
           <div>
@@ -170,7 +170,7 @@ function RouteComponent() {
               radius="md"
               size="sm"
               {...form.getInputProps("password")}
-              required
+         
             />
             <Group justify="space-between" mt="xs">
               <Checkbox

@@ -136,17 +136,15 @@ function RouteComponent() {
   return (
 
       <Stack gap="lg">
-        <div className="text-center">
-          <Group justify="center" mb="sm">
-            <ThemeIcon variant="light" color="indigo" radius="md" size="xl">
-              <UserPlus size={20} />
-            </ThemeIcon>
-          </Group>
-          <Title order={2} className="heading">Create Account</Title>
-          <Text c="dimmed" size="sm" mt={6}>
-            Join and start exploring projects and blogs.
-          </Text>
-        </div>
+          <div className="text-center">
+                <Text fw={500} size="lg" className="text-slate-800 dark:text-slate-100">
+                 Create Account
+                </Text>
+                <Text c="dimmed" size="sm" mt={4}>
+                Join and start exploring projects and blogs.
+                </Text>
+              </div>
+     
 
         <div className="flex flex-col gap-3">
           <GoogleButton
@@ -167,7 +165,7 @@ function RouteComponent() {
           </FacebookButton>
         </div>
 
-        <Divider label="Or create account with email" labelPosition="center" my="xs" />
+        {/* <Divider label="Or create account with email" labelPosition="center" my="xs" /> */}
 
         {formError && (
           <Alert

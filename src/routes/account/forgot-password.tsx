@@ -48,21 +48,17 @@ function RouteComponent() {
   return (
    
       <Stack gap="lg">
+<div className="text-center">
+        <Text fw={500} size="lg" className="text-slate-800 dark:text-slate-100">
+         Reset Password
+        </Text>
+        <Text c="dimmed" size="sm" mt={4}>
+        Enter your registered email and we'll send you a reset link.
+        </Text>
+      </div>
+      
 
-        {/* Header */}
-        <div className="text-center">
-          <Group justify="center" mb="sm">
-            <ThemeIcon variant="light" color="indigo" radius="md" size="xl">
-              <KeyRound size={20} />
-            </ThemeIcon>
-          </Group>
-          <Title order={2} className="heading">Reset Password</Title>
-          <Text c="dimmed" size="sm" mt={6}>
-            Enter your registered email and we'll send you a reset link.
-          </Text>
-        </div>
-
-        <Divider my="xs" />
+        {/* <Divider my="xs" /> */}
 
         {/* ✅ success state — shown after email is sent */}
         {emailSent ? (
