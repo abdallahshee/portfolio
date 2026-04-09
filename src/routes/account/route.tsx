@@ -34,7 +34,7 @@ function RouteComponent() {
        size={30}
            
             />
-            <Text className='text-cente'>Abdallah Shee's Portfolio Website & Blog</Text>
+            <Text size='sm' c="dimmed">Abdallah Shee's Portfolio Website & Blog</Text>
           </div>
 
           {/* Divider */}
