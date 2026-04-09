@@ -267,169 +267,169 @@ export default function Header() {
   )
 
   return (
-  <header className="fixed left-0 top-0 z-[100] h-15 w-full bg-slate-50 shadow-lg dark:bg-slate-700">
+    <header className="fixed left-0 top-0 z-[100] h-15 w-full bg-slate-50 shadow-lg dark:bg-slate-700">
 
-    {/* Gradient border bottom */}
-    <div
-      className="absolute bottom-0 left-0 w-full h-[2px]"
-      style={{
-        background:
-          'radial-gradient(ellipse at 60% 20%, rgba(99,102,241,1) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(168,85,247,1) 0%, transparent 50%)',
-      }}
-    />
+      {/* Gradient border bottom */}
+      <div
+        className="absolute bottom-0 left-0 w-full h-[2px]"
+        style={{
+          background:
+            'radial-gradient(ellipse at 60% 20%, rgba(99,102,241,1) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(168,85,247,1) 0%, transparent 50%)',
+        }}
+      />
 
-    <div className="container mx-auto flex h-full items-center justify-between px-4">
-      {/* Brand Logo */}
-      {BrandLogo}
+      <div className="container mx-auto flex h-full items-center justify-between px-4">
+        {/* Brand Logo */}
+        {BrandLogo}
 
-      {/* Desktop Nav */}
-      <nav className="hidden min-w-0 items-center space-x-6 md:flex">
-        {ThemeButton}
+        {/* Desktop Nav */}
+        <nav className="hidden min-w-0 items-center space-x-6 md:flex">
+          {ThemeButton}
 
-        {links.map((link) => (
-          <Link
-            key={link.label}
-            to={link.to}
-            className="whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
-            activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
-          >
-            {link.label}
-          </Link>
-        ))}
-
-        <div className="flex w-[160px] flex-shrink-0 items-center justify-end ml-2">
-          {showSkeleton ? DesktopUserSkeleton : user ? UserMenu : AuthButtons}
-        </div>
-      </nav>
-
-      {/* Mobile Controls */}
-      <div className="flex items-center gap-2 md:hidden">
-        {ThemeButton}
-        <Burger
-          opened={opened}
-          onClick={() => setOpened(!opened)}
-          size="sm"
-          color="#6366f1"
-        />
-      </div>
-    </div>
-
-    {/* Mobile Drawer */}
-    <Drawer
-      opened={opened}
-      onClose={() => setOpened(false)}
-      size="100%"
-      padding="md"
-      title={
-        <div className="flex items-center gap-2.5">
-          <Image
-            src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
-            alt="Abdallah logo"
-            radius="md"
-            w={30}
-            h={30}
-            fit="cover"
-          />
-          <span className="text-[16px] font-semibold text-slate-800 dark:text-slate-100">
-            Abdallah
-          </span>
-        </div>
-      }
-      className="md:hidden"
-    >
-      <ScrollArea style={{ height: "100%" }}>
-        <div className="mt-4 flex flex-col space-y-4 text-lg">
           {links.map((link) => (
             <Link
               key={link.label}
               to={link.to}
-              className="font-normal text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
-              onClick={() => setOpened(false)}
-              activeProps={{ className: "text-indigo-500 dark:text-indigo-400" }}
+              className="whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
+              activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
             >
               {link.label}
             </Link>
           ))}
 
-          <div className="border-t border-slate-100 pt-4 dark:border-slate-700">
-            {showSkeleton ? (
-              MobileUserSkeleton
-            ) : user ? (
-              <div className="flex flex-col space-y-3">
-                <div className="flex items-center space-x-3">
-                  <Avatar
-                    src={user?.user_metadata?.avatar_url}
-                    alt={user?.user_metadata?.name}
-                    radius="md"
-                    size="sm"
-                  />
-                  <div className="flex-1">
-                    <Text fw={600} size="sm">
-                      {user.user_metadata?.name}
-                    </Text>
-                    {isAdmin && (
-                      <Text size="xs" c="indigo" fw={500}>
-                        Administrator
-                      </Text>
-                    )}
-                  </div>
-                </div>
+          <div className="flex w-[160px] flex-shrink-0 items-center justify-end ml-2">
+            {showSkeleton ? DesktopUserSkeleton : user ? UserMenu : AuthButtons}
+          </div>
+        </nav>
 
-                {isAdmin && (
+        {/* Mobile Controls */}
+        <div className="flex items-center gap-2 md:hidden">
+          {ThemeButton}
+          <Burger
+            opened={opened}
+            onClick={() => setOpened(!opened)}
+            size="sm"
+            color="#6366f1"
+          />
+        </div>
+      </div>
+
+      {/* Mobile Drawer */}
+      <Drawer
+        opened={opened}
+        onClose={() => setOpened(false)}
+        size="100%"
+        padding="md"
+        title={
+          <div className="flex items-center gap-2.5">
+            <Image
+              src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
+              alt="Abdallah logo"
+              radius="md"
+              w={30}
+              h={30}
+              fit="cover"
+            />
+            <span className="text-[16px] font-semibold text-slate-800 dark:text-slate-100">
+              Abdallah
+            </span>
+          </div>
+        }
+        className="md:hidden"
+      >
+        <ScrollArea style={{ height: "100%" }}>
+          <div className="mt-4 flex flex-col space-y-4 text-lg">
+            {links.map((link) => (
+              <Link
+                key={link.label}
+                to={link.to}
+                className="font-normal text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
+                onClick={() => setOpened(false)}
+                activeProps={{ className: "text-indigo-500 dark:text-indigo-400" }}
+              >
+                {link.label}
+              </Link>
+            ))}
+
+            <div className="border-t border-slate-100 pt-4 dark:border-slate-700">
+              {showSkeleton ? (
+                MobileUserSkeleton
+              ) : user ? (
+                <div className="flex flex-col space-y-3">
+                  <div className="flex items-center space-x-3">
+                    <Avatar
+                      src={user?.user_metadata?.avatar_url}
+                      alt={user?.user_metadata?.name}
+                      radius="md"
+                      size="sm"
+                    />
+                    <div className="flex-1">
+                      <Text fw={600} size="sm">
+                        {user.user_metadata?.name}
+                      </Text>
+                      {isAdmin && (
+                        <Text size="xs" c="indigo" fw={500}>
+                          Administrator
+                        </Text>
+                      )}
+                    </div>
+                  </div>
+
+                  {isAdmin && (
+                    <Button
+                      variant="light"
+                      color="indigo"
+                      radius="md"
+                      size="sm"
+                      fullWidth
+                      leftSection={<LayoutDashboard size={15} />}
+                      onClick={() => {
+                        router.navigate({ to: "/admin" })
+                        setOpened(false)
+                      }}
+                    >
+                      Admin Dashboard
+                    </Button>
+                  )}
+
                   <Button
                     variant="light"
-                    color="indigo"
+                    color="blue"
                     radius="md"
                     size="sm"
                     fullWidth
-                    leftSection={<LayoutDashboard size={15} />}
-                    onClick={() => {
-                      router.navigate({ to: "/admin" })
-                      setOpened(false)
-                    }}
+                    leftSection={<Settings size={15} />}
+                    onClick={() => handleProfileChange(user.id)}
                   >
-                    Admin Dashboard
+                    Edit Profile
                   </Button>
-                )}
 
-                <Button
-                  variant="light"
-                  color="blue"
-                  radius="md"
-                  size="sm"
-                  fullWidth
-                  leftSection={<Settings size={15} />}
-                  onClick={() => handleProfileChange(user.id)}
-                >
-                  Edit Profile
-                </Button>
-
-                <Button
-                  variant="outline"
-                  color="red"
-                  radius="md"
-                  size="sm"
-                  fullWidth
-                  leftSection={<LogOut size={15} />}
-                  onClick={handleLogout}
-                >
-                  Logout
-                </Button>
-              </div>
-            ) : (
-              <div className="flex flex-col gap-3">
-                <Button variant="outline" color="blue" size="sm" fullWidth onClick={handleLogin}>
-                  Login
-                </Button>
-                <Button variant="filled" color="blue" size="sm" fullWidth onClick={handleSignup}>
-                  Sign Up
-                </Button>
-              </div>
-            )}
+                  <Button
+                    variant="outline"
+                    color="red"
+                    radius="md"
+                    size="sm"
+                    fullWidth
+                    leftSection={<LogOut size={15} />}
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3">
+                  <Button variant="outline" color="blue" size="sm" fullWidth onClick={handleLogin}>
+                    Login
+                  </Button>
+                  <Button variant="filled" color="blue" size="sm" fullWidth onClick={handleSignup}>
+                    Sign Up
+                  </Button>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
-      </ScrollArea>
-    </Drawer>
-  </header>
-)
+        </ScrollArea>
+      </Drawer>
+    </header>
+  )
 }

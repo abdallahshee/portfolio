@@ -56,17 +56,17 @@ function RouteComponent() {
       imageUrl: null,
       isPublic: true,
       technologies: ["React"],
-      caseStudy:"",
-      duration:""
+      caseStudy: "",
+      duration: ""
     },
-    validate:zod4Resolver(ProjectSchema),
-    validateInputOnBlur:true,
+    validate: zod4Resolver(ProjectSchema),
+    validateInputOnBlur: true,
   })
 
-  const [file,setFile]=useState<File|null>(null)
+  const [file, setFile] = useState<File | null>(null)
   const router = useRouter()
   const [loading, setLoading] = useState(false)
-  const createProject=useProjectCreateMutation()
+  const createProject = useProjectCreateMutation()
   const previewUrl = useMemo(() => {
     if (!file) return null
     return URL.createObjectURL(file)
@@ -84,7 +84,7 @@ function RouteComponent() {
       const { imageUrl, ...datas } = values
       await createProject.mutateAsync({
         ...datas,
-        imageUrl:url
+        imageUrl: url
       })
     } catch (err) {
       console.error(err)
@@ -139,7 +139,7 @@ function RouteComponent() {
             <Button
               variant="light"
               radius="md"
-               size="sm"
+              size="sm"
               leftSection={<ArrowLeft size={16} />}
               onClick={() => router.history.back()}
             >
@@ -171,7 +171,7 @@ function RouteComponent() {
                   label="Duration"
                   placeholder="Enter Project duration"
                   radius="md"
-                 size="sm"
+                  size="sm"
                   {...form.getInputProps("duration")}
                 />
 
@@ -181,7 +181,7 @@ function RouteComponent() {
                   minRows={5}
                   autosize
                   radius="md"
-                   size="sm"
+                  size="sm"
                   {...form.getInputProps("description")}
                 />
 
@@ -189,13 +189,13 @@ function RouteComponent() {
                   label="Make project public"
                   {...form.getInputProps("isPublic", { type: "checkbox" })}
                 />
-                 <Textarea
+                <Textarea
                   label="Case Study"
                   placeholder="Describe motivation behind this project"
                   minRows={5}
                   autosize
                   radius="md"
-                   size="sm"
+                  size="sm"
                   {...form.getInputProps("caseStudy")}
                 />
               </Stack>
@@ -246,7 +246,7 @@ function RouteComponent() {
                   size="sm"
                   leftSection={<ImagePlus size={16} />}
                   accept="image/*"
-                  onChange={(e)=>setFile(e)}
+                  onChange={(e) => setFile(e)}
                 />
 
                 {previewUrl ? (
@@ -303,7 +303,7 @@ function RouteComponent() {
                         label={`Technology ${index + 1}`}
                         placeholder="e.g. React, Node.js, Tailwind"
                         radius="md"
-                         size="sm"
+                        size="sm"
                         className="flex-1"
                         {...form.getInputProps(`technologies.${index}`)}
                       />
@@ -312,7 +312,7 @@ function RouteComponent() {
                         color="red"
                         variant="light"
                         radius="md"
-                       size="sm"
+                        size="sm"
                         onClick={() => removeTechnology(index)}
                         disabled={form.values.technologies.length === 1}
                       >
@@ -338,7 +338,7 @@ function RouteComponent() {
                     type="button"
                     variant="default"
                     radius="md"
-                     size="sm"
+                    size="sm"
                     onClick={() => router.history.back()}
                   >
                     Cancel
@@ -347,7 +347,7 @@ function RouteComponent() {
                   <Button
                     type="submit"
                     radius="md"
-                     size="sm"
+                    size="sm"
                     loading={loading}
                     leftSection={<Save size={16} />}
                   >

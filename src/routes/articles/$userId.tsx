@@ -20,7 +20,7 @@ import {
   getUserPaginatedArticlesQueryOptions,
   searchArticlesQueryOptions,
 } from '@/db/queries/article.queries'
-import {  Heart, MessageCircle, Search, X,PenLine, SlidersHorizontal } from "lucide-react"
+import { Heart, MessageCircle, Search, X, PenLine, SlidersHorizontal } from "lucide-react"
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
 import { useEffect, useState } from 'react'
@@ -42,7 +42,7 @@ export const Route = createFileRoute('/articles/$userId')({
   loaderDeps: ({ search }) => ({ page: search.page }),
   loader: async ({ context, params, deps }) => {
     await context.queryClient.prefetchQuery(
-      getUserPaginatedArticlesQueryOptions({userId:params.userId, page:deps.page,limit:6})
+      getUserPaginatedArticlesQueryOptions({ userId: params.userId, page: deps.page, limit: 6 })
     )
   },
   component: BlogsPage,
@@ -58,9 +58,9 @@ function BlogsPage() {
   const [searchInput, setSearchInput] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [debouncedSearch] = useDebouncedValue(searchInput, 200)
-  const [session, setSession] = useState<Session | null>(null) 
+  const [session, setSession] = useState<Session | null>(null)
   const supabase = getSupabaseBrowserClient()
-   const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below
+  const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => { // ✅ typed
@@ -81,7 +81,7 @@ function BlogsPage() {
   const isOwner = session?.user?.id === userId
 
   const { data: paginatedData, isLoading: paginatedLoading, isPlaceholderData } = useQuery(
-    getUserPaginatedArticlesQueryOptions({userId:userId, page:page, limit:PAGE_SIZE})
+    getUserPaginatedArticlesQueryOptions({ userId: userId, page: page, limit: PAGE_SIZE })
   )
 
   const { data: searchData, isLoading: searchLoading } = useQuery({
@@ -249,8 +249,8 @@ function BlogsPage() {
           {(isSearching || statusFilter !== 'all') && (
             <Button
               variant="subtle"
-               size="sm"
-               radius="md"
+              size="sm"
+              radius="md"
               color="grape"
               onClick={() => { handleSearchChange(''); setStatusFilter('all') }}
             >

@@ -8,7 +8,7 @@ import { AdminMiddleware } from "@/server/middleware/auth.middleware"
 
 export const Route = createFileRoute("/admin/articles/$userId/$slug/edit")({
   server: { middleware: [AdminMiddleware] },
- loader: async ({ params, context }) => {
+  loader: async ({ params, context }) => {
     return context.queryClient.ensureQueryData(
       getArticleBySlugQueryOptions(params.slug)
     )
@@ -36,30 +36,30 @@ function RouteComponent() {
         categoryId: article?.categoryId ?? null,
       }}
       loading={loading}
-    onSubmit={async (values: ArticleRequest, imageFile: File | null) => {
-  try {
-    setLoading(true)
+      onSubmit={async (values: ArticleRequest, imageFile: File | null) => {
+        try {
+          setLoading(true)
 
-    let coverImage = values.coverImage
+          let coverImage = values.coverImage
 
-    if (imageFile) {
-      // 👇 upload the file
-      // coverImage = await uploadImage(imageFile)
-    }
+          if (imageFile) {
+            // 👇 upload the file
+            // coverImage = await uploadImage(imageFile)
+          }
 
-    await updateMutation.mutateAsync({
-      ...values,
-      coverImage,
-      slug,
-    })
+          await updateMutation.mutateAsync({
+            ...values,
+            coverImage,
+            slug,
+          })
 
-    router.history.back()
-  } catch (err) {
-    console.error(err)
-  } finally {
-    setLoading(false)
-  }
-}}
+          router.history.back()
+        } catch (err) {
+          console.error(err)
+        } finally {
+          setLoading(false)
+        }
+      }}
       onCancel={() => router.history.back()}
     />
   )

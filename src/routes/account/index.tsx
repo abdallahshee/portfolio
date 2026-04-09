@@ -160,7 +160,7 @@ function RouteComponent() {
             radius="md"
             size="sm"
             {...form.getInputProps("email")}
-           
+
           />
 
           <div>
@@ -170,7 +170,7 @@ function RouteComponent() {
               radius="md"
               size="sm"
               {...form.getInputProps("password")}
-         
+
             />
             <Group justify="space-between" mt="xs">
               <Checkbox

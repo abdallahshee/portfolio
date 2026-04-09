@@ -156,11 +156,10 @@ function RouteComponent() {
                 <Link
                   key={item.to}
                   to={item.to}
-                  className={`flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium no-underline transition-colors ${
-                    isActive
+                  className={`flex items-center gap-2 whitespace-nowrap border-b-2 px-4 py-3 text-sm font-medium no-underline transition-colors ${isActive
                       ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
                       : 'border-transparent text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200'
-                  }`}
+                    }`}
                 >
                   <item.icon size={15} />
                   {item.label}
@@ -203,16 +202,15 @@ function RouteComponent() {
                     key={item.to}
                     to={item.to}
                     onClick={() => setMobileOpen(false)}
-                    className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 no-underline transition-all ${
-                      isActive
+                    className={`flex w-full items-center gap-3 rounded-xl px-3 py-2.5 no-underline transition-all ${isActive
                         ? 'bg-indigo-50 text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300'
                         : 'text-slate-600 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-800'
-                    }`}
+                      }`}
                   >
                     <ThemeIcon
                       size={32}
                       radius="md"
-                      
+
                       variant={isActive ? 'filled' : 'light'}
                       color={isActive ? 'indigo' : item.color}
                     >

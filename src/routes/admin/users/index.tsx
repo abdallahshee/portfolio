@@ -73,7 +73,7 @@ function RouteComponent() {
 
         <TextInput
           placeholder="Search by name or email…"
-    
+
           leftSection={<Search size={14} />}
           rightSection={
             searchInput ? (
@@ -192,18 +192,18 @@ function RouteComponent() {
                   const isConfirmed = !!u.email_confirmed_at
                   const joinedAt = u.created_at
                     ? new Date(u.created_at).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })
                     : '—'
 
                   const lastSignIn = u.last_sign_in_at
                     ? new Date(u.last_sign_in_at).toLocaleDateString('en-US', {
-                        month: 'short',
-                        day: 'numeric',
-                        year: 'numeric',
-                      })
+                      month: 'short',
+                      day: 'numeric',
+                      year: 'numeric',
+                    })
                     : 'Never'
 
                   return (
@@ -238,7 +238,7 @@ function RouteComponent() {
                           variant="light"
                           color={isAdmin ? 'indigo' : 'gray'}
                           radius="md"
-                           size="sm"
+                          size="sm"
                           leftSection={isAdmin ? <ShieldCheck size={11} /> : <User size={11} />}
                         >
                           {isAdmin ? 'Admin' : 'User'}
@@ -250,7 +250,7 @@ function RouteComponent() {
                           variant="light"
                           color={isConfirmed ? 'green' : 'yellow'}
                           radius="md"
-                           size="sm"
+                          size="sm"
                         >
                           {isConfirmed ? 'Verified' : 'Unverified'}
                         </Badge>

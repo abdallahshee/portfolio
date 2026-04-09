@@ -6,6 +6,6 @@ export const Route = createFileRoute('/admin/projects')({
 
 function RouteComponent() {
   return <div>
-    <Outlet/>
+    <Outlet />
   </div>
 }

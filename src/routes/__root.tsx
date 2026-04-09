@@ -52,17 +52,17 @@ const THEME_INIT_SCRIPT = `(function(){
 })();`
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-head: () => ({
-  meta: [
-    { charSet: 'utf-8' },
-    { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-    { title: 'Abdallah Shee' },
-  ],
-  links: [
-    { rel: 'stylesheet', href: appCss },
-    { rel: 'icon', href: '/favicon.ico' },
-  ],
-}),
+  head: () => ({
+    meta: [
+      { charSet: 'utf-8' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { title: 'Abdallah Shee' },
+    ],
+    links: [
+      { rel: 'stylesheet', href: appCss },
+      { rel: 'icon', href: '/favicon.ico' },
+    ],
+  }),
   shellComponent: RootDocument,
   notFoundComponent: NotFound,
   errorComponent: ErrorComponent,

@@ -37,19 +37,19 @@ export default function ArticleDetails({ slug, data, isAdmin = false }: Props) {
   const supabase = getSupabaseBrowserClient()
 
   // ✅ fixed — was calling await outside async, and accessing wrong property
-useEffect(() => {
-  supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
-    setSession(data?.session ?? null)
-  })
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
+      setSession(data?.session ?? null)
+    })
 
-  const { data: listener } = supabase.auth.onAuthStateChange(
-    (_event: AuthChangeEvent, session: Session | null) => {
-      setSession(session)
-    }
-  )
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event: AuthChangeEvent, session: Session | null) => {
+        setSession(session)
+      }
+    )
 
-  return () => listener.subscription.unsubscribe()
-}, [])
+    return () => listener.subscription.unsubscribe()
+  }, [])
 
   const [replyingTo, setReplyingTo] = useState<{
     id: string
@@ -101,7 +101,7 @@ useEffect(() => {
     if (!requireAuth()) return
     try {
       await createCommentMutation.mutateAsync({
-        userId:data.userId,articleId: data?.id, content: values.content, parentId: null,
+        userId: data.userId, articleId: data?.id, content: values.content, parentId: null,
       })
       notifications.show({ title: 'Comment posted', message: 'Your comment was added.', color: 'green' })
       commentForm.reset()
@@ -114,7 +114,7 @@ useEffect(() => {
     if (!replyingTo || !requireAuth()) return
     try {
       await createCommentMutation.mutateAsync({
-        userId:data.userId,articleId: data?.id, content: values.content, parentId: replyingTo.id,
+        userId: data.userId, articleId: data?.id, content: values.content, parentId: replyingTo.id,
       })
       notifications.show({ title: 'Reply posted', message: 'Your reply was added.', color: 'green' })
       replyForm.reset()
@@ -302,7 +302,7 @@ useEffect(() => {
                 onClick={() => router.navigate({
                   to: '/articles/$userId/$slug/edit',
                   params: { slug: data?.slug, userId: session?.user?.id! },
-                  search:{page:1}
+                  search: { page: 1 }
                 })}
                 className="flex items-center gap-2"
               >

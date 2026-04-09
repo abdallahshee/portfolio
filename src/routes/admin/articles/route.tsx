@@ -6,5 +6,5 @@ export const Route = createFileRoute('/admin/articles')({
 
 function RouteComponent() {
 
-  return <div><Outlet/></div>
+  return <div><Outlet /></div>
 }

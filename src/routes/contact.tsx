@@ -126,9 +126,9 @@ function ContactPage() {
       {/* ── PAGE HEADER ── */}
       <Stack gap="xs" className="text-center max-w-2xl mx-auto">
 
-        <Title className="heading">
+        <div className="heading">
           Get in Touch
-        </Title>
+        </div>
 
         <Text size="md" c="dimmed" className="leading-8">
           Have a project, idea, or opportunity you'd like to discuss?
@@ -136,7 +136,7 @@ function ContactPage() {
           I respond to every message.
         </Text>
       </Stack>
-    
+
       {/* ── MAIN: FORM + SIDEBAR ── */}
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md" className="items-start">
         {/* CONTACT FORM */}
@@ -169,14 +169,14 @@ function ContactPage() {
                     label="Your Name"
                     placeholder="John Doe"
                     radius="md"
-                   size="sm"
+                    size="sm"
                     {...form.getInputProps("name")}
                   />
                   <TextInput
                     label="Email Address"
                     placeholder="john@email.com"
                     radius="md"
-                  size="sm"
+                    size="sm"
                     {...form.getInputProps("email")}
                   />
                 </SimpleGrid>
@@ -186,7 +186,7 @@ function ContactPage() {
                   placeholder="Select a subject"
                   data={SUBJECT_OPTIONS}
                   radius="md"
-                 size="sm"
+                  size="sm"
                   value={selectedSubject}
                   onChange={(value) => {
                     setSelectedSubject(value)
@@ -199,7 +199,7 @@ function ContactPage() {
                     label="Please specify"
                     placeholder="Tell me what this is about..."
                     radius="md"
-                     size="sm"
+                    size="sm"
                     {...form.getInputProps("subject")}
                   />
                 )}
@@ -221,7 +221,7 @@ function ContactPage() {
                     variant="outline"
                     color="blue"
                     radius="md"
-                  size="sm"
+                    size="sm"
                     leftSection={<X size={16} />}
                     onClick={() => { form.reset(); setSelectedSubject(null) }}
                     disabled={isSubmitting}
@@ -231,7 +231,7 @@ function ContactPage() {
                   <Button
                     type="submit"
                     radius="md"
-                  size="sm"
+                    size="sm"
                     variant="filled"
                     color="yellow"
                     leftSection={<Send size={16} />}
@@ -248,7 +248,7 @@ function ContactPage() {
           <Stack gap="md">
             <Text py-1>
               <Group gap="sm" py-1 >
-                <ThemeIcon variant="transparent" radius="md"  size="sm">
+                <ThemeIcon variant="transparent" radius="md" size="sm">
                   <Mail size={24} />
                 </ThemeIcon>
                 <Text size="sm" fw={500}>abdallahshee664@email.com</Text>
@@ -256,7 +256,7 @@ function ContactPage() {
             </Text>
             <Text py-1>
               <Group gap="sm">
-                <ThemeIcon variant="transparent" radius="md"  size="sm">
+                <ThemeIcon variant="transparent" radius="md" size="sm">
                   <Phone size={24} />
                 </ThemeIcon>
                 <Text size="sm" fw={500}>+254 796515302</Text>
@@ -264,7 +264,7 @@ function ContactPage() {
             </Text>
             <Anchor py-1 href="https://github.com/abdallahshee" target="_blank" underline="never">
               <Group gap="sm">
-                <ThemeIcon variant="transparent" radius="md"  size="sm">
+                <ThemeIcon variant="transparent" radius="md" size="sm">
                   <Github size={24} />
                 </ThemeIcon>
                 <Text size="sm" fw={500}>GitHub</Text>

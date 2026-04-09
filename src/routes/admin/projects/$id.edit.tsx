@@ -55,14 +55,14 @@ export const Route = createFileRoute("/admin/projects/$id/edit")({
 
 function RouteComponent() {
   const project = Route.useLoaderData()
-  const param=Route.useParams()
+  const param = Route.useParams()
   const router = useRouter()
   const updateMutation = useUpdateProjectMutation()
   const [loading, setLoading] = useState(false)
 
   const form = useForm<UpdateProjectRequest>({
     initialValues: {
-      projectId:param.id,
+      projectId: param.id,
       ...project!,
     },
   })
@@ -71,7 +71,7 @@ function RouteComponent() {
     try {
       setLoading(true)
       await updateMutation.mutateAsync(
-       values
+        values
       )
     } catch (error) {
       console.error(error)
@@ -129,7 +129,7 @@ function RouteComponent() {
               <Button
                 variant="light"
                 radius="md"
-                 size="sm"
+                size="sm"
                 leftSection={<ArrowLeft size={16} />}
                 onClick={() => router.history.back()}
               >
@@ -199,7 +199,7 @@ function RouteComponent() {
                         label="URL"
                         placeholder="https://myproject.com"
                         radius="md"
-                         size="sm"
+                        size="sm"
                         leftSection={<Globe size={16} />}
                         {...form.getInputProps("url")}
                       />
@@ -284,7 +284,7 @@ function RouteComponent() {
                               label={`Technology ${index + 1}`}
                               placeholder="e.g. React, Node.js, Tailwind"
                               radius="md"
-                               size="sm"
+                              size="sm"
                               className="flex-1"
                               {...form.getInputProps(`technologies.${index}`)}
                             />
@@ -319,7 +319,7 @@ function RouteComponent() {
                           type="button"
                           variant="default"
                           radius="md"
-                           size="sm"
+                          size="sm"
                           onClick={() => router.history.back()}
                         >
                           Cancel
@@ -328,7 +328,7 @@ function RouteComponent() {
                         <Button
                           type="submit"
                           radius="md"
-                           size="sm"
+                          size="sm"
                           loading={loading}
                           leftSection={<Save size={16} />}
                         >

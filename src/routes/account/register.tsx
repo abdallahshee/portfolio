@@ -55,64 +55,64 @@ function RouteComponent() {
     validateInputOnBlur: true,
   })
 
- const handleSubmit = async (values: SignUpRequest) => {
-  setFormError(null)
-  try {
-    setIsSubmitting(true)
+  const handleSubmit = async (values: SignUpRequest) => {
+    setFormError(null)
+    try {
+      setIsSubmitting(true)
 
-    const { data, error } = await client.auth.signUp({
-      email: values.email.trim().toLowerCase(),
-      password: values.password,
-      options: {
-        emailRedirectTo: `${window.location.origin}`,
-        data: {
-          name: values.name,
-          avatar_url: DEFAULT_AVATAR_URL,
-          role: "user"
+      const { data, error } = await client.auth.signUp({
+        email: values.email.trim().toLowerCase(),
+        password: values.password,
+        options: {
+          emailRedirectTo: `${window.location.origin}`,
+          data: {
+            name: values.name,
+            avatar_url: DEFAULT_AVATAR_URL,
+            role: "user"
+          },
         },
-      },
-    })
+      })
 
-    if (error) {
-      setFormError(error.message)
-      return
+      if (error) {
+        setFormError(error.message)
+        return
+      }
+
+      if (data.user && !data.session) {
+        notifications.show({
+          title: "Almost there!",
+          message: "Check your email and click the confirmation link to activate your account.",
+          color: "blue",
+          autoClose: false,
+        })
+        // ✅ no isNavigatingAway needed here — just navigate
+        await router.navigate({
+          to: "/account",
+          search: { callbackUrl },
+        })
+        return
+      }
+
+      if (data.user && data.session) {
+        notifications.show({
+          title: "Account created",
+          message: "Your account has been created successfully 🎉",
+          color: "green",
+        })
+        await router.navigate({
+          to: "/account",
+          search: { callbackUrl },
+        })
+      }
+
+    } catch (err: any) {
+      setFormError(err?.message ?? "Something went wrong")
+    } finally {
+      setIsSubmitting(false)
     }
-
-    if (data.user && !data.session) {
-      notifications.show({
-        title: "Almost there!",
-        message: "Check your email and click the confirmation link to activate your account.",
-        color: "blue",
-        autoClose: false,
-      })
-      // ✅ no isNavigatingAway needed here — just navigate
-      await router.navigate({
-        to: "/account",
-        search: { callbackUrl },
-      })
-      return
-    }
-
-    if (data.user && data.session) {
-      notifications.show({
-        title: "Account created",
-        message: "Your account has been created successfully 🎉",
-        color: "green",
-      })
-      await router.navigate({
-        to: "/account",
-        search: { callbackUrl },
-      })
-    }
-
-  } catch (err: any) {
-    setFormError(err?.message ?? "Something went wrong")
-  } finally {
-    setIsSubmitting(false)
   }
-}
 
-  const handleOAuthSignUp = async (provider: "google"|"facebook") => {
+  const handleOAuthSignUp = async (provider: "google" | "facebook") => {
     try {
       setOauthProvider(provider)
       const { error } = await client.auth.signInWithOAuth({
@@ -135,109 +135,109 @@ function RouteComponent() {
 
   return (
 
-      <Stack gap="lg">
-          <div className="text-center">
-                <Text fw={500} size="lg" className="text-slate-800 dark:text-slate-100">
-                 Create Account
-                </Text>
-                <Text c="dimmed" size="sm" mt={4}>
-                Join and contribute to community blog.
-                </Text>
-              </div>
-     
-
-        <div className="flex flex-col gap-3">
-          <GoogleButton
-            radius="md"
-          size="sm"
-            loading={oauthProvider === "google"}
-            onClick={() => handleOAuthSignUp("google")}
-          >
-            Sign up with Google
-          </GoogleButton>
-          <FacebookButton
-          size="sm"
-            radius="md"
-            loading={oauthProvider === "facebook"}
-            onClick={() => handleOAuthSignUp("facebook")}
-          >
-            Sign up with Facebook
-          </FacebookButton>
-        </div>
-
-        {/* <Divider label="Or create account with email" labelPosition="center" my="xs" /> */}
-
-        {formError && (
-          <Alert
-            color="red"
-            radius="md"
-            icon={<AlertCircle size={24} />}
-            title="Sign up failed"
-            withCloseButton
-            onClose={() => setFormError(null)}
-          >
-            {formError}
-          </Alert>
-        )}
-
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack gap="md">
-            <TextInput
-              label="Full Name"
-           
-              placeholder="John Doe"
-              radius="md"
-              size="sm"
-              {...form.getInputProps("name")}
-            />
-
-            <TextInput
-              label="Email"
-              placeholder="you@example.com"
-              radius="md"
-             size="sm"
-              {...form.getInputProps("email")}
-            />
-
-            <PasswordInput
-              label="Password"
-              placeholder="Create a password"
-              radius="md"
-         size="sm"
-              {...form.getInputProps("password")}
-            />
-
-            <PasswordInput
-              label="Confirm Password"
-              placeholder="Repeat password"
-              radius="md"
-             size="sm"
-              {...form.getInputProps("confirmPassword")}
-            />
-
-            <Button
-              type="submit"
-              fullWidth
-              mt="sm"
-              radius="md"
-             size="sm"
-              loading={isSubmitting}
-              leftSection={<UserPlus size={18} />}
-            >
-              Create Account
-            </Button>
-          </Stack>
-        </form>
-
-        <Divider my="xs" />
-
-        <Text ta="center" size="md" c="dimmed">
-          Already have an account?{" "}
-          <Anchor component={Link} to="/account">
-            Sign In
-          </Anchor>
+    <Stack gap="lg">
+      <div className="text-center">
+        <Text fw={500} size="lg" className="text-slate-800 dark:text-slate-100">
+          Create Account
         </Text>
-      </Stack>
-  
+        <Text c="dimmed" size="sm" mt={4}>
+          Join and contribute to community blog.
+        </Text>
+      </div>
+
+
+      <div className="flex flex-col gap-3">
+        <GoogleButton
+          radius="md"
+          size="sm"
+          loading={oauthProvider === "google"}
+          onClick={() => handleOAuthSignUp("google")}
+        >
+          Sign up with Google
+        </GoogleButton>
+        <FacebookButton
+          size="sm"
+          radius="md"
+          loading={oauthProvider === "facebook"}
+          onClick={() => handleOAuthSignUp("facebook")}
+        >
+          Sign up with Facebook
+        </FacebookButton>
+      </div>
+
+      {/* <Divider label="Or create account with email" labelPosition="center" my="xs" /> */}
+
+      {formError && (
+        <Alert
+          color="red"
+          radius="md"
+          icon={<AlertCircle size={24} />}
+          title="Sign up failed"
+          withCloseButton
+          onClose={() => setFormError(null)}
+        >
+          {formError}
+        </Alert>
+      )}
+
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack gap="md">
+          <TextInput
+            label="Full Name"
+
+            placeholder="John Doe"
+            radius="md"
+            size="sm"
+            {...form.getInputProps("name")}
+          />
+
+          <TextInput
+            label="Email"
+            placeholder="you@example.com"
+            radius="md"
+            size="sm"
+            {...form.getInputProps("email")}
+          />
+
+          <PasswordInput
+            label="Password"
+            placeholder="Create a password"
+            radius="md"
+            size="sm"
+            {...form.getInputProps("password")}
+          />
+
+          <PasswordInput
+            label="Confirm Password"
+            placeholder="Repeat password"
+            radius="md"
+            size="sm"
+            {...form.getInputProps("confirmPassword")}
+          />
+
+          <Button
+            type="submit"
+            fullWidth
+            mt="sm"
+            radius="md"
+            size="sm"
+            loading={isSubmitting}
+            leftSection={<UserPlus size={18} />}
+          >
+            Create Account
+          </Button>
+        </Stack>
+      </form>
+
+      <Divider my="xs" />
+
+      <Text ta="center" size="md" c="dimmed">
+        Already have an account?{" "}
+        <Anchor component={Link} to="/account">
+          Sign In
+        </Anchor>
+      </Text>
+    </Stack>
+
   )
 }

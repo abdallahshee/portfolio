@@ -43,8 +43,8 @@ function CategoriesPage() {
   const form = useForm<CategoryRequest>({
     initialValues: { name: "" },
     validate: zod4Resolver(CategorySchema),
-    validateInputOnBlur:true,
-    validateInputOnChange:true
+    validateInputOnBlur: true,
+    validateInputOnChange: true
   })
 
   const handleSubmit = (values: CategoryRequest) => {
@@ -81,7 +81,7 @@ function CategoriesPage() {
             leftSection={<FolderPlus size={15} />}
             color="grape"
             radius="md"
-          
+
             variant="filled"
             className="flex-shrink-0 self-start"
             onClick={open}
@@ -235,12 +235,12 @@ function CategoriesPage() {
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="md" pt="xs">
             <TextInput
-             size="sm"
-             radius="md"
+              size="sm"
+              radius="md"
               label="Category name"
               description="Use a clear, concise name like React, DevOps, or Career."
               placeholder="e.g. React, TypeScript, Career…"
-           
+
               leftSection={<Tag size={14} />}
               {...form.getInputProps("name")}
             />

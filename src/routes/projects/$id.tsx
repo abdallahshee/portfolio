@@ -49,8 +49,8 @@ export const Route = createFileRoute("/projects/$id")({
 function ProjectDetails() {
   const { id } = Route.useParams()
   const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
-  const supabase=getSupabaseBrowserClient()
-    const [session, setSession] = useState<Session | null>(null) // ✅ typed
+  const supabase = getSupabaseBrowserClient()
+  const [session, setSession] = useState<Session | null>(null) // ✅ typed
   const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below
 
   useEffect(() => {
@@ -94,7 +94,7 @@ function ProjectDetails() {
       await rateMutation.mutateAsync({
         projectId: project?.id!,
         rating,
-        userId:session.user.id
+        userId: session.user.id
       })
 
     } catch (error) {
@@ -137,7 +137,7 @@ function ProjectDetails() {
                 <Button
                   variant="light"
                   radius="md"
-                   size="sm"
+                  size="sm"
                   leftSection={<ArrowLeft size={16} />}
                 >
                   Back to Projects
@@ -150,7 +150,7 @@ function ProjectDetails() {
                     variant="light"
                     color="indigo"
                     radius="md"
-                     size="sm"
+                    size="sm"
                     leftSection={<Pencil size={16} />}
                   >
                     Edit Project
@@ -236,7 +236,7 @@ function ProjectDetails() {
                     </Text>
                   </Group>
 
-                  <Badge variant="light" color="yellow" radius="md"  size="sm">
+                  <Badge variant="light" color="yellow" radius="md" size="sm">
                     {project.totalRatings} votes
                   </Badge>
                 </Group>
@@ -263,7 +263,7 @@ function ProjectDetails() {
                   </Group>
 
                   <Rating
-                  fractions={2}
+                    fractions={2}
                     value={project.averageRating}
                     readOnly
                     count={10}
@@ -280,7 +280,7 @@ function ProjectDetails() {
                         {hasRated ? "Your Rating" : "Rate this project"}
                       </Text>
                       {hasRated && (
-                        <Badge radius="md"  size="sm" color="green" variant="light">
+                        <Badge radius="md" size="sm" color="green" variant="light">
                           {project.userRating}/10
                         </Badge>
                       )}
@@ -326,7 +326,7 @@ function ProjectDetails() {
                         </Text>
                         <Button
                           radius="md"
-                           size="sm"
+                          size="sm"
                           onClick={handleSubmitRating}
                           loading={rateMutation.isPending}
                           disabled={!rating}
@@ -344,7 +344,7 @@ function ProjectDetails() {
                     className="border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-800/60"
                   >
                     <Group align="flex-start" gap="sm">
-                      <ThemeIcon variant="light" color="gray" radius="md"  size="sm">
+                      <ThemeIcon variant="light" color="gray" radius="md" size="sm">
                         <Lock size={16} />
                       </ThemeIcon>
                       <div>
@@ -388,7 +388,7 @@ function ProjectDetails() {
                     href={project.url}
                     target="_blank"
                     radius="md"
-                     size="sm"
+                    size="sm"
                     leftSection={<Globe size={16} />}
                   >
                     {project.isPublic ? "View Source Code" : "Live URL"}
@@ -405,7 +405,7 @@ function ProjectDetails() {
                 fullWidth
                 variant="subtle"
                 radius="md"
-                 size="sm"
+                size="sm"
                 rightSection={<ExternalLink size={16} />}
               >
                 View More Projects

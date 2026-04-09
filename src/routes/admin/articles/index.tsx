@@ -50,7 +50,7 @@ function RouteComponent() {
       {/* Page header */}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <Title className='heading'>Articles</Title>
+          <div className='heading'>Articles</div>
           <Text size="sm" c="dimmed">
             {pagination?.total ?? 0} total articles
           </Text>

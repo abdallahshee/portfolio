@@ -25,10 +25,10 @@ function RouteComponent() {
   const [isLoading, setIsLoading] = useState(true) // ✅ true until session resolves
 
   useEffect(() => {
-  supabase.auth.getSession().then(({ data: sessionData }: { data: { session: Session | null } }) => {
-  setSession(sessionData?.session ?? null)
-  setIsLoading(false)
-})
+    supabase.auth.getSession().then(({ data: sessionData }: { data: { session: Session | null } }) => {
+      setSession(sessionData?.session ?? null)
+      setIsLoading(false)
+    })
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event: AuthChangeEvent, session: Session | null) => {
@@ -40,5 +40,5 @@ function RouteComponent() {
     return () => listener.subscription.unsubscribe()
   }, [])
 
-  return <ArticleDetails slug={slug} data={data} isAdmin={false}/>
+  return <ArticleDetails slug={slug} data={data} isAdmin={false} />
 }

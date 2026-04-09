@@ -92,89 +92,89 @@ function RouteComponent() {
   return (
 
 
-      <Stack gap="lg">
-          <div className="text-center">
-                <Text fw={500} size="lg" className="text-slate-800 dark:text-slate-100">
-                  Edit Profile
-                </Text>
-                <Text c="dimmed" size="sm" mt={4}>
-                Update your personal information and profile picture.
-                </Text>
-              </div>
-        {/* Header (matches register page style) */}
-     
+    <Stack gap="lg">
+      <div className="text-center">
+        <Text fw={500} size="lg" className="text-slate-800 dark:text-slate-100">
+          Edit Profile
+        </Text>
+        <Text c="dimmed" size="sm" mt={4}>
+          Update your personal information and profile picture.
+        </Text>
+      </div>
+      {/* Header (matches register page style) */}
 
-        {/* <Divider /> */}
 
-        {/* Avatar section */}
-        <Stack align="center" gap="xs">
-          <div className="relative w-fit">
-            <Avatar
-              src={avatarPreview}
-              size={90}
-              radius="md"
-              color="teal"
-              className="border-2 border-slate-200 dark:border-slate-700"
-            >
-              {user.user_metadata.name?.[0]?.toUpperCase() ?? 'U'}
-            </Avatar>
+      {/* <Divider /> */}
 
-            <div className="absolute -bottom-1 -right-1 rounded-full border border-slate-200 bg-white p-1 shadow dark:border-slate-700 dark:bg-slate-800">
-              <Camera size={12} className="text-slate-500" />
-            </div>
+      {/* Avatar section */}
+      <Stack align="center" gap="xs">
+        <div className="relative w-fit">
+          <Avatar
+            src={avatarPreview}
+            size={90}
+            radius="md"
+            color="teal"
+            className="border-2 border-slate-200 dark:border-slate-700"
+          >
+            {user.user_metadata.name?.[0]?.toUpperCase() ?? 'U'}
+          </Avatar>
+
+          <div className="absolute -bottom-1 -right-1 rounded-full border border-slate-200 bg-white p-1 shadow dark:border-slate-700 dark:bg-slate-800">
+            <Camera size={12} className="text-slate-500" />
           </div>
+        </div>
 
-          <Text size="md" c="dimmed">
-            {avatarPreview ? 'Image ready to save' : 'No image uploaded'}
-          </Text>
-        </Stack>
-
-        {/* Error */}
-        {formError && (
-          <Alert color="red" radius="md" title="Update failed">
-            {formError}
-          </Alert>
-        )}
-
-        {/* Form */}
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack gap="md">
-            <TextInput
-              label="Display Name"
-              placeholder="John Doe"
-              radius="md"
-              size="sm"
-              leftSection={<ProfileUserIcon size={16} />}
-              {...form.getInputProps('name')}
-            />
-
-
-            <FileInput
-              label="Profile Picture"
-              placeholder="Upload image"
-              radius="md"
-              size="sm"
-              accept="image/*"
-              leftSection={<Camera size={16} />}
-              onChange={handleImageChange}
-              description="JPG, PNG or WEBP"
-            />
-
-            <Button
-              type="submit"
-              fullWidth
-              mt="sm"
-              radius="md"
-              size="sm"
-              loading={isPending}
-              leftSection={<Save size={18} />}
-            >
-              Save Changes
-            </Button>
-          </Stack>
-        </form>
+        <Text size="md" c="dimmed">
+          {avatarPreview ? 'Image ready to save' : 'No image uploaded'}
+        </Text>
       </Stack>
-  
+
+      {/* Error */}
+      {formError && (
+        <Alert color="red" radius="md" title="Update failed">
+          {formError}
+        </Alert>
+      )}
+
+      {/* Form */}
+      <form onSubmit={form.onSubmit(handleSubmit)}>
+        <Stack gap="md">
+          <TextInput
+            label="Display Name"
+            placeholder="John Doe"
+            radius="md"
+            size="sm"
+            leftSection={<ProfileUserIcon size={16} />}
+            {...form.getInputProps('name')}
+          />
+
+
+          <FileInput
+            label="Profile Picture"
+            placeholder="Upload image"
+            radius="md"
+            size="sm"
+            accept="image/*"
+            leftSection={<Camera size={16} />}
+            onChange={handleImageChange}
+            description="JPG, PNG or WEBP"
+          />
+
+          <Button
+            type="submit"
+            fullWidth
+            mt="sm"
+            radius="md"
+            size="sm"
+            loading={isPending}
+            leftSection={<Save size={18} />}
+          >
+            Save Changes
+          </Button>
+        </Stack>
+      </form>
+    </Stack>
+
 
   )
 }

@@ -210,10 +210,10 @@ function ServicesPage() {
       <section className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-14">
         <Stack gap="xl" className="max-w-3xl">
           <Stack gap="lg">
-            <Title className="heading">
+            <div className="heading">
               Software solutions for real business needs
 
-            </Title>
+            </div>
 
             <Text size="lg" c="dimmed" className="max-w-2xl leading-8">
               I help businesses and startups turn ideas into reliable, production-ready

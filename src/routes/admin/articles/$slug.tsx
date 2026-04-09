@@ -17,7 +17,7 @@ export const Route = createFileRoute('/admin/articles/$slug')({
 function RouteComponent() {
   const { slug } = Route.useParams()
   const { data } = useSuspenseQuery(getArticleBySlugQueryOptions(slug))
-  
 
-  return <ArticleDetails slug={slug} data={data}  isAdmin={true}/>
+
+  return <ArticleDetails slug={slug} data={data} isAdmin={true} />
 }

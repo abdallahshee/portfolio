@@ -194,7 +194,7 @@ function RouteComponent() {
                         label="Category Name"
                         placeholder="e.g. Technology"
                         radius="md"
-                         size="sm"
+                        size="sm"
                         leftSection={<Tag size={16} />}
                         {...form.getInputProps("name")}
                       />
@@ -202,7 +202,7 @@ function RouteComponent() {
                       <Button
                         type="submit"
                         radius="md"
-                         size="sm"
+                        size="sm"
                         loading={createCategoryMutation.isPending}
                       >
                         Create Category
@@ -278,7 +278,7 @@ function RouteComponent() {
                                         onChange={(e) => setEditingName(e.currentTarget.value)}
                                         placeholder="Enter category name"
                                         radius="md"
-                                         size="sm"
+                                        size="sm"
                                       />
                                       <Text size="xs" c="dimmed">
                                         ID: {category.id}
@@ -319,7 +319,7 @@ function RouteComponent() {
                                       variant="light"
                                       color="gray"
                                       radius="md"
-                                     size="sm"
+                                      size="sm"
                                       onClick={cancelEdit}
                                     >
                                       <X size={16} />
@@ -341,7 +341,7 @@ function RouteComponent() {
                                       variant="light"
                                       color="red"
                                       radius="md"
-                                     size="sm"
+                                      size="sm"
                                       loading={
                                         deleteCategoryMutation.isPending &&
                                         deleteCategoryMutation.variables === category.id
@@ -391,7 +391,7 @@ function RouteComponent() {
             <Button
               variant="default"
               radius="md"
-               size="sm"
+              size="sm"
               onClick={() => setDeleteTarget(null)}
             >
               Cancel
@@ -399,7 +399,7 @@ function RouteComponent() {
             <Button
               color="red"
               radius="md"
-               size="sm"
+              size="sm"
               loading={deleteCategoryMutation.isPending}
               onClick={confirmDelete}
             >

@@ -89,7 +89,7 @@ export default function ArticleEditor({
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.coverImage ?? null)
   const [fetchingArticle, setFetchingArticle] = useState(false)
-  const supabase=getSupabaseBrowserClient()
+  const supabase = getSupabaseBrowserClient()
   const mergedInitialValues = useMemo<ArticleRequest>(() => {
     return {
       ...defaultArticleValues,
@@ -314,7 +314,7 @@ export default function ArticleEditor({
                         leftSection={<FileText size={16} />}
                         radius="md"
                         size="sm"
-                
+
                         {...form.getInputProps("title")}
                       />
 
@@ -336,7 +336,7 @@ export default function ArticleEditor({
                         clearable
                       />
 
-                     
+
                       <FileInput
                         label={isEdit ? "Blog Image" : "Cover Image"}
                         placeholder={

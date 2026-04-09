@@ -31,14 +31,14 @@ function RouteComponent() {
             <Avatar
               src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
               alt="Abdallah logo"
-       size={30}
-           
+              size={30}
+
             />
-            <Text size='sm' c="dimmed">Abdallah Shee's Portfolio Website & Blog</Text>
+            <Text size='sm' c="dimmed">Abdallah's Portfolio Website & Blog</Text>
           </div>
 
           {/* Divider */}
-          <div className="border-t-1  border-blue-400 dark:border-white mb-6" />
+          <div className="border-t-2  border-blue-400 dark:border-white mb-6" />
 
           {/* Child route content */}
           <Outlet />

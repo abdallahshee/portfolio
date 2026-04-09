@@ -46,103 +46,103 @@ function RouteComponent() {
   }
 
   return (
-   
-      <Stack gap="lg">
-<div className="text-center">
+
+    <Stack gap="lg">
+      <div className="text-center">
         <Text fw={500} size="lg" className="text-slate-800 dark:text-slate-100">
-         Reset Password
+          Reset Password
         </Text>
         <Text c="dimmed" size="sm" mt={4}>
-        Enter your registered email and we'll send you a reset link.
+          Enter your registered email and we'll send you a reset link.
         </Text>
       </div>
-      
 
-        {/* <Divider my="xs" /> */}
 
-        {/* ✅ success state — shown after email is sent */}
-        {emailSent ? (
-          <Stack gap="md" align="center" py="md">
-            <ThemeIcon variant="light" color="green" radius="md" size={64}>
-              <CheckCircle size={32} />
-            </ThemeIcon>
-            <Title order={3} ta="center">Check your inbox</Title>
-            <Text c="dimmed" size="sm" ta="center" maw={340}>
-              We sent a password reset link to{" "}
-              <strong>{form.values.email}</strong>.
-              Check your email and click the link to reset your password.
-            </Text>
-            <Text c="dimmed" size="xs" ta="center">
-              Didn't receive it? Check your spam folder or{" "}
-              <button
-                type="button"
-                className="text-indigo-600 hover:underline dark:text-indigo-400 font-medium"
-                onClick={() => {
-                  setEmailSent(false)
-                  form.reset()
-                }}
-              >
-                try again
-              </button>
-            </Text>
-          </Stack>
-        ) : (
-          <>
-            {/* Error alert */}
-            {formError && (
-              <Alert
-                color="red"
-                icon={<AlertCircle size={24} />}
-                title="Request failed"
-                withCloseButton
-                onClose={() => setFormError(null)}
-              >
-                {formError}
-              </Alert>
-            )}
+      {/* <Divider my="xs" /> */}
 
-            {/* Form */}
-            <form onSubmit={form.onSubmit(handleSendResetUrl)}>
-              <Stack gap="md">
-                <TextInput
-                  label="Email"
-                  placeholder="you@example.com"
-                  radius="md"
-              size="sm"
-                  leftSection={<Mail size={16} />}
-                  {...form.getInputProps("email")}
-                />
+      {/* ✅ success state — shown after email is sent */}
+      {emailSent ? (
+        <Stack gap="md" align="center" py="md">
+          <ThemeIcon variant="light" color="green" radius="md" size={64}>
+            <CheckCircle size={32} />
+          </ThemeIcon>
+          <Title order={3} ta="center">Check your inbox</Title>
+          <Text c="dimmed" size="sm" ta="center" maw={340}>
+            We sent a password reset link to{" "}
+            <strong>{form.values.email}</strong>.
+            Check your email and click the link to reset your password.
+          </Text>
+          <Text c="dimmed" size="xs" ta="center">
+            Didn't receive it? Check your spam folder or{" "}
+            <button
+              type="button"
+              className="text-indigo-600 hover:underline dark:text-indigo-400 font-medium"
+              onClick={() => {
+                setEmailSent(false)
+                form.reset()
+              }}
+            >
+              try again
+            </button>
+          </Text>
+        </Stack>
+      ) : (
+        <>
+          {/* Error alert */}
+          {formError && (
+            <Alert
+              color="red"
+              icon={<AlertCircle size={24} />}
+              title="Request failed"
+              withCloseButton
+              onClose={() => setFormError(null)}
+            >
+              {formError}
+            </Alert>
+          )}
 
-                <Button
-                  type="submit"
-                  fullWidth
-                  mt="xs"
-                  radius="md"
+          {/* Form */}
+          <form onSubmit={form.onSubmit(handleSendResetUrl)}>
+            <Stack gap="md">
+              <TextInput
+                label="Email"
+                placeholder="you@example.com"
+                radius="md"
                 size="sm"
-                  loading={isSubmitting}
-                  leftSection={<KeyRound size={18} />}
-                >
-                  Send Reset Link
-                </Button>
-              </Stack>
-            </form>
-          </>
-        )}
+                leftSection={<Mail size={16} />}
+                {...form.getInputProps("email")}
+              />
 
-        <Divider my="xs" />
+              <Button
+                type="submit"
+                fullWidth
+                mt="xs"
+                radius="md"
+                size="sm"
+                loading={isSubmitting}
+                leftSection={<KeyRound size={18} />}
+              >
+                Send Reset Link
+              </Button>
+            </Stack>
+          </form>
+        </>
+      )}
 
-        <Text ta="center" size="md" c="dimmed">
-          I know my password{" "}
-          <Link
-            to="/account"
-            search={{ callbackUrl: "/" }}
-            className="font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
-          >
-            Back to Sign In
-          </Link>
-        </Text>
+      <Divider my="xs" />
 
-      </Stack>
- 
+      <Text ta="center" size="md" c="dimmed">
+        I know my password{" "}
+        <Link
+          to="/account"
+          search={{ callbackUrl: "/" }}
+          className="font-semibold text-indigo-600 hover:underline dark:text-indigo-400"
+        >
+          Back to Sign In
+        </Link>
+      </Text>
+
+    </Stack>
+
   )
 }

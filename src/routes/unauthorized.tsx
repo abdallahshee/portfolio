@@ -52,7 +52,7 @@ function RouteComponent() {
                             <Button
                                 fullWidth
                                 radius="md"
-                                 size="sm"
+                                size="sm"
                                 variant="outline"
                                 color="gray"
                                 leftSection={<Home size={16} />}

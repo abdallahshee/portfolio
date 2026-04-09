@@ -135,9 +135,9 @@ function App() {
             </div>
 
             <div>
-              <Title className="heading">
+              <h1 className="heading">
                 Designing maintainable and scalable web products & software systems
-              </Title>
+              </h1>
             </div>
 
             <Text size="lg" c="dimmed" className="max-w-2xl text-base sm:text-lg leading-7 sm:leading-8">
@@ -150,7 +150,7 @@ function App() {
           <Group>
             <Link to="/projects">
               <Button
-               size="sm"
+                size="sm"
                 radius="md"
                 className="bg-indigo-500 hover:bg-indigo-600"
                 rightSection={<ArrowRight size={18} />}
@@ -167,15 +167,15 @@ function App() {
         </Stack>
 
         <div className="flex justify-center lg:justify-end">
-        <div className="relative w-full max-w-[14rem] sm:max-w-[16rem] lg:max-w-[20rem]">
-  <div className="aspect-square overflow-hidden rounded-2xl shadow-xl">
-    <img
-      src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
-      alt="Abdallah Shee"
-      className="block h-full w-full object-cover"
-    />
-  </div>
-</div>
+          <div className="relative w-full max-w-[14rem] sm:max-w-[16rem] lg:max-w-[20rem]">
+            <div className="aspect-square overflow-hidden rounded-2xl shadow-xl">
+              <img
+                src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
+                alt="Abdallah Shee"
+                className="block h-full w-full object-cover"
+              />
+            </div>
+          </div>
         </div>
       </section>
 
@@ -358,7 +358,7 @@ function App() {
                   </Text>
                 </div>
                 <Link to="/projects">
-                  <Button variant="subtle"  size="sm" radius="md" rightSection={<ArrowRight size={16} />}>
+                  <Button variant="subtle" size="sm" radius="md" rightSection={<ArrowRight size={16} />}>
                     View All
                   </Button>
                 </Link>
@@ -425,7 +425,7 @@ function App() {
           </Paper>
 
           {/* ARTICLES */}
-         <Paper withBorder radius="lg" className="p-4">
+          <Paper withBorder radius="lg" className="p-4">
             <Stack gap="md">
               <Group justify="space-between" align="end">
                 <div>
@@ -465,7 +465,7 @@ function App() {
                               <Text fw={600} truncate>
                                 {blog.title}
                               </Text>
-                              <Badge variant="light"  radius="md" color="pink" size="sm">
+                              <Badge variant="light" radius="md" color="pink" size="sm">
                                 ❤️ {blog.likes} Likes
                               </Badge>
                             </div>
@@ -518,12 +518,12 @@ function App() {
             <Stack gap="lg" align="center" className="text-center max-w-2xl">
               <div className="space-y-2">
                 <Title order={2} className="heading2">
-                     Let me turn your idea into reality
+                  Let me turn your idea into reality
                 </Title>
 
                 <Text c="dimmed" size="lg" className="leading-8">
-              I turn ideas into practical software solutions that work
-               reliably and grow with your business.
+                  I turn ideas into practical software solutions that work
+                  reliably and grow with your business.
                 </Text>
               </div>
 

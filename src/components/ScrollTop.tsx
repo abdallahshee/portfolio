@@ -21,7 +21,7 @@ export default function ScrollToTop() {
             radius="md"
             variant="filled"
             color="indigo"
-            onClick={() => scrollTo({ y: 0})}
+            onClick={() => scrollTo({ y: 0 })}
             aria-label="Scroll to top"
           >
             <ArrowUp size={18} />

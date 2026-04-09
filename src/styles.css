@@ -19,11 +19,12 @@
 }
 .heading {
   @apply 
-text-lg sm:text-xl md:text-2xl lg:text-3xl font-black leading-[1.1] tracking-tight bg-gradient-to-l from-teal-600 via-indigo-500 to-teal-500 bg-clip-text text-transparent
+ font-medium 
+  text-2xl sm:text-3xl lg:text-4xl  leading-[1.1] tracking-tight bg-gradient-to-l from-teal-600 via-indigo-500 to-teal-500 bg-clip-text text-transparent
 }
 .heading2 {
   @apply 
-text-lg sm:text-xl md:text-2xl lg:text-3xl font-black leading-[1.1] tracking-tight bg-gradient-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent
+font-medium text-xl leading-[1.1] tracking-tight bg-gradient-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent
 }
 
 :root.dark,

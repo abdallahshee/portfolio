@@ -130,7 +130,7 @@ function BlogsPage() {
 
       {/* Header */}
       <div className="space-y-2">
-        <Title className="heading">Articles & Writing</Title>
+        <div className="heading">Articles & Writing</div>
         <Text c="dimmed" className="max-w-2xl">
           Thoughts, tutorials, and practical notes on building modern web applications.
         </Text>
@@ -225,9 +225,8 @@ function BlogsPage() {
         </div>
       ) : (
         // ✅ articles grid
-        <div className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${
-          isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
-        }`}>
+        <div className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
+          }`}>
           {blogs.map((article) => (
             <Link
               key={article.id}

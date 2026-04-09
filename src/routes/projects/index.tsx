@@ -96,14 +96,13 @@ function RouteComponent() {
 
       {/* Page Header */}
       <div className="mb-10 max-w-2xl">
-        <Title className='heading'>
-          Projects I've Built
-        </Title>
+        <div className='heading'>
+          Built for Real-World Use
+        </div>
         <Text size="lg" c="dimmed">
-          Here is a collection of applications and platforms I have designed
-          and developed. These projects showcase my ability to build scalable,
-          production-ready web applications using modern technologies like
-          React, TanStack Start, Drizzle ORM, and PostgreSQL.
+          A selection of applications and platforms brought to life from initial concept
+          to final delivery. Each project highlights my approach to creating dependable,
+          well-structured systems that are built to scale and easy to use.
         </Text>
       </div>
 
@@ -204,7 +203,7 @@ function RouteComponent() {
       ) : projects.length === 0 ? (
         <div className="flex justify-center py-24">
           <Stack align="center" gap="md">
-            <ThemeIcon size={72} radius="md"  variant="light" color="indigo">
+            <ThemeIcon size={72} radius="md" variant="light" color="indigo">
               <FolderOpen size={36} />
             </ThemeIcon>
             <Title order={3}>No projects found</Title>
@@ -235,9 +234,8 @@ function RouteComponent() {
         </div>
       ) : (
         <div
-          className={`grid gap-10 sm:grid-cols-2 lg:grid-cols-3 transition-opacity duration-200 ${
-            isPlaceholderData ? 'opacity-60' : 'opacity-100'
-          }`}
+          className={`grid gap-10 sm:grid-cols-2 lg:grid-cols-3 transition-opacity duration-200 ${isPlaceholderData ? 'opacity-60' : 'opacity-100'
+            }`}
         >
           {projects.map((project) => (
             <Card
@@ -259,7 +257,7 @@ function RouteComponent() {
                       className="h-full w-full transition-transform duration-300 hover:scale-105"
                     />
                   ) : (
-                    <ThemeIcon size={56} radius="md"  variant="light" color="gray">
+                    <ThemeIcon size={56} radius="md" variant="light" color="gray">
                       <FolderKanban size={28} />
                     </ThemeIcon>
                   )}
@@ -280,8 +278,8 @@ function RouteComponent() {
                   <Badge
                     color={project.isPublic ? "blue" : "green"}
                     variant="light"
-                     size="sm"
-                     radius="md"
+                    size="sm"
+                    radius="md"
                     className="w-fit"
                   >
                     {project.isPublic ? "Open Source" : "Private Project"}
@@ -319,7 +317,7 @@ function RouteComponent() {
               <Stack mt="md" gap="xs">
                 <Link to="/projects/$id" params={{ id: project.id }} className="no-underline">
                   <Button
-                  radius="md"
+                    radius="md"
                     leftSection={<FolderKanban size={16} />}
                     variant="gradient"
                     fullWidth

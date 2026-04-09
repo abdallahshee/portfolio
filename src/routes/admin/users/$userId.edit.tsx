@@ -18,7 +18,7 @@ function RouteComponent() {
 
   // ✅ Use the prefetched query directly — no useState/useEffect needed
   // since the loader already prefetched this data
-  const { data: theUser,error } = useSuspenseQuery(getAuthUserByIdQueryOptions(userId))
+  const { data: theUser, error } = useSuspenseQuery(getAuthUserByIdQueryOptions(userId))
 
   return (
     <Container size="sm" className="py-10">
