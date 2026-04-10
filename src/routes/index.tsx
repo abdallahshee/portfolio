@@ -60,7 +60,7 @@ export const Route = createFileRoute('/')({
 
 const STATS = [
   { icon: <Briefcase size={18} />, value: '4+', label: 'Years Experience', color: 'indigo' },
-  { icon: <FolderKanban size={18} />, value: '20+', label: 'Projects Delivered', color: 'blue' },
+  { icon: <FolderKanban size={18} />, value: '10+', label: 'Projects Delivered', color: 'blue' },
   { icon: <Users size={18} />, value: '10+', label: 'Happy Clients', color: 'green' },
   // { icon: <Star size={18} />, value: '100%', label: 'On-Time Delivery', color: 'yellow' },
 ]
@@ -162,15 +162,15 @@ function App() {
           </Group>
         </Stack>
 
-     <div className="flex justify-center lg:justify-end">
-  <div className="relative h-[240px] overflow-hidden rounded-2xl sm:h-[280px] lg:h-[320px]">
-    <img
-      src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
-      alt="Abdallah Shee"
-      className="block h-full w-full rounded-2xl object-cover"
-    />
-  </div>
-</div>
+        <div className="flex justify-center lg:justify-end">
+          <div className="relative h-[240px] overflow-hidden rounded-2xl sm:h-[280px] lg:h-[320px]">
+            <img
+              src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
+              alt="Abdallah Shee"
+              className="block h-full w-full rounded-2xl object-cover"
+            />
+          </div>
+        </div>
       </section>
 
       {/* ── STATS ── */}
@@ -188,20 +188,20 @@ function App() {
                 variant="light"
                 color={stat.color}
                 radius="md"
-                size={42}
+                size={36}
                 className="shadow-sm transition-transform group-hover:scale-110"
               >
                 {stat.icon}
               </ThemeIcon>
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-4">
                 <div className="text-2xl font-extrabold leading-none tracking-tight">
                   {stat.value}
                 </div>
 
-                <div className="w-8 h-[1px] bg-gradient-to-r from-indigo-500 to-transparent" />
+                {/* <div className="w-8 h-[1px] bg-gradient-to-r from-indigo-500 to-transparent" /> */}
 
-                <Text size="sm" c="dimmed">
+                <Text size="md" c="dimmed">
                   {stat.label}
                 </Text>
               </div>
@@ -514,7 +514,7 @@ function App() {
           <div className="relative flex justify-center">
             <Stack gap="lg" align="center" className="text-center max-w-2xl">
               <div className="space-y-2">
-                <div className="title3">
+                <div className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
                   Let me turn your idea into reality
                 </div>
 

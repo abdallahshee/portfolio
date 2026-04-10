@@ -190,74 +190,74 @@ function ServicesPage() {
     <Container size="xl" className="space-y-16 py-10">
 
       {/* ── HERO ── */}
-   <section className="grid items-stretch gap-8 lg:grid-cols-[2fr_1fr] lg:gap-14">
-  <Stack gap="md">
-    <Stack gap="md">
-      <div className="heading">
-        Software solutions for real business needs
-      </div>
+      <section className="grid items-stretch gap-8 lg:grid-cols-[2fr_1fr] lg:gap-14">
+        <Stack gap="md">
+          <Stack gap="md">
+            <div className="heading">
+              Software solutions for real business needs
+            </div>
 
-      <Text size="lg" c="dimmed" className="leading-8">
-        I help businesses and startups turn ideas into reliable, production-ready
-        systems — from management platforms and SaaS products to tailored web
-        applications built for performance, scalability, and long-term growth.
-      </Text>
-    </Stack>
+            <Text size="lg" c="dimmed" className="leading-8">
+              I help businesses and startups turn ideas into reliable, production-ready
+              systems — from management platforms and SaaS products to tailored web
+              applications built for performance, scalability, and long-term growth.
+            </Text>
+          </Stack>
 
-    <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm">
-      <Paper withBorder radius="md" p="md" className="shadow-sm">
-        <Text fw={700} size="sm">Scalable Systems</Text>
-        <Text size="sm" c="dimmed" mt={4}>
-          Designed to grow with your users and workflows.
-        </Text>
-      </Paper>
+          <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm">
+            <Paper withBorder radius="md" p="md" className="shadow-sm">
+              <Text fw={700} size="sm">Scalable Systems</Text>
+              <Text size="sm" c="dimmed" mt={4}>
+                Designed to grow with your users and workflows.
+              </Text>
+            </Paper>
 
-      <Paper withBorder radius="md" p="md" className="shadow-sm">
-        <Text fw={700} size="sm">Clean Architecture</Text>
-        <Text size="sm" c="dimmed" mt={4}>
-          Maintainable codebases built for long-term success.
-        </Text>
-      </Paper>
+            <Paper withBorder radius="md" p="md" className="shadow-sm">
+              <Text fw={700} size="sm">Clean Architecture</Text>
+              <Text size="sm" c="dimmed" mt={4}>
+                Maintainable codebases built for long-term success.
+              </Text>
+            </Paper>
 
-      <Paper withBorder radius="md" p="md" className="shadow-sm">
-        <Text fw={700} size="sm">Business Focused</Text>
-        <Text size="sm" c="dimmed" mt={4}>
-          Solutions aligned with real operational needs.
-        </Text>
-      </Paper>
-    </SimpleGrid>
+            <Paper withBorder radius="md" p="md" className="shadow-sm">
+              <Text fw={700} size="sm">Business Focused</Text>
+              <Text size="sm" c="dimmed" mt={4}>
+                Solutions aligned with real operational needs.
+              </Text>
+            </Paper>
+          </SimpleGrid>
 
-    <Group gap="sm">
-      <Link to="/contact">
-        <Button
-          color="green"
-          radius="md"
-          variant="filled"
-          size="sm"
-          leftSection={<Lightbulb size={16} color="yellow" />}
-        >
-          Discuss Your Idea with Me
-        </Button>
-      </Link>
+          <Group gap="sm">
+            <Link to="/contact">
+              <Button
+                color="green"
+                radius="md"
+                variant="filled"
+                size="sm"
+                leftSection={<Lightbulb size={16} color="yellow" />}
+              >
+                Discuss Your Idea with Me
+              </Button>
+            </Link>
 
-      <Button
-        variant="outline"
-        color="indigo"
-        radius="md"
-        size="sm"
-        onClick={() => router.navigate({ to: "/" })}
-      >
-        Back to Home
-      </Button>
-    </Group>
-  </Stack>
+            <Button
+              variant="outline"
+              color="indigo"
+              radius="md"
+              size="sm"
+              onClick={() => router.navigate({ to: "/" })}
+            >
+              Back to Home
+            </Button>
+          </Group>
+        </Stack>
 
-  <div className="flex items-stretch justify-center lg:justify-end">
-    <div className="w-full" style={{ isolation: 'isolate' }}>
-      <ServiceComponent />
-    </div>
-  </div>
-</section>
+        <div className="flex items-stretch justify-center lg:justify-end">
+          <div className="w-full" style={{ isolation: 'isolate' }}>
+            <ServiceComponent />
+          </div>
+        </div>
+      </section>
 
       {/* ── SERVICES GRID ── */}
       <section className="space-y-3">
@@ -350,7 +350,7 @@ function ServicesPage() {
             </Text>
           </div>
 
-          <SimpleGrid cols={{ base: 2, sm: 2, lg: 2 }} spacing="md">
+          <SimpleGrid cols={{ base: 2, sm: 2, lg: 2 }} spacing="sm">
             {TECH_STACK.map((tech) => (
               <Paper
                 key={tech.name}
@@ -362,7 +362,7 @@ function ServicesPage() {
                 <div className="flex items-center gap-1">
 
                   {/* icon / bullet */}
-                  <div className="flex items-center justify-center w-6 h-6 text-blue-500 text-2xl font-bold">
+                  <div className="flex items-center justify-center w-4 h-4 text-blue-500 text-2xl font-bold">
                     •
                   </div>
 
@@ -417,10 +417,10 @@ function ServicesPage() {
           radius="24px"
           withBorder
           shadow="sm"
-          className="relative overflow-hidden border border-slate-200/70 bg-gradient-to-br from-white via-indigo-50 to-blue-50 px-6 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
+          className="relative overflow-hidden border border-slate-200/70 bg-linear-to-br from-white via-indigo-50 to-blue-50 px-6 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
         >
           <Stack align="center" gap="md">
-            <div className="title3 bg-gradient-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
+            <div className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
               Ready to Build Your Product?
             </div>
             <Text c="dimmed" size="lg" className="max-w-2xl leading-8">
