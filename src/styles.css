@@ -294,52 +294,45 @@ a {
 }
 
 /* 🚀 Faster animations */
+/* 🚀 Much faster floating */
 .node-float {
-  animation: float-node 2.2s ease-in-out infinite;
+  animation: float-node 1.4s ease-in-out infinite;
 }
 
 .node-float-slow {
-  animation: float-node-slow 2.8s ease-in-out infinite;
+  animation: float-node-slow 1.8s ease-in-out infinite;
 }
 
 .node-float-delayed {
-  animation: float-node 2.5s ease-in-out infinite;
-  animation-delay: 0.3s;
+  animation: float-node 1.5s ease-in-out infinite;
+  animation-delay: 0.15s;
 }
 
 .node-float-slow-delayed {
-  animation: float-node-slow 2.6s ease-in-out infinite;
-  animation-delay: 0.6s;
+  animation: float-node-slow 1.7s ease-in-out infinite;
+  animation-delay: 0.3s;
 }
 
 .node-float-extra {
-  animation: float-node 2.4s ease-in-out infinite;
-  animation-delay: 0.2s;
+  animation: float-node 1.45s ease-in-out infinite;
+  animation-delay: 0.1s;
 }
 
-@keyframes flow-line {
-  0%, 100% {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 1;
-  }
-}
-
+/* ⚡ Faster flow lines (dots movement effect) */
 .flow-line {
-  animation: flow-line 1.4s linear infinite;
+  animation: flow-line 0.8s linear infinite;
 }
 
 .flow-delay-1 {
-  animation-delay: 0.2s;
+  animation-delay: 0.1s;
 }
 
 .flow-delay-2 {
-  animation-delay: 0.4s;
+  animation-delay: 0.2s;
 }
 
 .flow-delay-3 {
-  animation-delay: 0.6s;
+  animation-delay: 0.3s;
 }
 .site-footer {
   border-top: 1px solid var(--line);

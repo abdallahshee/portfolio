@@ -97,6 +97,30 @@ export const userUpdateProfile = createServerFn({ method: 'POST' })
   })
 
 
+export const getCurrentUser = createServerFn({ method: 'GET' })
+  .middleware([AuthenticatedMiddleware])
+  .handler(async () => {
+    try {
+      const supabase = getSupabaseServerClient()
 
+      const { data, error } = await supabase.auth.getUser()
 
+      if (error) {
+        throw new Error(error.message)
+      }
+
+      if (!data.user?.id) {
+        return null
+      }
+
+      const theUser = await db.query.user.findFirst({
+        where: eq(user.id, data.user.id),
+      })
+
+      return theUser ?? null
+    } catch (err) {
+      console.error('Error getting current user:', err)
+      throw err
+    }
+  })
 

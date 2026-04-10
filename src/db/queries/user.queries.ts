@@ -1,5 +1,5 @@
 import { getAllAuthUsers } from "@/server/admin.functions";
-import { getAuthUser, getUserById } from "@/server/users.functions";
+import { getAuthUser, getCurrentUser, getUserById } from "@/server/users.functions";
 import { queryOptions } from "@tanstack/react-query";
 
 export const getAllUsersQueryOptions = (
@@ -21,4 +21,11 @@ export const getAllUsersQueryOptions = (
   export const getAuthUserQueryOptions=()=>queryOptions({
     queryKey:["authUser"],
     queryFn:()=>getAuthUser()
+  })
+
+  export const getCurrentUserQueryOptions = () =>
+  queryOptions({
+    queryKey: ['current-user'],
+    queryFn: () => getCurrentUser(),
+    retry: false, // optional: avoid retry loops if not authenticated
   })

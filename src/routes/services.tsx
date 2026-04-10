@@ -97,8 +97,8 @@ const SERVICES = [
   },
   {
     icon: <Plug size={24} />,
-    title: 'API Integrations & System Connectivity',
-    desc: 'Seamless integration with third-party services such as payment gateways (M-Pesa, Stripe), SMS/email providers, CRMs, accounting tools, and external APIs — enabling your systems to communicate, automate workflows, and scale efficiently.',
+    title: 'API & System Integrations',
+    desc: 'Reliable integration with third-party services like payment gateways (M-Pesa, Stripe), SMS/email providers, CRMs, accounting tools, and APIs — ensuring seamless data flow and communication between your systems.',
     color: 'blue',
   },
   {
@@ -148,12 +148,17 @@ const TECH_STACK = [
   { name: 'React 19', category: 'Frontend', color: 'cyan' },
   { name: 'TanStack Start', category: 'Framework', color: 'orange' },
   { name: 'TanStack Query', category: 'Data Fetching', color: 'red' },
+  { name: 'TanStack Router', category: 'Routing', color: 'orange' },
   { name: 'Tailwind CSS', category: 'Styling', color: 'teal' },
+  { name: 'Mantine UI', category: 'Component Library', color: 'blue' },
   { name: 'PostgreSQL', category: 'Database', color: 'blue' },
   { name: 'Drizzle ORM', category: 'ORM', color: 'green' },
   { name: 'Supabase', category: 'Backend-as-a-Service', color: 'green' },
+  { name: 'Python', category: 'Language', color: 'yellow' },
   { name: 'Zod', category: 'Validation', color: 'violet' },
   { name: 'Vercel', category: 'Deployment', color: 'gray' },
+  { name: 'Git', category: 'Version Control', color: 'orange' },
+
 ]
 
 const TESTIMONIALS = [
@@ -350,26 +355,26 @@ function ServicesPage() {
             </Text>
           </div>
 
-         <SimpleGrid cols={{ base: 2, sm: 2, lg: 2 }} spacing="sm">
-  {TECH_STACK.map((tech) => (
-    <Paper
-      key={tech.name}
-      radius="md"
-      withBorder
-      p="xs"
-      className="group h-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-    >
-      <div className="flex items-center gap-1">
-        <div className="flex items-center justify-center w-4 h-4 text-blue-500 text-2xl font-bold">
-          •
-        </div>
-        <Text fw={600} size="sm" className="leading-none">
-          {tech.name}
-        </Text>
-      </div>
-    </Paper>
-  ))}
-</SimpleGrid>
+          <SimpleGrid cols={{ base: 2, sm: 2, lg: 2 }} spacing="sm">
+            {TECH_STACK.map((tech) => (
+              <Paper
+                key={tech.name}
+                radius="md"
+                withBorder
+                p="xs"
+                className="group h-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+              >
+                <div className="flex items-center gap-1">
+                  <div className="flex items-center justify-center w-4 h-4 text-blue-500 text-2xl font-bold">
+                    •
+                  </div>
+                  <Text fw={600} size="sm" className="leading-none">
+                    {tech.name}
+                  </Text>
+                </div>
+              </Paper>
+            ))}
+          </SimpleGrid>
         </section>
       </div>
 
