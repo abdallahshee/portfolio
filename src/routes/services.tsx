@@ -350,31 +350,26 @@ function ServicesPage() {
             </Text>
           </div>
 
-          <SimpleGrid cols={{ base: 2, sm: 2, lg: 2 }} spacing="sm">
-            {TECH_STACK.map((tech) => (
-              <Paper
-                key={tech.name}
-                radius="md"
-                withBorder
-                p="md"
-                className="group h-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
-              >
-                <div className="flex items-center gap-1">
-
-                  {/* icon / bullet */}
-                  <div className="flex items-center justify-center w-4 h-4 text-blue-500 text-2xl font-bold">
-                    •
-                  </div>
-
-                  {/* text */}
-                  <Text fw={600} size="sm" className="leading-none">
-                    {tech.name}
-                  </Text>
-
-                </div>
-              </Paper>
-            ))}
-          </SimpleGrid>
+         <SimpleGrid cols={{ base: 2, sm: 2, lg: 2 }} spacing="sm">
+  {TECH_STACK.map((tech) => (
+    <Paper
+      key={tech.name}
+      radius="md"
+      withBorder
+      p="xs"
+      className="group h-full transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md"
+    >
+      <div className="flex items-center gap-1">
+        <div className="flex items-center justify-center w-4 h-4 text-blue-500 text-2xl font-bold">
+          •
+        </div>
+        <Text fw={600} size="sm" className="leading-none">
+          {tech.name}
+        </Text>
+      </div>
+    </Paper>
+  ))}
+</SimpleGrid>
         </section>
       </div>
 
