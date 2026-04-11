@@ -179,7 +179,7 @@ function App() {
           <Paper
             key={stat.label}
             radius="md"
-
+          withBorder
             p="sm"
             className="group shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-white to-gray-50 dark:from-slate-900 dark:to-slate-800"
           >
