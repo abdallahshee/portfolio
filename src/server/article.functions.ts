@@ -57,7 +57,7 @@ export const getAllArticles = createServerFn()
                 .select({
                     id: article.id,
                     title: article.title,
-                    authorImage: user.image,
+                    authorImage: user.avatar,
                     tags: article.tags,
                     content: article.content,
                     coverImage: article.coverImage,
@@ -73,7 +73,7 @@ export const getAllArticles = createServerFn()
                 .leftJoin(category, eq(article.categoryId, category.id))
                 .leftJoin(articleLike, eq(article.id, articleLike.articleId))
                 .leftJoin(comment, eq(article.id, comment.articleId))
-                .groupBy(article.id, user.image, category.name)
+                .groupBy(article.id, user.avatar, category.name)
                 .orderBy(desc(sql`COUNT(DISTINCT ${articleLike.id})`))
 
             return blogs
@@ -101,7 +101,7 @@ export const getArticleBySlug = createServerFn()
                     slug: article.slug,
                     status: article.status,
                     authorName: user.name,
-                    authorImage: user.image,
+                    authorImage: user.avatar,
                     categoryId: category.id,
                     categoryName: category.name,
                     createdAt: article.createdAt,
@@ -125,7 +125,7 @@ export const getArticleBySlug = createServerFn()
                     createdAt: comment.createdAt,
                     authorId: user.id,
                     authorName: user.name,
-                    authorImage: user.image,
+                    authorImage: user.avatar,
                 })
                 .from(comment)
                 .leftJoin(user, eq(comment.userId, user.id))
@@ -192,7 +192,7 @@ export const getPaginatedArticles = createServerFn({ method: 'GET' })
                     coverImage: article.coverImage,
                     createdAt: article.createdAt,
                     userId: user.id,
-                    authorImage: user.image,
+                    authorImage: user.avatar,
                     authorName: user.name,
                     categoryName: category.name,
                     likes: sql<number>`COUNT(DISTINCT ${articleLike.id})`,
@@ -211,7 +211,7 @@ export const getPaginatedArticles = createServerFn({ method: 'GET' })
                     article.coverImage,
                     article.createdAt,
                     user.id,
-                    user.image,
+                    user.avatar,
                     user.name,
                     category.name,
                 )
@@ -253,7 +253,7 @@ export const getTopArticles = createServerFn({ method: "GET" })
                     title: article.title,
                     slug: article.slug,
                     coverImage: article.coverImage,
-                    authorImage: user.image,
+                    authorImage: user.avatar,
                     categoryName: category.name,
                     likes: sql<number>`COUNT(DISTINCT ${articleLike.id})`,
                     comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
@@ -263,7 +263,7 @@ export const getTopArticles = createServerFn({ method: "GET" })
                 .leftJoin(category, eq(article.categoryId, category.id))
                 .leftJoin(articleLike, eq(article.id, articleLike.articleId))
                 .leftJoin(comment, eq(article.id, comment.articleId))
-                .groupBy(article.id, user.image, category.name)
+                .groupBy(article.id, user.avatar, category.name)
                 .limit(3)
             return topArticles
         } catch (err) {
@@ -336,7 +336,7 @@ export const searchPaginatedArticles = createServerFn({ method: "GET" })
                         categoryName: category.name,
                         likes: sql<number>`(select count(*) from article_like where article_id = ${article.id})`,
                         comments: sql<number>`(select count(*) from comment where article_id = ${article.id})`,
-                        authorImage: user.image,
+                        authorImage: user.avatar,
                         authorName: user.name,
                     })
                     .from(article)
@@ -393,7 +393,7 @@ export const getUserPaginatedArticles = createServerFn({ method: 'GET' })
                         coverImage: article.coverImage,
                         createdAt: article.createdAt,
                         categoryName: category.name,
-                        authorImage: user.image,
+                        authorImage: user.avatar,
                         likes: sql<number>`COUNT(DISTINCT ${articleLike.id})`,
                         comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
                     })
@@ -410,7 +410,7 @@ export const getUserPaginatedArticles = createServerFn({ method: 'GET' })
                         article.excerpt,
                         article.coverImage,
                         article.createdAt,
-                        user.image,
+                        user.avatar,
                         category.name,
                     )
                     .orderBy(desc(article.createdAt))

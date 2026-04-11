@@ -1,6 +1,7 @@
 export type UserMetadata = {
-  name: string | null
-  avatar_url: string | null
+  name: string
+  avatar: string
+  role:string
   
 }
 
@@ -8,6 +9,7 @@ export type UserMetadata = {
 declare module '@supabase/supabase-js' {
   interface UserMetadata {
     name: string 
-    avatar_url: string 
+    avatar: string 
+    role:string
   }
 }

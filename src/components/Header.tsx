@@ -50,25 +50,45 @@ export default function Header() {
   const [session, setSession] = useState<Session | null>(null)
   const [isSessionLoading, setIsSessionLoading] = useState(true)
   const [isNavigatingAway, setIsNavigatingAway] = useState(false)
+  const [hasInitialized, setHasInitialized] = useState(false)
+  const [cameFromLogin, setCameFromLogin] = useState(false)
 
   const isRouterNavigating = useRouterState({
     select: (state) => state.isLoading,
   })
 
+  const currentPath = useRouterState({
+    select: (state) => state.resolvedLocation?.pathname,
+  })
+
+  // ✅ Detect when navigating away from /account
+ // ✅ Detect when on the login page specifically
+useEffect(() => {
+  if (currentPath === "/account") {
+    setCameFromLogin(true)
+  }
+}, [currentPath])
+
+// ✅ Clear once router finishes navigating away from login
+useEffect(() => {
+  if (!isRouterNavigating && cameFromLogin && currentPath !== "/account") {
+    setCameFromLogin(false)
+  }
+}, [isRouterNavigating, cameFromLogin, currentPath])
   useEffect(() => {
     let mounted = true
 
-    supabase.auth
-      .getSession()
-      .then(({ data }: { data: { session: Session | null } }) => {
-        if (!mounted) return
-        setSession(data?.session ?? null)
-        setIsSessionLoading(false)
-      })
+    supabase.auth.getSession().then(({ data }) => {
+      if (!mounted) return
+      setSession(data?.session ?? null)
+      setIsSessionLoading(false)
+      setHasInitialized(true)
+    })
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (event: AuthChangeEvent, nextSession: Session | null) => {
         if (!mounted) return
+
         if (
           event === "SIGNED_IN" ||
           event === "SIGNED_OUT" ||
@@ -76,6 +96,14 @@ export default function Header() {
         ) {
           setIsNavigatingAway(true)
         }
+
+        if (event === "INITIAL_SESSION") {
+          setSession(nextSession)
+          setIsSessionLoading(false)
+          setHasInitialized(true)
+          return
+        }
+
         setSession(nextSession)
         setIsSessionLoading(false)
       }
@@ -102,7 +130,7 @@ export default function Header() {
     const initial = getInitialMode()
     setThemeMode(initial)
     applyThemeMode(initial)
-    const timeout = setTimeout(() => applyThemeMode(initial), 50)
+    const timeout = setTimeout(() => applyThemeMode(initial), 100)
     return () => clearTimeout(timeout)
   }, [])
 
@@ -130,12 +158,9 @@ export default function Header() {
     await router.navigate({ to: "/account/register", search: { callbackUrl: "/" } })
   }
 
-  const handleProfileChange = async (userId: string) => {
+  const handleProfileChange = async () => {
     setOpened(false)
-    if (isAdmin) {
-      await router.navigate({ to: "/admin/users/$userId/edit", params: { userId } })
-      return
-    }
+ 
     await router.navigate({ to: "/account/profile/edit" })
   }
 
@@ -147,7 +172,12 @@ export default function Header() {
     { label: "Contact", to: "/contact" },
   ]
 
-  const showSkeleton = isSessionLoading || isNavigatingAway
+  // ✅ Show skeleton on first load, during auth navigation,
+  // and while router is still navigating away from login
+  const showSkeleton =
+    !hasInitialized ||
+    isNavigatingAway ||
+    (cameFromLogin && isRouterNavigating)
 
   const BrandLogo = (
     <Link
@@ -205,7 +235,7 @@ export default function Header() {
         <UnstyledButton className="ml-4 flex-shrink-0 rounded-full transition hover:bg-slate-100 dark:hover:bg-slate-800">
           <Group gap="sm" className="px-2 py-1.5">
             <Avatar
-              src={user?.user_metadata?.avatar_url}
+              src={user?.user_metadata?.avatar}
               alt={user?.user_metadata?.name}
               radius="md"
               size="sm"
@@ -235,7 +265,7 @@ export default function Header() {
 
         <Menu.Item
           leftSection={<Settings size={16} className="text-blue-600" />}
-          onClick={() => handleProfileChange(user?.id!)}
+          onClick={() => handleProfileChange()}
         >
           Edit Profile
         </Menu.Item>
@@ -268,7 +298,6 @@ export default function Header() {
 
   return (
     <header className="fixed left-0 top-0 z-[100] h-15 w-full bg-slate-50 shadow-lg dark:bg-slate-700">
-
       {/* Gradient border bottom */}
       <div
         className="absolute bottom-0 left-0 w-full h-[2px]"
@@ -279,6 +308,7 @@ export default function Header() {
       />
 
       <div className="container mx-auto flex h-full items-center justify-between px-4">
+
         {/* Brand Logo */}
         {BrandLogo}
 
@@ -358,7 +388,7 @@ export default function Header() {
                 <div className="flex flex-col space-y-3">
                   <div className="flex items-center space-x-3">
                     <Avatar
-                      src={user?.user_metadata?.avatar_url}
+                      src={user?.user_metadata?.avatar}
                       alt={user?.user_metadata?.name}
                       radius="md"
                       size="sm"
@@ -399,7 +429,7 @@ export default function Header() {
                     size="sm"
                     fullWidth
                     leftSection={<Settings size={15} />}
-                    onClick={() => handleProfileChange(user.id)}
+                    onClick={() => handleProfileChange()}
                   >
                     Edit Profile
                   </Button>

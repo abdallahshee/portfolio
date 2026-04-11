@@ -18,7 +18,7 @@ export const getUserById = createServerFn({ method: "GET" })
           userId: user.id,
           email: user.email,
           name: user.name,
-          avatar: user.image,
+          avatar: user.avatar,
           lastSignIn: user.lastSignInAt,
           createdAt: user.createdAt,
           updatedAt: user.updatedAt,
@@ -32,7 +32,7 @@ export const getUserById = createServerFn({ method: "GET" })
           user.id,
           user.email,
           user.name,
-          user.image,
+          user.avatar,
           user.lastSignInAt,
           user.createdAt,
           user.updatedAt,
@@ -72,12 +72,12 @@ export const userUpdateProfile = createServerFn({ method: 'POST' })
       const supabase = getSupabaseServerClient()
 
       const nextName = data.name.trim()
-      const nextImage = data.image.trim()
+      const nextImage = data.avatar.trim()
 
       const { data: updatedUser, error } = await supabase.auth.updateUser({
         data: {
           name: nextName,
-          avatar_url: nextImage,
+          avatar: nextImage,
         },
       })
 
@@ -117,7 +117,7 @@ export const getCurrentUser = createServerFn({ method: 'GET' })
         where: eq(user.id, data.user.id),
       })
 
-      return theUser ?? null
+      return theUser
     } catch (err) {
       console.error('Error getting current user:', err)
       throw err

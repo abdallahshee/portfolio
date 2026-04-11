@@ -34,7 +34,7 @@ const DEFAULT_AVATAR_URL = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/obje
 function RouteComponent() {
   const { callbackUrl } = Route.useSearch()
   const router = useRouter()
-  const client = getSupabaseBrowserClient()
+  const supabase = getSupabaseBrowserClient()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [oauthProvider, setOauthProvider] = useState<"facebook" | "google" | null>(null)
   const [formError, setFormError] = useState<string | null>(null)
@@ -44,7 +44,7 @@ function RouteComponent() {
       name: "",
       email: "",
       password: "",
-      image: DEFAULT_AVATAR_URL, // ✅ set default avatar as initial value
+      avatar: DEFAULT_AVATAR_URL, // ✅ set default avatar as initial value
       confirmPassword: "",
     },
     validate: zod4Resolver(SignUpSchema),
@@ -52,24 +52,24 @@ function RouteComponent() {
   })
 
   const handleSubmit = async (values: SignUpRequest) => {
+    // console.log(values)
     setFormError(null)
     try {
       setIsSubmitting(true)
-
-      const { data, error } = await client.auth.signUp({
-        email: values.email.trim().toLowerCase(),
+      const { data, error } = await supabase.auth.signUp({
+        email: values.email,
         password: values.password,
         options: {
-          emailRedirectTo: `${window.location.origin}`,
+          emailRedirectTo: `${window.location.origin}/`,
           data: {
             name: values.name,
-            avatar_url: DEFAULT_AVATAR_URL,
-            role: "user"
+            avatar: DEFAULT_AVATAR_URL,
           },
         },
       })
 
       if (error) {
+        console.log(error)
         setFormError(error.message)
         return
       }
@@ -111,7 +111,7 @@ function RouteComponent() {
   const handleOAuthSignUp = async (provider: "google" | "facebook") => {
     try {
       setOauthProvider(provider)
-      const { error } = await client.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
           redirectTo: `${window.location.origin}${callbackUrl}`,

@@ -13,7 +13,7 @@ export const SignUpSchema = createSelectSchema(user, {
         /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
         "Must be a valid email address"
     )
-}).pick({ name: true, email: true, image: true })
+}).pick({ name: true, email: true, avatar: true })
     .extend({
         password: z.string()
             .min(8, "Password must be at least 8 characters")
@@ -60,7 +60,7 @@ export const UserUpdateProfileSchema=createSelectSchema(user,{
    name: z.string().nonempty("Username is required")
         .min(3, "At 3 characters for a username")
         .max(15, "Too long for a Username"),
-        image:z.string().min(3)
-}).pick({ name:true,image:true})
+        avatar:z.string().min(3)
+}).pick({ name:true,avatar:true})
 
 export type UserUpdateProfileRequest=z.infer<typeof UserUpdateProfileSchema>
