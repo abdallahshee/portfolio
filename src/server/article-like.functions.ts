@@ -20,11 +20,9 @@ export const likeBlog = createServerFn()
     .inputValidator((data: { articleId: string }) => data)
     .handler(async ({ data, context }) => {
         const currentUserId = context.userId
-
         if (!currentUserId) {
             throw new Error("You must be logged in to like a blog")
         }
-
         // Check if already liked — prevent duplicates
         const existingLike = await db
             .select({ id: articleLike.id })
@@ -36,16 +34,13 @@ export const likeBlog = createServerFn()
                 )
             )
             .limit(1)
-
         if (existingLike.length > 0) {
             throw new Error("You have already liked this blog")
         }
-
         await db.insert(articleLike).values({
             articleId: data.articleId,
             userId: currentUserId,
         })
-
         return {
             likes: await getLikesCount(data.articleId),
             likedByUser: true,
@@ -58,11 +53,9 @@ export const dislikeArticle = createServerFn()
     .inputValidator((data: { articleId: string }) => data)
     .handler(async ({ data, context }) => {
         const currentUserId = context.userId
-
         if (!currentUserId) {
             throw new Error("You must be logged in to dislike a blog")
         }
-
         // Check if the like exists before trying to delete
         const existingLike = await db
             .select({ id: articleLike.id })
@@ -74,11 +67,9 @@ export const dislikeArticle = createServerFn()
                 )
             )
             .limit(1)
-
         if (existingLike.length === 0) {
             throw new Error("You have not liked this blog yet")
         }
-
         await db
             .delete(articleLike)
             .where(
@@ -87,7 +78,6 @@ export const dislikeArticle = createServerFn()
                     eq(articleLike.userId, currentUserId)
                 )
             )
-
         return {
             likes: await getLikesCount(data.articleId),
             likedByUser: false,

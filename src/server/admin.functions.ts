@@ -7,7 +7,6 @@ import { AdminMiddleware, AuthenticatedMiddleware } from "./middleware/auth.midd
 import { PublishArticleSchema } from "@/db/validations/article.types"
 import { getSupabaseAdmin } from "@/lib/supabase/server"
 import { GetUsersSchema, AdminUserUpdateSchema } from "@/db/validations/admin.types"
-import { dataTagErrorSymbol } from "@tanstack/react-query"
 
 // ── Dashboard stats ──
 export const getAdminStats = createServerFn({ method: "GET" })
@@ -36,8 +35,6 @@ export const deleteProject = createServerFn({ method: "POST" })
   })
 
 // ── Admin blogs ──
-
-
 export const deleteBlog = createServerFn({ method: "POST" })
   .inputValidator((data: { blogId: string }) => data)
   .middleware([AuthenticatedMiddleware])
@@ -56,7 +53,6 @@ export const updateArticleStatus = createServerFn({ method: "POST" })
       .where(eq(article.id, data.blogId))
     return { success: true }
   })
-
 
 export const publishArticle = createServerFn({ method: "POST" })
   .middleware([AuthenticatedMiddleware])
@@ -92,9 +88,7 @@ export const adminUpdateUserProfile = createServerFn({ method: "POST" })
       if (authError) {
         throw new Error(`Auth update failed: ${authError.message}`)
       }
-
       return { success: true }
-
     } catch (err) {
       const message = err instanceof Error ? err.message : "Failed to update user"
       throw err
@@ -108,14 +102,11 @@ export const getAllAuthUsers = createServerFn({ method: "GET" })
     try {
       const supabase = getSupabaseAdmin()
       const { page, pageSize, search } = data
-
       const { data: usersData, error } = await supabase.auth.admin.listUsers({
         page,
         perPage: pageSize,
       })
-
       if (error) throw new Error(error.message)
-
       // ✅ filter by search on the full list
       const allUsers = usersData.users
       const filtered = search?.trim()

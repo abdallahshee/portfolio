@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate, useRouter } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import {
   Avatar,
   Badge,
@@ -51,7 +51,7 @@ function BlogsPage() {
   const [searchInput, setSearchInput] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [debouncedSearch] = useDebouncedValue(searchInput, 200)
-  const router = useRouter()
+
 
   const isSearching = debouncedSearch.trim().length > 0
 
@@ -95,11 +95,11 @@ function BlogsPage() {
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-2">
-      
+
           <div className='heading'>
             My Articles
           </div>
-         <Text c="dimmed" ta="center" maw={400}>
+          <Text c="dimmed" ta="center" maw={400}>
             You have written {Allarticles.length} article{Allarticles.length !== 1 ? 's' : ''}
           </Text>
         </div>
@@ -113,7 +113,7 @@ function BlogsPage() {
           <Text size="sm" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
             Search
           </Text>
-          
+
           <TextInput
             placeholder="Search by title, tag, or excerpt…"
             size="sm"
@@ -179,17 +179,17 @@ function BlogsPage() {
                 Write Article
               </Button>
             </Link>
-            <Link to='/articles' search={{page:1}}>
-                <Button
-            variant="filled"
-            color="blue"
-            size="sm"
-            radius="md"
-           
-          >
-            Back to All Articles
-          </Button>
-          </Link>
+            <Link to='/articles' search={{ page: 1 }}>
+              <Button
+                variant="filled"
+                color="blue"
+                size="sm"
+                radius="md"
+
+              >
+                Back to All Articles
+              </Button>
+            </Link>
           </Group>
         </div>
 
@@ -203,20 +203,20 @@ function BlogsPage() {
           {isSearching ? ` for "${debouncedSearch}"` : ''}
         </Text>
       )}
- <div className="mb-12 border-b border-blue-500" />
+      <div className="mb-12 border-b border-blue-500" />
       {/* Empty state */}
       {!isLoading && articles.length === 0 && (
         <div className="flex flex-col items-center justify-center rounded-2xl py-24 text-center dark:border-slate-700">
-         <div className='title2'>
+          <div className='title2'>
             {isSearching
               ? `No articles found for "${debouncedSearch}"`
               : statusFilter !== 'all'
                 ? `No ${getStatusConfig(statusFilter).label.toLowerCase()} articles`
                 : "You haven't written any articles yet"}
           </div>
-         <Text c="dimmed" ta="center" maw={400}>
-            {statusFilter !== 'all'&&
-             
+          <Text c="dimmed" ta="center" maw={400}>
+            {statusFilter !== 'all' &&
+
               'Start writing your first article!'}
           </Text>
           {(isSearching || statusFilter !== 'all') && (
@@ -230,7 +230,7 @@ function BlogsPage() {
               Clear filters
             </Button>
           )}
-          
+
         </div>
       )}
 

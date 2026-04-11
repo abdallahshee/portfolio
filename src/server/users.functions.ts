@@ -52,13 +52,10 @@ export const getAuthUser = createServerFn({ method: "GET" })
     try {
       const supabase = getSupabaseServerClient()
       const { data: result, error } = await supabase.auth.getUser()
-
       if (error) throw new Error(error.message)
       if (!result.user) throw new Error("User not found")
-
       const { user } = result
       return user
-
     } catch (err) {
       throw err
     }
@@ -70,23 +67,18 @@ export const userUpdateProfile = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     try {
       const supabase = getSupabaseServerClient()
-
       const nextName = data.name.trim()
       const nextImage = data.avatar.trim()
-
       const { data: updatedUser, error } = await supabase.auth.updateUser({
         data: {
           name: nextName,
           avatar: nextImage,
         },
       })
-
       if (error) {
         throw new Error(error.message)
       }
-
       return {
-       
         user: updatedUser.user,
       }
     } catch (err) {
@@ -102,21 +94,16 @@ export const getCurrentUser = createServerFn({ method: 'GET' })
   .handler(async () => {
     try {
       const supabase = getSupabaseServerClient()
-
       const { data, error } = await supabase.auth.getUser()
-
       if (error) {
         throw new Error(error.message)
       }
-
       if (!data.user?.id) {
         return null
       }
-
       const theUser = await db.query.user.findFirst({
         where: eq(user.id, data.user.id),
       })
-
       return theUser
     } catch (err) {
       console.error('Error getting current user:', err)

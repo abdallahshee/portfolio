@@ -7,7 +7,7 @@ import { ArticleSchema, ArticleUpdateSchema, MyPaginatedArticlesSchema } from "@
 import { article } from "@/db/schema/article.schema";
 import { articleLike } from "@/db/schema/article-like.schema";
 import { AuthenticatedMiddleware } from "./middleware/auth.middleware";
-import z from "zod"
+
 
 
 function createSlug(title: string) {
@@ -75,7 +75,6 @@ export const getAllArticles = createServerFn()
                 .leftJoin(comment, eq(article.id, comment.articleId))
                 .groupBy(article.id, user.avatar, category.name)
                 .orderBy(desc(sql`COUNT(DISTINCT ${articleLike.id})`))
-
             return blogs
         } catch (err) {
             console.log(err)
@@ -111,11 +110,8 @@ export const getArticleBySlug = createServerFn()
                 .leftJoin(user, eq(article.userId, user.id))
                 .leftJoin(category, eq(article.categoryId, category.id))
                 .where(eq(article.slug, data.slug))
-
             const articleData = articleResult[0]
-
             if (!articleData) return null
-
             // Comments
             const comments = await db
                 .select({
@@ -131,7 +127,6 @@ export const getArticleBySlug = createServerFn()
                 .leftJoin(user, eq(comment.userId, user.id))
                 .where(eq(comment.articleId, articleData.id))
                 .orderBy(desc(comment.createdAt))
-
             // Likes count
             const likesResult = await db
                 .select({
@@ -139,13 +134,9 @@ export const getArticleBySlug = createServerFn()
                 })
                 .from(articleLike)
                 .where(eq(articleLike.articleId, articleData.id))
-
             const likes = Number(likesResult[0]?.likes ?? 0)
-
             // Whether current user has liked this blog
             let likedByUser = false
-
-
             const likedResult = await db
                 .select({ id: articleLike.id })
                 .from(articleLike)
@@ -156,10 +147,7 @@ export const getArticleBySlug = createServerFn()
                     )
                 )
                 .limit(1)
-
             likedByUser = likedResult.length > 0
-
-
             return {
                 ...articleData,
                 likes,
@@ -182,7 +170,6 @@ export const getPaginatedArticles = createServerFn({ method: 'GET' })
             const page = data.page ?? 1
             const limit = data.limit ?? 6
             const offset = (page - 1) * limit
-
             const blogs = await db
                 .select({
                     id: article.id,
@@ -218,16 +205,13 @@ export const getPaginatedArticles = createServerFn({ method: 'GET' })
                 .orderBy(desc(article.createdAt))
                 .limit(limit)
                 .offset(offset)
-
             const totalResult = await db
                 .select({
                     count: sql<number>`COUNT(*)`,
                 })
                 .from(article)
-
             const total = Number(totalResult[0]?.count ?? 0)
             const totalPages = Math.ceil(total / limit)
-
             return {
                 blogs,
                 pagination: {
@@ -242,7 +226,6 @@ export const getPaginatedArticles = createServerFn({ method: 'GET' })
             throw err
         }
     })
-
 
 export const getTopArticles = createServerFn({ method: "GET" })
     .handler(async () => {
@@ -296,7 +279,6 @@ export const updateArticle = createServerFn({ method: "POST" })
             if (!updated.length) {
                 throw new Error("Blog not found or you do not have permission to edit it")
             }
-
             return updated[0]
         } catch (err) {
             console.error("Update blog failed:", err)
@@ -309,11 +291,9 @@ export const searchPaginatedArticles = createServerFn({ method: "GET" })
     .inputValidator((data: { query: string; page: number; pageSize: number }) => data)
     .handler(async ({ data }) => {
         const { query, page, pageSize } = data
-
         try {
             const offset = (page - 1) * pageSize
             const search = `%${query}%`
-
             const whereClause = query.trim()
                 ? or(
                     ilike(article.title, search),
@@ -321,7 +301,6 @@ export const searchPaginatedArticles = createServerFn({ method: "GET" })
                     sql`array_to_string(${article.tags}, ',') ilike ${search}`
                 )
                 : undefined
-
             const [articleRows, totalResult] = await Promise.all([
                 db
                     .select({
@@ -351,9 +330,7 @@ export const searchPaginatedArticles = createServerFn({ method: "GET" })
                     .from(article)
                     .where(whereClause),
             ])
-
             const total = Number(totalResult[0].count)
-
             return {
                 blogs: articleRows,
                 pagination: {
@@ -376,12 +353,11 @@ export const searchPaginatedArticles = createServerFn({ method: "GET" })
 export const getMyPaginatedArticles = createServerFn({ method: 'GET' })
     .middleware([AuthenticatedMiddleware])
     .inputValidator(MyPaginatedArticlesSchema)
-    .handler(async ({context,data }) => {
+    .handler(async ({ context, data }) => {
         try {
             const userId = context.userId
             const { page = 1, limit = 6 } = data
             const offset = (page - 1) * limit
-
             const [articles, totalResult] = await Promise.all([
                 db
                     .select({
@@ -416,16 +392,13 @@ export const getMyPaginatedArticles = createServerFn({ method: 'GET' })
                     .orderBy(desc(article.createdAt))
                     .limit(limit)
                     .offset(offset),
-
                 db
                     .select({ count: sql<number>`COUNT(*)` })
                     .from(article)
                     .where(eq(article.userId, userId)),
             ])
-
             const total = Number(totalResult[0]?.count ?? 0)
             const totalPages = Math.ceil(total / limit)
-
             return {
                 articles: articles,
                 pagination: { page, limit, total, totalPages },

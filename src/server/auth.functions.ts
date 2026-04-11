@@ -11,7 +11,6 @@ export const sendEmail = async (data: SendEmailRequest) => {
     subject: `[Portfolio Contact] ${data.subject}`,
     html: data.html,
   })
-
   console.log("Resend result:", result) // ← log the result to see if it succeeded
   return result
 }

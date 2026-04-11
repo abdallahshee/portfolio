@@ -35,8 +35,6 @@ export const createCategory = createServerFn({ method: "POST" })
         }
     })
 
-
-
 export const editCategory = createServerFn({ method: "POST" })
     .middleware([AdminMiddleware])
     .inputValidator(EditCategorySchema)
@@ -47,7 +45,6 @@ export const editCategory = createServerFn({ method: "POST" })
                 .set({ name: data.name })
                 .where(eq(category.id, data.categoryId))
                 .returning()
-
             return newCategory
         } catch (err) {
             console.log(err)

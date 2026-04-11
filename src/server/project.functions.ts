@@ -6,22 +6,18 @@ import { project, projectRating } from "@/db/schema";
 import { ProjectSchema, UpdateProjectSchema } from "@/db/validations/project.types";
 import { AdminMiddleware, OptionalAuthMiddleware } from "./middleware/auth.middleware";
 
-
 export const getAllProjects = createServerFn({ method: "GET" })
   .inputValidator((data: { page: number; pageSize: number }) => data)
   .handler(async ({ data }) => {
     try {
       const { page, pageSize } = data
       const offset = (page - 1) * pageSize
-
       const [projectRows, totalResult] = await Promise.all([
         db.select().from(project).limit(pageSize).offset(offset),
         db.select({ count: sql<number>`count(*)` }).from(project),
       ])
-
       // Fetch ratings for all projects in the current page in one query
       const projectIds = projectRows.map((p) => p.id)
-
       const ratingsResult = projectIds.length
         ? await db
           .select({
@@ -33,7 +29,6 @@ export const getAllProjects = createServerFn({ method: "GET" })
           .where(inArray(projectRating.projectId, projectIds))
           .groupBy(projectRating.projectId)
         : []
-
       // Map ratings by projectId for O(1) lookup
       const ratingsMap = new Map(
         ratingsResult.map((r) => [
@@ -46,15 +41,12 @@ export const getAllProjects = createServerFn({ method: "GET" })
           },
         ])
       )
-
       const projects = projectRows.map((p) => ({
         ...p,
         averageRating: ratingsMap.get(p.id)?.averageRating ?? 0,
         totalRatings: ratingsMap.get(p.id)?.totalRatings ?? 0,
       }))
-
       const total = Number(totalResult[0].count)
-
       return {
         projects,
         total,
@@ -74,12 +66,11 @@ export const createProject = createServerFn({ method: 'POST' })
   .handler(async ({ data }) => {
     try {
       // Insert the project into the database
-      const [theProjectId]=await db.insert(project).values({ ...data }).returning({projectId:project.id});
-      
-      return { success: true, projectId: theProjectId.projectId};
+      const [theProjectId] = await db.insert(project).values({ ...data }).returning({ projectId: project.id });
+      return { success: true, projectId: theProjectId.projectId };
     } catch (err) {
       console.error('Error creating project:', err);
-      return { success: false, projectId:null };
+      return { success: false, projectId: null };
     }
   });
 
@@ -89,10 +80,8 @@ export const getProjectById = createServerFn({ method: "GET" })
   .handler(async ({ data, context }) => {
     try {
       const userId = context.userId
-
       const [projectResult, ratingResult, userRatingResult] = await Promise.all([
         db.select().from(project).where(eq(project.id, data.projectId)),
-
         db
           .select({
             averageRating: avg(projectRating.rating),
@@ -100,12 +89,11 @@ export const getProjectById = createServerFn({ method: "GET" })
           })
           .from(projectRating)
           .where(eq(projectRating.projectId, data.projectId)),
-
         userId
           ? db
             .select({
               rating: projectRating.rating,
-              projectId:projectRating.projectId
+              projectId: projectRating.projectId
             })
             .from(projectRating)
             .where(
@@ -116,13 +104,10 @@ export const getProjectById = createServerFn({ method: "GET" })
             )
           : Promise.resolve([]),
       ])
-
       const theProject = projectResult[0]
       const rating = ratingResult[0]
       const userRating = userRatingResult[0]
-
       if (!theProject) return null
-
       return {
         ...theProject,
         averageRating: rating?.averageRating
@@ -146,7 +131,6 @@ export const updateProject = createServerFn({ method: "POST" })
         .update(project)
         .set({ ...data })
         .where(eq(project.id, data.projectId))
-
       // Fetch and return the updated project in the same shape as getProjectById
       const [projectResult, ratingResult] = await Promise.all([
         db.select().from(project).where(eq(project.id, data.projectId)),
@@ -158,12 +142,9 @@ export const updateProject = createServerFn({ method: "POST" })
           .from(projectRating)
           .where(eq(projectRating.projectId, data.projectId)),
       ])
-
       const theProject = projectResult[0]
       const rating = ratingResult[0]
-
       if (!theProject) return null
-
       return {
         ...theProject,
         averageRating: rating?.averageRating
@@ -196,7 +177,6 @@ export const getTopProjects = createServerFn({ method: "GET" })
         .groupBy(project.id)
         .orderBy(desc(avg(projectRating.rating)))
         .limit(3); // top 5 projects
-
       return topProjects;
     } catch (err) {
       console.log(err);
@@ -212,7 +192,6 @@ export const searchProjects = createServerFn({ method: "GET" })
       const { query, page, pageSize } = data
       const offset = (page - 1) * pageSize
       const search = `%${query}%`
-
       const whereClause = query.trim()
         ? or(
           ilike(project.title, search),
@@ -220,14 +199,11 @@ export const searchProjects = createServerFn({ method: "GET" })
           sql`${project.technologies}::text ilike ${search}`
         )
         : undefined
-
       const [projectRows, totalResult] = await Promise.all([
         db.select().from(project).where(whereClause).limit(pageSize).offset(offset),
         db.select({ count: sql<number>`count(*)` }).from(project).where(whereClause),
       ])
-
       const projectIds = projectRows.map((p) => p.id)
-
       const ratingsResult = projectIds.length
         ? await db
           .select({
@@ -239,7 +215,6 @@ export const searchProjects = createServerFn({ method: "GET" })
           .where(inArray(projectRating.projectId, projectIds))
           .groupBy(projectRating.projectId)
         : []
-
       const ratingsMap = new Map(
         ratingsResult.map((r) => [
           r.projectId,
@@ -251,15 +226,12 @@ export const searchProjects = createServerFn({ method: "GET" })
           },
         ])
       )
-
       const projects = projectRows.map((p) => ({
         ...p,
         averageRating: ratingsMap.get(p.id)?.averageRating ?? 0,
         totalRatings: ratingsMap.get(p.id)?.totalRatings ?? 0,
       }))
-
       const total = Number(totalResult[0].count)
-
       return {
         projects,
         total,

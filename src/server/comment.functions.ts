@@ -6,7 +6,6 @@ import { article } from '@/db/schema/article.schema'
 import { comment } from '@/db/schema'
 import { AuthenticatedMiddleware } from './middleware/auth.middleware'
 
-
 export const createComment = createServerFn({ method: 'POST' })
     .middleware([AuthenticatedMiddleware])
     .inputValidator(CommentSchema)
@@ -19,13 +18,10 @@ export const createComment = createServerFn({ method: 'POST' })
                 .select({ id: article.id })
                 .from(article)
                 .where(eq(article.id, data.articleId))
-
             if (!existingBlog[0]) {
                 throw new Error('Article not found')
             }
-
             const normalizedParentId = data.parentId ?? null
-
             if (normalizedParentId) {
                 const existingParent = await db
                     .select({
@@ -39,16 +35,13 @@ export const createComment = createServerFn({ method: 'POST' })
                             eq(comment.articleId, data.articleId)
                         )
                     )
-
                 if (!existingParent[0]) {
                     throw new Error('Parent comment not found')
                 }
             }
-
             const inserted = await db
                 .insert(comment)
                 .values({
-               
                     articleId: data.articleId,
                     userId: context.userId,
                     parentId: normalizedParentId,
@@ -63,7 +56,6 @@ export const createComment = createServerFn({ method: 'POST' })
                     createdAt: comment.createdAt,
                     updatedAt: comment.updatedAt,
                 })
-
             return inserted[0]
         } catch (err) {
             console.log(err)

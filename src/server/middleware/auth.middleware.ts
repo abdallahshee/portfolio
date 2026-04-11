@@ -24,7 +24,6 @@ export const AuthenticatedMiddleware = createMiddleware()
         })
     })
 
-
 export const AdminMiddleware = createMiddleware()
     .middleware([AuthenticatedMiddleware])
     .server(async ({ context, request, next }) => {
@@ -49,7 +48,6 @@ export const OptionalAuthMiddleware = createMiddleware().server(
     async ({ next }) => {
         const supabase = getSupabaseServerClient()
         const { data: user, error } = await supabase.auth.getUser()
-
         return next({
             context: {
                 userId: user.user?.id
