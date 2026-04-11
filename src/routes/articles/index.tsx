@@ -174,7 +174,7 @@ function BlogsPage() {
               search={{ page: 1 }}
               className="no-underline"
             >
-              <Button variant="light" color="blue" radius="md" leftSection={<BookMarked size={15} />}>
+              <Button variant="filled" color="green" radius="md" leftSection={<BookMarked size={15} />}>
                 My Articles
               </Button>
             </Link>
@@ -186,7 +186,7 @@ function BlogsPage() {
           </Group>
         )}
       </div>
- <div className="mb-12 border-b border-blue-500" />
+      <div className="mb-12 border-b border-blue-500" />
       {/* ✅ loading skeletons */}
       {isLoading ? (
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -218,71 +218,128 @@ function BlogsPage() {
         </div>
       ) : (
         // ✅ articles grid
-        <div className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
-          }`}>
-          {blogs.map((article) => (
-            <Link
-              key={article.id}
-              to="/articles/$slug"
-              params={{ slug: article.slug }}
-              className="no-underline"
-            >
-              <Card
-                withBorder
-                radius="md"
-                p={0}
-                className={classes.card}
-                style={{ width: "100%", height: 400, display: "flex", flexDirection: "column" }}
-              >
-                <Box style={{ height: 200, overflow: "hidden", flexShrink: 0 }}>
-                  <Image
-                    src={article.coverImage!}
-                    alt={article.title}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                  />
-                </Box>
+        <div
+          className={`min-h-[900px] transition-opacity duration-200 ${isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
+            }`}
+        >
+          {isLoading ? (
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+                <ArticleCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : blogs.length === 0 ? (
+            <div className="flex min-h-[900px] items-center justify-center">
+              <Stack align="center" gap="md">
+                <ThemeIcon size={72} radius="md" variant="light" color="blue">
+                  <BookOpen size={36} />
+                </ThemeIcon>
 
-                <div
-                  className={classes.body}
-                  style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", padding: "1rem" }}
-                >
-                  <Text tt="uppercase" opacity={0.6} fw={700} size="xs" c="grape" mb={4}>
-                    {article.categoryName}
-                  </Text>
-                  <Text fw={600} size="sm" lineClamp={2} mb={6}>
-                    {article.title}
-                  </Text>
-                  <Text size="xs" c="dimmed" lineClamp={2} mb="auto">
-                    {article.excerpt}
-                  </Text>
-
-                  <Group justify="space-between" align="center" mt={12}>
-                    <Group gap={6}>
-                      <Avatar size={22} src={article.authorImage} alt={article.authorName!} radius="xl" />
-                      <Text size="xs" fw={500}>{article.authorName}</Text>
-                    </Group>
-                    <Text size="xs" c="dimmed">
-                      {moment(article.createdAt).format("MMM D, YYYY")}
-                    </Text>
-                  </Group>
-
-                  <Group
-                    gap="xs" mt={8} pt={8}
-                    style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
-                  >
-                    <Group gap={4}>
-                      <Heart size={13} opacity={0.5} />
-                      <Text size="xs" c="dimmed">{article.likes}</Text>
-                    </Group>
-                    <Group gap={4}>
-                      <MessageCircle size={13} opacity={0.5} />
-                      <Text size="xs" c="dimmed">{article.comments}</Text>
-                    </Group>
-                  </Group>
+                <div className="title2">
+                  {hasSearch ? `No results for "${debouncedSearch}"` : "No articles yet"}
                 </div>
-              </Card>
-            </Link>
-          ))}
+
+                <Text c="dimmed" ta="center" maw={400}>
+                  {hasSearch
+                    ? "Try a different search term or clear the search to browse all articles."
+                    : "No articles have been published yet. Check back soon."}
+                </Text>
+
+                {hasSearch && (
+                  <Button
+                    variant="filled"
+                    color="grape"
+                    radius="md"
+                    onClick={() => handleSearchChange("")}
+                  >
+                    Clear Search
+                  </Button>
+                )}
+              </Stack>
+            </div>
+          ) : (
+            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+              {blogs.map((article) => (
+                <Link
+                  key={article.id}
+                  to="/articles/$slug"
+                  params={{ slug: article.slug }}
+                  className="no-underline"
+                >
+                  <Card
+                    withBorder
+                    radius="md"
+                    p={0}
+                    className={classes.card}
+                    style={{ width: "100%", height: 400, display: "flex", flexDirection: "column" }}
+                  >
+                    <Box style={{ height: 200, overflow: "hidden", flexShrink: 0 }}>
+                      <Image
+                        src={article.coverImage!}
+                        alt={article.title}
+                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                      />
+                    </Box>
+
+                    <div
+                      className={classes.body}
+                      style={{
+                        flex: 1,
+                        display: "flex",
+                        flexDirection: "column",
+                        overflow: "hidden",
+                        padding: "1rem",
+                      }}
+                    >
+                      <Text tt="uppercase" opacity={0.6} fw={700} size="xs" c="grape" mb={4}>
+                        {article.categoryName}
+                      </Text>
+
+                      <Text fw={600} size="sm" lineClamp={2} mb={6}>
+                        {article.title}
+                      </Text>
+
+                      <Text size="xs" c="dimmed" lineClamp={2} mb="auto">
+                        {article.excerpt}
+                      </Text>
+
+                      <Group justify="space-between" align="center" mt={12}>
+                        <Group gap={6}>
+                          <Avatar size={22} src={article.authorImage} alt={article.authorName!} radius="xl" />
+                          <Text size="xs" fw={500}>
+                            {article.authorName}
+                          </Text>
+                        </Group>
+                        <Text size="xs" c="dimmed">
+                          {moment(article.createdAt).format("MMM D, YYYY")}
+                        </Text>
+                      </Group>
+
+                      <Group
+                        gap="xs"
+                        mt={8}
+                        pt={8}
+                        style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
+                      >
+                        <Group gap={4}>
+                          <Heart size={13} opacity={0.5} />
+                          <Text size="xs" c="dimmed">
+                            {article.likes}
+                          </Text>
+                        </Group>
+                        <Group gap={4}>
+                          <MessageCircle size={13} opacity={0.5} />
+                          <Text size="xs" c="dimmed">
+                            {article.comments}
+                          </Text>
+                        </Group>
+                      </Group>
+                    </div>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       )}
 

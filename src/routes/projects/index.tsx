@@ -43,16 +43,18 @@ function RouteComponent() {
       setSession(data?.session ?? null)
       setIsSessionLoading(false)
     })
+
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event: AuthChangeEvent, session: Session | null) => {
         setSession(session)
       }
     )
+
     return () => listener.subscription.unsubscribe()
   }, [])
 
   const [page, setPage] = useState(1)
-  const [searchInput, setSearchInput] = useState("")
+  const [searchInput, setSearchInput] = useState('')
   const [filter, setFilter] = useState<FilterValue>('all')
   const [debouncedSearch] = useDebouncedValue(searchInput, 200)
 
@@ -92,10 +94,9 @@ function RouteComponent() {
 
   return (
     <Container size="xl" className="space-y-8 py-10">
-
       {/* Page Header */}
       <div className="mb-10 max-w-2xl">
-        <div className='heading'>
+        <div className="heading">
           Built for Real-World Use
         </div>
         <Text size="lg" c="dimmed">
@@ -118,7 +119,7 @@ function RouteComponent() {
             leftSection={<Search size={14} />}
             rightSection={
               searchInput ? (
-                <button type="button" onClick={() => handleSearchChange("")}>
+                <button type="button" onClick={() => handleSearchChange('')}>
                   <X size={13} className="text-slate-400 hover:text-slate-600" />
                 </button>
               ) : null
@@ -129,13 +130,12 @@ function RouteComponent() {
           {isSearching && (
             <Text size="xs" c="dimmed" mt={4}>
               {isFetching
-                ? "Searching…"
-                : `${data?.total ?? 0} result${(data?.total ?? 0) !== 1 ? "s" : ""} for "${debouncedSearch}"`}
+                ? 'Searching…'
+                : `${data?.total ?? 0} result${(data?.total ?? 0) !== 1 ? 's' : ''} for "${debouncedSearch}"`}
             </Text>
           )}
         </div>
 
-        {/* Filter */}
         <div>
           <Group gap="xs" mb={5} align="center">
             <ListFilter size={12} className="text-slate-400" />
@@ -143,10 +143,12 @@ function RouteComponent() {
               Filter by status
             </Text>
           </Group>
+
           <Group gap="xs">
             {(['all', 'public', 'private'] as const).map((value) => {
               const label = value === 'all' ? 'All' : value === 'public' ? 'Open Source' : 'Private'
               const isActive = filter === value
+
               return (
                 <Badge
                   key={value}
@@ -176,49 +178,49 @@ function RouteComponent() {
         </Text>
       )}
 
-      {/* Projects Grid */}
-      {showSkeleton ? (
-        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: PAGE_SIZE }).map((_, i) => (
-            <Card key={i} shadow="sm" padding="lg" radius="lg" withBorder>
-              <Stack gap="sm">
-                <Skeleton height={180} radius="md" />
-                <Skeleton height={20} width="60%" radius="md" />
-                <Skeleton height={16} width="40%" radius="md" />
-                <Skeleton height={16} width="30%" radius="md" />
-                <Skeleton height={16} radius="md" />
-                <Skeleton height={16} radius="md" />
-                <Skeleton height={16} width="80%" radius="md" />
-                <Group gap="xs" mt="xs">
-                  <Skeleton height={22} width={60} radius="xl" />
-                  <Skeleton height={22} width={60} radius="xl" />
-                  <Skeleton height={22} width={60} radius="xl" />
-                </Group>
-                <Skeleton height={36} mt="md" radius="xl" />
-              </Stack>
-            </Card>
-          ))}
-        </div>
-      ) : projects.length === 0 ? (
-        <div className="flex justify-center py-24">
-          <Stack align="center" gap="md">
+      {/* Projects Section */}
+      <div
+        className={`min-h-[900px] transition-opacity duration-200 ${
+          isPlaceholderData || isFetching ? 'opacity-80' : 'opacity-100'
+        }`}
+      >
+        {showSkeleton ? (
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+              <Card key={i} shadow="sm" padding="lg" radius="lg" withBorder>
+                <Stack gap="sm">
+                  <Skeleton height={180} radius="md" />
+                  <Skeleton height={20} width="60%" radius="md" />
+                  <Skeleton height={16} width="40%" radius="md" />
+                  <Skeleton height={16} radius="md" />
+                  <Skeleton height={16} width="80%" radius="md" />
+                  <Skeleton height={36} mt="md" radius="xl" />
+                </Stack>
+              </Card>
+            ))}
+          </div>
+        ) : projects.length === 0 ? (
+          <div className="flex min-h-[900px] flex-col items-center justify-center pt-16">
             <ThemeIcon size={72} radius="md" variant="light" color="indigo">
               <FolderOpen size={36} />
             </ThemeIcon>
-            <div className='title2'>No projects found</div>
+
+            <div className="title2 mt-4">No projects found</div>
+
             {isSearching ? (
               <>
                 <Text c="dimmed" ta="center" maw={400}>
-                  No projects matched <strong>"{debouncedSearch}"</strong>. Try a different search term or clear the search.
+                  No projects matched <strong>&quot;{debouncedSearch}&quot;</strong>. Try a different
+                  search term or clear the search.
                 </Text>
-                <Button variant="light" color="indigo" onClick={() => handleSearchChange("")}>
+                <Button variant="light" color="indigo" onClick={() => handleSearchChange('')}>
                   Clear Search
                 </Button>
               </>
             ) : filter !== 'all' ? (
               <>
                 <Text c="dimmed" ta="center" maw={400}>
-                  No {filter === 'public' ? 'open source' : 'private'} projects found. Try a different filter.
+                  No {filter === 'public' ? 'open source' : 'private'} projects found.
                 </Text>
                 <Button variant="light" color="indigo" onClick={() => handleFilterChange('all')}>
                   Show All Projects
@@ -226,110 +228,109 @@ function RouteComponent() {
               </>
             ) : (
               <Text c="dimmed" ta="center" maw={400}>
-                No projects have been added yet. Check back soon.
+                No projects have been added yet.
               </Text>
             )}
-          </Stack>
-        </div>
-      ) : (
-        <div
-          className={`grid gap-10 sm:grid-cols-2 lg:grid-cols-3 transition-opacity duration-200 ${isPlaceholderData ? 'opacity-60' : 'opacity-100'
-            }`}
-        >
-          {projects.map((project) => (
-            <Card
-              key={project.id}
-              shadow="sm"
-              padding="lg"
-              radius="lg"
-              withBorder
-              className="flex h-full flex-col justify-between transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer"
-            >
-              <Stack gap="sm">
-                <div className="flex h-[180px] items-center justify-center overflow-hidden rounded-md bg-gray-100">
-                  {project.imageUrl ? (
-                    <Image
-                      src={project.imageUrl}
-                      alt={project.title}
-                      height={180}
-                      fit="cover"
-                      className="h-full w-full transition-transform duration-300 hover:scale-105"
-                    />
-                  ) : (
-                    <ThemeIcon size={56} radius="md" variant="light" color="gray">
-                      <FolderKanban size={28} />
-                    </ThemeIcon>
-                  )}
-                </div>
+          </div>
+        ) : (
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {projects.map((project) => (
+              <Card
+                key={project.id}
+                shadow="sm"
+                padding="lg"
+                radius="lg"
+                withBorder
+                className="flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+              >
+                <Stack gap="sm">
+                  <div className="flex h-[180px] items-center justify-center overflow-hidden rounded-md bg-gray-100">
+                    {project.imageUrl ? (
+                      <Image
+                        src={project.imageUrl}
+                        alt={project.title}
+                        height={180}
+                        fit="cover"
+                        className="h-full w-full transition-transform duration-300 hover:scale-105"
+                      />
+                    ) : (
+                      <ThemeIcon size={56} radius="md" variant="light" color="gray">
+                        <FolderKanban size={28} />
+                      </ThemeIcon>
+                    )}
+                  </div>
 
-                <div className='title3'>{project.title}</div>
+                  <div className="title3">{project.title}</div>
 
-                <Group gap="xs">
-                  <Rating value={project.averageRating} fractions={2} readOnly size="sm" />
-                  <Text size="xs" c="dimmed">
-                    {project.averageRating > 0
-                      ? `${project.averageRating} (${project.totalRatings})`
-                      : "No ratings yet"}
-                  </Text>
-                </Group>
-
-                <Group gap="sm">
-                  <Badge
-                    color={project.isPublic ? "blue" : "green"}
-                    variant="light"
-                    size="sm"
-                    radius="md"
-                    className="w-fit"
-                  >
-                    {project.isPublic ? "Open Source" : "Private Project"}
-                  </Badge>
-                </Group>
-
-                <Text size="sm" c="dimmed" lineClamp={3}>
-                  {project.description}
-                </Text>
-
-                <Stack gap="xs" mt="xs">
-                  <Text size="sm" fw={500}>Technologies</Text>
                   <Group gap="xs">
-                    {project.technologies.slice(0, 4).map((tech) => (
-                      <Badge
-                        key={tech}
-                        size="sm"
-                        variant="light"
-                        color="indigo"
-                        radius="md"
-                        style={
-                          isSearching &&
-                            tech.toLowerCase().includes(debouncedSearch.toLowerCase())
-                            ? { outline: "1.5px solid var(--mantine-color-indigo-4)" }
-                            : {}
-                        }
-                      >
-                        {tech}
-                      </Badge>
-                    ))}
+                    <Rating value={project.averageRating} fractions={2} readOnly size="sm" />
+                    <Text size="xs" c="dimmed">
+                      {project.averageRating > 0
+                        ? `${project.averageRating} (${project.totalRatings})`
+                        : 'No ratings yet'}
+                    </Text>
                   </Group>
-                </Stack>
-              </Stack>
 
-              <Stack mt="md" gap="xs">
-                <Link to="/projects/$id" params={{ id: project.id }} className="no-underline">
-                  <Button
-                    radius="md"
-                    leftSection={<FolderKanban size={16} />}
-                    variant="gradient"
-                    fullWidth
-                    color="blue"
-                  >
-                    View Project Details
-                  </Button>
-                </Link>
-              </Stack>
-            </Card>
-          ))}
-        </div>
-      )}
+                  <Group gap="sm">
+                    <Badge
+                      color={project.isPublic ? 'blue' : 'green'}
+                      variant="light"
+                      size="sm"
+                      radius="md"
+                      className="w-fit"
+                    >
+                      {project.isPublic ? 'Open Source' : 'Private Project'}
+                    </Badge>
+                  </Group>
+
+                  <Text size="sm" c="dimmed" lineClamp={3}>
+                    {project.description}
+                  </Text>
+
+                  <Stack gap="xs" mt="xs">
+                    <Text size="sm" fw={500}>
+                      Technologies
+                    </Text>
+                    <Group gap="xs">
+                      {project.technologies.slice(0, 4).map((tech) => (
+                        <Badge
+                          key={tech}
+                          size="sm"
+                          variant="light"
+                          color="indigo"
+                          radius="md"
+                          style={
+                            isSearching &&
+                            tech.toLowerCase().includes(debouncedSearch.toLowerCase())
+                              ? { outline: '1.5px solid var(--mantine-color-indigo-4)' }
+                              : {}
+                          }
+                        >
+                          {tech}
+                        </Badge>
+                      ))}
+                    </Group>
+                  </Stack>
+                </Stack>
+
+                <Stack mt="md" gap="xs">
+                  <Link to="/projects/$id" params={{ id: project.id }} className="no-underline">
+                    <Button
+                      radius="md"
+                      leftSection={<FolderKanban size={16} />}
+                      variant="gradient"
+                      fullWidth
+                      color="blue"
+                    >
+                      View Project Details
+                    </Button>
+                  </Link>
+                </Stack>
+              </Card>
+            ))}
+          </div>
+        )}
+      </div>
 
       {/* Pagination */}
       {!isFetching && !isSearching && filter === 'all' && totalPages > 1 && (

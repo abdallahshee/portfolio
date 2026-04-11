@@ -173,7 +173,7 @@ function BlogsPage() {
                 size="sm"
                 radius="md"
                 variant="filled"
-                color="grape"
+                color="green"
                 leftSection={<PenLine size={14} />}
               >
                 Write Article
@@ -236,74 +236,121 @@ function BlogsPage() {
 
       {/* Grid */}
       <div
-        className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${isPlaceholderData ? 'opacity-60' : 'opacity-100'}`}
+        className={`min-h-[900px] transition-opacity duration-200 ${isPlaceholderData ? "opacity-60" : "opacity-100"
+          }`}
       >
-        {articles.map((article) => (
-          <Link
-            key={article.id}
-            to="/articles/$slug"
-            params={{ slug: article.slug }}
-            className="no-underline"
-          >
-            <Card
-              withBorder
-              radius="md"
-              p={0}
-              className={classes.card}
-              style={{ width: "100%", height: 400, display: "flex", flexDirection: "column" }}
-            >
-              <Box style={{ height: 200, overflow: "hidden", flexShrink: 0 }}>
-                <Image
-                  src={article.coverImage!}
-                  alt={article.title}
-                  style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                />
-              </Box>
+        {!isLoading && articles.length === 0 ? (
+          <div className="flex h-full min-h-[900px] flex-col items-center justify-center rounded-2xl text-center dark:border-slate-700">
+            <div className="title2">
+              {isSearching
+                ? `No articles found for "${debouncedSearch}"`
+                : statusFilter !== "all"
+                  ? `No ${getStatusConfig(statusFilter).label.toLowerCase()} articles`
+                  : "You haven't written any articles yet"}
+            </div>
 
-              <div
-                className={classes.body}
-                style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", padding: "1rem" }}
+            <Text c="dimmed" ta="center" maw={400}>
+              {statusFilter !== "all"
+                ? "Try another filter or clear filters to see all your articles."
+                : "Start writing your first article!"}
+            </Text>
+
+            {(isSearching || statusFilter !== "all") && (
+              <Button
+                variant="subtle"
+                size="sm"
+                radius="md"
+                color="grape"
+                mt="md"
+                onClick={() => {
+                  handleSearchChange("")
+                  setStatusFilter("all")
+                }}
               >
-                <Text tt="uppercase" opacity={0.6} fw={700} size="xs" c="grape" mb={4}>
-                  {article.categoryName}
-                </Text>
-
-                <Text fw={600} size="sm" lineClamp={2} mb={6}>
-                  {article.title}
-                </Text>
-
-                <Text size="xs" c="dimmed" lineClamp={2} mb="auto">
-                  {article.excerpt}
-                </Text>
-
-                <Group justify="space-between" align="center" mt={12}>
-                  <Group gap={6}>
-                    <Avatar size={22} src={article.authorImage} alt={article.title!} radius="xl" />
-                  </Group>
-                  <Text size="xs" c="dimmed">
-                    {moment(article.createdAt).format("MMM D, YYYY")}
-                  </Text>
-                </Group>
-
-                <Group
-                  gap="xs"
-                  mt={8}
-                  pt={8}
-                  style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
+                Clear filters
+              </Button>
+            )}
+          </div>
+        ) : (
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {articles.map((article) => (
+              <Link
+                key={article.id}
+                to="/articles/$slug"
+                params={{ slug: article.slug }}
+                className="no-underline"
+              >
+                <Card
+                  withBorder
+                  radius="md"
+                  p={0}
+                  className={classes.card}
+                  style={{ width: "100%", height: 400, display: "flex", flexDirection: "column" }}
                 >
-                  <Group gap={4}>
-                    <Heart size={13} opacity={0.5} />
-                    <Text size="xs" c="dimmed">{article.likes}</Text>
-                  </Group>
-                  <Group gap={4}>
-                    <MessageCircle size={13} opacity={0.5} />
-                    <Text size="xs" c="dimmed">{article.comments}</Text>
-                  </Group>
-                </Group>
-              </div>
-            </Card>
-          </Link>
-        ))}
+                  <Box style={{ height: 200, overflow: "hidden", flexShrink: 0 }}>
+                    <Image
+                      src={article.coverImage!}
+                      alt={article.title}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
+                  </Box>
+
+                  <div
+                    className={classes.body}
+                    style={{
+                      flex: 1,
+                      display: "flex",
+                      flexDirection: "column",
+                      overflow: "hidden",
+                      padding: "1rem",
+                    }}
+                  >
+                    <Text tt="uppercase" opacity={0.6} fw={700} size="xs" c="grape" mb={4}>
+                      {article.categoryName}
+                    </Text>
+
+                    <Text fw={600} size="sm" lineClamp={2} mb={6}>
+                      {article.title}
+                    </Text>
+
+                    <Text size="xs" c="dimmed" lineClamp={2} mb="auto">
+                      {article.excerpt}
+                    </Text>
+
+                    <Group justify="space-between" align="center" mt={12}>
+                      <Group gap={6}>
+                        <Avatar size={22} src={article.authorImage} alt={article.title!} radius="xl" />
+                      </Group>
+                      <Text size="xs" c="dimmed">
+                        {moment(article.createdAt).format("MMM D, YYYY")}
+                      </Text>
+                    </Group>
+
+                    <Group
+                      gap="xs"
+                      mt={8}
+                      pt={8}
+                      style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
+                    >
+                      <Group gap={4}>
+                        <Heart size={13} opacity={0.5} />
+                        <Text size="xs" c="dimmed">
+                          {article.likes}
+                        </Text>
+                      </Group>
+                      <Group gap={4}>
+                        <MessageCircle size={13} opacity={0.5} />
+                        <Text size="xs" c="dimmed">
+                          {article.comments}
+                        </Text>
+                      </Group>
+                    </Group>
+                  </div>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Pagination */}

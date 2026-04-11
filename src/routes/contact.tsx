@@ -135,7 +135,7 @@ function ContactPage() {
       {/* ── MAIN: FORM + SIDEBAR ── */}
       <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md" className="items-start">
         {/* CONTACT FORM */}
-        <Card radius="xl" withBorder p="xl" className="shadow-sm">
+        <Card radius="xl" withBorder p="xl" className="shadow-sm h-full">
           <Stack gap="lg">
             <Group gap="xs">
               <ThemeIcon variant="light" color="indigo" radius="md">
@@ -239,7 +239,7 @@ function ContactPage() {
             </form>
           </Stack>
         </Card>
-        <Card radius="xl" withBorder p="xl" className="shadow-sm bg-indigo-50 dark:bg-indigo-950/30">
+        <Card radius="xl" withBorder p="xl" className="shadow-sm h-full bg-indigo-50 dark:bg-indigo-950/30">
           <Stack gap="md">
             <Group gap="sm" align="center">
               <ThemeIcon variant="transparent" radius="md" size="sm">

@@ -16,7 +16,6 @@ export const article = pgTable("article", {
   content: text("content").notNull(), // markdown
   coverImage: text("cover_image"),
   status: text("status", { enum: ['draft', 'pending', 'published'] }).notNull(),
-  tags: text("tags").array().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   categoryId: text('category_id').references(() => category.id, { onDelete: 'set null' }),
   updatedAt: timestamp("updated_at")

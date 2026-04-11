@@ -8,8 +8,6 @@ import { article } from "@/db/schema/article.schema";
 import { articleLike } from "@/db/schema/article-like.schema";
 import { AuthenticatedMiddleware } from "./middleware/auth.middleware";
 
-
-
 function createSlug(title: string) {
     return title
         .toLowerCase()
@@ -29,18 +27,18 @@ function createExcerpt(content: string, maxLength = 160) {
 export const createArticle = createServerFn({ method: "POST" })
     .inputValidator(ArticleSchema)
     .middleware([AuthenticatedMiddleware])
-    .handler(async ({ data }) => {
+    .handler(async ({ data,context }) => {
         try {
             const slug = createSlug(data.title)
+            const userId=context.userId
             const excerpt = createExcerpt(data.content)
             const newData = {
                 title: data.title,
-                tags: data.tags,           // ✅ was 'tages'
                 content: data.content,
-                categoryId: data.categoryId ?? undefined, // ✅ convert null to undefined
+                categoryId: data.categoryId, // ✅ convert null to undefined
                 slug,
                 excerpt,
-                userId: data.userId,
+                userId
             }
             const [result] = await db.insert(article).values({ ...newData, status: "draft" }).returning()
             return result// ✅ single object instead of array
@@ -58,7 +56,6 @@ export const getAllArticles = createServerFn()
                     id: article.id,
                     title: article.title,
                     authorImage: user.avatar,
-                    tags: article.tags,
                     content: article.content,
                     coverImage: article.coverImage,
                     slug: article.slug,
@@ -90,9 +87,8 @@ export const getArticleBySlug = createServerFn()
             // Blog
             const articleResult = await db
                 .select({
-                    id: article.id,
+                    articleId: article.id,
                     title: article.title,
-                    tags: article.tags,
                     content: article.content,
                     coverImage: article.coverImage,
                     userId: article.userId,
@@ -125,7 +121,7 @@ export const getArticleBySlug = createServerFn()
                 })
                 .from(comment)
                 .leftJoin(user, eq(comment.userId, user.id))
-                .where(eq(comment.articleId, articleData.id))
+                .where(eq(comment.articleId, articleData.articleId))
                 .orderBy(desc(comment.createdAt))
             // Likes count
             const likesResult = await db
@@ -133,7 +129,7 @@ export const getArticleBySlug = createServerFn()
                     likes: sql<number>`count(*)`,
                 })
                 .from(articleLike)
-                .where(eq(articleLike.articleId, articleData.id))
+                .where(eq(articleLike.articleId, articleData.articleId))
             const likes = Number(likesResult[0]?.likes ?? 0)
             // Whether current user has liked this blog
             let likedByUser = false
@@ -143,7 +139,7 @@ export const getArticleBySlug = createServerFn()
                 .leftJoin(user, eq(articleLike.userId, user.id))
                 .where(
                     and(
-                        eq(articleLike.articleId, articleData.id),
+                        eq(articleLike.articleId, articleData.articleId),
                     )
                 )
                 .limit(1)
@@ -258,20 +254,20 @@ export const getTopArticles = createServerFn({ method: "GET" })
 export const updateArticle = createServerFn({ method: "POST" })
     .inputValidator(ArticleUpdateSchema)
     .middleware([AuthenticatedMiddleware])
-    .handler(async ({ data }) => {
+    .handler(async ({ data, context }) => {
         try {
+            const userId = context.userId
             const updated = await db
                 .update(article)
                 .set({
                     title: data.title,
                     content: data.content,
                     coverImage: data.coverImage ?? null,
-                    tags: data.tags,
                 })
                 .where(
                     and(
                         eq(article.slug, data.slug),
-                        eq(article.userId, data.userId!)
+                        eq(article.userId, userId!)
                     )
                 )
                 .returning()
@@ -298,7 +294,7 @@ export const searchPaginatedArticles = createServerFn({ method: "GET" })
                 ? or(
                     ilike(article.title, search),
                     ilike(article.excerpt, search),
-                    sql`array_to_string(${article.tags}, ',') ilike ${search}`
+
                 )
                 : undefined
             const [articleRows, totalResult] = await Promise.all([
@@ -310,7 +306,6 @@ export const searchPaginatedArticles = createServerFn({ method: "GET" })
                         status: article.status,
                         excerpt: article.excerpt,
                         coverImage: article.coverImage,
-                        tags: article.tags,
                         createdAt: article.createdAt,
                         categoryName: category.name,
                         likes: sql<number>`(select count(*) from article_like where article_id = ${article.id})`,
