@@ -14,20 +14,17 @@ import {
 } from '@mantine/core'
 
 import {
-  getUserPaginatedArticlesQueryOptions,
+  getMyPaginatedArticlesQueryOptions,
   searchArticlesQueryOptions,
 } from '@/db/queries/article.queries'
 import { Heart, MessageCircle, Search, X, PenLine, SlidersHorizontal } from "lucide-react"
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import classes from "../../css/article.module.css"
 import moment from 'moment'
-import { getSupabaseBrowserClient } from '@/lib/supabase/client'
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 
-
-export const Route = createFileRoute('/articles/$userId')({
+export const Route = createFileRoute('/articles/my-articles')({
   validateSearch: (search: Record<string, unknown>) => ({
     page:
       typeof search.page === 'number'
@@ -37,9 +34,9 @@ export const Route = createFileRoute('/articles/$userId')({
           : 1,
   }),
   loaderDeps: ({ search }) => ({ page: search.page }),
-  loader: async ({ context, params, deps }) => {
+  loader: async ({ context, deps }) => {
     await context.queryClient.prefetchQuery(
-      getUserPaginatedArticlesQueryOptions({ userId: params.userId, page: deps.page, limit: 6 })
+      getMyPaginatedArticlesQueryOptions({ page: deps.page, limit: 6 })
     )
   },
   component: BlogsPage,
@@ -50,35 +47,16 @@ type StatusFilter = 'all' | 'published' | 'pending' | 'draft'
 
 function BlogsPage() {
   const navigate = useNavigate()
-  const { userId } = Route.useParams()
   const { page } = Route.useSearch()
   const [searchInput, setSearchInput] = useState('')
   const [statusFilter, setStatusFilter] = useState<StatusFilter>('all')
   const [debouncedSearch] = useDebouncedValue(searchInput, 200)
-  const [session, setSession] = useState<Session | null>(null)
-  const supabase = getSupabaseBrowserClient()
-  const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => { // ✅ typed
-      setSession(data?.session ?? null)
-      setIsSessionLoading(false)
-    })
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event: AuthChangeEvent, session: Session | null) => { // ✅ typed
-        setSession(session)
-      }
-    )
-
-    return () => listener.subscription.unsubscribe()
-  }, [])
   const router = useRouter()
+
   const isSearching = debouncedSearch.trim().length > 0
-  const isOwner = session?.user?.id === userId
 
   const { data: paginatedData, isLoading: paginatedLoading, isPlaceholderData } = useQuery(
-    getUserPaginatedArticlesQueryOptions({ userId: userId, page: page, limit: PAGE_SIZE })
+    getMyPaginatedArticlesQueryOptions({ page: page, limit: PAGE_SIZE })
   )
 
   const { data: searchData, isLoading: searchLoading } = useQuery({
@@ -117,20 +95,12 @@ function BlogsPage() {
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div className="space-y-2">
-          <Button
-            variant="filled"
-            color="blue"
-            onClick={() => router.navigate({ to: "/articles", search: { page: 1 } })}
-          >
-            Back to All Articles
-          </Button>
-          <div className='title1'>
-            {isOwner ? 'My Articles' : 'Articles & Writing'}
+      
+          <div className='heading'>
+            My Articles
           </div>
-          <Text c="dimmed" className="max-w-2xl">
-            {isOwner
-              ? `You have written ${Allarticles.length} article${Allarticles.length !== 1 ? 's' : ''}.`
-              : 'Thoughts, tutorials, and practical notes on building modern web applications.'}
+         <Text c="dimmed" ta="center" maw={400}>
+            You have written {Allarticles.length} article{Allarticles.length !== 1 ? 's' : ''}
           </Text>
         </div>
       </div>
@@ -140,9 +110,10 @@ function BlogsPage() {
 
         {/* Search */}
         <div className="flex-1" style={{ minWidth: 220, maxWidth: 400 }}>
-          <Text size="xs" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
+          <Text size="sm" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
             Search
           </Text>
+          
           <TextInput
             placeholder="Search by title, tag, or excerpt…"
             size="sm"
@@ -196,20 +167,29 @@ function BlogsPage() {
               )
             })}
 
-            {/* Write Article button in the same row as pills */}
-            {isOwner && (
-              <Link to="/articles/create" className="no-underline">
+            {/* Write Article button — always visible since this is the user's own articles page */}
+            <Link to="/articles/create" className="no-underline">
+              <Button
+                size="sm"
+                radius="md"
+                variant="filled"
+                color="grape"
+                leftSection={<PenLine size={14} />}
+              >
+                Write Article
+              </Button>
+            </Link>
+            <Link to='/articles' search={{page:1}}>
                 <Button
-                  size="sm"
-                  radius="md"
-                  variant="filled"
-                  color="grape"
-                  leftSection={<PenLine size={14} />}
-                >
-                  Write Article
-                </Button>
-              </Link>
-            )}
+            variant="filled"
+            color="blue"
+            size="sm"
+            radius="md"
+           
+          >
+            Back to All Articles
+          </Button>
+          </Link>
           </Group>
         </div>
 
@@ -223,25 +203,21 @@ function BlogsPage() {
           {isSearching ? ` for "${debouncedSearch}"` : ''}
         </Text>
       )}
-
+ <div className="mb-12 border-b border-blue-500" />
       {/* Empty state */}
       {!isLoading && articles.length === 0 && (
-        <div className="flex flex-col items-center justify-center rounded-2xl border border-dashed border-slate-200 py-24 text-center dark:border-slate-700">
-          <div className='title3 mb-2'>
+        <div className="flex flex-col items-center justify-center rounded-2xl py-24 text-center dark:border-slate-700">
+         <div className='title2'>
             {isSearching
               ? `No articles found for "${debouncedSearch}"`
               : statusFilter !== 'all'
                 ? `No ${getStatusConfig(statusFilter).label.toLowerCase()} articles`
-                : isOwner
-                  ? "You haven't written any articles yet"
-                  : 'No articles yet'}
+                : "You haven't written any articles yet"}
           </div>
-          <Text size="sm" c="dimmed" mb="lg">
-            {statusFilter !== 'all'
-              ? 'Try a different status filter.'
-              : isOwner
-                ? 'Start writing your first article!'
-                : ''}
+         <Text c="dimmed" ta="center" maw={400}>
+            {statusFilter !== 'all'&&
+             
+              'Start writing your first article!'}
           </Text>
           {(isSearching || statusFilter !== 'all') && (
             <Button
@@ -254,20 +230,13 @@ function BlogsPage() {
               Clear filters
             </Button>
           )}
-          {isOwner && !isSearching && statusFilter === 'all' && (
-            <Link to="/articles/create" className="no-underline">
-              <Button variant="light" radius="md" color="grape" leftSection={<PenLine size={15} />}>
-                Write your first article
-              </Button>
-            </Link>
-          )}
+          
         </div>
       )}
 
       {/* Grid */}
       <div
-        className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${isPlaceholderData ? 'opacity-60' : 'opacity-100'
-          }`}
+        className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${isPlaceholderData ? 'opacity-60' : 'opacity-100'}`}
       >
         {articles.map((article) => (
           <Link
@@ -311,7 +280,6 @@ function BlogsPage() {
                   <Group gap={6}>
                     <Avatar size={22} src={article.authorImage} alt={article.title!} radius="xl" />
                   </Group>
-
                   <Text size="xs" c="dimmed">
                     {moment(article.createdAt).format("MMM D, YYYY")}
                   </Text>
@@ -327,7 +295,6 @@ function BlogsPage() {
                     <Heart size={13} opacity={0.5} />
                     <Text size="xs" c="dimmed">{article.likes}</Text>
                   </Group>
-
                   <Group gap={4}>
                     <MessageCircle size={13} opacity={0.5} />
                     <Text size="xs" c="dimmed">{article.comments}</Text>
@@ -346,7 +313,7 @@ function BlogsPage() {
             value={pagination.page}
             total={totalPages}
             color="grape"
-            onChange={(p) => navigate({ to: '/articles/$userId', params: { userId }, search: { page: p } })}
+            onChange={(p) => navigate({ to: '/articles/my-articles', search: { page: p } })}
           />
         </Group>
       )}

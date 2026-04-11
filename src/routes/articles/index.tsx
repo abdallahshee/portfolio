@@ -170,17 +170,16 @@ function BlogsPage() {
         {isAuthenticated && (
           <Group gap="sm" className="flex-shrink-0 self-end">
             <Link
-              to="/articles/$userId"
+              to="/articles/my-articles"
               search={{ page: 1 }}
-              params={{ userId: session.user.id }}
               className="no-underline"
             >
-              <Button variant="light" color="grape" radius="md" leftSection={<BookMarked size={15} />}>
+              <Button variant="light" color="blue" radius="md" leftSection={<BookMarked size={15} />}>
                 My Articles
               </Button>
             </Link>
             <Link to="/articles/create" className="no-underline">
-              <Button variant="filled" color="grape" radius="md" leftSection={<PenLine size={15} />}>
+              <Button variant="filled" color="blue" radius="md" leftSection={<PenLine size={15} />}>
                 Write Article
               </Button>
             </Link>
@@ -199,7 +198,7 @@ function BlogsPage() {
         // ✅ empty state
         <div className="flex justify-center py-24">
           <Stack align="center" gap="md">
-            <ThemeIcon size={72} radius="md" variant="light" color="grape">
+            <ThemeIcon size={72} radius="md" variant="light" color="blue">
               <BookOpen size={36} />
             </ThemeIcon>
             <div className="title2">
@@ -210,17 +209,11 @@ function BlogsPage() {
                 ? "Try a different search term or clear the search to browse all articles."
                 : "No articles have been published yet. Check back soon."}
             </Text>
-            {hasSearch ? (
-              <Button variant="light" color="grape" radius="md" onClick={() => handleSearchChange("")}>
+            {hasSearch && (
+              <Button variant="filled" color="grape" radius="md" onClick={() => handleSearchChange("")}>
                 Clear Search
               </Button>
-            ) : isAuthenticated ? (
-              <Link to="/articles/create" className="no-underline">
-                <Button variant="light" color="grape" radius="md" leftSection={<PenLine size={15} />}>
-                  Write the first article
-                </Button>
-              </Link>
-            ) : null}
+            )}
           </Stack>
         </div>
       ) : (

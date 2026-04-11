@@ -3,7 +3,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { db } from "../db/index";
 import { and, desc, eq, ilike, or, sql } from "drizzle-orm";
 import { category, comment, user } from "@/db/schema";
-import { ArticleSchema, ArticleUpdateSchema, UserPaginatedArticlesSchema } from "@/db/validations/article.types";
+import { ArticleSchema, ArticleUpdateSchema, MyPaginatedArticlesSchema } from "@/db/validations/article.types";
 import { article } from "@/db/schema/article.schema";
 import { articleLike } from "@/db/schema/article-like.schema";
 import { AuthenticatedMiddleware } from "./middleware/auth.middleware";
@@ -373,12 +373,12 @@ export const searchPaginatedArticles = createServerFn({ method: "GET" })
     })
 
 
-export const getUserPaginatedArticles = createServerFn({ method: 'GET' })
+export const getMyPaginatedArticles = createServerFn({ method: 'GET' })
     .middleware([AuthenticatedMiddleware])
-    .inputValidator(UserPaginatedArticlesSchema)
-    .handler(async ({ data }) => {
+    .inputValidator(MyPaginatedArticlesSchema)
+    .handler(async ({context,data }) => {
         try {
-            const userId = data.userId
+            const userId = context.userId
             const { page = 1, limit = 6 } = data
             const offset = (page - 1) * limit
 
