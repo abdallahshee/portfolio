@@ -4,7 +4,7 @@ const ServiceComponent = () => {
         <Paper
             radius={8}
             shadow="none"
-            className="relative w-full max-w-[26rem] overflow-hidden bg-white p-0 dark:bg-slate-900 shadow-[0_20px_60px_rgba(0,0,0,0.35)]"
+            className="relative mx-auto w-full max-w-full overflow-hidden bg-white p-0 shadow-[0_20px_60px_rgba(0,0,0,0.35)] sm:max-w-[26rem] dark:bg-slate-900"
         >
             <div className="relative h-[240px] overflow-hidden sm:h-[280px] lg:h-[320px]">
                 <img

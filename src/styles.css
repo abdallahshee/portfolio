@@ -38,36 +38,92 @@
   --chip-bg: #f1f5f9;
   --chip-line: #e2e8f0;
   --sea-ink: #1e5a48;
+
+  --background: #ffffff;
+  --foreground: #0f172a;
+  --surface: #ffffff;
+  --surface-strong: #f8fafc;
+  --line: rgba(15, 23, 42, 0.12);
+  --inset-glint: rgba(255, 255, 255, 0.9);
+  --lagoon-deep: #1a6d73;
+  --lagoon: #319089;
+  --sea-ink-soft: rgba(30, 90, 72, 0.72);
+  --kicker: rgba(51, 65, 85, 0.72);
+  --header-bg: rgba(255, 255, 255, 0.96);
 }
 .heading {
   @apply 
  font-semibold 
   text-2xl sm:text-3xl lg:text-4xl 
   leading-snug 
-  tracking-tight bg-linear-to-l from-teal-600 via-indigo-500 to-teal-500 bg-clip-text text-transparent
+  tracking-tight;
+  color: var(--sea-ink);
 }
 .heading2 {
   @apply 
    font-semibold 
   text-2xl sm:text-3xl lg:text-4xl 
-  leading-snug  bg-gradient-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent
+  leading-snug;
+  color: var(--sea-ink);
 }
 
 :root.dark,
 [data-mantine-color-scheme='dark'] {
-  --bg-primary: #0f172a;
-  --bg-secondary: #1e293b;
+  /* Core UI tokens — deep navy base, teal accent (tweak these to re-skin dark mode) */
+  --bg-primary: #0b152c;
+  --bg-secondary: #07132e;
   --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --border-color: #334155;
-  --chip-bg: #1e293b;
-  --chip-line: #334155;
-  --sea-ink: #5eead4;
-}
+  --text-secondary: #8b9cb8;
+  --border-color: #273047;
+  --chip-bg: #151d2e;
+  --chip-line: #2b354a;
+  --sea-ink: #67e8d9;
 
-body {
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  /* Surfaces (solid — no page mesh gradients) */
+  --surface: #151d2e;
+  --surface-strong: #1a2438;
+  --line: rgba(148, 163, 184, 0.16);
+  --inset-glint: rgba(255, 255, 255, 0.06);
+  --lagoon-deep: #5eead4;
+  --lagoon: #2dd4bf;
+  --sea-ink-soft: rgba(226, 232, 240, 0.78);
+  --kicker: rgba(148, 163, 184, 0.9);
+  --header-bg: rgba(7, 11, 20, 0.92);
+
+  /* shadcn / Tailwind semantic colors referenced in @theme */
+  --background: #0b152c;
+  --foreground: #e8eef7;
+  --card: #121a2c;
+  --card-foreground: #e8eef7;
+  --popover: #121a2c;
+  --popover-foreground: #e8eef7;
+  --primary: #2dd4bf;
+  --primary-foreground: #042f2e;
+  --secondary: #1e293b;
+  --secondary-foreground: #f1f5f9;
+  --muted: #1e293b;
+  --muted-foreground: #94a3b8;
+  --accent: #1e293b;
+  --accent-foreground: #f1f5f9;
+  --destructive: #ef4444;
+  --destructive-foreground: #fef2f2;
+  --border: #273047;
+  --input: #273047;
+  --ring: #2dd4bf;
+  --chart-1: #2dd4bf;
+  --chart-2: #818cf8;
+  --chart-3: #34d399;
+  --chart-4: #fbbf24;
+  --chart-5: #fb7185;
+  --sidebar: #0a0f1a;
+  --sidebar-foreground: #e8eef7;
+  --sidebar-primary: #2dd4bf;
+  --sidebar-primary-foreground: #042f2e;
+  --sidebar-accent: #1e293b;
+  --sidebar-accent-foreground: #f1f5f9;
+  --sidebar-border: #273047;
+  --sidebar-ring: #2dd4bf;
+  --radius: 0.75rem;
 }
 
 @theme inline {
@@ -123,44 +179,10 @@ body {
   margin: 0;
   color: var(--sea-ink);
   font-family: var(--font-sans);
-  background-color: var(--bg-base);
-  background:
-    radial-gradient(1100px 620px at -8% -10%, var(--hero-a), transparent 58%),
-    radial-gradient(1050px 620px at 112% -12%, var(--hero-b), transparent 62%),
-    radial-gradient(720px 380px at 50% 115%, rgba(79, 184, 178, 0.1), transparent 68%),
-    linear-gradient(180deg, color-mix(in oklab, var(--sand) 68%, white) 0%, var(--foam) 44%, var(--bg-base) 100%);
+  background-color: var(--background);
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-
-
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  opacity: 0.28;
-  background:
-    radial-gradient(circle at 20% 15%, rgba(255, 255, 255, 0.8), transparent 34%),
-    radial-gradient(circle at 78% 26%, rgba(79, 184, 178, 0.2), transparent 42%),
-    radial-gradient(circle at 42% 82%, rgba(47, 106, 74, 0.14), transparent 36%);
-}
-
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: -1;
-  opacity: 0.14;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
-  background-size: 28px 28px;
-  mask-image: radial-gradient(circle at 50% 30%, black, transparent 78%);
 }
 
 a {
@@ -209,7 +231,7 @@ pre code {
 
 .island-shell {
   border: 1px solid var(--line);
-  background: linear-gradient(165deg, var(--surface-strong), var(--surface));
+  background: var(--surface-strong);
   box-shadow:
     0 1px 0 var(--inset-glint) inset,
     0 22px 44px rgba(30, 90, 72, 0.1),
@@ -218,7 +240,7 @@ pre code {
 }
 
 .feature-card {
-  background: linear-gradient(165deg, color-mix(in oklab, var(--surface-strong) 93%, white 7%), var(--surface));
+  background: var(--surface);
   box-shadow:
     0 1px 0 var(--inset-glint) inset,
     0 18px 34px rgba(30, 90, 72, 0.1),
@@ -260,7 +282,7 @@ a {
   height: 2px;
   transform: scaleX(0);
   transform-origin: left;
-  background: linear-gradient(90deg, var(--lagoon), #7ed3bf);
+  background: var(--lagoon);
   transition: transform 170ms ease;
 }
 

@@ -11,7 +11,6 @@ import {
   Select,
   SimpleGrid,
   Stack,
-  Text,
   Textarea,
   TextInput,
   ThemeIcon,
@@ -117,25 +116,25 @@ function ContactPage() {
   }
 
   return (
-    <Container size="lg" className="space-y-10 py-10">
+    <Container size="lg" className="max-w-full space-y-8 px-0 py-6 sm:space-y-10 sm:py-8 md:py-10">
       {/* ── PAGE HEADER ── */}
-      <Stack gap="xs" className="text-center max-w-2xl mx-auto">
+      <Stack gap="xs" className="mx-auto max-w-2xl text-center">
 
         <div className="heading">
           Get in Touch
         </div>
 
-        <Text size="md" c="dimmed" className="leading-8">
+        <p className="text-sm leading-7 text-slate-600 sm:text-base sm:leading-8 dark:text-slate-400">
           Have a project, idea, or opportunity you'd like to discuss?
           I'd love to hear from you. Fill in the form or reach out directly —
           I respond to every message.
-        </Text>
+        </p>
       </Stack>
 
       {/* ── MAIN: FORM + SIDEBAR ── */}
-      <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md" className="items-start">
+      <SimpleGrid cols={{ base: 1, md: 2 }} spacing={{ base: 'md', sm: 'lg' }} className="items-start">
         {/* CONTACT FORM */}
-        <Card radius="xl" withBorder p="xl" className="shadow-sm h-full">
+        <Card radius="xl" withBorder className="h-full p-4 shadow-sm sm:p-6 md:p-8">
           <Stack gap="lg">
             <Group gap="xs">
               <ThemeIcon variant="light" color="indigo" radius="md">
@@ -210,13 +209,14 @@ function ContactPage() {
                   {...form.getInputProps("message")}
                 />
 
-                <Group justify="space-between" mt="xs">
+                <Group justify="space-between" mt="xs" wrap="wrap" gap="sm" className="flex-col-reverse sm:flex-row sm:flex-nowrap sm:justify-between">
                   <Button
                     type="button"
                     variant="filled"
                     color="red"
                     radius="md"
                     size="sm"
+                    className="w-full sm:w-auto"
                     leftSection={<X size={16} />}
                     onClick={() => { form.reset(); setSelectedSubject(null) }}
                     disabled={isSubmitting}
@@ -229,6 +229,7 @@ function ContactPage() {
                     size="sm"
                     variant="filled"
                     color="yellow"
+                    className="w-full sm:w-auto"
                     leftSection={<Send size={16} />}
                     loading={isSubmitting}
                   >
@@ -239,7 +240,7 @@ function ContactPage() {
             </form>
           </Stack>
         </Card>
-        <Card radius="xl" withBorder p="xl" className="shadow-sm h-full bg-indigo-50 dark:bg-indigo-950/30">
+        <Card radius="xl" withBorder className="h-full bg-indigo-50 p-4 shadow-sm sm:p-6 md:p-8 dark:bg-indigo-950/30">
           <Stack gap="md">
             <Group gap="sm" align="center">
               <ThemeIcon variant="transparent" radius="md" size="sm">
@@ -249,18 +250,22 @@ function ContactPage() {
 
             </Group>
             <Divider color="blue"/>
-            <Group gap="sm">
-              <ThemeIcon variant="transparent" radius="md" size="sm">
+            <Group gap="sm" wrap="nowrap" align="flex-start" className="min-w-0">
+              <ThemeIcon variant="transparent" radius="md" size="sm" className="shrink-0">
                 <Mail size={24} />
               </ThemeIcon>
-              <Text size="sm" fw={500}>abdallahshee664@email.com</Text>
+              <span className="min-w-0 break-all text-sm font-medium text-slate-800 dark:text-slate-100">
+                abdallahshee664@email.com
+              </span>
             </Group>
 
-            <Group gap="sm">
-              <ThemeIcon variant="transparent" radius="md" size="sm">
+            <Group gap="sm" wrap="nowrap" align="flex-start" className="min-w-0">
+              <ThemeIcon variant="transparent" radius="md" size="sm" className="shrink-0">
                 <Phone size={24} />
               </ThemeIcon>
-              <Text size="sm" fw={500}>+254 796515302</Text>
+              <span className="min-w-0 break-words text-sm font-medium text-slate-800 dark:text-slate-100">
+                +254 796515302
+              </span>
             </Group>
 
             <Anchor href="https://github.com/abdallahshee" target="_blank" underline="never">
@@ -268,7 +273,7 @@ function ContactPage() {
                 <ThemeIcon variant="transparent" radius="md" size="sm">
                   <Github size={24} />
                 </ThemeIcon>
-                <Text size="sm" fw={500}>GitHub</Text>
+                <span className="text-sm font-medium text-slate-800 dark:text-slate-100">GitHub</span>
               </Group>
             </Anchor>
 
@@ -277,7 +282,7 @@ function ContactPage() {
                 <ThemeIcon variant="transparent" radius="md" size="sm">
                   <Linkedin size={24} />
                 </ThemeIcon>
-                <Text size="sm" fw={500}>LinkedIn</Text>
+                <span className="text-sm font-medium text-slate-800 dark:text-slate-100">LinkedIn</span>
               </Group>
             </Anchor>
           </Stack>
@@ -286,11 +291,11 @@ function ContactPage() {
             <Group gap="xs">
               <div className="title3">Quick to Respond</div>
             </Group>
-            <Text size="md" c="dimmed">
+            <p className="text-sm leading-relaxed text-slate-600 sm:text-base dark:text-slate-400">
               I check my inbox daily and aim to reply to every message within
               <strong> 24 hours</strong>. If your matter is urgent, feel free
               to call or reach out on LinkedIn directly.
-            </Text>
+            </p>
             <List
               spacing="xs"
               size="md"
@@ -302,7 +307,7 @@ function ContactPage() {
             >
               {WHY_REACH_OUT.map((item) => (
                 <List.Item key={item}>
-                  <Text size="md" c="dimmed">{item}</Text>
+                  <span className="text-sm text-slate-600 sm:text-base dark:text-slate-400">{item}</span>
                 </List.Item>
               ))}
             </List>

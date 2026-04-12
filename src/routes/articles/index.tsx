@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
 import {
   Avatar, Box, Button, Card, Container, Group,
-  Image, Pagination, Skeleton, Stack, Text, TextInput, ThemeIcon,
+  Image, Pagination, Skeleton, Stack, TextInput, ThemeIcon,
 } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { useQuery } from "@tanstack/react-query"
@@ -126,22 +126,22 @@ function BlogsPage() {
   }
 
   return (
-    <Container size="xl" className="space-y-8 py-10">
+    <Container size="xl" className="max-w-full space-y-6 px-0 py-6 sm:space-y-8 sm:py-8 md:py-10">
 
       {/* Header */}
       <div className="space-y-2">
         <div className="heading">Articles & Writing</div>
-        <Text c="dimmed" className="max-w-2xl">
+        <p className="max-w-2xl text-sm text-slate-600 sm:text-base dark:text-slate-400">
           Thoughts, tutorials, and practical notes on building modern web applications.
-        </Text>
+        </p>
       </div>
 
       {/* Search + Buttons row */}
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div className="flex-1" style={{ minWidth: 220, maxWidth: 400 }}>
-          <Text size="sm" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
+      <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
+        <div className="w-full min-w-0 sm:flex-1" style={{ maxWidth: 400 }}>
+          <div className="mb-1.5 text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-400">
             Search
-          </Text>
+          </div>
           <TextInput
             size="sm"
             radius="md"
@@ -158,17 +158,17 @@ function BlogsPage() {
             onChange={(e) => handleSearchChange(e.currentTarget.value)}
           />
           {hasSearch && (
-            <Text size="sm" c="dimmed" mt={4}>
+            <p className="mt-2 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
               {isFetching
                 ? "Searching…"
                 : `${pagination.total ?? 0} result${(pagination.total ?? 0) !== 1 ? "s" : ""} for "${debouncedSearch}"`
               }
-            </Text>
+            </p>
           )}
         </div>
 
         {isAuthenticated && (
-          <Group gap="sm" className="flex-shrink-0 self-end">
+          <Group gap="sm" wrap="wrap" className="w-full shrink-0 sm:w-auto sm:self-end">
             <Link
               to="/articles/my-articles"
               search={{ page: 1 }}
@@ -196,19 +196,19 @@ function BlogsPage() {
         </div>
       ) : blogs.length === 0 ? (
         // ✅ empty state
-        <div className="flex justify-center py-24">
+        <div className="flex justify-center px-4 py-16 sm:py-24">
           <Stack align="center" gap="md">
             <ThemeIcon size={72} radius="md" variant="light" color="blue">
               <BookOpen size={36} />
             </ThemeIcon>
-            <div className="title2">
+            <div className="title2 text-center">
               {hasSearch ? `No results for "${debouncedSearch}"` : "No articles yet"}
             </div>
-            <Text c="dimmed" ta="center" maw={400}>
+            <p className="max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
               {hasSearch
                 ? "Try a different search term or clear the search to browse all articles."
                 : "No articles have been published yet. Check back soon."}
-            </Text>
+            </p>
             {hasSearch && (
               <Button variant="filled" color="grape" radius="md" onClick={() => handleSearchChange("")}>
                 Clear Search
@@ -219,7 +219,7 @@ function BlogsPage() {
       ) : (
         // ✅ articles grid
         <div
-          className={`min-h-[900px] transition-opacity duration-200 ${isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
+          className={`min-h-[420px] transition-opacity duration-200 sm:min-h-[560px] md:min-h-[720px] lg:min-h-[900px] ${isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
             }`}
         >
           {isLoading ? (
@@ -229,21 +229,21 @@ function BlogsPage() {
               ))}
             </div>
           ) : blogs.length === 0 ? (
-            <div className="flex min-h-[900px] items-center justify-center">
+            <div className="flex min-h-[320px] items-center justify-center px-4 sm:min-h-[480px] md:min-h-[640px]">
               <Stack align="center" gap="md">
                 <ThemeIcon size={72} radius="md" variant="light" color="blue">
                   <BookOpen size={36} />
                 </ThemeIcon>
 
-                <div className="title2">
+                <div className="title2 text-center">
                   {hasSearch ? `No results for "${debouncedSearch}"` : "No articles yet"}
                 </div>
 
-                <Text c="dimmed" ta="center" maw={400}>
+                <p className="max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
                   {hasSearch
                     ? "Try a different search term or clear the search to browse all articles."
                     : "No articles have been published yet. Check back soon."}
-                </Text>
+                </p>
 
                 {hasSearch && (
                   <Button
@@ -291,28 +291,28 @@ function BlogsPage() {
                         padding: "1rem",
                       }}
                     >
-                      <Text tt="uppercase" opacity={0.6} fw={700} size="xs" c="grape" mb={4}>
+                      <div className="mb-1 text-xs font-bold uppercase tracking-wide text-pink-600/80 dark:text-pink-300/80">
                         {article.categoryName}
-                      </Text>
+                      </div>
 
-                      <Text fw={600} size="sm" lineClamp={2} mb={6}>
+                      <div className="mb-3 line-clamp-2 text-sm font-semibold text-slate-900 dark:text-slate-50">
                         {article.title}
-                      </Text>
+                      </div>
 
-                      <Text size="xs" c="dimmed" lineClamp={2} mb="auto">
+                      <p className="mb-auto line-clamp-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
                         {article.excerpt}
-                      </Text>
+                      </p>
 
-                      <Group justify="space-between" align="center" mt={12}>
-                        <Group gap={6}>
-                          <Avatar size={22} src={article.authorImage} alt={article.authorName!} radius="xl" />
-                          <Text size="xs" fw={500}>
+                      <Group justify="space-between" align="center" wrap="nowrap" gap="xs" mt={12} className="min-w-0">
+                        <Group gap={6} wrap="nowrap" className="min-w-0">
+                          <Avatar size={22} src={article.authorImage} alt={article.authorName!} radius="xl" className="shrink-0" />
+                          <span className="min-w-0 truncate text-xs font-medium text-slate-800 dark:text-slate-200">
                             {article.authorName}
-                          </Text>
+                          </span>
                         </Group>
-                        <Text size="xs" c="dimmed">
+                        <span className="shrink-0 text-xs text-slate-500 dark:text-slate-400">
                           {moment(article.createdAt).format("MMM D, YYYY")}
-                        </Text>
+                        </span>
                       </Group>
 
                       <Group
@@ -323,15 +323,15 @@ function BlogsPage() {
                       >
                         <Group gap={4}>
                           <Heart size={13} opacity={0.5} />
-                          <Text size="xs" c="dimmed">
+                          <span className="text-xs text-slate-500 dark:text-slate-400">
                             {article.likes}
-                          </Text>
+                          </span>
                         </Group>
                         <Group gap={4}>
                           <MessageCircle size={13} opacity={0.5} />
-                          <Text size="xs" c="dimmed">
+                          <span className="text-xs text-slate-500 dark:text-slate-400">
                             {article.comments}
-                          </Text>
+                          </span>
                         </Group>
                       </Group>
                     </div>

@@ -3,7 +3,6 @@ import {
   Button,
   Card,
   Container,
-  Text,
   Group,
   Stack,
   Paper,
@@ -192,47 +191,47 @@ function ServicesPage() {
   const router = useRouter()
 
   return (
-    <Container size="xl" className="space-y-16 py-10">
+    <Container size="xl" className="max-w-full space-y-10 px-0 py-6 sm:space-y-12 sm:py-8 md:space-y-16 md:py-10">
 
       {/* ── HERO ── */}
-      <section className="grid items-stretch gap-8 lg:grid-cols-[2fr_1fr] lg:gap-14">
-        <Stack gap="md">
-          <Stack gap="md">
+      <section className="grid items-stretch gap-6 sm:gap-8 lg:grid-cols-[2fr_1fr] lg:gap-14">
+        <Stack gap="md" className="min-w-0">
+          <Stack gap="md" className="min-w-0">
             <div className="heading">
               Software solutions for real business needs
             </div>
 
-            <Text size="lg" c="dimmed" className="leading-8">
+            <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
               I help businesses and startups turn ideas into reliable, production-ready
               systems — from management platforms and SaaS products to tailored web
               applications built for performance, scalability, and long-term growth.
-            </Text>
+            </p>
           </Stack>
 
           <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm">
-            <Paper withBorder radius="md" p="md" className="shadow-sm">
-              <Text fw={700} size="sm">Scalable Systems</Text>
-              <Text size="sm" c="dimmed" mt={4}>
+            <Paper withBorder radius="md" p="md" className="min-w-0 shadow-sm">
+              <div className="text-sm font-bold text-slate-900 dark:text-slate-50">Scalable Systems</div>
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
                 Designed to grow with your users and workflows.
-              </Text>
+              </p>
             </Paper>
 
-            <Paper withBorder radius="md" p="md" className="shadow-sm">
-              <Text fw={700} size="sm">Clean Architecture</Text>
-              <Text size="sm" c="dimmed" mt={4}>
+            <Paper withBorder radius="md" p="md" className="min-w-0 shadow-sm">
+              <div className="text-sm font-bold text-slate-900 dark:text-slate-50">Clean Architecture</div>
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
                 Maintainable codebases built for long-term success.
-              </Text>
+              </p>
             </Paper>
 
-            <Paper withBorder radius="md" p="md" className="shadow-sm">
-              <Text fw={700} size="sm">Business Focused</Text>
-              <Text size="sm" c="dimmed" mt={4}>
+            <Paper withBorder radius="md" p="md" className="min-w-0 shadow-sm">
+              <div className="text-sm font-bold text-slate-900 dark:text-slate-50">Business Focused</div>
+              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
                 Solutions aligned with real operational needs.
-              </Text>
+              </p>
             </Paper>
           </SimpleGrid>
 
-          <Group gap="sm">
+          <Group gap="sm" wrap="wrap">
             <Link to="/contact">
               <Button
                 color="green"
@@ -258,7 +257,7 @@ function ServicesPage() {
         </Stack>
 
         <div className="flex items-stretch justify-center lg:justify-end">
-          <div className="w-full" style={{ isolation: 'isolate' }}>
+          <div className="mx-auto w-full max-w-full sm:max-w-[26rem] lg:mx-0" style={{ isolation: 'isolate' }}>
             <ServiceComponent />
           </div>
         </div>
@@ -268,9 +267,9 @@ function ServicesPage() {
       <section className="space-y-3">
         <div>
           <div className="title2">Service Areas</div>
-          <Text c="dimmed" mt={4} className="max-w-2xl">
+          <p className="mt-2 max-w-2xl text-sm text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
             I design and build software solutions tailored precisely to your requirements — with a focus on performance, scalability, and long-term reliability.
-          </Text>
+          </p>
         </div>
 
         <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
@@ -283,21 +282,21 @@ function ServicesPage() {
               className="group shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1"
             >
               <Stack gap="md" h="100%">
-                <Group className='flex '>
+                <Group className="min-w-0 items-start gap-3" wrap="nowrap">
                   <ThemeIcon
                     variant="light"
                     color={service.color}
                     radius="md"
                     size={42}
-                    className="transition-transform duration-300 group-hover:scale-110"
+                    className="shrink-0 transition-transform duration-300 group-hover:scale-110"
                   >
                     {service.icon}
                   </ThemeIcon>
-                  <Text fw={700}>{service.title}</Text>
+                  <div className="min-w-0 font-bold text-slate-900 dark:text-slate-50">{service.title}</div>
                 </Group>
-                <Stack gap={4} className="flex-1">
+                <Stack gap={4} className="min-w-0 flex-1">
 
-                  <Text size="md" c="dimmed" className="leading-6">{service.desc}</Text>
+                  <p className="text-sm leading-6 text-slate-600 sm:text-base dark:text-slate-400">{service.desc}</p>
                 </Stack>
 
               </Stack>
@@ -307,17 +306,17 @@ function ServicesPage() {
       </section>
 
       {/* ── HOW I WORK ── */}
-      <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-start">
+      <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-start">
         {/* LEFT */}
-        <section className="space-y-8 border-r-4 border-blue-500 pr-4 lg:pr-6">
-          <div>
+        <section className="space-y-6 border-b-4 border-blue-500 pb-6 sm:space-y-8 lg:border-b-0 lg:border-r-4 lg:pb-0 lg:pr-6">
+          <div className="min-w-0">
             <div className="title2">
               How I Work
             </div>
-            <Text c="dimmed" mt={4} className="max-w-2xl leading-7">
+            <p className="mt-2 max-w-2xl text-sm leading-7 text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
               A clear, collaborative process from first conversation to final handover — so you always
               know what&apos;s happening and what comes next.
-            </Text>
+            </p>
           </div>
 
           <Timeline active={4} bulletSize={40} lineWidth={2} color="indigo">
@@ -330,14 +329,14 @@ function ServicesPage() {
                   </ThemeIcon>
                 }
                 title={
-                  <Text fw={700} size="md" mb={6}>
+                  <div className="mb-2 text-base font-bold text-slate-900 dark:text-slate-50">
                     {i + 1}. {step.title}
-                  </Text>
+                  </div>
                 }
               >
-                <Text size="sm" c="dimmed" className="mb-8 leading-7">
+                <p className="mb-6 text-sm leading-7 text-slate-600 sm:mb-8 dark:text-slate-400">
                   {step.desc}
-                </Text>
+                </p>
               </Timeline.Item>
             ))}
           </Timeline>
@@ -349,10 +348,10 @@ function ServicesPage() {
             <div className="title2">
               Tools & Tech Stack
             </div>
-            <Text c="dimmed" mt={4} className="max-w-md leading-7">
+            <p className="mt-2 max-w-md text-sm leading-7 text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
               I use a modern, production-proven stack chosen for reliability, developer experience,
               and long-term maintainability.
-            </Text>
+            </p>
           </div>
 
           <SimpleGrid cols={{ base: 2, sm: 2, lg: 2 }} spacing="sm">
@@ -368,9 +367,9 @@ function ServicesPage() {
                   <div className="flex items-center justify-center w-4 h-4 text-blue-500 text-2xl font-bold">
                     •
                   </div>
-                  <Text fw={600} size="sm" className="leading-none">
+                  <span className="text-sm font-semibold leading-none text-slate-900 dark:text-slate-50">
                     {tech.name}
-                  </Text>
+                  </span>
                 </div>
               </Paper>
             ))}
@@ -382,9 +381,9 @@ function ServicesPage() {
       <section className="space-y-6">
         <div>
           <div className="title2">What Clients Say</div>
-          <Text c="dimmed" mt={4} className="max-w-2xl">
+          <p className="mt-2 max-w-2xl text-sm text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
             Relationships built on clear communication, reliable delivery, and software that actually works.
-          </Text>
+          </p>
         </div>
 
         <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
@@ -395,15 +394,15 @@ function ServicesPage() {
                   <Quote size={18} />
                 </ThemeIcon>
 
-                <Text size="md" c="dimmed" className="leading-7 italic">
-                  "{t.quote}"
-                </Text>
+                <p className="text-sm leading-7 text-slate-600 italic sm:text-base dark:text-slate-400">
+                  &ldquo;{t.quote}&rdquo;
+                </p>
 
-                <Group gap="sm">
-                  <Avatar color={t.color} radius="md" size={42}>{t.avatar}</Avatar>
-                  <div>
-                    <Text fw={700} size="md">{t.name}</Text>
-                    <Text size="sm" c="dimmed">{t.role}</Text>
+                <Group gap="sm" wrap="nowrap" className="min-w-0">
+                  <Avatar color={t.color} radius="md" size={42} className="shrink-0">{t.avatar}</Avatar>
+                  <div className="min-w-0">
+                    <div className="text-base font-bold text-slate-900 dark:text-slate-50">{t.name}</div>
+                    <div className="text-sm text-slate-600 dark:text-slate-400">{t.role}</div>
                   </div>
                 </Group>
               </Stack>
@@ -412,22 +411,22 @@ function ServicesPage() {
         </SimpleGrid>
       </section>
       {/* ── CTA ── */}
-      <section id="contact" className="mx-auto max-2xl: scroll-mt-20">
+      <section id="contact" className="mx-auto max-w-3xl scroll-mt-20">
         <Paper
           radius="24px"
           withBorder
           shadow="sm"
-          className="relative overflow-hidden border border-slate-200/70 bg-linear-to-br from-white via-indigo-50 to-blue-50 px-6 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
+          className="relative overflow-hidden border border-slate-200/70 bg-linear-to-br from-white via-indigo-50 to-blue-50 px-4 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
         >
           <Stack align="center" gap="md">
             <div className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
               Ready to Build Your Product?
             </div>
-            <Text c="dimmed" size="lg" className="max-w-2xl leading-8">
+            <p className="max-w-2xl px-1 text-center text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
               Tell me about your project — what you need, your timeline, and your budget.
               I&apos;ll get back to you within 24 hours with my thoughts and next steps.
-            </Text>
-            <Group justify="center" mt="md">
+            </p>
+            <Group justify="center" mt="md" wrap="wrap" gap="sm">
               <Button
                 variant="filled"
                 color="yellow"

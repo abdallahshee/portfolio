@@ -2,7 +2,6 @@ import { getAllProjectsQueryOptions, searchProjectsQueryOptions } from '@/db/que
 import { createFileRoute, Link } from '@tanstack/react-router'
 import {
   Card,
-  Text,
   Button,
   Image,
   Group,
@@ -93,25 +92,25 @@ function RouteComponent() {
   const showSkeleton = isLoading || (isFetching && !isPlaceholderData)
 
   return (
-    <Container size="xl" className="space-y-8 py-10">
+    <Container size="xl" className="max-w-full space-y-6 px-0 py-6 sm:space-y-8 sm:py-8 md:py-10">
       {/* Page Header */}
-      <div className="mb-10 max-w-2xl">
+      <div className="mb-6 max-w-2xl sm:mb-10">
         <div className="heading">
           Built for Real-World Use
         </div>
-        <Text size="lg" c="dimmed">
+        <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base sm:leading-7 dark:text-slate-400">
           A selection of applications and platforms brought to life from initial concept
           to final delivery. Each project highlights my approach to creating dependable,
           well-structured systems that are built to scale and easy to use.
-        </Text>
+        </p>
       </div>
 
       {/* Search & Filter */}
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <div className="flex-1" style={{ minWidth: 240, maxWidth: 420 }}>
-          <Text size="sm" fw={500} c="dimmed" mb={5} className="uppercase tracking-widest">
+      <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
+        <div className="w-full min-w-0 sm:flex-1" style={{ maxWidth: 420 }}>
+          <div className="mb-1.5 text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-400">
             Search
-          </Text>
+          </div>
           <TextInput
             placeholder="Search by title, technology, or description…"
             size="sm"
@@ -128,20 +127,20 @@ function RouteComponent() {
             onChange={(e) => handleSearchChange(e.currentTarget.value)}
           />
           {isSearching && (
-            <Text size="xs" c="dimmed" mt={4}>
+            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
               {isFetching
                 ? 'Searching…'
                 : `${data?.total ?? 0} result${(data?.total ?? 0) !== 1 ? 's' : ''} for "${debouncedSearch}"`}
-            </Text>
+            </p>
           )}
         </div>
 
-        <div>
-          <Group gap="xs" mb={5} align="center">
+        <div className="w-full shrink-0 sm:w-auto">
+          <Group gap="xs" mb={5} align="center" wrap="wrap">
             <ListFilter size={12} className="text-slate-400" />
-            <Text size="sm" fw={500} c="dimmed" className="uppercase tracking-widest">
+            <span className="text-xs font-medium uppercase tracking-widest text-slate-500 sm:text-sm dark:text-slate-400">
               Filter by status
-            </Text>
+            </span>
           </Group>
 
           <Group gap="xs">
@@ -171,16 +170,16 @@ function RouteComponent() {
 
       {/* Result count */}
       {!showSkeleton && projects.length > 0 && (
-        <Text size="sm" c="dimmed" mb="md">
+        <p className="mb-4 text-sm text-slate-600 dark:text-slate-400">
           Showing {projects.length}{' '}
           {filter === 'public' ? 'open source' : filter === 'private' ? 'private' : ''}{' '}
           {projects.length === 1 ? 'project' : 'projects'}
-        </Text>
+        </p>
       )}
 
       {/* Projects Section */}
       <div
-        className={`min-h-[900px] transition-opacity duration-200 ${
+        className={`min-h-[420px] transition-opacity duration-200 sm:min-h-[560px] md:min-h-[720px] lg:min-h-[900px] ${
           isPlaceholderData || isFetching ? 'opacity-80' : 'opacity-100'
         }`}
       >
@@ -200,7 +199,7 @@ function RouteComponent() {
             ))}
           </div>
         ) : projects.length === 0 ? (
-          <div className="flex min-h-[900px] flex-col items-center justify-center pt-16">
+          <div className="flex min-h-[320px] flex-col items-center justify-center px-4 pt-10 sm:min-h-[480px] sm:pt-16 md:min-h-[640px]">
             <ThemeIcon size={72} radius="md" variant="light" color="indigo">
               <FolderOpen size={36} />
             </ThemeIcon>
@@ -209,27 +208,27 @@ function RouteComponent() {
 
             {isSearching ? (
               <>
-                <Text c="dimmed" ta="center" maw={400}>
+                <p className="mx-auto max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
                   No projects matched <strong>&quot;{debouncedSearch}&quot;</strong>. Try a different
                   search term or clear the search.
-                </Text>
+                </p>
                 <Button variant="light" color="indigo" onClick={() => handleSearchChange('')}>
                   Clear Search
                 </Button>
               </>
             ) : filter !== 'all' ? (
               <>
-                <Text c="dimmed" ta="center" maw={400}>
+                <p className="mx-auto max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
                   No {filter === 'public' ? 'open source' : 'private'} projects found.
-                </Text>
+                </p>
                 <Button variant="light" color="indigo" onClick={() => handleFilterChange('all')}>
                   Show All Projects
                 </Button>
               </>
             ) : (
-              <Text c="dimmed" ta="center" maw={400}>
+              <p className="mx-auto max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
                 No projects have been added yet.
-              </Text>
+              </p>
             )}
           </div>
         ) : (
@@ -241,9 +240,9 @@ function RouteComponent() {
                 padding="lg"
                 radius="lg"
                 withBorder
-                className="flex h-full cursor-pointer flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+                className="flex h-full min-w-0 cursor-pointer flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
               >
-                <Stack gap="sm">
+                <Stack gap="sm" className="min-w-0">
                   <div className="flex h-[180px] items-center justify-center overflow-hidden rounded-md bg-gray-100">
                     {project.imageUrl ? (
                       <Image
@@ -264,11 +263,11 @@ function RouteComponent() {
 
                   <Group gap="xs">
                     <Rating value={project.averageRating} fractions={2} readOnly size="sm" />
-                    <Text size="xs" c="dimmed">
+                    <span className="text-xs text-slate-500 dark:text-slate-400">
                       {project.averageRating > 0
                         ? `${project.averageRating} (${project.totalRatings})`
                         : 'No ratings yet'}
-                    </Text>
+                    </span>
                   </Group>
 
                   <Group gap="sm">
@@ -283,14 +282,14 @@ function RouteComponent() {
                     </Badge>
                   </Group>
 
-                  <Text size="sm" c="dimmed" lineClamp={3}>
+                  <p className="line-clamp-3 text-sm text-slate-600 dark:text-slate-400">
                     {project.description}
-                  </Text>
+                  </p>
 
                   <Stack gap="xs" mt="xs">
-                    <Text size="sm" fw={500}>
+                    <div className="text-sm font-medium text-slate-800 dark:text-slate-200">
                       Technologies
-                    </Text>
+                    </div>
                     <Group gap="xs">
                       {project.technologies.slice(0, 4).map((tech) => (
                         <Badge

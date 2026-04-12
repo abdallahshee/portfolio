@@ -5,7 +5,6 @@ import {
   ScrollArea,
   Button,
   Avatar,
-  Text,
   Menu,
   UnstyledButton,
   Group,
@@ -62,19 +61,19 @@ export default function Header() {
   })
 
   // ✅ Detect when navigating away from /account
- // ✅ Detect when on the login page specifically
-useEffect(() => {
-  if (currentPath === "/account") {
-    setCameFromLogin(true)
-  }
-}, [currentPath])
+  // ✅ Detect when on the login page specifically
+  useEffect(() => {
+    if (currentPath === "/account") {
+      setCameFromLogin(true)
+    }
+  }, [currentPath])
 
-// ✅ Clear once router finishes navigating away from login
-useEffect(() => {
-  if (!isRouterNavigating && cameFromLogin && currentPath !== "/account") {
-    setCameFromLogin(false)
-  }
-}, [isRouterNavigating, cameFromLogin, currentPath])
+  // ✅ Clear once router finishes navigating away from login
+  useEffect(() => {
+    if (!isRouterNavigating && cameFromLogin && currentPath !== "/account") {
+      setCameFromLogin(false)
+    }
+  }, [isRouterNavigating, cameFromLogin, currentPath])
   useEffect(() => {
     let mounted = true
 
@@ -160,7 +159,7 @@ useEffect(() => {
 
   const handleProfileChange = async () => {
     setOpened(false)
- 
+
     await router.navigate({ to: "/account/profile/edit" })
   }
 
@@ -232,18 +231,19 @@ useEffect(() => {
   const UserMenu = (
     <Menu shadow="md" width={220} position="bottom-end" radius="md" zIndex={9999}>
       <Menu.Target>
-        <UnstyledButton className="ml-4 flex-shrink-0 rounded-full transition hover:bg-slate-100 dark:hover:bg-slate-800">
-          <Group gap="sm" className="px-2 py-1.5">
+        <UnstyledButton className="min-w-0 max-w-full shrink-0 rounded-full transition hover:bg-slate-100 dark:hover:bg-slate-800">
+          <Group gap="sm" wrap="nowrap" className="min-w-0 px-2 py-1.5">
             <Avatar
               src={user?.user_metadata?.avatar}
               alt={user?.user_metadata?.name}
               radius="md"
               size="sm"
+              className="shrink-0"
             />
-            <Text size="sm" fw={600} className="whitespace-nowrap leading-tight">
+            <span className="min-w-0 max-w-[100px] truncate text-left text-sm font-semibold leading-tight text-slate-800 sm:max-w-[140px] md:max-w-[200px] lg:max-w-none dark:text-slate-100">
               {user?.user_metadata?.name}
-            </Text>
-            <ChevronDown size={16} className="text-slate-500" />
+            </span>
+            <ChevronDown size={16} className="shrink-0 text-slate-500" />
           </Group>
         </UnstyledButton>
       </Menu.Target>
@@ -282,7 +282,7 @@ useEffect(() => {
   )
 
   const AuthButtons = (
-    <span className="flex flex-shrink-0 items-center gap-2">
+    <span className="flex min-w-0 flex-shrink-0 items-center gap-2">
       <Link to="/account" search={{ callbackUrl: "/" }}>
         <Button variant="outline" color="blue" size="sm">
           Sign in
@@ -307,40 +307,44 @@ useEffect(() => {
         }}
       />
 
-      <div className="container mx-auto flex h-full items-center justify-between px-4">
+      <div className="container mx-auto h-full max-w-full px-3 sm:px-4">
+        {/* Mobile: logo | theme + menu */}
+        <div className="flex h-full items-center justify-between md:hidden">
+          {BrandLogo}
+          <div className="flex items-center gap-2">
+            {ThemeButton}
+            <Burger
+              opened={opened}
+              onClick={() => setOpened(!opened)}
+              size="sm"
+              color="#6366f1"
+            />
+          </div>
+        </div>
 
-        {/* Brand Logo */}
-        {BrandLogo}
+        {/* Desktop: brand (left) · links (center) · auth/user + theme (right) */}
+        <div className="hidden h-full grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-x-5 gap-y-0 md:grid md:gap-x-7 lg:gap-x-10">
+          <div className="flex min-w-0 justify-self-start">
+            {BrandLogo}
+          </div>
 
-        {/* Desktop Nav */}
-        <nav className="hidden min-w-0 items-center space-x-6 md:flex">
-          {ThemeButton}
+          <nav className="flex max-w-full min-w-0 items-center justify-center gap-2.5 pr-3 md:gap-3 md:pr-6 lg:gap-5 lg:pr-6">
+            {links.map((link) => (
+              <Link
+                key={link.label}
+                to={link.to}
+                className="whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
+                activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
 
-          {links.map((link) => (
-            <Link
-              key={link.label}
-              to={link.to}
-              className="whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
-              activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
-            >
-              {link.label}
-            </Link>
-          ))}
-
-          <div className="flex w-[160px] flex-shrink-0 items-center justify-end ml-2">
+          <div className="flex min-w-0 shrink-0 items-center justify-end justify-self-end gap-2 pl-3 sm:gap-3 md:pl-5 lg:pl-6">
+            {ThemeButton}
             {showSkeleton ? DesktopUserSkeleton : user ? UserMenu : AuthButtons}
           </div>
-        </nav>
-
-        {/* Mobile Controls */}
-        <div className="flex items-center gap-2 md:hidden">
-          {ThemeButton}
-          <Burger
-            opened={opened}
-            onClick={() => setOpened(!opened)}
-            size="sm"
-            color="#6366f1"
-          />
         </div>
       </div>
 
@@ -393,14 +397,14 @@ useEffect(() => {
                       radius="md"
                       size="sm"
                     />
-                    <div className="flex-1">
-                      <Text fw={600} size="sm">
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate text-sm font-semibold text-slate-900 dark:text-slate-50">
                         {user.user_metadata?.name}
-                      </Text>
+                      </div>
                       {isAdmin && (
-                        <Text size="xs" c="indigo" fw={500}>
+                        <div className="text-xs font-medium text-indigo-600 dark:text-indigo-400">
                           Administrator
-                        </Text>
+                        </div>
                       )}
                     </div>
                   </div>

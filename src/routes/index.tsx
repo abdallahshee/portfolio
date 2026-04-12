@@ -5,7 +5,6 @@ import {
   Button,
   Card,
   Container,
-  Text,
   Table,
   Image,
   Group,
@@ -120,30 +119,30 @@ function App() {
   const router = useRouter()
 
   return (
-    <Container size="xl" className="space-y-12 py-10">
+    <Container size="xl" className="max-w-full space-y-8 px-0 py-6 sm:space-y-10 sm:py-8 md:space-y-12 md:py-10">
       {/* ── HERO ── */}
-      <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-14 items-center">
-        <Stack gap="xl" className="max-w-3xl">
-          <Stack gap="md" className="max-w-3xl">
-            <div className="relative inline-block title2 mb-2">
+      <section className="grid items-center gap-8 sm:gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
+        <Stack gap="xl" className="max-w-3xl min-w-0">
+          <Stack gap="md" className="max-w-3xl min-w-0">
+            <div className="relative mb-2 inline-block min-w-0 title2">
               <span className="text-blue-500">Full-Stack Software Developer</span>
               <span className="absolute left-0 -bottom-1 sm:-bottom-2 h-[3px] sm:h-[4px] w-3/5 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 rounded-full"></span>
             </div>
 
-            <div>
-              <h1 className="heading">
+            <div className="min-w-0">
+              <h1 className="heading break-words">
                 Designing maintainable and scalable web products & software systems
               </h1>
             </div>
 
-            <Text size="lg" c="dimmed" className="max-w-2xl text-base sm:text-lg leading-7 sm:leading-8">
+            <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
               I build modern digital products with a strong focus on architecture,
               maintainability, performance, and user experience — turning complex ideas
               into reliable, production-ready applications.
-            </Text>
+            </p>
           </Stack>
 
-          <Group>
+          <Group wrap="wrap" gap="sm" className="gap-3">
             <Link to="/projects">
               <Button
                 size="sm"
@@ -183,7 +182,7 @@ function App() {
             p="sm"
             className="group shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-white to-gray-50 dark:from-slate-900 dark:to-slate-800"
           >
-            <Group align="center" gap="sm" wrap="nowrap">
+            <Group align="center" gap="sm" wrap="wrap">
               <ThemeIcon
                 variant="light"
                 color={stat.color}
@@ -194,16 +193,14 @@ function App() {
                 {stat.icon}
               </ThemeIcon>
 
-              <div className="flex items-center gap-4">
+              <div className="flex min-w-0 flex-wrap items-center gap-3 sm:gap-4">
                 <div className="text-2xl font-extrabold leading-none tracking-tight">
                   {stat.value}
                 </div>
 
-                {/* <div className="w-8 h-[1px] bg-gradient-to-r from-indigo-500 to-transparent" /> */}
-
-                <Text size="md" c="dimmed">
+                <span className="text-sm text-slate-600 sm:text-base dark:text-slate-400">
                   {stat.label}
-                </Text>
+                </span>
               </div>
             </Group>
           </Paper>
@@ -213,28 +210,28 @@ function App() {
       {/* <Divider /> */}
 
       {/* ── ABOUT ── */}
-      <section className="grid lg:grid-cols-[1.2fr_0.8fr] gap-10 items-start">
-        <Stack gap="lg" className="border-r-4 border-blue-500 pr-4">
+      <section className="grid items-start gap-8 sm:gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+        <Stack gap="lg" className="min-w-0 border-b-4 border-blue-500 pb-6 lg:border-b-0 lg:border-r-4 lg:pb-0 lg:pr-6">
           <div className="title2">
             About Me
           </div>
 
-          <Text size="lg" c="dimmed" className="leading-8">
+          <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
             I'm <strong>Abdallah Shee</strong>, a software developer based in Nairobi, Kenya 🇰🇪.
             I help businesses and startups turn ideas into reliable, easy-to-use digital products —
             whether it’s a platform, a system, or a custom solution tailored to their needs.
-          </Text>
+          </p>
 
-          <Text size="lg" c="dimmed" className="leading-8">
+          <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
             From planning how everything should work to building and refining the final product,
             I focus on creating systems that are simple to use, efficient, and built to handle growth.
             My goal is always to make things clear, practical, and valuable for the people who use them.
-          </Text>
+          </p>
 
-          <Text size="lg" c="dimmed" className="leading-8">
+          <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
             I believe good software should feel effortless — it should solve real problems,
             adapt as your business grows, and continue working smoothly long after it’s launched.
-          </Text>
+          </p>
 
           {/* <Group>
             <Link to="/contact">
@@ -250,7 +247,7 @@ function App() {
           </Group> */}
         </Stack>
 
-        <Stack gap="lg">
+        <Stack gap="lg" className="min-w-0">
           <div className="title2">
             Core Skills & Technologies
           </div>
@@ -265,17 +262,15 @@ function App() {
           >
             {CORE_SKILLS.map((skill) => (
               <List.Item key={skill}>
-                <Text size="md" c="dimmed">
-                  {skill}
-                </Text>
+                <span className="text-sm text-slate-600 sm:text-base dark:text-slate-400">{skill}</span>
               </List.Item>
             ))}
           </List>
         </Stack>
 
       </section>
-      <section className="flex ">
-        <Group justify="center" gap="lg" wrap="wrap">
+      <section className="flex justify-center">
+        <Group justify="center" gap="md" wrap="wrap" className="sm:gap-8">
           <Link to="/contact">
             <Button
               variant="filled"
@@ -308,9 +303,9 @@ function App() {
           <div className="title2">
             Core Strengths
           </div>
-          <Text c="dimmed" mt={4}>
+          <p className="mt-2 max-w-3xl text-sm text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
             The areas where I consistently deliver the most impact and value.
-          </Text>
+          </p>
         </div>
 
         <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
@@ -320,11 +315,11 @@ function App() {
                 <ThemeIcon variant="light" color={strength.color} radius="md" size="lg">
                   {strength.icon}
                 </ThemeIcon>
-                <Stack gap={4} className="flex-1">
-                  <Text fw={700}>{strength.title}</Text>
-                  <Text size="sm" c="dimmed">
+                <Stack gap={4} className="min-w-0 flex-1">
+                  <div className="font-bold text-slate-900 dark:text-slate-50">{strength.title}</div>
+                  <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
                     {strength.desc}
-                  </Text>
+                  </p>
                 </Stack>
               </Group>
             </Card>
@@ -338,30 +333,37 @@ function App() {
           <div className="title2">
             Featured Work & Writing
           </div>
-          <Text c="dimmed" className="max-w-3xl">
+          <p className="mt-1 max-w-3xl text-sm text-slate-600 sm:text-base dark:text-slate-400">
             A curated selection of projects and articles that best reflect the quality of my work.
-          </Text>
+          </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8 items-start">
+        <div className="grid items-start gap-6 sm:gap-8 lg:grid-cols-2">
           {/* PROJECTS */}
-          <Paper withBorder radius="lg" className="p-4">
+          <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
             <Stack gap="md">
-              <Group justify="space-between" align="end">
-                <div>
+              <Group
+                justify="space-between"
+                align="flex-start"
+                gap="sm"
+                wrap="wrap"
+                className="sm:flex-nowrap sm:items-end"
+              >
+                <div className="min-w-0 flex-1">
                   <div className='title3'>Featured Projects</div>
-                  <Text size="sm" c="dimmed">
+                  <p className="mt-1 text-xs text-slate-600 sm:text-sm dark:text-slate-400">
                     A selection of standout builds from my portfolio
-                  </Text>
+                  </p>
                 </div>
-                <Link to="/projects">
+                <Link to="/projects" className="shrink-0">
                   <Button variant="subtle" size="sm" radius="md" rightSection={<ArrowRight size={16} />}>
                     View All
                   </Button>
                 </Link>
               </Group>
 
-              <Table highlightOnHover withTableBorder verticalSpacing="sm" horizontalSpacing="sm">
+              <div className="-mx-1 overflow-x-auto sm:mx-0">
+              <Table highlightOnHover withTableBorder verticalSpacing="sm" horizontalSpacing="sm" className="min-w-[280px]">
                 <Table.Tbody>
                   {projects && projects.length > 0 ? (
                     projects.map((project) => {
@@ -384,17 +386,17 @@ function App() {
                                 </ThemeIcon>
                               )}
                               <Stack gap={2} className="min-w-0">
-                                <Text fw={600} truncate>
+                                <div className="truncate font-semibold text-slate-900 dark:text-slate-50">
                                   {project.title}
-                                </Text>
+                                </div>
                                 <Rating value={rating} readOnly size="sm" />
                               </Stack>
                             </Group>
                           </Table.Td>
                           <Table.Td w={60}>
-                            <Text c="blue" size="sm" fw={600}>
+                            <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
                               View
-                            </Text>
+                            </span>
                           </Table.Td>
                         </Table.Tr>
                       )
@@ -406,39 +408,47 @@ function App() {
                           <ThemeIcon size={56} radius="md" variant="light" color="gray">
                             <FolderOpen size={28} />
                           </ThemeIcon>
-                          <Text fw={600} size="md">
+                          <div className="text-center text-base font-semibold text-slate-900 dark:text-slate-50">
                             No projects yet
-                          </Text>
-                          <Text size="sm" c="dimmed" ta="center">
+                          </div>
+                          <p className="text-center text-sm text-slate-600 dark:text-slate-400">
                             Projects will appear here once they are added.
-                          </Text>
+                          </p>
                         </Stack>
                       </Table.Td>
                     </Table.Tr>
                   )}
                 </Table.Tbody>
               </Table>
+              </div>
             </Stack>
           </Paper>
 
           {/* ARTICLES */}
-          <Paper withBorder radius="lg" className="p-4">
+          <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
             <Stack gap="md">
-              <Group justify="space-between" align="end">
-                <div>
+              <Group
+                justify="space-between"
+                align="flex-start"
+                gap="sm"
+                wrap="wrap"
+                className="sm:flex-nowrap sm:items-end"
+              >
+                <div className="min-w-0 flex-1">
                   <div className='title3'>Featured Articles</div>
-                  <Text size="sm" c="dimmed">
+                  <p className="mt-1 text-xs text-slate-600 sm:text-sm dark:text-slate-400">
                     A few of the most engaging pieces written by users
-                  </Text>
+                  </p>
                 </div>
-                <Link to="/articles" search={{ page: 1 }}>
+                <Link to="/articles" search={{ page: 1 }} className="shrink-0">
                   <Button variant="subtle" radius="md" rightSection={<ArrowRight size={16} />}>
                     View All
                   </Button>
                 </Link>
               </Group>
 
-              <Table highlightOnHover withTableBorder verticalSpacing="sm" horizontalSpacing="sm">
+              <div className="-mx-1 overflow-x-auto sm:mx-0">
+              <Table highlightOnHover withTableBorder verticalSpacing="sm" horizontalSpacing="sm" className="min-w-[280px]">
                 <Table.Tbody>
                   {blogs && blogs.length > 0 ? (
                     blogs.map((blog) => (
@@ -459,9 +469,9 @@ function App() {
                               </ThemeIcon>
                             )}
                             <div className="min-w-0">
-                              <Text fw={600} truncate>
+                              <div className="truncate font-semibold text-slate-900 dark:text-slate-50">
                                 {blog.title}
-                              </Text>
+                              </div>
                               <Badge variant="light" radius="md" color="pink" size="sm">
                                 ❤️ {blog.likes} Likes
                               </Badge>
@@ -469,9 +479,9 @@ function App() {
                           </Group>
                         </Table.Td>
                         <Table.Td w={60}>
-                          <Text c="blue" size="sm" fw={600}>
+                          <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
                             Read
-                          </Text>
+                          </span>
                         </Table.Td>
                       </Table.Tr>
                     ))
@@ -482,31 +492,31 @@ function App() {
                           <ThemeIcon size={56} radius="md" variant="light" color="grape">
                             <BookOpen size={28} />
                           </ThemeIcon>
-                          <Text fw={600} size="md">
+                          <div className="text-center text-base font-semibold text-slate-900 dark:text-slate-50">
                             No articles yet
-                          </Text>
-                          <Text size="sm" c="dimmed" ta="center">
+                          </div>
+                          <p className="text-center text-sm text-slate-600 dark:text-slate-400">
                             Articles will appear here once they are published.
-                          </Text>
+                          </p>
                         </Stack>
                       </Table.Td>
                     </Table.Tr>
                   )}
                 </Table.Tbody>
               </Table>
+              </div>
             </Stack>
           </Paper>
         </div>
       </section>
 
       {/* ── CTA ── */}
-      {/* <section id="contact" className="mx-auto max-w-3xl scroll-mt-20"> */}
-      <section id="contact" className="mx-auto max-2xl: scroll-mt-20">
+      <section id="contact" className="mx-auto max-w-3xl scroll-mt-20">
         <Paper
           radius="24px"
           withBorder
           shadow="sm"
-          className="relative overflow-hidden border border-slate-200/70 bg-gradient-to-br from-white via-indigo-50 to-blue-50 px-6 py-10 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
+          className="relative overflow-hidden border border-slate-200/70 bg-gradient-to-br from-white via-indigo-50 to-blue-50 px-4 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
         >
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.14),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_30%)]" />
 
@@ -518,13 +528,13 @@ function App() {
                   Let me turn your idea into reality
                 </div>
 
-                <Text c="dimmed" size="lg" className="leading-8">
+                <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
                   I turn ideas into practical software solutions that work
                   reliably and grow with your business.
-                </Text>
+                </p>
               </div>
 
-              <Group gap="sm" className="pt-2" justify="center">
+              <Group gap="sm" className="pt-2" justify="center" wrap="wrap">
                 <Button
                   size="sm"
                   radius="md"

@@ -5,7 +5,7 @@ import {
   Tag, Sun, Moon, ArrowLeft, Menu, X,
 } from 'lucide-react'
 import {
-  Avatar, Drawer, Group, ScrollArea, Text, ThemeIcon, UnstyledButton,
+  Avatar, Drawer, Group, ScrollArea, ThemeIcon, UnstyledButton,
 } from '@mantine/core'
 import { useRouter } from '@tanstack/react-router'
 import { useQueryClient } from '@tanstack/react-query'
@@ -101,11 +101,11 @@ function RouteComponent() {
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
 
         {/* ── Row 1 — brand + theme toggle + user ── */}
-        <div className="max-w-[1280px] mx-auto flex items-center justify-between px-6 py-3">
+        <div className="mx-auto flex max-w-[1280px] flex-wrap items-center justify-between gap-3 px-3 py-3 sm:px-4 md:px-6">
 
           {/* Left — brand + theme toggle in same row ✅ */}
-          <Group gap="sm">
-            <Text fw={700} size="sm" className="leading-tight">Admin Panel</Text>
+          <Group gap="sm" wrap="wrap">
+            <span className="text-sm font-bold leading-tight text-slate-900 dark:text-slate-50">Admin Panel</span>
             <div className="h-4 w-px bg-slate-200 dark:bg-slate-700" />
             {/* ✅ theme toggle inline with Admin Panel text */}
             <UnstyledButton
@@ -121,18 +121,19 @@ function RouteComponent() {
           </Group>
 
           {/* Right — user info + mobile menu */}
-          <Group gap="sm">
+          <Group gap="sm" wrap="wrap" className="min-w-0">
             <Avatar
               size={32}
               radius="md"
               src={user?.user_metadata?.avatar_url || null}
               color="indigo"
+              className="shrink-0"
             >
               {user?.user_metadata?.full_name?.[0] ?? 'A'}
             </Avatar>
-            <Text size="sm" fw={500} className="hidden sm:block">
+            <span className="hidden max-w-[200px] truncate text-sm font-medium text-slate-800 sm:inline md:max-w-xs dark:text-slate-100">
               {user?.user_metadata?.full_name ?? user?.email}
-            </Text>
+            </span>
 
             {/* Mobile menu button */}
             <UnstyledButton
@@ -146,7 +147,7 @@ function RouteComponent() {
 
         {/* ── Row 2 — nav links ── */}
         <nav className="hidden sm:block border-t border-slate-100 dark:border-slate-800">
-          <div className="max-w-[1280px] mx-auto flex justify-center overflow-x-auto px-6">
+          <div className="mx-auto flex max-w-[1280px] justify-center overflow-x-auto px-3 sm:px-4 md:px-6">
             {navItems.map((item) => {
               const isActive =
                 pathname === item.to ||
@@ -181,7 +182,7 @@ function RouteComponent() {
       >
         <div className="flex h-full flex-col bg-white dark:bg-slate-900">
           <div className="flex items-center justify-between border-b border-slate-100 px-4 py-4 dark:border-slate-800">
-            <Text fw={700} size="sm">Menu</Text>
+            <span className="text-sm font-bold text-slate-900 dark:text-slate-50">Menu</span>
             <UnstyledButton
               onClick={() => setMobileOpen(false)}
               className="rounded-full p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800"
@@ -216,9 +217,9 @@ function RouteComponent() {
                     >
                       <item.icon size={16} />
                     </ThemeIcon>
-                    <Text size="sm" fw={isActive ? 600 : 400}>
+                    <span className={`text-sm ${isActive ? 'font-semibold' : 'font-normal'}`}>
                       {item.label}
-                    </Text>
+                    </span>
                   </Link>
                 )
               })}
@@ -238,7 +239,7 @@ function RouteComponent() {
                   : <ArrowLeft size={16} />
                 }
               </ThemeIcon>
-              <Text size="sm" c="indigo">{isLeaving ? 'Leaving…' : 'Back to Site'}</Text>
+              <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">{isLeaving ? 'Leaving…' : 'Back to Site'}</span>
             </button>
 
             <button
@@ -252,15 +253,15 @@ function RouteComponent() {
                   : <LogOut size={16} />
                 }
               </ThemeIcon>
-              <Text size="sm" c="red">{signingOut ? 'Signing out…' : 'Logout'}</Text>
+              <span className="text-sm font-medium text-red-500">{signingOut ? 'Signing out…' : 'Logout'}</span>
             </button>
           </div>
         </div>
       </Drawer>
 
       {/* Page content */}
-      <main className="flex-1 p-6">
-        <div className="max-w-[1280px] mx-auto">
+      <main className="mx-auto w-full max-w-[1280px] flex-1 px-4 pb-24 pt-6 sm:px-6 sm:pb-28 sm:pt-8">
+        <div className="w-full">
           <Outlet />
         </div>
       </main>
