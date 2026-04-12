@@ -8,9 +8,9 @@ export const adminStatsQueryOptions = queryOptions({
 })
 
 
-export const getAuthUserByIdQueryOptions=(userId:string)=>queryOptions({
-  queryKey:['authUsers',userId],
-  queryFn:()=>getAuthUserById({data:{userId}})
+export const getAuthUserByIdQueryOptions=(data:{userId:string})=>queryOptions({
+  queryKey:['authUsers',data],
+  queryFn:()=>getAuthUserById({data})
 })
 
 

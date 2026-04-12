@@ -19,6 +19,7 @@ export const caseStudy = pgTable('case_study', {
     startDate: timestamp("start_date",{mode:"string"}).notNull(),
     endDate: timestamp("end_date",{mode:"string"}).notNull(), //
     technologies: text("technologies").array(), // optional override
+    outcomes:text("outcome").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
         .defaultNow()

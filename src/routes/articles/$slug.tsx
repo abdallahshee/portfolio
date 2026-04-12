@@ -32,7 +32,7 @@ interface CommentForm {
 }
 
 function RouteComponent() {
-  const { slug } = Route.useParams()
+  const {slug}  = Route.useParams()
   const { data } = useSuspenseQuery(getArticleBySlugQueryOptions(slug))
   const router = useRouter()
   const createCommentMutation = useCreateCommentMutation()

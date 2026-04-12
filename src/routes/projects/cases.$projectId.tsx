@@ -30,7 +30,8 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { notifications } from '@mantine/notifications'
-import { useCreateCaseStudyMutations } from '@/db/mutations/admin.mutations'
+import { useCreateCaseStudyMutations } from '@/db/queries/case.queries'
+
 
 export const Route = createFileRoute('/projects/cases/$projectId')({
   component: RouteComponent,
@@ -50,6 +51,7 @@ function RouteComponent() {
       implementation: '',
       startDate: '',
       endDate: '',
+      outcomes:"",
       technologies: [],
     },
     validate: zod4Resolver(CreateCaseFormSchema),
@@ -348,6 +350,31 @@ function RouteComponent() {
                   />
                   <Text size="xs" c="dimmed" ta="right">
                     {form.values.implementation.length} / 1000
+                  </Text>
+                </Stack>
+
+                       {/* Implementation */}
+                <Stack gap="md">
+                  <Group gap="xs">
+                    <ThemeIcon variant="light" color="grape" radius="lg" size={32}>
+                      <Wrench size={15} />
+                    </ThemeIcon>
+                    <Text fw={600} size="md">Outcomes</Text>
+                  </Group>
+                  <Text size="sm" c="dimmed">
+                    Describe the resuts of the final outcomes. (100–1000 characters)
+                  </Text>
+                  <Textarea
+                    placeholder="Walk through the final outcomes..."
+                    radius="md"
+                    size="sm"
+                    minRows={4}
+                    autosize
+                    maxRows={8}
+                    {...form.getInputProps('outcomes')}
+                  />
+                  <Text size="xs" c="dimmed" ta="right">
+                    {form.values.outcomes.length} / 1000
                   </Text>
                 </Stack>
 

@@ -13,7 +13,9 @@ export const CaseSchema=createSelectSchema(caseStudy,{
     solution:z.string().min(100,"Content out of range 100-1000 characters")
     .min(1000,"Content out of range 100-1000 characters"),
     implementation:z.string().min(100,"Content out of range 100-1000 characters")
-    .min(1000,"Content out of range 100-1000 characters")
+    .min(1000,"Content out of range 100-1000 characters"),
+    outcomes:z.string().min(100,"Content out of range 100-1000 characters")
+    .min(1000,"Content out of range 100-1000 characters"),
 }).omit({createdAt:true, updatedAt:true,id:true,overview:true})
 
 export type CaseRequest=z.infer<typeof CaseSchema>
