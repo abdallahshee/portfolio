@@ -6,7 +6,6 @@ import { count, eq } from "drizzle-orm";
 import { AuthenticatedMiddleware } from "./middleware/auth.middleware";
 import { UserUpdateProfileSchema } from "@/db/validations/user.types";
 
-
 export const getUserById = createServerFn({ method: "GET" })
   // .middleware([AdminMiddleware])
   .inputValidator((data: { userId: string }) => data)
