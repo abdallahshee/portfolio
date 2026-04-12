@@ -1,8 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createArticle, updateArticle } from '@/server/article.functions'
-import { useRouter } from '@tanstack/react-router'
 import { getAllArticlesQueryOptions, getArticleBySlugQueryOptions } from '../queries/article.queries'
-import type { Role } from '../validations/user.types'
 import type { ArticleRequest, ArticleUpdateRequest } from '../validations/article.types'
 
 export const useArticleUpdateMutationOption = () => {
@@ -19,9 +17,8 @@ export const useArticleUpdateMutationOption = () => {
 
 
 
-export const useArticleCreateMutation = (role: Role) => {
+export const useArticleCreateMutation = () => {
     const queryClient = useQueryClient()
-    const router = useRouter()
 
     return useMutation({
         mutationFn: (data: ArticleRequest) =>createArticle({ data }),
@@ -38,18 +35,7 @@ export const useArticleCreateMutation = (role: Role) => {
                 categoryName: null
             })
             await queryClient.invalidateQueries({ queryKey: getAllArticlesQueryOptions().queryKey })
-            if (role.role ==="admin") {
-                await router.navigate({
-                    to: "/admin/articles/$slug",
-                    params: { slug: data.slug },
-                })
-            } else {
-                await router.navigate({
-                    to: "/articles/$slug",
-                    params: { slug: data.slug },
-                })
-            }
-
+            
         },
     })
 }
