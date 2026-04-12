@@ -473,7 +473,7 @@ function App() {
                                 {blog.title}
                               </div>
                               <Badge variant="light" radius="md" color="pink" size="sm">
-                                ❤️ {blog.likes} Likes
+                                ❤️ {blog.likes_count} Likes
                               </Badge>
                             </div>
                           </Group>

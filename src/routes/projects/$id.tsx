@@ -145,7 +145,7 @@ function ProjectDetails() {
               </Link>
 
               {session?.user?.role === "admin" && (
-                <Link to="/projects/$id/edit" params={{ id: project.id }}>
+                <Link to="/admin/projects/$id/edit" params={{ id: project.id }}>
                   <Button
                     variant="light"
                     color="indigo"
@@ -204,7 +204,7 @@ function ProjectDetails() {
                     <Text fw={700}>Main Technologies Used</Text>
                   </Group>
 
-                  <Group gap="sm" wrap="wrap">
+                  {/* <Group gap="sm" wrap="wrap">
                     {project.technologies?.map((tech: string) => (
                       <Badge
                         key={tech}
@@ -216,7 +216,7 @@ function ProjectDetails() {
                         {tech}
                       </Badge>
                     ))}
-                  </Group>
+                  </Group> */}
                 </div>
               </Stack>
             </Paper>

@@ -32,12 +32,15 @@ import {
   Eye,
   Clock3,
   LayoutPanelTop,
+  CalendarRange,
+  FileText,
 } from "lucide-react"
 import { getProjectByIdQueryOptions } from "@/db/queries/project.queries"
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useUpdateProjectMutation } from "@/db/mutations/project.mutations"
 import type { UpdateProjectRequest } from "@/db/validations/project.types"
 import { AdminMiddleware } from "@/server/middleware/auth.middleware"
+import { DateInput } from "@mantine/dates"
 
 export const Route = createFileRoute("/admin/projects/$id/edit")({
   server: {
@@ -52,6 +55,7 @@ export const Route = createFileRoute("/admin/projects/$id/edit")({
   component: RouteComponent,
 })
 
+
 function RouteComponent() {
   const project = Route.useLoaderData()
   const param = Route.useParams()
@@ -62,16 +66,19 @@ function RouteComponent() {
   const form = useForm<UpdateProjectRequest>({
     initialValues: {
       projectId: param.id,
-      ...project!,
+      title: project?.title ?? "",
+      description: project?.description ?? "",
+      imageUrl: project?.imageUrl ?? "",
+      isPublic: project?.isPublic ?? false,
+      url: project?.url ?? "", 
     },
   })
 
   const handleSubmit = async (values: UpdateProjectRequest) => {
     try {
       setLoading(true)
-      await updateMutation.mutateAsync(
-        values
-      )
+      await updateMutation.mutateAsync(values)
+      router.history.back()
     } catch (error) {
       console.error(error)
     } finally {
@@ -79,20 +86,24 @@ function RouteComponent() {
     }
   }
 
-  const addTechnology = () => {
-    if (form.values.technologies.length < 4) {
-      form.setFieldValue("technologies", [...form.values.technologies, ""])
-    }
-  }
+  // const addTechnology = () => {
+  //   if (form.values.technologies.length < 5) {
+  //     form.setFieldValue("technologies", [...form.values.technologies, ""])
+  //   }
+  // }
 
-  const removeTechnology = (index: number) => {
-    if (form.values.technologies.length > 1) {
-      const updated = form.values.technologies.filter((_, i) => i !== index)
-      form.setFieldValue("technologies", updated)
-    }
-  }
+  // const removeTechnology = (index: number) => {
+  //   if (form.values.technologies.length > 1) {
+  //     const updated = form.values.technologies.filter((_, i) => i !== index)
+  //     form.setFieldValue("technologies", updated)
+  //   }
+  // }
 
   const previewImage = form.values.imageUrl?.trim()
+  const titleLength = form.values.title.trim().length
+  const descriptionLength = form.values.description.trim().length
+  // const completedTechnologies = form.values.technologies.filter((tech) => tech.trim().length > 0).length
+
 
   return (
     <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
@@ -115,13 +126,12 @@ function RouteComponent() {
                   </Text>
                 </Group>
 
-                <div className="title2">
-                  Edit Project
-                </div>
+                <div className="title2">Edit Project</div>
 
                 <Text className="max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
-                  Update your project details, refine the description, adjust the
-                  visibility, and keep the technologies and preview image current.
+                  Update the project details, refine the description and case study,
+                  adjust visibility, refresh the image, maintain the technology list,
+                  and keep the timeline accurate before saving changes.
                 </Text>
               </Stack>
 
@@ -151,9 +161,17 @@ function RouteComponent() {
                           <div className="title3">Basic Information</div>
                         </Group>
                         <Text size="sm" c="dimmed">
-                          Update the core identity of the project.
+                          Update the core identity and summary of the project.
                         </Text>
                       </div>
+
+                      <TextInput
+                        label="Project ID"
+                        radius="md"
+                        size="sm"
+                        readOnly
+                        {...form.getInputProps("projectId")}
+                      />
 
                       <TextInput
                         label="Project Title"
@@ -162,21 +180,32 @@ function RouteComponent() {
                         size="sm"
                         {...form.getInputProps("title")}
                       />
+                      <Text size="xs" c="dimmed" mt={-8}>
+                        {titleLength} characters
+                      </Text>
 
                       <Textarea
                         label="Description"
                         placeholder="Describe your project"
-                        minRows={6}
+                        minRows={5}
                         autosize
                         radius="md"
                         size="sm"
                         {...form.getInputProps("description")}
                       />
+                      <Text size="xs" c="dimmed" mt={-8}>
+                        {descriptionLength} characters
+                      </Text>
 
                       <Checkbox
                         label="Make project public"
                         {...form.getInputProps("isPublic", { type: "checkbox" })}
                       />
+
+                      <Text size="sm" c="dimmed">
+                        Public projects appear on your portfolio. Private ones remain available
+                        for internal tracking or future publishing.
+                      </Text>
                     </Stack>
                   </Card>
 
@@ -190,7 +219,7 @@ function RouteComponent() {
                           <div className="title3">Project Link</div>
                         </Group>
                         <Text size="sm" c="dimmed">
-                          Update the main public link for this project.
+                          Update the main public or demo link for the project.
                         </Text>
                       </div>
 
@@ -202,6 +231,23 @@ function RouteComponent() {
                         leftSection={<Globe size={16} />}
                         {...form.getInputProps("url")}
                       />
+                    </Stack>
+                  </Card>
+
+                  <Card radius="2xl" withBorder p="xl" className="shadow-sm">
+                    <Stack gap="lg">
+                      <div>
+                        <Group gap="xs" mb="xs">
+                          <ThemeIcon variant="light" color="violet" radius="xl">
+                            <CalendarRange size={16} />
+                          </ThemeIcon>
+                          <div className="title3">Project Timeline</div>
+                        </Group>
+                        <Text size="sm" c="dimmed">
+                          Keep the start and end dates accurate so the project history stays clear.
+                        </Text>
+                      </div>
+
                     </Stack>
                   </Card>
 
@@ -245,7 +291,7 @@ function RouteComponent() {
                     </Stack>
                   </Card>
 
-                  <Card radius="2xl" withBorder p="xl" className="shadow-sm">
+                  {/* <Card radius="2xl" withBorder p="xl" className="shadow-sm">
                     <Stack gap="lg">
                       <div>
                         <Group justify="space-between" align="center">
@@ -263,14 +309,14 @@ function RouteComponent() {
                             size="sm"
                             leftSection={<Plus size={16} />}
                             onClick={addTechnology}
-                            disabled={form.values.technologies.length >= 4}
+                            disabled={form.values.technologies.length >= 5}
                           >
                             Add Technology
                           </Button>
                         </Group>
 
                         <Text size="sm" c="dimmed" mt="xs">
-                          Add up to 4 technologies used in this project.
+                          Add up to 5 technologies used in this project.
                         </Text>
                       </div>
 
@@ -301,6 +347,40 @@ function RouteComponent() {
                           </Group>
                         ))}
                       </Stack>
+
+                      <Text size="xs" c="dimmed">
+                        {completedTechnologies}/{form.values.technologies.length} technology field
+                        {form.values.technologies.length !== 1 ? "s" : ""} filled
+                      </Text>
+                    </Stack>
+                  </Card> */}
+
+                  <Card radius="2xl" withBorder p="xl" className="shadow-sm">
+                    <Stack gap="lg">
+                      <div>
+                        <Group gap="xs" mb="xs">
+                          <ThemeIcon variant="light" color="yellow" radius="xl">
+                            <FileText size={16} />
+                          </ThemeIcon>
+                          <div className="title3">Case Study</div>
+                        </Group>
+                        <Text size="sm" c="dimmed">
+                          Update the deeper story behind the project — goals, challenges,
+                          architecture, and outcomes.
+                        </Text>
+                      </div>
+
+                      <Textarea
+                        label="Case Study"
+                        placeholder="Explain the project context, approach, architecture, tradeoffs, and results..."
+                        minRows={10}
+                        autosize
+                        radius="md"
+                        size="sm"
+                        {...form.getInputProps("caseStudy")}
+                      />
+
+                 
                     </Stack>
                   </Card>
 
@@ -351,16 +431,19 @@ function RouteComponent() {
 
                 <Stack gap="sm">
                   <Text size="sm" c="dimmed">
-                    Refresh the title if the project direction has changed.
+                    Refresh the title if the project direction or positioning has changed.
                   </Text>
                   <Text size="sm" c="dimmed">
-                    Tighten the description so it focuses on the main value.
+                    Tighten the description so it clearly communicates the main value.
                   </Text>
                   <Text size="sm" c="dimmed">
-                    Make sure the image URL still points to a valid preview.
+                    Make sure the image URL still points to a valid preview asset.
                   </Text>
                   <Text size="sm" c="dimmed">
                     Keep only the most relevant technologies listed.
+                  </Text>
+                  <Text size="sm" c="dimmed">
+                    Review the date range so the project timeline stays accurate.
                   </Text>
                 </Stack>
               </Card>
@@ -383,15 +466,19 @@ function RouteComponent() {
 
                   <Divider my="xs" />
 
-                  <Text size="sm" c="dimmed">
+                  {/* <Text size="sm" c="dimmed">
                     Technologies: {form.values.technologies.length}
-                  </Text>
+                  </Text> */}
                   <Text size="sm" c="dimmed">
                     Image preview: {previewImage ? "Available" : "Missing"}
                   </Text>
                   <Text size="sm" c="dimmed">
                     Visibility: {form.values.isPublic ? "Public" : "Private"}
                   </Text>
+                  {/* <Text size="sm" c="dimmed">
+                    Timeline: {formattedDuration}
+                  </Text> */}
+              
                 </Stack>
               </Card>
 
@@ -413,13 +500,13 @@ function RouteComponent() {
                       "Update the project description to preview how the summary may look."}
                   </Text>
 
-                  <Group gap="xs" wrap="wrap">
-                    {form.values.technologies.slice(0, 4).map((tech) => (
+                  {/* <Group gap="xs" wrap="wrap">
+                    {form.values.technologies.slice(0, 5).map((tech) => (
                       <Badge key={tech} variant="light" color="indigo" radius="xl">
                         {tech}
                       </Badge>
                     ))}
-                  </Group>
+                  </Group> */}
 
                   <Badge
                     variant="light"

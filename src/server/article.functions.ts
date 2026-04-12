@@ -8,30 +8,15 @@ import { article } from "@/db/schema/article.schema";
 import { articleLike } from "@/db/schema/article-like.schema";
 import { AuthenticatedMiddleware } from "./middleware/auth.middleware";
 
-function createSlug(title: string) {
-    return title
-        .toLowerCase()
-        .trim()
-        .replace(/[^\w\s-]/g, "") // remove special characters
-        .replace(/\s+/g, "-") // replace spaces with -
-        .replace(/-+/g, "-") // remove duplicate -
-}
-
-function createExcerpt(content: string, maxLength = 200) {
-    const plainText = content.replace(/[#_*>\-\n`]/g, " ").trim()
-    return plainText.length > maxLength
-        ? plainText.slice(0, maxLength).trim() + "..."
-        : plainText
-}
 
 export const createArticle = createServerFn({ method: "POST" })
     .inputValidator(ArticleSchema)
     .middleware([AuthenticatedMiddleware])
     .handler(async ({ data,context }) => {
         try {
-            const slug = createSlug(data.title)
+            const slug = data.title
             const userId=context.userId
-            const excerpt = createExcerpt(data.content)
+            const excerpt = data.excerpt
             const newData = {
                 title: data.title,
                 content: data.content,
@@ -56,6 +41,7 @@ export const getAllArticles = createServerFn()
                 .select({
                     id: article.id,
                     title: article.title,
+                    excerpt:article.excerpt,
                     authorImage: user.avatar,
                     content: article.content,
                     coverImage: article.coverImage,
@@ -91,6 +77,7 @@ export const getArticleBySlug = createServerFn()
                     tags:article.tags,
                     articleId: article.id,
                     title: article.title,
+                    excerpt:article.excerpt,
                     content: article.content,
                     coverImage: article.coverImage,
                     userId: article.userId,
@@ -173,6 +160,7 @@ export const getPaginatedArticles = createServerFn({ method: 'GET' })
                     id: article.id,
                     title: article.title,
                     slug: article.slug,
+                    tags:article.tags,
                     excerpt: article.excerpt,
                     coverImage: article.coverImage,
                     createdAt: article.createdAt,
@@ -181,8 +169,8 @@ export const getPaginatedArticles = createServerFn({ method: 'GET' })
                     authorName: user.name,
                     status:article.status,
                     categoryName: category.name,
-                    likes: sql<number>`COUNT(DISTINCT ${articleLike.id})`,
-                    comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
+                    likes_count: sql<number>`COUNT(DISTINCT ${articleLike.id})`,
+                    comments_count: sql<number>`COUNT(DISTINCT ${comment.id})`,
                 })
                 .from(article)
                 .leftJoin(user, eq(article.userId, user.id))
@@ -233,12 +221,13 @@ export const getTopArticles = createServerFn({ method: "GET" })
                 .select({
                     id: article.id,
                     title: article.title,
+                    excerpt:article.excerpt,
                     slug: article.slug,
                     coverImage: article.coverImage,
                     authorImage: user.avatar,
                     categoryName: category.name,
-                    likes: sql<number>`COUNT(DISTINCT ${articleLike.id})`,
-                    comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
+                    likes_count: sql<number>`COUNT(DISTINCT ${articleLike.id})`,
+                    comments_count: sql<number>`COUNT(DISTINCT ${comment.id})`,
                 })
                 .from(article)
                 .leftJoin(user, eq(article.userId, user.id))
@@ -263,6 +252,8 @@ export const updateArticle = createServerFn({ method: "POST" })
             const updated = await db
                 .update(article)
                 .set({
+                    tags:data.tags,
+                    excerpt:data.excerpt,
                     title: data.title,
                     content: data.content,
                     coverImage: data.coverImage ?? null,
@@ -309,6 +300,7 @@ export const searchPaginatedArticles = createServerFn({ method: "GET" })
         db
           .select({
             id: article.id,
+            tags:article.tags,
             title: article.title,
             slug: article.slug,
             status: article.status,
@@ -316,12 +308,12 @@ export const searchPaginatedArticles = createServerFn({ method: "GET" })
             coverImage: article.coverImage,
             createdAt: article.createdAt,
             categoryName: category.name,
-            likes: sql<number>`(
+            likes_count: sql<number>`(
               select count(*)::int
               from article_like
               where article_like.article_id = ${article.id}
             )`,
-            comments: sql<number>`(
+            comments_count: sql<number>`(
               select count(*)::int
               from comment
               where comment.article_id = ${article.id}
@@ -384,14 +376,15 @@ export const getMyPaginatedArticles = createServerFn({ method: 'GET' })
                         id: article.id,
                         title: article.title,
                         slug: article.slug,
+                        tags:article.tags,
                         status: article.status,
                         excerpt: article.excerpt,
                         coverImage: article.coverImage,
                         createdAt: article.createdAt,
                         categoryName: category.name,
                         authorImage: user.avatar,
-                        likes: sql<number>`COUNT(DISTINCT ${articleLike.id})`,
-                        comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
+                        likes_count: sql<number>`COUNT(DISTINCT ${articleLike.id})`,
+                        comments_count: sql<number>`COUNT(DISTINCT ${comment.id})`,
                     })
                     .from(article)
                     .where(eq(article.userId, userId))

@@ -84,3 +84,22 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
+CREATE OR REPLACE FUNCTION public.sync_project_description_to_case_study()
+RETURNS trigger AS $$
+BEGIN
+  IF TG_OP = 'INSERT' OR (TG_OP = 'UPDATE' AND NEW.description IS DISTINCT FROM OLD.description) THEN
+    UPDATE case_study
+    SET
+      overview = NEW.description,
+      updated_at = NOW()
+    WHERE project_id = NEW.id;
+  END IF;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+CREATE OR REPLACE TRIGGER on_sync_project_description_trigger
+  AFTER INSERT OR UPDATE ON project
+  FOR EACH ROW
+  EXECUTE FUNCTION public.sync_project_description_to_case_study();

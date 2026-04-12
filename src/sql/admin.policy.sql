@@ -3,7 +3,7 @@ DECLARE
   tbl text;
 BEGIN
   FOREACH tbl IN ARRAY ARRAY[
-    'user', 'article', 'article_like', 'comment',
+    'user', 'article', 'article_like', 'comment','case_study',
     'project', 'project_rating', 'category'
   ]
   LOOP

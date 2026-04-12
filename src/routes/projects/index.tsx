@@ -290,7 +290,7 @@ function RouteComponent() {
                     <div className="text-sm font-medium text-slate-800 dark:text-slate-200">
                       Technologies
                     </div>
-                    <Group gap="xs">
+                    {/* <Group gap="xs">
                       {project.technologies.slice(0, 4).map((tech) => (
                         <Badge
                           key={tech}
@@ -308,7 +308,7 @@ function RouteComponent() {
                           {tech}
                         </Badge>
                       ))}
-                    </Group>
+                    </Group> */}
                   </Stack>
                 </Stack>
 

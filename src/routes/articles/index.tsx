@@ -16,7 +16,6 @@ import moment from "moment"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
 
-
 export const Route = createFileRoute("/articles/")({
   validateSearch: (search: Record<string, unknown>) => ({
     page:
@@ -37,15 +36,24 @@ export const Route = createFileRoute("/articles/")({
 
 const PAGE_SIZE = 6
 
-// ✅ skeleton card for loading state
 function ArticleCardSkeleton() {
   return (
-    <Card withBorder radius="md" p={0} style={{ width: "100%", height: 400, display: "flex", flexDirection: "column" }}>
-      <Skeleton height={200} radius={0} />
+    <Card
+      withBorder
+      radius="lg"
+      p={0}
+      style={{ width: "100%", height: 520, display: "flex", flexDirection: "column" }}
+    >
+      <Skeleton height={230} radius={0} />
       <Stack p="md" gap="sm" style={{ flex: 1 }}>
         <Skeleton height={12} width="30%" />
         <Skeleton height={16} width="80%" />
         <Skeleton height={16} width="60%" />
+        <Group gap={6} mt={4}>
+          <Skeleton height={20} width={50} radius="xl" />
+          <Skeleton height={20} width={60} radius="xl" />
+          <Skeleton height={20} width={45} radius="xl" />
+        </Group>
         <Skeleton height={12} width="90%" mt="auto" />
         <Skeleton height={12} width="70%" />
         <Group justify="space-between" mt="xs">
@@ -74,13 +82,11 @@ function BlogsPage() {
       setSession(data?.session ?? null)
       setIsSessionLoading(false)
     })
-
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event: AuthChangeEvent, session: Session | null) => {
         setSession(session)
       }
     )
-
     return () => listener.subscription.unsubscribe()
   }, [])
 
@@ -112,7 +118,7 @@ function BlogsPage() {
   const isFetching = hasSearch ? searchFetching : paginatedFetching
 
   const rawBlogs = data?.articles ?? paginatedData?.articles
-  const blogs = Array.isArray(rawBlogs) ? rawBlogs : []
+  const articles = Array.isArray(rawBlogs) ? rawBlogs : []
 
   const pagination = data?.pagination ?? paginatedData?.pagination ?? {
     page: 1,
@@ -121,9 +127,12 @@ function BlogsPage() {
   }
   const totalPages = pagination.totalPages
 
-  const handleSearchChange = (value: string) => {
-    setSearchInput(value)
-  }
+  const handleSearchChange = (value: string) => setSearchInput(value)
+
+  // ✅ card height bumped to 520 to accommodate tags row
+  const CARD_HEIGHT = 520
+  const IMAGE_HEIGHT = 230
+  const GRID_MIN_HEIGHT = 1080
 
   return (
     <Container size="xl" className="max-w-full space-y-6 px-0 py-6 sm:space-y-8 sm:py-8 md:py-10">
@@ -145,7 +154,7 @@ function BlogsPage() {
           <TextInput
             size="sm"
             radius="md"
-            placeholder="Search by title or ex,category"
+            placeholder="Search by title or category"
             leftSection={<Search size={16} />}
             rightSection={
               searchInput ? (
@@ -169,11 +178,7 @@ function BlogsPage() {
 
         {isAuthenticated && (
           <Group gap="sm" wrap="wrap" className="w-full shrink-0 sm:w-auto sm:self-end">
-            <Link
-              to="/articles/my-articles"
-              search={{ page: 1 }}
-              className="no-underline"
-            >
+            <Link to="/articles/my-articles" search={{ page: 1 }} className="no-underline">
               <Button variant="filled" color="green" radius="md" leftSection={<BookMarked size={15} />}>
                 My Articles
               </Button>
@@ -186,215 +191,204 @@ function BlogsPage() {
           </Group>
         )}
       </div>
-      <div className="mb-12 border-b border-blue-500" />
-      {/* ✅ loading skeletons */}
-      {isLoading ? (
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {Array.from({ length: PAGE_SIZE }).map((_, i) => (
-            <ArticleCardSkeleton key={i} />
-          ))}
-        </div>
-      ) : blogs.length === 0 ? (
-        // ✅ empty state
-        <div className="flex justify-center px-4 py-16 sm:py-24">
-          <Stack align="center" gap="md">
-            <ThemeIcon size={72} radius="md" variant="light" color="blue">
-              <BookOpen size={36} />
-            </ThemeIcon>
-            <div className="title2 text-center">
-              {hasSearch ? `No results for "${debouncedSearch}"` : "No articles yet"}
-            </div>
-            <p className="max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
-              {hasSearch
-                ? "Try a different search term or clear the search to browse all articles."
-                : "No articles have been published yet. Check back soon."}
-            </p>
-            {hasSearch && (
-              <Button variant="filled" color="grape" radius="md" onClick={() => handleSearchChange("")}>
-                Clear Search
-              </Button>
-            )}
-          </Stack>
-        </div>
-      ) : (
-        // ✅ articles grid
-        <div
-          className={`min-h-[420px] transition-opacity duration-200 sm:min-h-[560px] md:min-h-[720px] lg:min-h-[900px] ${isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
+
+      <div className="border-b border-blue-500" />
+
+      {/* Content area — fixed min-height keeps layout stable */}
+      <div style={{ minHeight: GRID_MIN_HEIGHT }}>
+        {isLoading ? (
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {Array.from({ length: PAGE_SIZE }).map((_, i) => (
+              <ArticleCardSkeleton key={i} />
+            ))}
+          </div>
+        ) : articles.length === 0 ? (
+          <div
+            className="flex items-center justify-center rounded-2xl border border-dashed border-slate-200 dark:border-slate-700"
+            style={{ minHeight: GRID_MIN_HEIGHT }}
+          >
+            <Stack align="center" gap="md" maw={400}>
+              <ThemeIcon size={72} radius="md" variant="light" color="blue">
+                <BookOpen size={36} />
+              </ThemeIcon>
+              <div className="title2 text-center">
+                {hasSearch ? `No results for "${debouncedSearch}"` : "No articles yet"}
+              </div>
+              <p className="max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
+                {hasSearch
+                  ? "Try a different search term or clear the search to browse all articles."
+                  : "No articles have been published yet. Check back soon."}
+              </p>
+              {hasSearch && (
+                <Button variant="filled" color="grape" radius="md" onClick={() => handleSearchChange("")}>
+                  Clear Search
+                </Button>
+              )}
+            </Stack>
+          </div>
+        ) : (
+          <div
+            className={`grid gap-8 transition-opacity duration-200 md:grid-cols-2 lg:grid-cols-3 ${
+              isPlaceholderData || isFetching ? "opacity-80" : "opacity-100"
             }`}
-        >
-          {isLoading ? (
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: PAGE_SIZE }).map((_, i) => (
-                <ArticleCardSkeleton key={i} />
-              ))}
-            </div>
-          ) : blogs.length === 0 ? (
-            <div className="flex min-h-[320px] items-center justify-center px-4 sm:min-h-[480px] md:min-h-[640px]">
-              <Stack align="center" gap="md">
-                <ThemeIcon size={72} radius="md" variant="light" color="blue">
-                  <BookOpen size={36} />
-                </ThemeIcon>
-
-                <div className="title2 text-center">
-                  {hasSearch ? `No results for "${debouncedSearch}"` : "No articles yet"}
-                </div>
-
-                <p className="max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
-                  {hasSearch
-                    ? "Try a different search term or clear the search to browse all articles."
-                    : "No articles have been published yet. Check back soon."}
-                </p>
-
-                {hasSearch && (
-                  <Button
-                    variant="filled"
-                    color="grape"
-                    radius="md"
-                    onClick={() => handleSearchChange("")}
-                  >
-                    Clear Search
-                  </Button>
-                )}
-              </Stack>
-            </div>
-          ) : (
-            <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-              {blogs.map((article) => (
-                <Link
-                  key={article.id}
-                  to="/articles/$slug"
-                  params={{ slug: article.slug }}
-                  className="no-underline"
+          >
+            {articles.map((article) => (
+              <Link
+                key={article.id}
+                to="/articles/$slug"
+                params={{ slug: article.slug }}
+                className="no-underline"
+              >
+                <Card
+                  withBorder
+                  radius="lg"
+                  p={0}
+                  className={`${classes.card} border-slate-200 bg-gradient-to-b from-white to-slate-50 dark:border-slate-800 dark:from-slate-950 dark:to-slate-900`}
+                  style={{ width: "100%", height: CARD_HEIGHT, display: "flex", flexDirection: "column" }}
                 >
-              <Card
-  withBorder
-  radius="lg"
-  p={0}
-  className={`${classes.card} border-slate-200 bg-gradient-to-b from-white to-slate-50 dark:border-slate-800 dark:from-slate-950 dark:to-slate-900`}
-  style={{ width: "100%", height: 500, display: "flex", flexDirection: "column" }}
->
-  {/* Cover image — 230px */}
-  <Box style={{ height: 230, flexShrink: 0, overflow: "hidden", position: "relative" }}>
-    <Image
-      src={article.coverImage!}
-      alt={article.title}
-      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-    />
-    {article.categoryName && (
-      <div style={{ position: "absolute", top: 12, left: 12 }}>
-        <Badge
-          variant="filled"
-          color="green"
-          radius="sm"
-          size="sm"
-          style={{ backdropFilter: "blur(8px)", opacity: 0.92 }}
-        >
-          {article.categoryName}
-        </Badge>
+                  {/* Cover image */}
+                  <Box style={{ height: IMAGE_HEIGHT, flexShrink: 0, overflow: "hidden", position: "relative" }}>
+                    <Image
+                      src={article.coverImage!}
+                      alt={article.title}
+                      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+                    />
+                    {article.categoryName && (
+                      <div style={{ position: "absolute", top: 12, left: 12 }}>
+                        <Badge
+                          variant="filled"
+                          color="green"
+                          radius="sm"
+                          size="sm"
+                          style={{ backdropFilter: "blur(8px)", opacity: 0.92 }}
+                        >
+                          {article.categoryName}
+                        </Badge>
+                      </div>
+                    )}
+                  </Box>
+
+                  {/* Body */}
+                  <div
+                    style={{
+                      flex: 1,
+                      minHeight: 0,
+                      display: "flex",
+                      flexDirection: "column",
+                      padding: "1rem 1.2rem",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {/* Title — always 2 lines */}
+                    <div
+                      className="title3 text-slate-900 dark:text-slate-50"
+                      style={{
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                        flexShrink: 0,
+                        minHeight: "2.8em",
+                        marginBottom: "0.4rem",
+                      }}
+                    >
+                      {article.title}
+                    </div>
+
+                    {/* ✅ Tags row — max 4, fixed height slot */}
+                    {article.tags && article.tags.length > 0 && (
+                      <Group
+                        gap={5}
+                        mb={8}
+                        style={{ flexShrink: 0, flexWrap: "nowrap", overflow: "hidden" }}
+                      >
+                        {article.tags.slice(0, 4).map((tag: string) => (
+                          <Badge
+                            key={tag}
+                            variant="light"
+                            color="indigo"
+                            radius="xl"
+                            size="xs"
+                            style={{ flexShrink: 0 }}
+                          >
+                            {tag}
+                          </Badge>
+                        ))}
+                      </Group>
+                    )}
+
+                    {/* Excerpt — 4 lines with ellipsis */}
+                    <Text
+                      size="xs"
+                      lineClamp={4}
+                      className="text-slate-500 dark:text-slate-400"
+                      style={{
+                        flex: 1,
+                        minHeight: 0,
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {article.excerpt}
+                    </Text>
+
+                    {/* Author + date */}
+                    <Group
+                      justify="space-between"
+                      align="center"
+                      wrap="nowrap"
+                      gap="xs"
+                      mt={12}
+                      style={{ flexShrink: 0 }}
+                      className="min-w-0"
+                    >
+                      <Group gap={7} wrap="nowrap" className="min-w-0">
+                        <Avatar
+                          size={26}
+                          src={article.authorImage}
+                          alt={article.authorName!}
+                          radius="xl"
+                          className="shrink-0"
+                        />
+                        <span className="min-w-0 truncate text-xs font-medium text-slate-700 dark:text-slate-300">
+                          {article.authorName}
+                        </span>
+                      </Group>
+                      <span className="shrink-0 text-xs text-slate-400 dark:text-slate-500">
+                        {moment(article.createdAt).format("MMM D, YYYY")}
+                      </span>
+                    </Group>
+
+                    {/* Stats footer */}
+                    <Group
+                      gap="sm"
+                      mt={10}
+                      pt={10}
+                      style={{
+                        flexShrink: 0,
+                        borderTop: "1px solid var(--mantine-color-default-border)",
+                      }}
+                    >
+                      <Group gap={5} align="center">
+                        <Heart size={13} className="text-rose-400" />
+                        <span className="text-xs text-slate-500 dark:text-slate-400">{article.likes_count}</span>
+                      </Group>
+                      <Group gap={5} align="center">
+                        <MessageCircle size={13} className="text-indigo-400" />
+                        <span className="text-xs text-slate-500 dark:text-slate-400">{article.comments_count}</span>
+                      </Group>
+                      <div style={{ marginLeft: "auto" }}>
+                        <Badge variant="dot" color="green" size="xs" radius="xl">
+                          {article.status ?? "published"}
+                        </Badge>
+                      </div>
+                    </Group>
+                  </div>
+                </Card>
+              </Link>
+            ))}
+          </div>
+        )}
       </div>
-    )}
-  </Box>
-
-  {/* Body — remaining 270px (500 - 230) */}
-  <div
-    style={{
-      flex: 1,
-      minHeight: 0,
-      display: "flex",
-      flexDirection: "column",
-      padding: "1rem 1.2rem",
-      overflow: "hidden",
-    }}
-  >
-    {/* Title — always 2 lines */}
-    <div
-      className="title3 text-slate-900 dark:text-slate-50"
-      style={{
-        display: "-webkit-box",
-        WebkitLineClamp: 2,
-        WebkitBoxOrient: "vertical",
-        overflow: "hidden",
-        flexShrink: 0,
-        minHeight: "2.8em",
-        marginBottom: "0.5rem",
-      }}
-    >
-      {article.title}
-    </div>
-
-    {/* Excerpt — 4 lines */}
-    <Text
-      size="sm"
-      lineClamp={8}
-      className="text-slate-500 dark:text-slate-400"
-      style={{
-        flex: 1,
-        minHeight: 0,
-        lineHeight: 1.8,
-      }}
-    >
-      {article.excerpt}
-    </Text>
-
-    {/* Author + date */}
-    <Group
-      justify="space-between"
-      align="center"
-      wrap="nowrap"
-      gap="xs"
-      mt={12}
-      style={{ flexShrink: 0 }}
-      className="min-w-0"
-    >
-      <Group gap={7} wrap="nowrap" className="min-w-0">
-        <Avatar
-          size={26}
-          src={article.authorImage}
-          alt={article.authorName!}
-          radius="xl"
-          className="shrink-0"
-        />
-        <span className="min-w-0 truncate text-xs font-medium text-slate-700 dark:text-slate-300">
-          {article.authorName}
-        </span>
-      </Group>
-      <span className="shrink-0 text-xs text-slate-400 dark:text-slate-500">
-        {moment(article.createdAt).format("MMM D, YYYY")}
-      </span>
-    </Group>
-
-    {/* Stats footer */}
-    <Group
-      gap="sm"
-      mt={10}
-      pt={10}
-      style={{
-        flexShrink: 0,
-        borderTop: "1px solid var(--mantine-color-default-border)",
-      }}
-    >
-      <Group gap={5} align="center">
-        <Heart size={13} className="text-rose-400" />
-        <span className="text-xs text-slate-500 dark:text-slate-400">{article.likes}</span>
-      </Group>
-      <Group gap={5} align="center">
-        <MessageCircle size={13} className="text-indigo-400" />
-        <span className="text-xs text-slate-500 dark:text-slate-400">{article.comments}</span>
-      </Group>
-      <div style={{ marginLeft: "auto" }}>
-        <Badge variant="dot" color="green" size="xs" radius="xl">
-          {article.status ?? "published"}
-        </Badge>
-      </div>
-    </Group>
-  </div>
-</Card>
-                </Link>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
 
       {/* Pagination */}
       {!isLoading && !hasSearch && totalPages > 1 && (

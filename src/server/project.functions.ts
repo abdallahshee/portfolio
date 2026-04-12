@@ -80,8 +80,22 @@ export const getProjectById = createServerFn({ method: "GET" })
   .handler(async ({ data, context }) => {
     try {
       const userId = context.userId
+
       const [projectResult, ratingResult, userRatingResult] = await Promise.all([
-        db.select().from(project).where(eq(project.id, data.projectId)),
+        db
+          .select({
+            id: project.id,
+            title: project.title,
+            description: project.description,
+            imageUrl: project.imageUrl,
+            isPublic: project.isPublic,
+            url: project.url,
+            createdAt: project.createdAt,
+            updatedAt: project.updatedAt,
+          })
+          .from(project)
+          .where(eq(project.id, data.projectId)),
+
         db
           .select({
             averageRating: avg(projectRating.rating),
@@ -89,31 +103,41 @@ export const getProjectById = createServerFn({ method: "GET" })
           })
           .from(projectRating)
           .where(eq(projectRating.projectId, data.projectId)),
+
         userId
           ? db
-            .select({
-              rating: projectRating.rating,
-              projectId: projectRating.projectId
-            })
-            .from(projectRating)
-            .where(
-              and(
-                eq(projectRating.projectId, data.projectId),
-                eq(projectRating.userId, userId)
+              .select({
+                rating: projectRating.rating,
+              })
+              .from(projectRating)
+              .where(
+                and(
+                  eq(projectRating.projectId, data.projectId),
+                  eq(projectRating.userId, userId)
+                )
               )
-            )
           : Promise.resolve([]),
       ])
+
       const theProject = projectResult[0]
       const rating = ratingResult[0]
       const userRating = userRatingResult[0]
+
       if (!theProject) return null
+
       return {
-        ...theProject,
+        id: theProject.id,
+        title: theProject.title,
+        description: theProject.description,
+        imageUrl: theProject.imageUrl,
+        isPublic: theProject.isPublic,
+        url: theProject.url,
+        createdAt: theProject.createdAt,
+        updatedAt: theProject.updatedAt,
         averageRating: rating?.averageRating
           ? Number(Number(rating.averageRating).toFixed(1))
           : 0,
-        totalRatings: rating?.totalRatings ?? 0,
+        totalRatings: Number(rating?.totalRatings ?? 0),
         userRating: userRating?.rating ?? null,
       }
     } catch (err) {
@@ -122,6 +146,8 @@ export const getProjectById = createServerFn({ method: "GET" })
     }
   })
 
+
+// Need to be refactored to use only the rating and the average rating
 export const updateProject = createServerFn({ method: "POST" })
   .middleware([AdminMiddleware])
   .inputValidator(UpdateProjectSchema)
@@ -169,7 +195,6 @@ export const getTopProjects = createServerFn({ method: "GET" })
           title: project.title,
           imageUrl: project.imageUrl,
           isPublic: project.isPublic,
-          url: project.url,
           avgRating: avg(projectRating.rating), // calculate average rating
         })
         .from(project)
@@ -196,7 +221,7 @@ export const searchProjects = createServerFn({ method: "GET" })
         ? or(
           ilike(project.title, search),
           ilike(project.description, search),
-          sql`${project.technologies}::text ilike ${search}`
+          // sql`${project.technologies}::text ilike ${search}`
         )
         : undefined
       const [projectRows, totalResult] = await Promise.all([

@@ -335,13 +335,13 @@ function BlogsPage() {
                       <Group gap={4}>
                         <Heart size={13} opacity={0.5} />
                         <Text size="xs" c="dimmed">
-                          {article.likes}
+                          {article.likes_count}
                         </Text>
                       </Group>
                       <Group gap={4}>
                         <MessageCircle size={13} opacity={0.5} />
                         <Text size="xs" c="dimmed">
-                          {article.comments}
+                          {article.comments_count}
                         </Text>
                       </Group>
                     </Group>

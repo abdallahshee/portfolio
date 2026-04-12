@@ -14,8 +14,8 @@ export const SendEmailWitHtmlSchema = createSelectSchema(user, {
       .min(3, "Please insert a subject matter")
       .max(25, "Subject should not exceed 25 characters"),
     message: z.string()
-      .min(25, "Please provide a detailed message")
-      .max(500, "Please summarise your message"),
+      .min(25, "Message out of range 25-500 characters")
+      .max(500, "Message out of range 25-500 characters"),
     html: z.string().nonempty("HTML body is required"), // ← required
   })
 

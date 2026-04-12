@@ -20,6 +20,7 @@ import {
   RingProgress,
   Center,
   Loader,
+  Textarea,
 } from "@mantine/core"
 import { RichTextEditor, Link } from "@mantine/tiptap"
 import { useEditor } from "@tiptap/react"
@@ -62,7 +63,8 @@ const defaultValues: ArticleRequest = {
   content: "",
   coverImage: null,
   categoryId: null,
-  tags:[]
+  tags: [],
+  excerpt: ""
 }
 
 function RouteComponent() {
@@ -100,13 +102,14 @@ function RouteComponent() {
     },
   })
 
+  const characterCount = (editor?.getText() ?? "").trim().length
+
   useEffect(() => {
     import("turndown").then((mod) => {
       turndownService.current = new mod.default()
     })
   }, [])
 
-  // Fetch existing article data
   useEffect(() => {
     if (!slug) return
     let isMounted = true
@@ -122,7 +125,8 @@ function RouteComponent() {
           content: article.content ?? "",
           coverImage: article.coverImage ?? null,
           categoryId: article.categoryId ?? null,
-          tags:article.tags
+          tags: article.tags,
+          excerpt: article.excerpt
         }
 
         form.setValues(nextValues)
@@ -171,7 +175,8 @@ function RouteComponent() {
         content: markdownContent,
         coverImage,
         categoryId: values.categoryId,
-        tags:values.tags
+        tags: values.tags,
+        excerpt: values.excerpt
       })
 
       router.history.back()
@@ -188,6 +193,7 @@ function RouteComponent() {
     { label: "Cover image available", done: !!previewUrl },
     { label: "Content written", done: (editor?.getText() ?? "").trim().length > 20 },
   ]
+
   const completedCount = checklist.filter((c) => c.done).length
   const progressValue = Math.round((completedCount / checklist.length) * 100)
 
@@ -195,8 +201,6 @@ function RouteComponent() {
     <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
       <Container size="xl">
         <Stack gap="xl">
-
-          {/* Header */}
           <Paper
             radius="xl"
             p="xl"
@@ -230,8 +234,6 @@ function RouteComponent() {
           </Paper>
 
           <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="lg" className="items-start">
-
-            {/* Main form */}
             <div className="lg:col-span-2">
               <Paper radius="xl" p="xl" withBorder className="shadow-sm">
                 {fetchingArticle ? (
@@ -244,8 +246,6 @@ function RouteComponent() {
                 ) : (
                   <form onSubmit={form.onSubmit(handleSubmit)}>
                     <Stack gap="xl">
-
-                      {/* Section: Post Details */}
                       <Stack gap="md">
                         <Group gap="xs">
                           <ThemeIcon variant="light" color="blue" radius="lg" size={32}>
@@ -254,7 +254,7 @@ function RouteComponent() {
                           <Text fw={600} size="md">Post Details</Text>
                         </Group>
 
-                        <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+                        <SimpleGrid cols={{ base: 1 }} spacing="md">
                           <TextInput
                             label="Title"
                             placeholder="Give your post a clear title"
@@ -262,6 +262,14 @@ function RouteComponent() {
                             radius="md"
                             size="sm"
                             {...form.getInputProps("title")}
+                          />
+                          <Textarea
+                            label="Excerpt"
+                            placeholder="Give your post a catching excerpt"
+                            rows={4}
+                            radius="md"
+                            size="sm"
+                            {...form.getInputProps("excerpt")}
                           />
                           <Select
                             label="Category"
@@ -282,9 +290,6 @@ function RouteComponent() {
                         </SimpleGrid>
                       </Stack>
 
-                      <Divider />
-
-                      {/* Section: Cover Image */}
                       <Stack gap="md">
                         <Group gap="xs">
                           <ThemeIcon variant="light" color="orange" radius="lg" size={32}>
@@ -293,15 +298,7 @@ function RouteComponent() {
                           <Text fw={600} size="md">Cover Image</Text>
                         </Group>
 
-                        <FileInput
-                          placeholder="Replace cover image"
-                          leftSection={<ImagePlus size={15} />}
-                          accept="image/*"
-                          radius="md"
-                          size="sm"
-                          value={imageFile}
-                          onChange={setImageFile}
-                        />
+
 
                         <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/40">
                           {previewUrl ? (
@@ -319,11 +316,17 @@ function RouteComponent() {
                             </div>
                           )}
                         </div>
+                        <FileInput
+                          placeholder="Replace cover image"
+                          leftSection={<ImagePlus size={15} />}
+                          accept="image/*"
+                          radius="md"
+                          size="sm"
+                          value={imageFile}
+                          onChange={setImageFile}
+                        />
                       </Stack>
 
-                      <Divider />
-
-                      {/* Section: Content */}
                       <Stack gap="md">
                         <Group gap="xs">
                           <ThemeIcon variant="light" color="grape" radius="lg" size={32}>
@@ -375,12 +378,19 @@ function RouteComponent() {
                           <RichTextEditor.Content className="min-h-[360px]" />
                         </RichTextEditor>
 
+                        <Text
+                          size="xs"
+                          ta="right"
+                          c={characterCount > 1800 ? "red" : "dimmed"}
+                        >
+                          {characterCount}/6000 characters
+                        </Text>
+
                         {form.errors.content && (
                           <Text c="red" size="sm">{form.errors.content}</Text>
                         )}
                       </Stack>
 
-                      {/* Actions */}
                       <Group justify="flex-end" mt="sm">
                         <Button
                           variant="default"
@@ -407,10 +417,7 @@ function RouteComponent() {
               </Paper>
             </div>
 
-            {/* Sidebar */}
             <Stack gap="lg">
-
-              {/* Live readiness ring */}
               <Card radius="xl" withBorder p="xl" className="shadow-sm">
                 <Group gap="xs" mb="md">
                   <ThemeIcon variant="light" color="indigo" radius="lg" size={32}>
@@ -460,7 +467,6 @@ function RouteComponent() {
                 </List>
               </Card>
 
-              {/* Editing tips */}
               <Card radius="xl" withBorder p="xl" className="shadow-sm">
                 <Group gap="xs" mb="md">
                   <ThemeIcon variant="light" color="yellow" radius="lg" size={32}>
@@ -483,7 +489,6 @@ function RouteComponent() {
                   </Text>
                 </Stack>
               </Card>
-
             </Stack>
           </SimpleGrid>
         </Stack>

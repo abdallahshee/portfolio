@@ -8,7 +8,7 @@ import { category } from "./category.schema";
 import { uuid } from "drizzle-orm/pg-core";
 
 export const article = pgTable("article", {
-  id: text("id").primaryKey().$default(() => nanoid(16)),
+  id: text("id").primaryKey().$default(() => nanoid(24)),
   title: text("title").notNull(),
   slug: text("slug").notNull().unique(),
   excerpt: text("excerpt").notNull(),

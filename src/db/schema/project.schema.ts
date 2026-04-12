@@ -1,19 +1,17 @@
 
-import { relations} from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 import { projectRating } from "./project-rating.schema";
+import { caseStudy } from "./project-case.schema";
 
 export const project = pgTable('project', {
-  id: text("id").primaryKey().$default(() => nanoid(16)),
+  id: text("id").primaryKey().$default(() => nanoid(24)),
   title: text("title").notNull(),
   description: text("description").notNull().unique(),
   imageUrl: text("image_url"),
   isPublic: boolean('is_public').notNull(),
   url: text('url').notNull(),
-  technologies: text('technologies').array().notNull(),
-  duration: text("duration").notNull(),   // ✅ e.g. '2 months', '3 weeks', '45 days'
-  caseStudy: text("case_study").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")
     .defaultNow()
@@ -23,8 +21,13 @@ export const project = pgTable('project', {
 
 
 // Project relations
-export const projectRelations = relations(project, ({ many }) => ({
+export const projectRelations = relations(project, ({ many,one }) => ({
   ratings: many(projectRating), // all ratings associated with this project
+  case:one(caseStudy,{
+    fields:[project.id],
+    references:[caseStudy.projectId]
+  })
+//  case: one(caseStudy)
 }));
 
 

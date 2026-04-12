@@ -19,6 +19,8 @@ import {
   List,
   RingProgress,
   Center,
+  Badge,
+  Textarea,
 } from "@mantine/core"
 import { RichTextEditor, Link } from "@mantine/tiptap"
 import { useEditor } from "@tiptap/react"
@@ -38,6 +40,8 @@ import {
   NotebookPen,
   CheckCircle2,
   Circle,
+  Tags,
+  Plus,
 } from "lucide-react"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { ArticleSchema, type ArticleRequest } from "@/db/validations/article.types"
@@ -54,12 +58,15 @@ export const Route = createFileRoute("/articles/create")({
   component: RouteComponent,
 })
 
+const MAX_TAGS = 4
+
 const defaultValues: ArticleRequest = {
   title: "",
   content: "",
   coverImage: null,
   categoryId: null,
-  tags:[]
+  tags: [],
+  excerpt: ""
 }
 
 function RouteComponent() {
@@ -67,6 +74,9 @@ function RouteComponent() {
   const [loading, setLoading] = useState(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [tagInput, setTagInput] = useState("")
+  const [characterCount, setCharacterCount] = useState(0)
+
   const turndownService = useRef<any>(null)
   const createBlogMutation = useArticleCreateMutation()
   const { data: categories } = useQuery(getAllCategoriesQueryOption())
@@ -91,6 +101,7 @@ function RouteComponent() {
     content: "",
     onUpdate: ({ editor }) => {
       form.setFieldValue("content", editor.getHTML())
+      setCharacterCount(editor.getText().trim().length)
     },
   })
 
@@ -106,6 +117,37 @@ function RouteComponent() {
     setPreviewUrl(objectUrl)
     return () => URL.revokeObjectURL(objectUrl)
   }, [imageFile])
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    if (form.values.tags.length <= 1) return
+
+    form.setFieldValue(
+      "tags",
+      form.values.tags.filter((tag) => tag !== tagToRemove)
+    )
+  }
+
+  const handleAddTag = () => {
+    const newTag = tagInput.trim()
+    if (!newTag) return
+
+    if (form.values.tags.length >= MAX_TAGS) {
+      setTagInput("")
+      return
+    }
+
+    const exists = form.values.tags.some(
+      (tag) => tag.toLowerCase() === newTag.toLowerCase()
+    )
+
+    if (exists) {
+      setTagInput("")
+      return
+    }
+
+    form.setFieldValue("tags", [...form.values.tags, newTag])
+    setTagInput("")
+  }
 
   const handleSubmit = async (values: ArticleRequest) => {
     try {
@@ -125,7 +167,8 @@ function RouteComponent() {
         content: markdownContent,
         coverImage,
         categoryId: values.categoryId,
-        tags:values.tags
+        tags: values.tags,
+        excerpt: values.excerpt
       })
 
       router.history.back()
@@ -136,27 +179,26 @@ function RouteComponent() {
     }
   }
 
-  // Checklist items driven by form state
   const checklist = [
     { label: "Title added", done: form.values.title.trim().length > 0 },
     { label: "Category selected", done: !!form.values.categoryId },
     { label: "Cover image uploaded", done: !!previewUrl },
-    { label: "Content written", done: (editor?.getText() ?? "").trim().length > 20 },
+    { label: "Content written", done: characterCount > 20 },
+    { label: "At least one tag added", done: form.values.tags.length > 0 },
   ]
+
   const completedCount = checklist.filter((c) => c.done).length
   const progressValue = Math.round((completedCount / checklist.length) * 100)
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
+    <div className="">
       <Container size="xl">
         <Stack gap="xl">
-
-          {/* Header */}
           <Paper
-            radius="xl"
+            radius="md"
             p="xl"
             withBorder
-            className="overflow-hidden bg-gradient-to-br from-white to-slate-50 shadow-sm dark:from-slate-900 dark:to-slate-950"
+            className="overflow-hidden shadow-sm dark:from-slate-900 dark:to-slate-950"
           >
             <Group justify="space-between" align="center">
               <Group gap="md">
@@ -185,14 +227,10 @@ function RouteComponent() {
           </Paper>
 
           <SimpleGrid cols={{ base: 1, lg: 3 }} spacing="lg" className="items-start">
-
-            {/* Main form — spans 2 cols */}
             <div className="lg:col-span-2">
-              <Paper radius="xl" p="xl" withBorder className="shadow-sm">
+              <Paper radius="md" p="xl" withBorder className="shadow-sm">
                 <form onSubmit={form.onSubmit(handleSubmit)}>
                   <Stack gap="xl">
-
-                    {/* Section: Post Details */}
                     <Stack gap="md">
                       <Group gap="xs">
                         <ThemeIcon variant="light" color="blue" radius="lg" size={32}>
@@ -201,7 +239,7 @@ function RouteComponent() {
                         <Text fw={600} size="md">Post Details</Text>
                       </Group>
 
-                      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+                      <SimpleGrid cols={{ base: 1 }} spacing="md">
                         <TextInput
                           label="Title"
                           placeholder="Give your post a clear title"
@@ -209,6 +247,14 @@ function RouteComponent() {
                           radius="md"
                           size="sm"
                           {...form.getInputProps("title")}
+                        />
+                        <Textarea
+                          label="Excerpt"
+                          placeholder="Give your post a catching excerpt"
+                          rows={4}
+                          radius="md"
+                          size="sm"
+                          {...form.getInputProps("excerpt")}
                         />
                         <Select
                           label="Category"
@@ -231,25 +277,7 @@ function RouteComponent() {
 
                     <Divider />
 
-                    {/* Section: Cover Image */}
                     <Stack gap="md">
-                      <Group gap="xs">
-                        <ThemeIcon variant="light" color="orange" radius="lg" size={32}>
-                          <ImagePlus size={15} />
-                        </ThemeIcon>
-                        <Text fw={600} size="md">Cover Image</Text>
-                      </Group>
-
-                      <FileInput
-                        placeholder="Upload an image"
-                        leftSection={<ImagePlus size={15} />}
-                        accept="image/*"
-                        radius="md"
-                        size="sm"
-                        value={imageFile}
-                        onChange={setImageFile}
-                      />
-
                       <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/40">
                         {previewUrl ? (
                           <Image
@@ -266,11 +294,27 @@ function RouteComponent() {
                           </div>
                         )}
                       </div>
+
+                      <Group gap="xs">
+                        <ThemeIcon variant="light" color="orange" radius="lg" size={32}>
+                          <ImagePlus size={15} />
+                        </ThemeIcon>
+                        <Text fw={600} size="md">Cover Image</Text>
+                      </Group>
+
+                      <FileInput
+                        placeholder="Upload an image"
+                        leftSection={<ImagePlus size={15} />}
+                        accept="image/*"
+                        radius="md"
+                        size="sm"
+                        value={imageFile}
+                        onChange={setImageFile}
+                      />
                     </Stack>
 
                     <Divider />
 
-                    {/* Section: Content */}
                     <Stack gap="md">
                       <Group gap="xs">
                         <ThemeIcon variant="light" color="grape" radius="lg" size={32}>
@@ -322,12 +366,101 @@ function RouteComponent() {
                         <RichTextEditor.Content className="min-h-[360px]" />
                       </RichTextEditor>
 
+                      <Text
+                        size="xs"
+                        ta="right"
+                        c={characterCount > 1800 ? "red" : "dimmed"}
+                      >
+                        {characterCount}/6000 characters
+                      </Text>
+
                       {form.errors.content && (
                         <Text c="red" size="sm">{form.errors.content}</Text>
                       )}
                     </Stack>
 
-                    {/* Actions */}
+                    <Divider />
+
+                    <Stack gap="md">
+                      <Group gap="xs">
+                        <ThemeIcon variant="light" color="teal" radius="lg" size={32}>
+                          <Tags size={15} />
+                        </ThemeIcon>
+                        <Text fw={600} size="md">Tags</Text>
+                      </Group>
+
+                      <Group align="flex-end">
+                        <TextInput
+                          label={`Add Tag (${form.values.tags.length}/${MAX_TAGS})`}
+                          placeholder="e.g. React, TypeScript, Backend"
+                          radius="md"
+                          size="sm"
+                          value={tagInput}
+                          onChange={(e) => setTagInput(e.currentTarget.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault()
+                              handleAddTag()
+                            }
+                          }}
+                          className="flex-1"
+                          disabled={form.values.tags.length >= MAX_TAGS}
+                        />
+                        <Button
+                          type="button"
+                          radius="md"
+                          size="sm"
+                          rightSection={<Plus size={16} />}
+                          onClick={handleAddTag}
+                          disabled={form.values.tags.length >= MAX_TAGS || !tagInput.trim()}
+                        >
+                          Add
+                        </Button>
+                      </Group>
+
+                      <Text size="xs" c="dimmed">
+                        You should add at least one tag and at most 4 tags.
+                      </Text>
+
+                      {form.values.tags.length > 0 && (
+                        <Group gap="xs">
+                          {form.values.tags.map((tag) => {
+                            const canDelete = form.values.tags.length > 1
+
+                            return (
+                              <Badge
+                                key={tag}
+                                size="lg"
+                                radius="md"
+                                variant="light"
+                                className={canDelete ? "cursor-pointer" : ""}
+                                onClick={() => canDelete && handleRemoveTag(tag)}
+                                styles={{
+                                  root: {
+                                    opacity: canDelete ? 1 : 0.7,
+                                  },
+                                }}
+                              >
+                                {canDelete ? `${tag} ×` : tag}
+                              </Badge>
+                            )
+                          })}
+                        </Group>
+                      )}
+
+                      {form.values.tags.length >= MAX_TAGS && (
+                        <Text c="yellow" size="sm">
+                          Maximum of 4 tags reached.
+                        </Text>
+                      )}
+
+                      {form.errors.tags && (
+                        <Text c="red" size="sm">
+                          {form.errors.tags}
+                        </Text>
+                      )}
+                    </Stack>
+
                     <Group justify="flex-end" mt="sm">
                       <Button
                         variant="default"
@@ -353,11 +486,8 @@ function RouteComponent() {
               </Paper>
             </div>
 
-            {/* Sidebar */}
             <Stack gap="lg">
-
-              {/* Live checklist with progress ring */}
-              <Card radius="xl" withBorder p="xl" className="shadow-sm">
+              <Card radius="md" withBorder p="xl" className="shadow-sm">
                 <Group gap="xs" mb="md">
                   <ThemeIcon variant="light" color="indigo" radius="lg" size={32}>
                     <CheckCircle2 size={15} />
@@ -403,8 +533,7 @@ function RouteComponent() {
                 </List>
               </Card>
 
-              {/* Writing tips */}
-              <Card radius="xl" withBorder p="xl" className="shadow-sm">
+              <Card radius="md" withBorder p="xl" className="shadow-sm">
                 <Group gap="xs" mb="md">
                   <ThemeIcon variant="light" color="yellow" radius="lg" size={32}>
                     <Sparkles size={15} />
@@ -422,11 +551,10 @@ function RouteComponent() {
                     Pick a cover image that reflects the mood or topic of the article.
                   </Text>
                   <Text size="sm" c="dimmed">
-                    End with a clear takeaway or call to action.
+                    Add a few clear tags so readers can discover the article more easily.
                   </Text>
                 </Stack>
               </Card>
-
             </Stack>
           </SimpleGrid>
         </Stack>

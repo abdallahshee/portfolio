@@ -37,6 +37,7 @@ import { Route as AdminArticlesRouteRouteImport } from './routes/admin/articles/
 import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
 import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects/index'
 import { Route as AdminArticlesIndexRouteImport } from './routes/admin/articles/index'
+import { Route as ProjectsCasesProjectIdRouteImport } from './routes/projects/cases.$projectId'
 import { Route as ProjectsIdEditRouteImport } from './routes/projects/$id.edit'
 import { Route as ArticlesSlugEditRouteImport } from './routes/articles/$slug.edit'
 import { Route as AdminUsersUserIdRouteImport } from './routes/admin/users/$userId'
@@ -187,6 +188,11 @@ const AdminArticlesIndexRoute = AdminArticlesIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminArticlesRouteRoute,
 } as any)
+const ProjectsCasesProjectIdRoute = ProjectsCasesProjectIdRouteImport.update({
+  id: '/cases/$projectId',
+  path: '/cases/$projectId',
+  getParentRoute: () => ProjectsRouteRoute,
+} as any)
 const ProjectsIdEditRoute = ProjectsIdEditRouteImport.update({
   id: '/edit',
   path: '/edit',
@@ -264,6 +270,7 @@ export interface FileRoutesByFullPath {
   '/admin/users/$userId': typeof AdminUsersUserIdRouteWithChildren
   '/articles/$slug/edit': typeof ArticlesSlugEditRoute
   '/projects/$id/edit': typeof ProjectsIdEditRoute
+  '/projects/cases/$projectId': typeof ProjectsCasesProjectIdRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
@@ -296,6 +303,7 @@ export interface FileRoutesByTo {
   '/admin/users/$userId': typeof AdminUsersUserIdRouteWithChildren
   '/articles/$slug/edit': typeof ArticlesSlugEditRoute
   '/projects/$id/edit': typeof ProjectsIdEditRoute
+  '/projects/cases/$projectId': typeof ProjectsCasesProjectIdRoute
   '/admin/articles': typeof AdminArticlesIndexRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
@@ -336,6 +344,7 @@ export interface FileRoutesById {
   '/admin/users/$userId': typeof AdminUsersUserIdRouteWithChildren
   '/articles/$slug/edit': typeof ArticlesSlugEditRoute
   '/projects/$id/edit': typeof ProjectsIdEditRoute
+  '/projects/cases/$projectId': typeof ProjectsCasesProjectIdRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
@@ -377,6 +386,7 @@ export interface FileRouteTypes {
     | '/admin/users/$userId'
     | '/articles/$slug/edit'
     | '/projects/$id/edit'
+    | '/projects/cases/$projectId'
     | '/admin/articles/'
     | '/admin/projects/'
     | '/admin/users/'
@@ -409,6 +419,7 @@ export interface FileRouteTypes {
     | '/admin/users/$userId'
     | '/articles/$slug/edit'
     | '/projects/$id/edit'
+    | '/projects/cases/$projectId'
     | '/admin/articles'
     | '/admin/projects'
     | '/admin/users'
@@ -448,6 +459,7 @@ export interface FileRouteTypes {
     | '/admin/users/$userId'
     | '/articles/$slug/edit'
     | '/projects/$id/edit'
+    | '/projects/cases/$projectId'
     | '/admin/articles/'
     | '/admin/projects/'
     | '/admin/users/'
@@ -667,6 +679,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminArticlesIndexRouteImport
       parentRoute: typeof AdminArticlesRouteRoute
     }
+    '/projects/cases/$projectId': {
+      id: '/projects/cases/$projectId'
+      path: '/cases/$projectId'
+      fullPath: '/projects/cases/$projectId'
+      preLoaderRoute: typeof ProjectsCasesProjectIdRouteImport
+      parentRoute: typeof ProjectsRouteRoute
+    }
     '/projects/$id/edit': {
       id: '/projects/$id/edit'
       path: '/edit'
@@ -884,11 +903,13 @@ const ProjectsIdRouteWithChildren = ProjectsIdRoute._addFileChildren(
 interface ProjectsRouteRouteChildren {
   ProjectsIdRoute: typeof ProjectsIdRouteWithChildren
   ProjectsIndexRoute: typeof ProjectsIndexRoute
+  ProjectsCasesProjectIdRoute: typeof ProjectsCasesProjectIdRoute
 }
 
 const ProjectsRouteRouteChildren: ProjectsRouteRouteChildren = {
   ProjectsIdRoute: ProjectsIdRouteWithChildren,
   ProjectsIndexRoute: ProjectsIndexRoute,
+  ProjectsCasesProjectIdRoute: ProjectsCasesProjectIdRoute,
 }
 
 const ProjectsRouteRouteWithChildren = ProjectsRouteRoute._addFileChildren(

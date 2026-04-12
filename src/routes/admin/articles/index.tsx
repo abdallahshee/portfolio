@@ -32,7 +32,7 @@ function RouteComponent() {
   const { data, isLoading } = useQuery(getPaginatedArticlesQueryOptions(page, PAGE_SIZE))
 
   // ✅ safely extract blogs array and pagination
-  const rawBlogs = data?.blogs
+  const rawBlogs = data?.articles
   const allBlogs = Array.isArray(rawBlogs) ? rawBlogs : []
   const pagination = data?.pagination
 
@@ -185,11 +185,11 @@ function RouteComponent() {
                     <Group gap="sm">
                       <Group gap={4}>
                         <Heart size={13} className="text-rose-400" />
-                        <Text size="xs" c="dimmed">{article.likes}</Text>
+                        <Text size="xs" c="dimmed">{article.likes_count}</Text>
                       </Group>
                       <Group gap={4}>
                         <MessageCircle size={13} className="text-indigo-400" />
-                        <Text size="xs" c="dimmed">{article.comments}</Text>
+                        <Text size="xs" c="dimmed">{article.comments_count}</Text>
                       </Group>
                     </Group>
                   </Table.Td>

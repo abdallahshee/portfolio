@@ -4,7 +4,7 @@ import { article } from "./article.schema"
 import { nanoid } from "nanoid"
 
 export const category = pgTable('category', {
-  id: text('id').primaryKey().$default(()=>nanoid(5)),
+  id: text('id').primaryKey().$default(()=>nanoid(16)),
   name: text('name').notNull().unique(),
 })
 

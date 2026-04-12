@@ -7,7 +7,7 @@ import { relations } from "drizzle-orm"
 export const projectRating = pgTable(
   "project_rating",
   {
-    id: text("id").primaryKey().$default(() => nanoid(16)),
+    id: text("id").primaryKey().$default(() => nanoid()),
 
     projectId: text("project_id")
       .notNull()

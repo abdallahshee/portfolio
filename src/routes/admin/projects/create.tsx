@@ -15,12 +15,13 @@ import {
   TextInput,
   Textarea,
   ThemeIcon,
+  SimpleGrid,
 } from "@mantine/core"
+import { DateInput } from "@mantine/dates"
 import { useForm } from "@mantine/form"
 import {
   ArrowLeft,
   FolderPlus,
-  Github,
   Globe,
   ImagePlus,
   Plus,
@@ -28,6 +29,9 @@ import {
   ShieldCheck,
   Trash,
   Wrench,
+  CalendarRange,
+  FileText,
+  Sparkles,
 } from "lucide-react"
 
 import { useMemo, useState } from "react"
@@ -36,9 +40,6 @@ import { useProjectCreateMutation } from "@/db/mutations/project.mutations"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { AdminMiddleware } from "@/server/middleware/auth.middleware"
 
-
-
-
 export const Route = createFileRoute("/admin/projects/create")({
   server: {
     middleware: [AdminMiddleware],
@@ -46,17 +47,15 @@ export const Route = createFileRoute("/admin/projects/create")({
   component: RouteComponent,
 })
 
+
 function RouteComponent() {
   const form = useForm<ProjectRequest>({
     initialValues: {
       title: "",
       url: "",
       description: "",
-      imageUrl: null,
+      imageUrl: "",
       isPublic: true,
-      technologies: ["React"],
-      caseStudy: "",
-      duration: ""
     },
     validate: zod4Resolver(ProjectSchema),
     validateInputOnBlur: true,
@@ -66,6 +65,7 @@ function RouteComponent() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const createProject = useProjectCreateMutation()
+
   const previewUrl = useMemo(() => {
     if (!file) return null
     return URL.createObjectURL(file)
@@ -75,16 +75,19 @@ function RouteComponent() {
     try {
       setLoading(true)
 
-      let url = null
-      if (!file) {
-        return url
+      let uploadedImageUrl = values.imageUrl || ""
+
+      if (file) {
+        // Replace with your upload logic
+        // uploadedImageUrl = await uploadProjectImage(file)
       }
-      //  url = await uploadProjectImage(file)
-      const { imageUrl, ...datas } = values
+
       await createProject.mutateAsync({
-        ...datas,
-        imageUrl: url
+        ...values,
+        imageUrl: uploadedImageUrl,
       })
+
+      router.history.back()
     } catch (err) {
       console.error(err)
     } finally {
@@ -92,18 +95,9 @@ function RouteComponent() {
     }
   }
 
-  const addTechnology = () => {
-    if (form.values.technologies.length < 4) {
-      form.setFieldValue("technologies", [...form.values.technologies, ""])
-    }
-  }
-
-  const removeTechnology = (index: number) => {
-    if (form.values.technologies.length > 1) {
-      const updated = form.values.technologies.filter((_, i) => i !== index)
-      form.setFieldValue("technologies", updated)
-    }
-  }
+  const titleLength = form.values.title.trim().length
+  const descriptionLength = form.values.description.trim().length
+  // const completedTechnologies = form.values.technologies.filter((tech) => tech.trim().length > 0).length
 
   return (
     <Container size="xl" className="space-y-8 py-10">
@@ -125,13 +119,11 @@ function RouteComponent() {
                 </Text>
               </Group>
 
-              <div className="title3">
-                Create New Project
-              </div>
+              <div className="title3">Create New Project</div>
 
               <Text className="max-w-2xl text-base leading-7 text-slate-600 dark:text-slate-300">
-                Add a new project with its details, links, image, visibility, and
-                technologies used.
+                Add a new project with its core details, public link, image, date range,
+                technologies used, and a strong case study so it is ready to display professionally.
               </Text>
             </Stack>
 
@@ -153,50 +145,59 @@ function RouteComponent() {
               <Stack gap="lg">
                 <Group gap="xs">
                   <ThemeIcon variant="light" color="blue" radius="xl">
-                    <FolderPlus size={16} />
+                    <FileText size={16} />
                   </ThemeIcon>
                   <div className="title3">Basic Information</div>
                 </Group>
 
-                <TextInput
-                  label="Project Title"
-                  placeholder="My Awesome Project"
-                  radius="md"
-                  size="sm"
-                  {...form.getInputProps("title")}
-                />
+                <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
+                  <div>
+                    <TextInput
+                      label="Project Title"
+                      placeholder="e.g. Fitness Booking Platform"
+                      radius="md"
+                      size="sm"
+                      {...form.getInputProps("title")}
+                    />
+                    <Text size="xs" c="dimmed" mt={4}>
+                      {titleLength}/40 characters
+                    </Text>
+                  </div>
 
-                <TextInput
-                  label="Duration"
-                  placeholder="Enter Project duration"
-                  radius="md"
-                  size="sm"
-                  {...form.getInputProps("duration")}
-                />
+                  <TextInput
+                    label="Live Project URL"
+                    placeholder="https://myproject.com"
+                    radius="md"
+                    size="sm"
+                    leftSection={<Globe size={16} />}
+                    {...form.getInputProps("url")}
+                  />
+                </SimpleGrid>
 
-                <Textarea
-                  label="Description"
-                  placeholder="Describe your project"
-                  minRows={5}
-                  autosize
-                  radius="md"
-                  size="sm"
-                  {...form.getInputProps("description")}
-                />
+                <div>
+                  <Textarea
+                    label="Short Description"
+                    placeholder="Write a concise summary of the project"
+                    minRows={4}
+                    autosize
+                    radius="md"
+                    size="sm"
+                    {...form.getInputProps("description")}
+                  />
+                  <Text size="xs" c="dimmed" mt={4}>
+                    {descriptionLength}/160 characters
+                  </Text>
+                </div>
 
                 <Checkbox
                   label="Make project public"
                   {...form.getInputProps("isPublic", { type: "checkbox" })}
                 />
-                <Textarea
-                  label="Case Study"
-                  placeholder="Describe motivation behind this project"
-                  minRows={5}
-                  autosize
-                  radius="md"
-                  size="sm"
-                  {...form.getInputProps("caseStudy")}
-                />
+
+                <Text size="sm" c="dimmed">
+                  Public projects can be shown on your portfolio. Private projects can still
+                  be stored for internal/admin use.
+                </Text>
               </Stack>
             </Card>
 
@@ -204,28 +205,14 @@ function RouteComponent() {
               <Stack gap="lg">
                 <Group gap="xs">
                   <ThemeIcon variant="light" color="grape" radius="xl">
-                    <Globe size={16} />
+                    <CalendarRange size={16} />
                   </ThemeIcon>
-                  <div className="title3">Project Links</div>
+                  <div className="title3">Project Duration</div>
                 </Group>
 
-                <TextInput
-                  label="Website URL"
-                  placeholder="https://myproject.com"
-                  radius="md"
-                  size="sm"
-                  leftSection={<Globe size={16} />}
-                  {...form.getInputProps("websiteUrl")}
-                />
-
-                <TextInput
-                  label="GitHub URL"
-                  placeholder="https://github.com/username/project"
-                  radius="md"
-                  size="sm"
-                  leftSection={<Github size={16} />}
-                  {...form.getInputProps("githubUrl")}
-                />
+                <Text size="sm" c="dimmed">
+                  Use the actual time range the project was actively worked on. The end date should not be before the start date.
+                </Text>
               </Stack>
             </Card>
 
@@ -245,13 +232,22 @@ function RouteComponent() {
                   size="sm"
                   leftSection={<ImagePlus size={16} />}
                   accept="image/*"
+                  value={file}
                   onChange={(e) => setFile(e)}
                 />
 
-                {previewUrl ? (
+                <TextInput
+                  label="Image URL"
+                  placeholder="Or paste an image URL"
+                  radius="md"
+                  size="sm"
+                  {...form.getInputProps("imageUrl")}
+                />
+
+                {previewUrl || form.values.imageUrl ? (
                   <div className="overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/40">
                     <Image
-                      src={previewUrl}
+                      src={previewUrl || form.values.imageUrl}
                       alt={form.values.title || "Project preview"}
                       radius="md"
                       fit="contain"
@@ -266,7 +262,7 @@ function RouteComponent() {
               </Stack>
             </Card>
 
-            <Card radius="2xl" withBorder p="xl" className="shadow-sm">
+            {/* <Card radius="2xl" withBorder p="xl" className="shadow-sm">
               <Stack gap="lg">
                 <Group justify="space-between" align="center">
                   <Group gap="xs">
@@ -283,14 +279,14 @@ function RouteComponent() {
                     size="sm"
                     leftSection={<Plus size={16} />}
                     onClick={addTechnology}
-                    disabled={form.values.technologies.length >= 5}
+                    disabled={form.values.technologies.length >= MAX_TECHNOLOGIES}
                   >
                     Add Technology
                   </Button>
                 </Group>
 
                 <Text size="sm" c="dimmed">
-                  Add up to 5 technologies used in this project.
+                  Add between 1 and 5 technologies. Keep names concise and consistent.
                 </Text>
 
                 <Divider />
@@ -311,7 +307,7 @@ function RouteComponent() {
                         color="red"
                         variant="light"
                         radius="md"
-                        size="sm"
+                        size="lg"
                         onClick={() => removeTechnology(index)}
                         disabled={form.values.technologies.length === 1}
                       >
@@ -320,6 +316,36 @@ function RouteComponent() {
                     </Group>
                   ))}
                 </Stack>
+
+                <Text size="xs" c="dimmed">
+                  {completedTechnologies}/{form.values.technologies.length} technology field
+                  {form.values.technologies.length !== 1 ? "s" : ""} filled
+                </Text>
+              </Stack>
+            </Card> */}
+
+            <Card radius="2xl" withBorder p="xl" className="shadow-sm">
+              <Stack gap="lg">
+                <Group gap="xs">
+                  <ThemeIcon variant="light" color="yellow" radius="xl">
+                    <Sparkles size={16} />
+                  </ThemeIcon>
+                  <div className="title3">Case Study</div>
+                </Group>
+
+                <Textarea
+                  label="Case Study"
+                  placeholder="Explain the problem, goals, architecture, decisions made, and the outcome of the project..."
+                  minRows={10}
+                  autosize
+                  radius="md"
+                  size="sm"
+                  {...form.getInputProps("caseStudy")}
+                />
+                <Text size="sm" c="dimmed">
+                  A strong case study should explain what the project solves, how you approached it,
+                  what technologies you chose, and the end result.
+                </Text>
               </Stack>
             </Card>
 
@@ -329,7 +355,7 @@ function RouteComponent() {
                   <ThemeIcon variant="light" color="green" radius="xl">
                     <ShieldCheck size={16} />
                   </ThemeIcon>
-                  <Text fw={600}>Ready to publish this project?</Text>
+                  <Text fw={600}>Ready to create this project?</Text>
                 </Group>
 
                 <Group>

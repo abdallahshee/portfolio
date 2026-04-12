@@ -8,7 +8,7 @@ import { uuid } from "drizzle-orm/pg-core";
 export const articleLike = pgTable(
   "article_like",
   {
-    id: text("id").primaryKey().$default(() => nanoid(16)),
+    id: text("id").primaryKey().$default(() => nanoid()),
     articleId: text("article_id")
       .notNull()
       .references(() => article.id, { onDelete: "cascade" }),

@@ -1,5 +1,5 @@
 -- ── USER TABLE ────────────────────────────────────────
--- ALTER TABLE public.user_table ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Profiles are publicly viewable" ON public.user;
 CREATE POLICY "Profiles are publicly viewable"

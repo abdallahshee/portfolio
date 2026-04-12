@@ -3,7 +3,6 @@ import { user } from "../schema";
 import { createSelectSchema } from "drizzle-zod";
 import type { User } from '@supabase/supabase-js'
 import z from "zod"
-import { AdminUserUpdateSchema } from "./admin.types";
 
 export const SignUpSchema = createSelectSchema(user, {
     name: z.string().nonempty("Username is required")
@@ -15,11 +14,12 @@ export const SignUpSchema = createSelectSchema(user, {
     )
 }).pick({ name: true, email: true, avatar: true })
     .extend({
-        password: z.string()
+        password: z
+            .string()
             .min(8, "Password must be at least 8 characters")
             .regex(
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
-                "Password must contain uppercase, lowercase, number and special character"
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*(\d|[@$!%*?&]))/,
+                "Password must contain uppercase, lowercase, and at least a number or special character"
             ),
         confirmPassword: z.string(),
     }).refine((data) => data.password === data.confirmPassword, {
@@ -37,11 +37,12 @@ export const SignInSchema = createSelectSchema(user, {
     email: true,
 
 }).extend({
-    password: z.string()
+    password: z
+        .string()
         .min(8, "Password must be at least 8 characters")
         .regex(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/,
-            "Password must contain uppercase, lowercase, number and special character"
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*(\d|[@$!%*?&]))/,
+            "Password must contain uppercase, lowercase, and at least a number or special character"
         ),
     rememberMe: z.boolean().default(false)
 })
@@ -56,11 +57,11 @@ export type DbUser = InferSelectModel<typeof user>
 
 export type SupabaseUser = User
 
-export const UserUpdateProfileSchema=createSelectSchema(user,{
-   name: z.string().nonempty("Username is required")
+export const UserUpdateProfileSchema = createSelectSchema(user, {
+    name: z.string().nonempty("Username is required")
         .min(3, "At 3 characters for a username")
-        .max(15, "Too long for a Username"),
-        avatar:z.string().min(3)
-}).pick({ name:true,avatar:true})
+        .max(15, "Username out of range 3-15 characters"),
+    avatar: z.string().min(3)
+}).pick({ name: true, avatar: true })
 
-export type UserUpdateProfileRequest=z.infer<typeof UserUpdateProfileSchema>
+export type UserUpdateProfileRequest = z.infer<typeof UserUpdateProfileSchema>

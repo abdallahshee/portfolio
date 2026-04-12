@@ -17,6 +17,7 @@ const scriptFiles = [
   'project-rating.policies.sql',
   'admin.policy.sql',
   'bucket-avatars.policies.sql',
+  'case.policies.sql',
   'drop-triggers.sql',
   // 'triggers.sql',
   'views.sql',
