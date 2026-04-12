@@ -67,7 +67,7 @@ function RouteComponent() {
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const turndownService = useRef<any>(null)
-  const createBlogMutation = useArticleCreateMutation({ role: "user" })
+  const createBlogMutation = useArticleCreateMutation()
   const { data: categories } = useQuery(getAllCategoriesQueryOption())
 
   const form = useForm<ArticleRequest>({
