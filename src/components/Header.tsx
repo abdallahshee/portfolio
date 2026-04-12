@@ -297,7 +297,7 @@ export default function Header() {
   )
 
   return (
-    <header className="fixed left-0 top-0 z-[100] h-15 w-full bg-slate-50 shadow-lg dark:bg-slate-700">
+    <header className="fixed left-0 top-0 z-[100] h-15 w-full border-slate-200 bg-gradient-to-b from-white to-slate-50 dark:border-slate-800 dark:from-slate-950 dark:to-slate-900">
       {/* Gradient border bottom */}
       <div
         className="absolute bottom-0 left-0 w-full h-[2px]"

@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
 import {
-  Avatar, Box, Button, Card, Container, Group,
-  Image, Pagination, Skeleton, Stack, TextInput, ThemeIcon,
+  Avatar, Badge, Box, Button, Card, Container, Group,
+  Image, Pagination, Skeleton, Stack, Text, TextInput, ThemeIcon,
 } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { useQuery } from "@tanstack/react-query"
@@ -111,7 +111,7 @@ function BlogsPage() {
   const isLoading = hasSearch ? searchLoading : paginatedLoading
   const isFetching = hasSearch ? searchFetching : paginatedFetching
 
-  const rawBlogs = data?.blogs ?? paginatedData?.blogs
+  const rawBlogs = data?.articles ?? paginatedData?.articles
   const blogs = Array.isArray(rawBlogs) ? rawBlogs : []
 
   const pagination = data?.pagination ?? paginatedData?.pagination ?? {
@@ -145,7 +145,7 @@ function BlogsPage() {
           <TextInput
             size="sm"
             radius="md"
-            placeholder="Search by title, tag, or excerpt…"
+            placeholder="Search by title or ex,category"
             leftSection={<Search size={16} />}
             rightSection={
               searchInput ? (
@@ -266,76 +266,129 @@ function BlogsPage() {
                   params={{ slug: article.slug }}
                   className="no-underline"
                 >
-                  <Card
-                    withBorder
-                    radius="md"
-                    p={0}
-                    className={classes.card}
-                    style={{ width: "100%", height: 400, display: "flex", flexDirection: "column" }}
-                  >
-                    <Box style={{ height: 200, overflow: "hidden", flexShrink: 0 }}>
-                      <Image
-                        src={article.coverImage!}
-                        alt={article.title}
-                        style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
-                      />
-                    </Box>
+              <Card
+  withBorder
+  radius="lg"
+  p={0}
+  className={`${classes.card} border-slate-200 bg-gradient-to-b from-white to-slate-50 dark:border-slate-800 dark:from-slate-950 dark:to-slate-900`}
+  style={{ width: "100%", height: 500, display: "flex", flexDirection: "column" }}
+>
+  {/* Cover image — 230px */}
+  <Box style={{ height: 230, flexShrink: 0, overflow: "hidden", position: "relative" }}>
+    <Image
+      src={article.coverImage!}
+      alt={article.title}
+      style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+    />
+    {article.categoryName && (
+      <div style={{ position: "absolute", top: 12, left: 12 }}>
+        <Badge
+          variant="filled"
+          color="green"
+          radius="sm"
+          size="sm"
+          style={{ backdropFilter: "blur(8px)", opacity: 0.92 }}
+        >
+          {article.categoryName}
+        </Badge>
+      </div>
+    )}
+  </Box>
 
-                    <div
-                      className={classes.body}
-                      style={{
-                        flex: 1,
-                        display: "flex",
-                        flexDirection: "column",
-                        overflow: "hidden",
-                        padding: "1rem",
-                      }}
-                    >
-                      <div className="mb-1 text-xs font-bold uppercase tracking-wide text-pink-600/80 dark:text-pink-300/80">
-                        {article.categoryName}
-                      </div>
+  {/* Body — remaining 270px (500 - 230) */}
+  <div
+    style={{
+      flex: 1,
+      minHeight: 0,
+      display: "flex",
+      flexDirection: "column",
+      padding: "1rem 1.2rem",
+      overflow: "hidden",
+    }}
+  >
+    {/* Title — always 2 lines */}
+    <div
+      className="title3 text-slate-900 dark:text-slate-50"
+      style={{
+        display: "-webkit-box",
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: "vertical",
+        overflow: "hidden",
+        flexShrink: 0,
+        minHeight: "2.8em",
+        marginBottom: "0.5rem",
+      }}
+    >
+      {article.title}
+    </div>
 
-                      <div className="mb-3 line-clamp-2 text-sm font-semibold text-slate-900 dark:text-slate-50">
-                        {article.title}
-                      </div>
+    {/* Excerpt — 4 lines */}
+    <Text
+      size="sm"
+      lineClamp={8}
+      className="text-slate-500 dark:text-slate-400"
+      style={{
+        flex: 1,
+        minHeight: 0,
+        lineHeight: 1.8,
+      }}
+    >
+      {article.excerpt}
+    </Text>
 
-                      <p className="mb-auto line-clamp-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
-                        {article.excerpt}
-                      </p>
+    {/* Author + date */}
+    <Group
+      justify="space-between"
+      align="center"
+      wrap="nowrap"
+      gap="xs"
+      mt={12}
+      style={{ flexShrink: 0 }}
+      className="min-w-0"
+    >
+      <Group gap={7} wrap="nowrap" className="min-w-0">
+        <Avatar
+          size={26}
+          src={article.authorImage}
+          alt={article.authorName!}
+          radius="xl"
+          className="shrink-0"
+        />
+        <span className="min-w-0 truncate text-xs font-medium text-slate-700 dark:text-slate-300">
+          {article.authorName}
+        </span>
+      </Group>
+      <span className="shrink-0 text-xs text-slate-400 dark:text-slate-500">
+        {moment(article.createdAt).format("MMM D, YYYY")}
+      </span>
+    </Group>
 
-                      <Group justify="space-between" align="center" wrap="nowrap" gap="xs" mt={12} className="min-w-0">
-                        <Group gap={6} wrap="nowrap" className="min-w-0">
-                          <Avatar size={22} src={article.authorImage} alt={article.authorName!} radius="xl" className="shrink-0" />
-                          <span className="min-w-0 truncate text-xs font-medium text-slate-800 dark:text-slate-200">
-                            {article.authorName}
-                          </span>
-                        </Group>
-                        <span className="shrink-0 text-xs text-slate-500 dark:text-slate-400">
-                          {moment(article.createdAt).format("MMM D, YYYY")}
-                        </span>
-                      </Group>
-
-                      <Group
-                        gap="xs"
-                        mt={8}
-                        pt={8}
-                        style={{ borderTop: "1px solid var(--mantine-color-default-border)" }}
-                      >
-                        <Group gap={4}>
-                          <Heart size={13} opacity={0.5} />
-                          <span className="text-xs text-slate-500 dark:text-slate-400">
-                            {article.likes}
-                          </span>
-                        </Group>
-                        <Group gap={4}>
-                          <MessageCircle size={13} opacity={0.5} />
-                          <span className="text-xs text-slate-500 dark:text-slate-400">
-                            {article.comments}
-                          </span>
-                        </Group>
-                      </Group>
-                    </div>
-                  </Card>
+    {/* Stats footer */}
+    <Group
+      gap="sm"
+      mt={10}
+      pt={10}
+      style={{
+        flexShrink: 0,
+        borderTop: "1px solid var(--mantine-color-default-border)",
+      }}
+    >
+      <Group gap={5} align="center">
+        <Heart size={13} className="text-rose-400" />
+        <span className="text-xs text-slate-500 dark:text-slate-400">{article.likes}</span>
+      </Group>
+      <Group gap={5} align="center">
+        <MessageCircle size={13} className="text-indigo-400" />
+        <span className="text-xs text-slate-500 dark:text-slate-400">{article.comments}</span>
+      </Group>
+      <div style={{ marginLeft: "auto" }}>
+        <Badge variant="dot" color="green" size="xs" radius="xl">
+          {article.status ?? "published"}
+        </Badge>
+      </div>
+    </Group>
+  </div>
+</Card>
                 </Link>
               ))}
             </div>

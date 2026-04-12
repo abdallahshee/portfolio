@@ -59,6 +59,7 @@ const defaultValues: ArticleRequest = {
   content: "",
   coverImage: null,
   categoryId: null,
+  tags:[]
 }
 
 function RouteComponent() {
@@ -124,6 +125,7 @@ function RouteComponent() {
         content: markdownContent,
         coverImage,
         categoryId: values.categoryId,
+        tags:values.tags
       })
 
       router.history.back()

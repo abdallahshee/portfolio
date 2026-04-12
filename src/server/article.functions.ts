@@ -17,7 +17,7 @@ function createSlug(title: string) {
         .replace(/-+/g, "-") // remove duplicate -
 }
 
-function createExcerpt(content: string, maxLength = 160) {
+function createExcerpt(content: string, maxLength = 200) {
     const plainText = content.replace(/[#_*>\-\n`]/g, " ").trim()
     return plainText.length > maxLength
         ? plainText.slice(0, maxLength).trim() + "..."
@@ -38,7 +38,8 @@ export const createArticle = createServerFn({ method: "POST" })
                 categoryId: data.categoryId, // ✅ convert null to undefined
                 slug,
                 excerpt,
-                userId
+                userId,
+                tags:data.tags
             }
             const [result] = await db.insert(article).values({ ...newData, status: "draft" }).returning()
             return result// ✅ single object instead of array
@@ -87,6 +88,7 @@ export const getArticleBySlug = createServerFn()
             // Blog
             const articleResult = await db
                 .select({
+                    tags:article.tags,
                     articleId: article.id,
                     title: article.title,
                     content: article.content,
@@ -166,7 +168,7 @@ export const getPaginatedArticles = createServerFn({ method: 'GET' })
             const page = data.page ?? 1
             const limit = data.limit ?? 6
             const offset = (page - 1) * limit
-            const blogs = await db
+            const articles = await db
                 .select({
                     id: article.id,
                     title: article.title,
@@ -177,6 +179,7 @@ export const getPaginatedArticles = createServerFn({ method: 'GET' })
                     userId: user.id,
                     authorImage: user.avatar,
                     authorName: user.name,
+                    status:article.status,
                     categoryName: category.name,
                     likes: sql<number>`COUNT(DISTINCT ${articleLike.id})`,
                     comments: sql<number>`COUNT(DISTINCT ${comment.id})`,
@@ -209,7 +212,7 @@ export const getPaginatedArticles = createServerFn({ method: 'GET' })
             const total = Number(totalResult[0]?.count ?? 0)
             const totalPages = Math.ceil(total / limit)
             return {
-                blogs,
+                articles,
                 pagination: {
                     page,
                     limit,
@@ -284,65 +287,87 @@ export const updateArticle = createServerFn({ method: "POST" })
 
 
 export const searchPaginatedArticles = createServerFn({ method: "GET" })
-    .inputValidator((data: { query: string; page: number; pageSize: number }) => data)
-    .handler(async ({ data }) => {
-        const { query, page, pageSize } = data
-        try {
-            const offset = (page - 1) * pageSize
-            const search = `%${query}%`
-            const whereClause = query.trim()
-                ? or(
-                    ilike(article.title, search),
-                    ilike(article.excerpt, search),
+  .inputValidator((data: { query: string; page: number; pageSize: number }) => data)
+  .handler(async ({ data }) => {
+    const { query, page, pageSize } = data
 
-                )
-                : undefined
-            const [articleRows, totalResult] = await Promise.all([
-                db
-                    .select({
-                        id: article.id,
-                        title: article.title,
-                        slug: article.slug,
-                        status: article.status,
-                        excerpt: article.excerpt,
-                        coverImage: article.coverImage,
-                        createdAt: article.createdAt,
-                        categoryName: category.name,
-                        likes: sql<number>`(select count(*) from article_like where article_id = ${article.id})`,
-                        comments: sql<number>`(select count(*) from comment where article_id = ${article.id})`,
-                        authorImage: user.avatar,
-                        authorName: user.name,
-                    })
-                    .from(article)
-                    .leftJoin(user, eq(article.userId, user.id))
-                    .leftJoin(category, eq(article.categoryId, category.id))
-                    .where(whereClause)
-                    .limit(pageSize)
-                    .offset(offset),
+    try {
+      const offset = (page - 1) * pageSize
+      const trimmedQuery = query.trim()
+      const search = `%${trimmedQuery}%`
 
-                db
-                    .select({ count: sql<number>`count(*)` })
-                    .from(article)
-                    .where(whereClause),
-            ])
-            const total = Number(totalResult[0].count)
-            return {
-                blogs: articleRows,
-                pagination: {
-                    total,
-                    page,
-                    pageSize,
-                    totalPages: Math.ceil(total / pageSize),
-                },
-            }
-        } catch (err) {
-            console.error("Error searching articles:", err)
-            return {
-                articles: [],
-                pagination: { total: 0, page: 1, pageSize, totalPages: 0 },
-            }
-        }
-    })
+      const whereClause = trimmedQuery
+        ? or(
+            ilike(article.title, search),
+            ilike(article.excerpt, search),
+            ilike(article.content, search),
+            ilike(category.name, search)
+          )
+        : undefined
+
+      const [articleRows, totalResult] = await Promise.all([
+        db
+          .select({
+            id: article.id,
+            title: article.title,
+            slug: article.slug,
+            status: article.status,
+            excerpt: article.excerpt,
+            coverImage: article.coverImage,
+            createdAt: article.createdAt,
+            categoryName: category.name,
+            likes: sql<number>`(
+              select count(*)::int
+              from article_like
+              where article_like.article_id = ${article.id}
+            )`,
+            comments: sql<number>`(
+              select count(*)::int
+              from comment
+              where comment.article_id = ${article.id}
+            )`,
+            authorImage: user.avatar,
+            authorName: user.name,
+          })
+          .from(article)
+          .leftJoin(user, eq(article.userId, user.id))
+          .leftJoin(category, eq(article.categoryId, category.id))
+          .where(whereClause)
+          .limit(pageSize)
+          .offset(offset),
+
+        db
+          .select({ count: sql<number>`count(*)::int` })
+          .from(article)
+          .leftJoin(category, eq(article.categoryId, category.id))
+          .where(whereClause),
+      ])
+
+      const total = Number(totalResult[0]?.count ?? 0)
+
+      return {
+        articles: articleRows,
+        pagination: {
+          total,
+          page,
+          pageSize,
+          totalPages: Math.ceil(total / pageSize),
+        },
+      }
+    } catch (err) {
+      console.error("Error searching articles:", err)
+
+      return {
+        articles: [],
+        pagination: {
+          total: 0,
+          page,
+          pageSize,
+          totalPages: 0,
+        },
+      }
+    }
+  })
 
 
 export const getMyPaginatedArticles = createServerFn({ method: 'GET' })
