@@ -192,7 +192,7 @@ function RouteComponent() {
                   leftSection={<BookOpen size={16} />}
                   onClick={() =>
                     navigate({
-                      to: "/articles/$userId",
+                      to: "/admin/articles/$userId",
                       params: { userId },
                       search: { page: 1 },
                     })
@@ -342,7 +342,7 @@ function RouteComponent() {
                   leftSection={<BookOpen size={16} />}
                   onClick={() =>
                     navigate({
-                      to: "/articles/$userId",
+                      to: "/admin/articles/$userId",
                       params: { userId },
                       search: { page: 1 },
                     })

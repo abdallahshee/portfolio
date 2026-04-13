@@ -50,7 +50,7 @@ import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
 import { useArticleCreateMutation } from "@/db/mutations/article.mutations"
 import { AuthenticatedMiddleware } from "@/server/middleware/auth.middleware"
 
-export const Route = createFileRoute("/articles/create")({
+export const Route = createFileRoute("/articles/new")({
   server: { middleware: [AuthenticatedMiddleware] },
   loader: async ({ context }) => {
     await context.queryClient.prefetchQuery(getAllCategoriesQueryOption())

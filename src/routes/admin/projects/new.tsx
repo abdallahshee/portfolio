@@ -31,7 +31,7 @@ import { useProjectCreateMutation } from "@/db/mutations/project.mutations"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { AdminMiddleware } from "@/server/middleware/auth.middleware"
 
-export const Route = createFileRoute("/admin/projects/create")({
+export const Route = createFileRoute("/admin/projects/new")({
   server: { middleware: [AdminMiddleware] },
   component: RouteComponent,
 })

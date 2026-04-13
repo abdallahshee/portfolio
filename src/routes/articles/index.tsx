@@ -154,7 +154,7 @@ function BlogsPage() {
                 My Articles
               </Button>
             </Link>
-            <Link to="/articles/create" className="no-underline">
+            <Link to="/articles/new" className="no-underline">
               <Button variant="filled" color="blue" radius="md" leftSection={<PenLine size={15} />}>
                 Write Article
               </Button>

@@ -55,7 +55,7 @@ function RouteComponent() {
             {pagination?.total ?? 0} total articles
           </Text>
         </div>
-        <Link to="/articles/create" className="no-underline">
+        <Link to="/articles/new" className="no-underline">
           <button className="flex items-center gap-2 rounded-xl bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-indigo-700">
             <FileText size={15} />
             New Article
