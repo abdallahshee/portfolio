@@ -39,7 +39,7 @@ import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
 export const Route = createFileRoute("/projects/$projectId")({
   loader: async ({ context, params }) => {
     const data = await context.queryClient.fetchQuery(
-      getProjectByIdQueryOptions(params.project)
+      getProjectByIdQueryOptions(params.projectId)
     )
     return data
   },
@@ -47,8 +47,8 @@ export const Route = createFileRoute("/projects/$projectId")({
 })
 
 function ProjectDetails() {
-  const { id } = Route.useParams()
-  const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(id))
+  const { projectId } = Route.useParams()
+  const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(projectId))
   const supabase = getSupabaseBrowserClient()
   const [session, setSession] = useState<Session | null>(null) // ✅ typed
   const [isSessionLoading, setIsSessionLoading] = useState(true) // ✅ removed duplicate const below
@@ -89,7 +89,6 @@ function ProjectDetails() {
 
   const handleSubmitRating = async () => {
     if (!session?.user || !rating) return
-
     try {
       await rateMutation.mutateAsync({
         projectId: project?.id!,
@@ -145,7 +144,7 @@ function ProjectDetails() {
               </Link>
 
               {session?.user?.role === "admin" && (
-                <Link to="/admin/projects/$id/edit" params={{ id: project.id }}>
+                <Link to="/admin/projects/$projectId/edit" params={{ projectId: project.id }}>
                   <Button
                     variant="light"
                     color="indigo"
