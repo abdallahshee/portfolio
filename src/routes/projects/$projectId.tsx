@@ -36,10 +36,10 @@ import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
 
 
 
-export const Route = createFileRoute("/projects/$id")({
+export const Route = createFileRoute("/projects/$projectId")({
   loader: async ({ context, params }) => {
     const data = await context.queryClient.fetchQuery(
-      getProjectByIdQueryOptions(params.id)
+      getProjectByIdQueryOptions(params.project)
     )
     return data
   },

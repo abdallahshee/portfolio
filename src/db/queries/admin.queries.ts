@@ -2,7 +2,7 @@
 import { queryOptions } from "@tanstack/react-query"
 import {getAdminStats, getAuthUserById} from "@/server/admin.functions"
 
-export const adminStatsQueryOptions = queryOptions({
+export const getStatsQueryOptions = queryOptions({
   queryKey: ["admin", "stats"],
   queryFn: () => getAdminStats(),
 })

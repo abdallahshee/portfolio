@@ -1,6 +1,6 @@
 // server/admin.functions.ts
 import { createServerFn } from "@tanstack/react-start"
-import { article, project, user } from "@/db/schema"
+import { article, category, project, user } from "@/db/schema"
 import { eq, count } from "drizzle-orm"
 import { db } from "@/db"
 import { AdminMiddleware, AuthenticatedMiddleware } from "./middleware/auth.middleware"
@@ -12,15 +12,17 @@ import { GetUsersSchema, AdminUserUpdateSchema } from "@/db/validations/admin.ty
 export const getAdminStats = createServerFn({ method: "GET" })
   .middleware([AuthenticatedMiddleware])
   .handler(async () => {
-    const [projectCount, blogCount, userCount] = await Promise.all([
+    const [projectCount, articleCount, userCount,categoryCount] = await Promise.all([
       db.select({ count: count() }).from(project),
       db.select({ count: count() }).from(article),
       db.select({ count: count() }).from(user),
+      db.select({ count: count() }).from(category),
     ])
     return {
       projects: Number(projectCount[0].count),
-      blogs: Number(blogCount[0].count),
+      articles: Number(articleCount[0].count),
       users: Number(userCount[0].count),
+      categories: Number(categoryCount[0].count),
     }
   })
 

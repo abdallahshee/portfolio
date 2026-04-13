@@ -1,4 +1,4 @@
-import { getAllProjectsQueryOptions, searchProjectsQueryOptions } from '@/db/queries/project.queries'
+import { getPaginatedProjectsQueryOptions, searchProjectsQueryOptions } from '@/db/queries/project.queries'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import {
   Card,
@@ -20,12 +20,13 @@ import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
 import { getSupabaseBrowserClient } from '@/lib/supabase/client'
 import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
+import { ProjectCard } from '@/components/ProjectCard'
 
 const PAGE_SIZE = 6
 
 export const Route = createFileRoute('/projects/')({
   loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(getAllProjectsQueryOptions(1, PAGE_SIZE))
+    await context.queryClient.prefetchQuery(getPaginatedProjectsQueryOptions(1, PAGE_SIZE))
   },
   component: RouteComponent,
 })
@@ -62,7 +63,7 @@ function RouteComponent() {
   const { data, isLoading, isFetching, isPlaceholderData } = useQuery(
     isSearching
       ? searchProjectsQueryOptions(debouncedSearch, page, PAGE_SIZE)
-      : getAllProjectsQueryOptions(page, PAGE_SIZE)
+      : getPaginatedProjectsQueryOptions(page, PAGE_SIZE)
   )
 
   const allProjects = data?.projects ?? []
@@ -179,9 +180,8 @@ function RouteComponent() {
 
       {/* Projects Section */}
       <div
-        className={`min-h-[420px] transition-opacity duration-200 sm:min-h-[560px] md:min-h-[720px] lg:min-h-[900px] ${
-          isPlaceholderData || isFetching ? 'opacity-80' : 'opacity-100'
-        }`}
+        className={`min-h-[420px] transition-opacity duration-200 sm:min-h-[560px] md:min-h-[720px] lg:min-h-[900px] ${isPlaceholderData || isFetching ? 'opacity-80' : 'opacity-100'
+          }`}
       >
         {showSkeleton ? (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -204,11 +204,11 @@ function RouteComponent() {
               <FolderOpen size={36} />
             </ThemeIcon>
 
-            <div className="title2 mt-4">No projects found</div>
+            <div className="title2 text-center">No projects found</div>
 
             {isSearching ? (
               <>
-                <p className="mx-auto max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
+                <p className="max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
                   No projects matched <strong>&quot;{debouncedSearch}&quot;</strong>. Try a different
                   search term or clear the search.
                 </p>
@@ -234,98 +234,7 @@ function RouteComponent() {
         ) : (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project) => (
-              <Card
-                key={project.id}
-                shadow="sm"
-                padding="lg"
-                radius="lg"
-                withBorder
-                className="flex h-full min-w-0 cursor-pointer flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
-              >
-                <Stack gap="sm" className="min-w-0">
-                  <div className="flex h-[180px] items-center justify-center overflow-hidden rounded-md bg-gray-100">
-                    {project.imageUrl ? (
-                      <Image
-                        src={project.imageUrl}
-                        alt={project.title}
-                        height={180}
-                        fit="cover"
-                        className="h-full w-full transition-transform duration-300 hover:scale-105"
-                      />
-                    ) : (
-                      <ThemeIcon size={56} radius="md" variant="light" color="gray">
-                        <FolderKanban size={28} />
-                      </ThemeIcon>
-                    )}
-                  </div>
-
-                  <div className="title3">{project.title}</div>
-
-                  <Group gap="xs">
-                    <Rating value={project.averageRating} fractions={2} readOnly size="sm" />
-                    <span className="text-xs text-slate-500 dark:text-slate-400">
-                      {project.averageRating > 0
-                        ? `${project.averageRating} (${project.totalRatings})`
-                        : 'No ratings yet'}
-                    </span>
-                  </Group>
-
-                  <Group gap="sm">
-                    <Badge
-                      color={project.isPublic ? 'blue' : 'green'}
-                      variant="light"
-                      size="sm"
-                      radius="md"
-                      className="w-fit"
-                    >
-                      {project.isPublic ? 'Open Source' : 'Private Project'}
-                    </Badge>
-                  </Group>
-
-                  <p className="line-clamp-3 text-sm text-slate-600 dark:text-slate-400">
-                    {project.description}
-                  </p>
-
-                  <Stack gap="xs" mt="xs">
-                    <div className="text-sm font-medium text-slate-800 dark:text-slate-200">
-                      Technologies
-                    </div>
-                    {/* <Group gap="xs">
-                      {project.technologies.slice(0, 4).map((tech) => (
-                        <Badge
-                          key={tech}
-                          size="sm"
-                          variant="light"
-                          color="indigo"
-                          radius="md"
-                          style={
-                            isSearching &&
-                            tech.toLowerCase().includes(debouncedSearch.toLowerCase())
-                              ? { outline: '1.5px solid var(--mantine-color-indigo-4)' }
-                              : {}
-                          }
-                        >
-                          {tech}
-                        </Badge>
-                      ))}
-                    </Group> */}
-                  </Stack>
-                </Stack>
-
-                <Stack mt="md" gap="xs">
-                  <Link to="/projects/$id" params={{ id: project.id }} className="no-underline">
-                    <Button
-                      radius="md"
-                      leftSection={<FolderKanban size={16} />}
-                      variant="gradient"
-                      fullWidth
-                      color="blue"
-                    >
-                      View Project Details
-                    </Button>
-                  </Link>
-                </Stack>
-              </Card>
+              <ProjectCard project={project} />
             ))}
           </div>
         )}

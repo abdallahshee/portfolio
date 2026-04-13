@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createProject, updateProject } from "@/server/project.functions"
 import { useRouter } from "@tanstack/react-router"
-import { getAllProjectsQueryOptions, getProjectByIdQueryOptions } from "../queries/project.queries"
+import { getPaginatedProjectsQueryOptions, getProjectByIdQueryOptions } from "../queries/project.queries"
 import type { ProjectRequest, UpdateProjectRequest } from "../validations/project.types"
 
 
@@ -33,7 +33,7 @@ export const useProjectCreateMutation=()=>{
   return useMutation({
     mutationFn:(data:ProjectRequest)=>createProject({data}),
     onSuccess:async(data) =>{
-      await queryClient.refetchQueries({queryKey:getAllProjectsQueryOptions(1).queryKey})
+      await queryClient.refetchQueries({queryKey:getPaginatedProjectsQueryOptions(1).queryKey})
       await router.navigate({to:"/projects/$id", params:{id:data.projectId!}})
     },
   })

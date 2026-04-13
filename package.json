@@ -18,12 +18,12 @@
     "db:apply": "tsx src/sql/script.ts"
   },
   "dependencies": {
-    "@mantine/core": "^8.3.14",
-    "@mantine/dates": "^8.3.14",
-    "@mantine/form": "^8.3.14",
-    "@mantine/hooks": "^8.3.14",
-    "@mantine/notifications": "^8.3.14",
-    "@mantine/tiptap": "^8.3.14",
+    "@mantine/core": "^9.0.1",
+    "@mantine/dates": "^9.0.1",
+    "@mantine/form": "^9.0.1",
+    "@mantine/hooks": "^9.0.1",
+    "@mantine/notifications": "^9.0.1",
+    "@mantine/tiptap": "^9.0.1",
     "@supabase/ssr": "^0.9.0",
     "@supabase/supabase-js": "^2.100.1",
     "@tailwindcss/vite": "^4.1.18",

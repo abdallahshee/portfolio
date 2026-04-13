@@ -8,4 +8,4 @@ export const CommentSchema = createInsertSchema(comment, {
     content: z.string().min(2,"Comment out of range 2-500").max(500, "Comment out of range 2-500")
 }).pick({ articleId: true, content: true, parentId: true })
 
-  
+  export type tComment=InferSelectModel<typeof comment>

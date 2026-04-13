@@ -24,7 +24,8 @@ import { useEffect, useState } from "react"
 export const Route = createFileRoute('/admin/users/')({
   component: RouteComponent,
 })
-
+// To implement search user by id, link to edit user, and link to user detais. 
+// The table should scrollable
 function RouteComponent() {
   const navigate = useNavigate()
   const [page, setPage] = useState(1)

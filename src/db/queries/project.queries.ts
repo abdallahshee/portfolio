@@ -1,11 +1,11 @@
-import { getAllProjects, getProjectById, getTopProjects, searchProjects } from "@/server/project.functions"
+import { getPaginatedProjects, getProjectById, getTopProjects, searchProjects } from "@/server/project.functions"
 import { queryOptions } from "@tanstack/react-query"
 
 //Geting all projects
-export const getAllProjectsQueryOptions = (page: number, pageSize = 6) =>
+export const getPaginatedProjectsQueryOptions = (page: number, pageSize = 6) =>
   queryOptions({
     queryKey: ['projects', page, pageSize],
-    queryFn: () => getAllProjects({ data: { page, pageSize } }),
+    queryFn: () => getPaginatedProjects({ data: { page, pageSize } }),
   })
 
 export const getProjectByIdQueryOptions = (projectId: string) =>
@@ -13,7 +13,6 @@ export const getProjectByIdQueryOptions = (projectId: string) =>
     queryKey: ['projects', projectId],
     queryFn: () => getProjectById({ data: { projectId: projectId } }),
   })
-
 
 export const getTopProjectsQueryOptions = () =>
   queryOptions({

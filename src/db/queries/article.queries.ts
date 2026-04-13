@@ -17,7 +17,7 @@ export const getPaginatedArticlesQueryOptions = (page: number, limit = 6) =>
         queryKey: ['articles', page, limit],
         queryFn: () =>getPaginatedArticles({data: { page, limit }, }),
     })
-
+  
 export const getArticleBySlugQueryOptions = (slug: string) => queryOptions({
     queryKey: ["articles", slug],
     queryFn: () => getArticleBySlug({ data: { slug } })

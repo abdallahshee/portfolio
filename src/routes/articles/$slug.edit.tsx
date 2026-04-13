@@ -21,6 +21,7 @@ import {
   Center,
   Loader,
   Textarea,
+  Badge,
 } from "@mantine/core"
 import { RichTextEditor, Link } from "@mantine/tiptap"
 import { useEditor } from "@tiptap/react"
@@ -40,6 +41,9 @@ import {
   PencilLine,
   CheckCircle2,
   Circle,
+  Tags,
+  Plus,
+  X,
 } from "lucide-react"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { ArticleSchema, type ArticleRequest } from "@/db/validations/article.types"
@@ -49,6 +53,7 @@ import { getArticleBySlug } from "@/server/article.functions"
 import { useServerFn } from "@tanstack/react-start"
 import { AuthenticatedMiddleware } from "@/server/middleware/auth.middleware"
 import { useArticleUpdateMutationOption } from "@/db/mutations/article.mutations"
+import { notifications } from "@mantine/notifications"
 
 export const Route = createFileRoute("/articles/$slug/edit")({
   server: { middleware: [AuthenticatedMiddleware] },
@@ -64,7 +69,7 @@ const defaultValues: ArticleRequest = {
   coverImage: null,
   categoryId: null,
   tags: [],
-  excerpt: ""
+  excerpt: "",
 }
 
 function RouteComponent() {
@@ -74,6 +79,7 @@ function RouteComponent() {
   const [fetchingArticle, setFetchingArticle] = useState(false)
   const [imageFile, setImageFile] = useState<File | null>(null)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [tagInput, setTagInput] = useState("")
   const turndownService = useRef<any>(null)
   const getArticleFn = useServerFn(getArticleBySlug)
   const updateBlogMutation = useArticleUpdateMutationOption()
@@ -125,8 +131,8 @@ function RouteComponent() {
           content: article.content ?? "",
           coverImage: article.coverImage ?? null,
           categoryId: article.categoryId ?? null,
-          tags: article.tags,
-          excerpt: article.excerpt
+          tags: article.tags ?? [],
+          excerpt: article.excerpt ?? "",
         }
 
         form.setValues(nextValues)
@@ -156,6 +162,47 @@ function RouteComponent() {
     return () => URL.revokeObjectURL(objectUrl)
   }, [imageFile])
 
+  const handleAddTag = () => {
+    const newTag = tagInput.trim()
+    if (!newTag) return
+
+    if (form.values.tags.length >= 4) {
+      notifications.show({
+        title: "Tag limit reached",
+        message: "You can add a maximum of 4 tags.",
+        color: "orange",
+      })
+      return
+    }
+
+    const exists = form.values.tags.some(
+      (t) => t.toLowerCase() === newTag.toLowerCase()
+    )
+    if (exists) {
+      setTagInput("")
+      return
+    }
+
+    form.setFieldValue("tags", [...form.values.tags, newTag])
+    setTagInput("")
+  }
+
+  const handleRemoveTag = (tagToRemove: string) => {
+    // ✅ prevent removing the last tag
+    if (form.values.tags.length <= 1) {
+      notifications.show({
+        title: "Cannot remove",
+        message: "At least one tag is required.",
+        color: "red",
+      })
+      return
+    }
+    form.setFieldValue(
+      "tags",
+      form.values.tags.filter((t) => t !== tagToRemove)
+    )
+  }
+
   const handleSubmit = async (values: ArticleRequest) => {
     try {
       setLoading(true)
@@ -176,7 +223,7 @@ function RouteComponent() {
         coverImage,
         categoryId: values.categoryId,
         tags: values.tags,
-        excerpt: values.excerpt
+        excerpt: values.excerpt,
       })
 
       router.history.back()
@@ -191,6 +238,7 @@ function RouteComponent() {
     { label: "Title added", done: form.values.title.trim().length > 0 },
     { label: "Category selected", done: !!form.values.categoryId },
     { label: "Cover image available", done: !!previewUrl },
+    { label: "At least one tag", done: form.values.tags.length >= 1 },
     { label: "Content written", done: (editor?.getText() ?? "").trim().length > 20 },
   ]
 
@@ -201,6 +249,7 @@ function RouteComponent() {
     <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
       <Container size="xl">
         <Stack gap="xl">
+          {/* Header */}
           <Paper
             radius="xl"
             p="xl"
@@ -246,6 +295,8 @@ function RouteComponent() {
                 ) : (
                   <form onSubmit={form.onSubmit(handleSubmit)}>
                     <Stack gap="xl">
+
+                      {/* Post Details */}
                       <Stack gap="md">
                         <Group gap="xs">
                           <ThemeIcon variant="light" color="blue" radius="lg" size={32}>
@@ -290,6 +341,94 @@ function RouteComponent() {
                         </SimpleGrid>
                       </Stack>
 
+                      <Divider />
+
+                      {/* Tags */}
+                      <Stack gap="md">
+                        <Group gap="xs">
+                          <ThemeIcon variant="light" color="violet" radius="lg" size={32}>
+                            <Tags size={15} />
+                          </ThemeIcon>
+                          <Text fw={600} size="md">Tags</Text>
+                          <Text size="xs" c="dimmed" ml="auto">
+                            {form.values.tags.length} / 4
+                          </Text>
+                        </Group>
+                        <Text size="sm" c="dimmed">
+                          Add 1 to 4 tags to help readers find your article.
+                          The last tag cannot be removed.
+                        </Text>
+
+                        <Group align="flex-end">
+                          <TextInput
+                            placeholder="Add a tag e.g. React"
+                            radius="md"
+                            size="sm"
+                            className="flex-1"
+                            value={tagInput}
+                            onChange={(e) => setTagInput(e.currentTarget.value)}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault()
+                                handleAddTag()
+                              }
+                            }}
+                            disabled={form.values.tags.length >= 4}
+                            error={form.errors.tags as string}
+                          />
+                          <Button
+                            type="button"
+                            variant="light"
+                            color="violet"
+                            radius="md"
+                            size="sm"
+                            leftSection={<Plus size={14} />}
+                            onClick={handleAddTag}
+                            disabled={form.values.tags.length >= 4}
+                          >
+                            Add
+                          </Button>
+                        </Group>
+
+                        {form.values.tags.length > 0 && (
+                          <Group gap="xs">
+                            {form.values.tags.map((tag) => {
+                              const isLast = form.values.tags.length === 1
+                              return (
+                                <Badge
+                                  key={tag}
+                                  variant="light"
+                                  color="violet"
+                                  radius="xl"
+                                  size="md"
+                                  rightSection={
+                                    !isLast ? (
+                                      <button
+                                        type="button"
+                                        onClick={() => handleRemoveTag(tag)}
+                                        className="flex items-center opacity-60 hover:opacity-100 transition-opacity"
+                                      >
+                                        <X size={11} />
+                                      </button>
+                                    ) : (
+                                      // ✅ show a disabled X when it's the last tag
+                                      <span className="flex items-center opacity-20 cursor-not-allowed">
+                                        <X size={11} />
+                                      </span>
+                                    )
+                                  }
+                                >
+                                  {tag}
+                                </Badge>
+                              )
+                            })}
+                          </Group>
+                        )}
+                      </Stack>
+
+                      <Divider />
+
+                      {/* Cover Image */}
                       <Stack gap="md">
                         <Group gap="xs">
                           <ThemeIcon variant="light" color="orange" radius="lg" size={32}>
@@ -297,8 +436,6 @@ function RouteComponent() {
                           </ThemeIcon>
                           <Text fw={600} size="md">Cover Image</Text>
                         </Group>
-
-
 
                         <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/40">
                           {previewUrl ? (
@@ -327,6 +464,9 @@ function RouteComponent() {
                         />
                       </Stack>
 
+                      <Divider />
+
+                      {/* Content */}
                       <Stack gap="md">
                         <Group gap="xs">
                           <ThemeIcon variant="light" color="grape" radius="lg" size={32}>
@@ -391,6 +531,7 @@ function RouteComponent() {
                         )}
                       </Stack>
 
+                      {/* Actions */}
                       <Group justify="flex-end" mt="sm">
                         <Button
                           variant="default"
@@ -417,6 +558,7 @@ function RouteComponent() {
               </Paper>
             </div>
 
+            {/* Sidebar */}
             <Stack gap="lg">
               <Card radius="xl" withBorder p="xl" className="shadow-sm">
                 <Group gap="xs" mb="md">

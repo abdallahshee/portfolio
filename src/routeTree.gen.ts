@@ -22,7 +22,7 @@ import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
 import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
-import { Route as ProjectsIdRouteImport } from './routes/projects/$id'
+import { Route as ProjectsProjectIdRouteImport } from './routes/projects/$projectId'
 import { Route as ArticlesMyArticlesRouteImport } from './routes/articles/my-articles'
 import { Route as ArticlesCreateRouteImport } from './routes/articles/create'
 import { Route as ArticlesSlugRouteImport } from './routes/articles/$slug'
@@ -38,13 +38,14 @@ import { Route as AdminUsersIndexRouteImport } from './routes/admin/users/index'
 import { Route as AdminProjectsIndexRouteImport } from './routes/admin/projects/index'
 import { Route as AdminArticlesIndexRouteImport } from './routes/admin/articles/index'
 import { Route as ProjectsCasesProjectIdRouteImport } from './routes/projects/cases.$projectId'
-import { Route as ProjectsIdEditRouteImport } from './routes/projects/$id.edit'
+import { Route as ProjectsIprojectIdEditRouteImport } from './routes/projects/$iprojectId.edit'
 import { Route as ArticlesSlugEditRouteImport } from './routes/articles/$slug.edit'
 import { Route as AdminUsersUserIdRouteImport } from './routes/admin/users/$userId'
 import { Route as AdminProjectsCreateRouteImport } from './routes/admin/projects/create'
+import { Route as AdminProjectsProjectIdRouteImport } from './routes/admin/projects/$projectId'
 import { Route as AdminArticlesSlugRouteImport } from './routes/admin/articles/$slug'
 import { Route as AdminUsersUserIdEditRouteImport } from './routes/admin/users/$userId.edit'
-import { Route as AdminProjectsIdEditRouteImport } from './routes/admin/projects/$id.edit'
+import { Route as AdminProjectsProjectIdEditRouteImport } from './routes/admin/projects/$projectId.edit'
 import { Route as AdminArticlesSlugEditRouteImport } from './routes/admin/articles/$slug.edit'
 import { Route as AccountProfileEditRouteImport } from './routes/account/profile.edit.'
 
@@ -113,9 +114,9 @@ const AccountIndexRoute = AccountIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AccountRouteRoute,
 } as any)
-const ProjectsIdRoute = ProjectsIdRouteImport.update({
-  id: '/$id',
-  path: '/$id',
+const ProjectsProjectIdRoute = ProjectsProjectIdRouteImport.update({
+  id: '/$projectId',
+  path: '/$projectId',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
 const ArticlesMyArticlesRoute = ArticlesMyArticlesRouteImport.update({
@@ -193,10 +194,10 @@ const ProjectsCasesProjectIdRoute = ProjectsCasesProjectIdRouteImport.update({
   path: '/cases/$projectId',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
-const ProjectsIdEditRoute = ProjectsIdEditRouteImport.update({
-  id: '/edit',
-  path: '/edit',
-  getParentRoute: () => ProjectsIdRoute,
+const ProjectsIprojectIdEditRoute = ProjectsIprojectIdEditRouteImport.update({
+  id: '/$iprojectId/edit',
+  path: '/$iprojectId/edit',
+  getParentRoute: () => ProjectsRouteRoute,
 } as any)
 const ArticlesSlugEditRoute = ArticlesSlugEditRouteImport.update({
   id: '/edit',
@@ -213,6 +214,11 @@ const AdminProjectsCreateRoute = AdminProjectsCreateRouteImport.update({
   path: '/create',
   getParentRoute: () => AdminProjectsRouteRoute,
 } as any)
+const AdminProjectsProjectIdRoute = AdminProjectsProjectIdRouteImport.update({
+  id: '/$projectId',
+  path: '/$projectId',
+  getParentRoute: () => AdminProjectsRouteRoute,
+} as any)
 const AdminArticlesSlugRoute = AdminArticlesSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -223,11 +229,12 @@ const AdminUsersUserIdEditRoute = AdminUsersUserIdEditRouteImport.update({
   path: '/edit',
   getParentRoute: () => AdminUsersUserIdRoute,
 } as any)
-const AdminProjectsIdEditRoute = AdminProjectsIdEditRouteImport.update({
-  id: '/$id/edit',
-  path: '/$id/edit',
-  getParentRoute: () => AdminProjectsRouteRoute,
-} as any)
+const AdminProjectsProjectIdEditRoute =
+  AdminProjectsProjectIdEditRouteImport.update({
+    id: '/edit',
+    path: '/edit',
+    getParentRoute: () => AdminProjectsProjectIdRoute,
+  } as any)
 const AdminArticlesSlugEditRoute = AdminArticlesSlugEditRouteImport.update({
   id: '/edit',
   path: '/edit',
@@ -260,23 +267,24 @@ export interface FileRoutesByFullPath {
   '/articles/$slug': typeof ArticlesSlugRouteWithChildren
   '/articles/create': typeof ArticlesCreateRoute
   '/articles/my-articles': typeof ArticlesMyArticlesRoute
-  '/projects/$id': typeof ProjectsIdRouteWithChildren
+  '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/articles/': typeof ArticlesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/admin/articles/$slug': typeof AdminArticlesSlugRouteWithChildren
+  '/admin/projects/$projectId': typeof AdminProjectsProjectIdRouteWithChildren
   '/admin/projects/create': typeof AdminProjectsCreateRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRouteWithChildren
   '/articles/$slug/edit': typeof ArticlesSlugEditRoute
-  '/projects/$id/edit': typeof ProjectsIdEditRoute
+  '/projects/$iprojectId/edit': typeof ProjectsIprojectIdEditRoute
   '/projects/cases/$projectId': typeof ProjectsCasesProjectIdRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
   '/account/profile/edit/': typeof AccountProfileEditRoute
   '/admin/articles/$slug/edit': typeof AdminArticlesSlugEditRoute
-  '/admin/projects/$id/edit': typeof AdminProjectsIdEditRoute
+  '/admin/projects/$projectId/edit': typeof AdminProjectsProjectIdEditRoute
   '/admin/users/$userId/edit': typeof AdminUsersUserIdEditRoute
 }
 export interface FileRoutesByTo {
@@ -293,23 +301,24 @@ export interface FileRoutesByTo {
   '/articles/$slug': typeof ArticlesSlugRouteWithChildren
   '/articles/create': typeof ArticlesCreateRoute
   '/articles/my-articles': typeof ArticlesMyArticlesRoute
-  '/projects/$id': typeof ProjectsIdRouteWithChildren
+  '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
   '/articles': typeof ArticlesIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/admin/articles/$slug': typeof AdminArticlesSlugRouteWithChildren
+  '/admin/projects/$projectId': typeof AdminProjectsProjectIdRouteWithChildren
   '/admin/projects/create': typeof AdminProjectsCreateRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRouteWithChildren
   '/articles/$slug/edit': typeof ArticlesSlugEditRoute
-  '/projects/$id/edit': typeof ProjectsIdEditRoute
+  '/projects/$iprojectId/edit': typeof ProjectsIprojectIdEditRoute
   '/projects/cases/$projectId': typeof ProjectsCasesProjectIdRoute
   '/admin/articles': typeof AdminArticlesIndexRoute
   '/admin/projects': typeof AdminProjectsIndexRoute
   '/admin/users': typeof AdminUsersIndexRoute
   '/account/profile/edit': typeof AccountProfileEditRoute
   '/admin/articles/$slug/edit': typeof AdminArticlesSlugEditRoute
-  '/admin/projects/$id/edit': typeof AdminProjectsIdEditRoute
+  '/admin/projects/$projectId/edit': typeof AdminProjectsProjectIdEditRoute
   '/admin/users/$userId/edit': typeof AdminUsersUserIdEditRoute
 }
 export interface FileRoutesById {
@@ -334,23 +343,24 @@ export interface FileRoutesById {
   '/articles/$slug': typeof ArticlesSlugRouteWithChildren
   '/articles/create': typeof ArticlesCreateRoute
   '/articles/my-articles': typeof ArticlesMyArticlesRoute
-  '/projects/$id': typeof ProjectsIdRouteWithChildren
+  '/projects/$projectId': typeof ProjectsProjectIdRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
   '/articles/': typeof ArticlesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/admin/articles/$slug': typeof AdminArticlesSlugRouteWithChildren
+  '/admin/projects/$projectId': typeof AdminProjectsProjectIdRouteWithChildren
   '/admin/projects/create': typeof AdminProjectsCreateRoute
   '/admin/users/$userId': typeof AdminUsersUserIdRouteWithChildren
   '/articles/$slug/edit': typeof ArticlesSlugEditRoute
-  '/projects/$id/edit': typeof ProjectsIdEditRoute
+  '/projects/$iprojectId/edit': typeof ProjectsIprojectIdEditRoute
   '/projects/cases/$projectId': typeof ProjectsCasesProjectIdRoute
   '/admin/articles/': typeof AdminArticlesIndexRoute
   '/admin/projects/': typeof AdminProjectsIndexRoute
   '/admin/users/': typeof AdminUsersIndexRoute
   '/account/profile/edit/': typeof AccountProfileEditRoute
   '/admin/articles/$slug/edit': typeof AdminArticlesSlugEditRoute
-  '/admin/projects/$id/edit': typeof AdminProjectsIdEditRoute
+  '/admin/projects/$projectId/edit': typeof AdminProjectsProjectIdEditRoute
   '/admin/users/$userId/edit': typeof AdminUsersUserIdEditRoute
 }
 export interface FileRouteTypes {
@@ -376,23 +386,24 @@ export interface FileRouteTypes {
     | '/articles/$slug'
     | '/articles/create'
     | '/articles/my-articles'
-    | '/projects/$id'
+    | '/projects/$projectId'
     | '/account/'
     | '/admin/'
     | '/articles/'
     | '/projects/'
     | '/admin/articles/$slug'
+    | '/admin/projects/$projectId'
     | '/admin/projects/create'
     | '/admin/users/$userId'
     | '/articles/$slug/edit'
-    | '/projects/$id/edit'
+    | '/projects/$iprojectId/edit'
     | '/projects/cases/$projectId'
     | '/admin/articles/'
     | '/admin/projects/'
     | '/admin/users/'
     | '/account/profile/edit/'
     | '/admin/articles/$slug/edit'
-    | '/admin/projects/$id/edit'
+    | '/admin/projects/$projectId/edit'
     | '/admin/users/$userId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -409,23 +420,24 @@ export interface FileRouteTypes {
     | '/articles/$slug'
     | '/articles/create'
     | '/articles/my-articles'
-    | '/projects/$id'
+    | '/projects/$projectId'
     | '/account'
     | '/admin'
     | '/articles'
     | '/projects'
     | '/admin/articles/$slug'
+    | '/admin/projects/$projectId'
     | '/admin/projects/create'
     | '/admin/users/$userId'
     | '/articles/$slug/edit'
-    | '/projects/$id/edit'
+    | '/projects/$iprojectId/edit'
     | '/projects/cases/$projectId'
     | '/admin/articles'
     | '/admin/projects'
     | '/admin/users'
     | '/account/profile/edit'
     | '/admin/articles/$slug/edit'
-    | '/admin/projects/$id/edit'
+    | '/admin/projects/$projectId/edit'
     | '/admin/users/$userId/edit'
   id:
     | '__root__'
@@ -449,23 +461,24 @@ export interface FileRouteTypes {
     | '/articles/$slug'
     | '/articles/create'
     | '/articles/my-articles'
-    | '/projects/$id'
+    | '/projects/$projectId'
     | '/account/'
     | '/admin/'
     | '/articles/'
     | '/projects/'
     | '/admin/articles/$slug'
+    | '/admin/projects/$projectId'
     | '/admin/projects/create'
     | '/admin/users/$userId'
     | '/articles/$slug/edit'
-    | '/projects/$id/edit'
+    | '/projects/$iprojectId/edit'
     | '/projects/cases/$projectId'
     | '/admin/articles/'
     | '/admin/projects/'
     | '/admin/users/'
     | '/account/profile/edit/'
     | '/admin/articles/$slug/edit'
-    | '/admin/projects/$id/edit'
+    | '/admin/projects/$projectId/edit'
     | '/admin/users/$userId/edit'
   fileRoutesById: FileRoutesById
 }
@@ -574,11 +587,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AccountIndexRouteImport
       parentRoute: typeof AccountRouteRoute
     }
-    '/projects/$id': {
-      id: '/projects/$id'
-      path: '/$id'
-      fullPath: '/projects/$id'
-      preLoaderRoute: typeof ProjectsIdRouteImport
+    '/projects/$projectId': {
+      id: '/projects/$projectId'
+      path: '/$projectId'
+      fullPath: '/projects/$projectId'
+      preLoaderRoute: typeof ProjectsProjectIdRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
     '/articles/my-articles': {
@@ -686,12 +699,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsCasesProjectIdRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
-    '/projects/$id/edit': {
-      id: '/projects/$id/edit'
-      path: '/edit'
-      fullPath: '/projects/$id/edit'
-      preLoaderRoute: typeof ProjectsIdEditRouteImport
-      parentRoute: typeof ProjectsIdRoute
+    '/projects/$iprojectId/edit': {
+      id: '/projects/$iprojectId/edit'
+      path: '/$iprojectId/edit'
+      fullPath: '/projects/$iprojectId/edit'
+      preLoaderRoute: typeof ProjectsIprojectIdEditRouteImport
+      parentRoute: typeof ProjectsRouteRoute
     }
     '/articles/$slug/edit': {
       id: '/articles/$slug/edit'
@@ -714,6 +727,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminProjectsCreateRouteImport
       parentRoute: typeof AdminProjectsRouteRoute
     }
+    '/admin/projects/$projectId': {
+      id: '/admin/projects/$projectId'
+      path: '/$projectId'
+      fullPath: '/admin/projects/$projectId'
+      preLoaderRoute: typeof AdminProjectsProjectIdRouteImport
+      parentRoute: typeof AdminProjectsRouteRoute
+    }
     '/admin/articles/$slug': {
       id: '/admin/articles/$slug'
       path: '/$slug'
@@ -728,12 +748,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminUsersUserIdEditRouteImport
       parentRoute: typeof AdminUsersUserIdRoute
     }
-    '/admin/projects/$id/edit': {
-      id: '/admin/projects/$id/edit'
-      path: '/$id/edit'
-      fullPath: '/admin/projects/$id/edit'
-      preLoaderRoute: typeof AdminProjectsIdEditRouteImport
-      parentRoute: typeof AdminProjectsRouteRoute
+    '/admin/projects/$projectId/edit': {
+      id: '/admin/projects/$projectId/edit'
+      path: '/edit'
+      fullPath: '/admin/projects/$projectId/edit'
+      preLoaderRoute: typeof AdminProjectsProjectIdEditRouteImport
+      parentRoute: typeof AdminProjectsProjectIdRoute
     }
     '/admin/articles/$slug/edit': {
       id: '/admin/articles/$slug/edit'
@@ -798,16 +818,30 @@ const AdminArticlesRouteRouteChildren: AdminArticlesRouteRouteChildren = {
 const AdminArticlesRouteRouteWithChildren =
   AdminArticlesRouteRoute._addFileChildren(AdminArticlesRouteRouteChildren)
 
+interface AdminProjectsProjectIdRouteChildren {
+  AdminProjectsProjectIdEditRoute: typeof AdminProjectsProjectIdEditRoute
+}
+
+const AdminProjectsProjectIdRouteChildren: AdminProjectsProjectIdRouteChildren =
+  {
+    AdminProjectsProjectIdEditRoute: AdminProjectsProjectIdEditRoute,
+  }
+
+const AdminProjectsProjectIdRouteWithChildren =
+  AdminProjectsProjectIdRoute._addFileChildren(
+    AdminProjectsProjectIdRouteChildren,
+  )
+
 interface AdminProjectsRouteRouteChildren {
+  AdminProjectsProjectIdRoute: typeof AdminProjectsProjectIdRouteWithChildren
   AdminProjectsCreateRoute: typeof AdminProjectsCreateRoute
   AdminProjectsIndexRoute: typeof AdminProjectsIndexRoute
-  AdminProjectsIdEditRoute: typeof AdminProjectsIdEditRoute
 }
 
 const AdminProjectsRouteRouteChildren: AdminProjectsRouteRouteChildren = {
+  AdminProjectsProjectIdRoute: AdminProjectsProjectIdRouteWithChildren,
   AdminProjectsCreateRoute: AdminProjectsCreateRoute,
   AdminProjectsIndexRoute: AdminProjectsIndexRoute,
-  AdminProjectsIdEditRoute: AdminProjectsIdEditRoute,
 }
 
 const AdminProjectsRouteRouteWithChildren =
@@ -888,27 +922,17 @@ const ArticlesRouteRouteWithChildren = ArticlesRouteRoute._addFileChildren(
   ArticlesRouteRouteChildren,
 )
 
-interface ProjectsIdRouteChildren {
-  ProjectsIdEditRoute: typeof ProjectsIdEditRoute
-}
-
-const ProjectsIdRouteChildren: ProjectsIdRouteChildren = {
-  ProjectsIdEditRoute: ProjectsIdEditRoute,
-}
-
-const ProjectsIdRouteWithChildren = ProjectsIdRoute._addFileChildren(
-  ProjectsIdRouteChildren,
-)
-
 interface ProjectsRouteRouteChildren {
-  ProjectsIdRoute: typeof ProjectsIdRouteWithChildren
+  ProjectsProjectIdRoute: typeof ProjectsProjectIdRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
+  ProjectsIprojectIdEditRoute: typeof ProjectsIprojectIdEditRoute
   ProjectsCasesProjectIdRoute: typeof ProjectsCasesProjectIdRoute
 }
 
 const ProjectsRouteRouteChildren: ProjectsRouteRouteChildren = {
-  ProjectsIdRoute: ProjectsIdRouteWithChildren,
+  ProjectsProjectIdRoute: ProjectsProjectIdRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
+  ProjectsIprojectIdEditRoute: ProjectsIprojectIdEditRoute,
   ProjectsCasesProjectIdRoute: ProjectsCasesProjectIdRoute,
 }
 

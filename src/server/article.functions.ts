@@ -74,6 +74,7 @@ export const getArticleBySlug = createServerFn()
             // Blog
             const articleResult = await db
                 .select({
+            
                     tags:article.tags,
                     articleId: article.id,
                     title: article.title,
@@ -164,6 +165,7 @@ export const getPaginatedArticles = createServerFn({ method: 'GET' })
                     excerpt: article.excerpt,
                     coverImage: article.coverImage,
                     createdAt: article.createdAt,
+                    updatedAt:article.updatedAt,
                     userId: user.id,
                     authorImage: user.avatar,
                     authorName: user.name,
@@ -307,6 +309,7 @@ export const searchPaginatedArticles = createServerFn({ method: "GET" })
             excerpt: article.excerpt,
             coverImage: article.coverImage,
             createdAt: article.createdAt,
+            updatedAt:article.updatedAt,
             categoryName: category.name,
             likes_count: sql<number>`(
               select count(*)::int
@@ -381,7 +384,9 @@ export const getMyPaginatedArticles = createServerFn({ method: 'GET' })
                         excerpt: article.excerpt,
                         coverImage: article.coverImage,
                         createdAt: article.createdAt,
+                        updatedAt:article.updatedAt,
                         categoryName: category.name,
+                         authorName: user.name,
                         authorImage: user.avatar,
                         likes_count: sql<number>`COUNT(DISTINCT ${articleLike.id})`,
                         comments_count: sql<number>`COUNT(DISTINCT ${comment.id})`,
