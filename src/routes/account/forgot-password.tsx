@@ -3,11 +3,21 @@ import { Alert, Button, Divider, Stack, Text, TextInput, ThemeIcon } from '@mant
 import { useForm } from '@mantine/form'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { AlertCircle, CheckCircle, KeyRound, Mail } from 'lucide-react'
+import { zod4Resolver } from 'mantine-form-zod-resolver'
 import { useState } from 'react'
+import z from 'zod'
 
 export const Route = createFileRoute('/account/forgot-password')({
   component: RouteComponent,
 })
+const EmailSchema=z.object({
+    email: z.string().regex(
+        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+        "Must be a valid email address"
+    ),
+})
+
+type EmailRequest=z.infer<typeof EmailSchema>
 
 function RouteComponent() {
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -15,12 +25,9 @@ function RouteComponent() {
   const [emailSent, setEmailSent] = useState(false) // ✅ track success state
   const supabase = getSupabaseBrowserClient()
 
-  const form = useForm<{ email: string }>({
+  const form = useForm<EmailRequest>({
     initialValues: { email: "" },
-    validate: {
-      email: (value) =>
-        /^\S+@\S+\.\S+$/.test(value) ? null : 'Please enter a valid email address',
-    },
+    validate:zod4Resolver( EmailSchema),
     validateInputOnBlur: true,
   })
 

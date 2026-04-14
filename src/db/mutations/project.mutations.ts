@@ -1,13 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createProject, updateProject } from "@/server/project.functions"
-import { useRouter } from "@tanstack/react-router"
 import { getPaginatedProjectsQueryOptions, getProjectByIdQueryOptions } from "../queries/project.queries"
 import type { ProjectRequest, UpdateProjectRequest } from "../validations/project.types"
 
 
 export const useUpdateProjectMutation = () => {
   const queryClient = useQueryClient()
-  const router = useRouter()
+  // const router = useRouter()
 
   return useMutation({
     mutationFn: (data: UpdateProjectRequest) => updateProject({ data}),
@@ -16,25 +15,24 @@ export const useUpdateProjectMutation = () => {
       await queryClient.refetchQueries({
         queryKey: getProjectByIdQueryOptions(variables.projectId).queryKey,
       })
+      // await router.navigate({
+      //   to: "/projects/$projectId",
+      //   params: { projectId: variables.projectId },
+      // })
 
-      await router.navigate({
-        to: "/projects/$id",
-        params: { id: variables.projectId },
-      })
-
-      window.scrollTo({ top: 0, behavior: 'smooth' })
+      // window.scrollTo({ top: 0, behavior: 'smooth' })
     },
   })
 }
 
 export const useProjectCreateMutation=()=>{
   const queryClient=useQueryClient()
-  const router=useRouter()
+  // const router=useRouter()
   return useMutation({
     mutationFn:(data:ProjectRequest)=>createProject({data}),
-    onSuccess:async(data) =>{
+    onSuccess:async() =>{
       await queryClient.refetchQueries({queryKey:getPaginatedProjectsQueryOptions(1).queryKey})
-      await router.navigate({to:"/projects/$id", params:{id:data.projectId!}})
+      // await router.navigate({to:"/projects/$id", params:{id:data.projectId!}})
     },
   })
 }

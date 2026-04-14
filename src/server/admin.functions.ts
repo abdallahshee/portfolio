@@ -3,7 +3,7 @@ import { createServerFn } from "@tanstack/react-start"
 import { article, category, project, user } from "@/db/schema"
 import { eq, count } from "drizzle-orm"
 import { db } from "@/db"
-import { AdminMiddleware, AuthenticatedMiddleware } from "./middleware/auth.middleware"
+import { AdminMiddleware, AuthenticatedMiddleware } from "./middleware"
 import { PublishArticleSchema } from "@/db/validations/article.types"
 import { getSupabaseAdmin } from "@/lib/supabase/server"
 import { GetUsersSchema, AdminUserUpdateSchema } from "@/db/validations/admin.types"
@@ -82,7 +82,7 @@ export const adminUpdateUserProfile = createServerFn({ method: "POST" })
         {
           email: data.email,
           user_metadata: {
-            avatar_url: data.image,
+            avatar: data.image,
             name: data.name,
           }
         }
@@ -97,7 +97,7 @@ export const adminUpdateUserProfile = createServerFn({ method: "POST" })
     }
   })
 
-export const getAllAuthUsers = createServerFn({ method: "GET" })
+export const getPaginatedAuthUsers = createServerFn({ method: "GET" })
   // .middleware([AdminMiddleware])
   .inputValidator(GetUsersSchema)
   .handler(async ({ data }) => {

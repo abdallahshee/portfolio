@@ -8,7 +8,6 @@ export const useCreateCaseStudyMutations=()=>{
     })
 }
 
-
 export const getCaseStudyByProjectIdQueryOptions=(data:{projectId:string})=>queryOptions({
     queryKey:['case_studies',data ],
     queryFn:()=>getProjectCaseStudyByProjectId({data})

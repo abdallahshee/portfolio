@@ -17,7 +17,7 @@ import { zod4Resolver } from 'mantine-form-zod-resolver'
 import { useState } from 'react'
 import { notifications } from '@mantine/notifications'
 import { Camera, Save, User as ProfileUserIcon } from 'lucide-react'
-import { AuthenticatedMiddleware } from '@/server/middleware/auth.middleware'
+import { AuthenticatedMiddleware } from '@/server/middleware'
 
 export const Route = createFileRoute('/account/profile/edit/')({
   server: {
@@ -37,7 +37,7 @@ function RouteComponent() {
   )
 
   const [avatarPreview, setAvatarPreview] = useState<string | null>(
-    user?.user_metadata.avatar_url
+    user?.user_metadata.avatar
   )
 
   const { mutate, isPending } = useUserUpdateProfileMutation()
@@ -47,7 +47,7 @@ function RouteComponent() {
     validate: zod4Resolver(UserUpdateProfileSchema),
     initialValues: {
       name: user.user_metadata.name,
-      image: user.user_metadata.avatar_url,
+      avatar: user.user_metadata.avatar??"",
     },
   })
 

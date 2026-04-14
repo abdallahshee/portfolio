@@ -1,15 +1,15 @@
-import { getAllAuthUsers } from "@/server/admin.functions";
+import { getPaginatedAuthUsers } from "@/server/admin.functions";
 import { getAuthUser, getCurrentUser, getUserById } from "@/server/users.functions";
 import { queryOptions } from "@tanstack/react-query";
 
-export const getAllUsersQueryOptions = (
+export const getPaginatedAuthUsersQueryOptions = (
   page: number = 1,
   pageSize: number = 6,
   search: string = ''
 ) =>
   queryOptions({
     queryKey: ['users', page, pageSize, search], // ✅ search in key
-    queryFn: () => getAllAuthUsers({ data: { page, pageSize, search } }),
+    queryFn: () => getPaginatedAuthUsers({ data: { page, pageSize, search } }),
   })
 
   export const getUserByIdQueryOptions=(userId:string)=>queryOptions({

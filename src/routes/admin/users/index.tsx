@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { getAllUsersQueryOptions } from "@/db/queries/user.queries"
+import { getPaginatedAuthUsersQueryOptions } from "@/db/queries/user.queries"
 import {
   Avatar,
   Badge,
@@ -14,7 +14,6 @@ import {
   Text,
   TextInput,
   ThemeIcon,
-
 } from "@mantine/core"
 import { useDebouncedValue } from "@mantine/hooks"
 import { useQuery } from "@tanstack/react-query"
@@ -33,7 +32,7 @@ function RouteComponent() {
   const [debouncedSearch] = useDebouncedValue(searchInput, 200)
 
   const { data, isLoading, isFetching } = useQuery(
-    getAllUsersQueryOptions(page, 6, debouncedSearch)
+    getPaginatedAuthUsersQueryOptions(page, 6, debouncedSearch)
   )
 
   const users = data?.users ?? []

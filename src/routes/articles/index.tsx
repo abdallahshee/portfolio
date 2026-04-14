@@ -11,7 +11,6 @@ import {
 } from "@/db/queries/article.queries"
 import { BookMarked, BookOpen, PenLine, Search, X } from "lucide-react"
 import { useEffect, useState } from "react"
-
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
 
@@ -41,6 +40,7 @@ const PAGE_SIZE = 6
 
 
 function BlogsPage() {
+
   const navigate = useNavigate()
   const { page } = Route.useSearch()
   const [searchInput, setSearchInput] = useState("")
@@ -112,7 +112,9 @@ function BlogsPage() {
       <div className="space-y-2">
         <div className="heading">Articles & Writing</div>
         <p className="max-w-2xl text-sm text-slate-600 sm:text-base dark:text-slate-400">
-          Thoughts, tutorials, and practical notes on building modern web applications.
+          Insights, tutorials, and perspectives on modern technology — covering web development, AI, gadgets, and emerging trends.
+          Each article is carefully reviewed and structured to improve clarity, enhance discoverability, and align with best practices
+          for both search engines (SEO) and AI-driven platforms (LLMO), ensuring the content is easy to find, understand, and apply.
         </p>
       </div>
 

@@ -2,9 +2,9 @@
 import { db } from "../db/index";
 import { and, avg, count, desc, eq, sql, inArray, ilike, or } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
-import { project, projectRating, user } from "@/db/schema";
+import { project, projectRating } from "@/db/schema";
 import { ProjectSchema, UpdateProjectSchema } from "@/db/validations/project.types";
-import { AdminMiddleware, OptionalAuthMiddleware } from "./middleware/auth.middleware";
+import { AdminMiddleware, OptionalAuthMiddleware } from "./middleware";
 
 export const getPaginatedProjects = createServerFn({ method: "GET" })
   .inputValidator((data: { page: number; pageSize: number }) => data)

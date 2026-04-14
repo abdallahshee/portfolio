@@ -29,7 +29,7 @@ import { useMemo, useState } from "react"
 import { ProjectSchema, type ProjectRequest } from "@/db/validations/project.types"
 import { useProjectCreateMutation } from "@/db/mutations/project.mutations"
 import { zod4Resolver } from "mantine-form-zod-resolver"
-import { AdminMiddleware } from "@/server/middleware/auth.middleware"
+import { AdminMiddleware } from "@/server/middleware"
 
 export const Route = createFileRoute("/admin/projects/new")({
   server: { middleware: [AdminMiddleware] },

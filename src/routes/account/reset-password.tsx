@@ -13,10 +13,26 @@ import { useDisclosure } from '@mantine/hooks'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { AlertCircle, CheckCircle, KeyRound } from 'lucide-react'
 import { useEffect, useState } from 'react'
-
+import z from "zod"
 export const Route = createFileRoute('/account/reset-password')({
   component: RouteComponent,
 })
+
+const PasswordChangeSchema = z.object({
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*(\d|[@$!%*?&]))/,
+      "Password must contain uppercase, lowercase, and at least a number or special character"
+    ),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
+type PasswordChangeRequest = z.infer<typeof PasswordChangeSchema>
 
 function RouteComponent() {
   const router = useRouter()
@@ -39,7 +55,7 @@ function RouteComponent() {
     return () => listener.subscription.unsubscribe()
   }, [supabase])
 
-  const form = useForm<{ password: string; confirmPassword: string }>({
+  const form = useForm<PasswordChangeRequest>({
     initialValues: {
       password: "",
       confirmPassword: "",

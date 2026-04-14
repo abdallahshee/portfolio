@@ -3,7 +3,7 @@ import { db } from "../db/index"
 import { category } from "@/db/schema"
 import { eq } from "drizzle-orm"
 import { CategorySchema, EditCategorySchema } from "@/db/validations/category.types"
-import { AdminMiddleware, AuthenticatedMiddleware } from "./middleware/auth.middleware"
+import { AdminMiddleware, AuthenticatedMiddleware } from "./middleware"
 
 export const getAllCategories = createServerFn({ method: "GET" })
     .middleware([AuthenticatedMiddleware])

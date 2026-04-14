@@ -48,7 +48,7 @@ import { ArticleSchema, type ArticleRequest } from "@/db/validations/article.typ
 import { useQuery } from "@tanstack/react-query"
 import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
 import { useArticleCreateMutation } from "@/db/mutations/article.mutations"
-import { AuthenticatedMiddleware } from "@/server/middleware/auth.middleware"
+import { AuthenticatedMiddleware } from "@/server/middleware"
 
 export const Route = createFileRoute("/articles/new")({
   server: { middleware: [AuthenticatedMiddleware] },

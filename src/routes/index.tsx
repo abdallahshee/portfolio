@@ -15,6 +15,8 @@ import {
   SimpleGrid,
   List,
 } from '@mantine/core'
+
+import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {
   ArrowRight,
@@ -35,27 +37,257 @@ import {
   Sparkles,
   Send,
 } from 'lucide-react'
-
+import { Suspense } from 'react'
 export const Route = createFileRoute('/')({
   loader: async ({ context }) => {
-    const [projectsResult, blogsResult] = await Promise.allSettled([
-      context.queryClient.fetchQuery(getTopProjectsQueryOptions()),
-      context.queryClient.fetchQuery(getTopArticlesQueryOptions()),
+    await Promise.all([
+      context.queryClient.prefetchQuery(getTopProjectsQueryOptions()),
+      context.queryClient.prefetchQuery(getTopArticlesQueryOptions()),
     ])
-
-    return {
-      projects:
-        projectsResult.status === 'fulfilled'
-          ? projectsResult.value?.slice(0, 3)
-          : [],
-      blogs:
-        blogsResult.status === 'fulfilled'
-          ? blogsResult.value?.slice(0, 3)
-          : [],
-    }
   },
   component: App,
 })
+
+function ProjectsSkeleton() {
+  return (
+    <Stack gap="sm">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-3 p-3 border rounded-lg animate-pulse">
+          <div className="h-12 w-12 bg-slate-200 dark:bg-slate-700 rounded-md" />
+          <div className="flex-1 space-y-2">
+            <div className="h-3 w-2/3 bg-slate-200 dark:bg-slate-700 rounded" />
+            <div className="h-2 w-1/3 bg-slate-200 dark:bg-slate-700 rounded" />
+          </div>
+        </div>
+      ))}
+    </Stack>
+  )
+}
+
+function ArticlesSkeleton() {
+  return (
+    <Stack gap="sm">
+      {Array.from({ length: 3 }).map((_, i) => (
+        <div key={i} className="flex items-center gap-3 p-3 border rounded-lg animate-pulse">
+          <div className="h-10 w-10 bg-slate-200 dark:bg-slate-700 rounded-md" />
+          <div className="flex-1 space-y-2">
+            <div className="h-3 w-3/4 bg-slate-200 dark:bg-slate-700 rounded" />
+            <div className="h-2 w-1/4 bg-slate-200 dark:bg-slate-700 rounded" />
+          </div>
+        </div>
+      ))}
+    </Stack>
+  )
+}
+
+
+function FeaturedProjectsSection() {
+  const { data: projects } = useSuspenseQuery(getTopProjectsQueryOptions())
+  const router = useRouter()
+
+  const isEmpty = !projects || projects.length === 0
+
+  return (
+    <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
+      <Stack gap="md">
+        <Group justify="space-between" align="flex-end">
+          <div>
+            <div className="title3">Featured Projects</div>
+            <p className="text-xs text-slate-500">
+              A selection of standout builds
+            </p>
+          </div>
+
+          <Link to="/projects">
+            <Button
+              variant="subtle"
+              size="sm"
+              rightSection={<ArrowRight size={16} />}
+            >
+              View All
+            </Button>
+          </Link>
+        </Group>
+
+        <div className="-mx-1 overflow-x-auto sm:mx-0">
+          {isEmpty ? (
+            <div className="flex min-h-[180px] flex-col items-center justify-center gap-2 rounded-md border border-dashed border-slate-300 p-6 text-center dark:border-slate-700">
+              <ThemeIcon size={56} radius="md" variant="light" color="gray">
+                <BookOpen size={28} />
+              </ThemeIcon>
+
+              <div className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                No projects yet
+              </div>
+
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Featured projects will appear here once they are added.
+              </p>
+
+              <Link to="/articles" search={{ page: 1 }}>
+                <Button size="xs" variant="light" leftSection={<FolderKanban size={14} />}>
+                  Read Articles
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <Table highlightOnHover withTableBorder>
+              <Table.Tbody>
+                {projects.map((project) => (
+                  <Table.Tr
+                    key={project.id}
+                    onClick={() =>
+                      router.navigate({
+                        to: '/projects/$projectId',
+                        params: { projectId: project.id },
+                      })
+                    }
+                    className="cursor-pointer hover:bg-gray-50"
+                  >
+                    <Table.Td>
+                      <Group gap="sm">
+                        {project.imageUrl ? (
+                          <Image src={project.imageUrl} w={46} h={46} radius="md" />
+                        ) : (
+                          <ThemeIcon size={46} radius="md" variant="light">
+                            <FolderKanban size={20} />
+                          </ThemeIcon>
+                        )}
+
+                        <div>
+                          <div className="font-semibold truncate">
+                            {project.title}
+                          </div>
+                          <Rating
+                            value={Number(project.avgRating ?? 0)}
+                            readOnly
+                            size="sm"
+                          />
+                        </div>
+                      </Group>
+                    </Table.Td>
+
+                    <Table.Td w={60}>
+                      <span className="text-blue-600 font-semibold">View</span>
+                    </Table.Td>
+                  </Table.Tr>
+                ))}
+              </Table.Tbody>
+            </Table>
+          )}
+        </div>
+      </Stack>
+    </Paper>
+  )
+}
+
+function FeaturedArticlesSection() {
+  const { data: blogs } = useSuspenseQuery(getTopArticlesQueryOptions())
+  const router = useRouter()
+
+  const isEmpty = !blogs || blogs.length === 0
+
+  return (
+    <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
+      <Stack gap="md">
+        <Group justify="space-between" align="flex-end">
+          <div>
+            <div className="title3">Featured Articles</div>
+            <p className="text-xs text-slate-500">
+              Most engaging writing
+            </p>
+          </div>
+
+          <Link to="/articles" search={{ page: 1 }}>
+            <Button
+              variant="subtle"
+              rightSection={<ArrowRight size={16} />}
+            >
+              View All
+            </Button>
+          </Link>
+        </Group>
+
+        <div className="-mx-1 overflow-x-auto sm:mx-0">
+          {isEmpty ? (
+            <div className="flex min-h-[180px] flex-col items-center justify-center gap-2 rounded-md border border-dashed border-slate-300 p-6 text-center dark:border-slate-700">
+              <ThemeIcon size={56} radius="md" variant="light" color="grape">
+                <BookOpen size={28} />
+              </ThemeIcon>
+
+              <div className="text-sm font-semibold text-slate-700 dark:text-slate-200">
+                No articles yet
+              </div>
+
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Published articles will appear here once they are available.
+              </p>
+
+              <Link to="/articles/new">
+                <Button
+                  size="xs"
+                  variant="light"
+                  leftSection={<FileText size={14} />}
+                >
+                  Write Article
+                </Button>
+              </Link>
+            </div>
+          ) : (
+            <Table highlightOnHover withTableBorder>
+              <Table.Tbody>
+                {blogs.map((blog) => (
+                  <Table.Tr
+                    key={blog.id}
+                    onClick={() =>
+                      router.navigate({
+                        to: '/articles/$slug',
+                        params: { slug: blog.slug },
+                      })
+                    }
+                    className="cursor-pointer hover:bg-gray-50"
+                  >
+                    <Table.Td>
+                      <Group gap="sm">
+                        {blog.coverImage ? (
+                          <Image
+                            src={blog.coverImage}
+                            w={46}
+                            h={46}
+                            radius="md"
+                          />
+                        ) : (
+                          <ThemeIcon size={40} radius="md" variant="light">
+                            <FileText size={18} />
+                          </ThemeIcon>
+                        )}
+
+                        <div>
+                          <div className="font-semibold truncate">
+                            {blog.title}
+                          </div>
+                          <Badge size="sm" variant="light">
+                            ❤️ {blog.likes_count} likes
+                          </Badge>
+                        </div>
+                      </Group>
+                    </Table.Td>
+
+                    <Table.Td w={60}>
+                      <span className="text-blue-600 font-semibold">
+                        Read
+                      </span>
+                    </Table.Td>
+                  </Table.Tr>
+                ))}
+              </Table.Tbody>
+            </Table>
+          )}
+        </div>
+      </Stack>
+    </Paper>
+  )
+}
 
 const STATS = [
   { icon: <Briefcase size={18} />, value: '4+', label: 'Years Experience', color: 'indigo' },
@@ -115,8 +347,6 @@ const CORE_SKILLS = [
 ]
 
 function App() {
-  const { projects, blogs } = Route.useLoaderData()
-  const router = useRouter()
 
   return (
     <Container size="xl" className="max-w-full space-y-8 px-0 py-6 sm:space-y-10 sm:py-8 md:space-y-12 md:py-10">
@@ -178,7 +408,7 @@ function App() {
           <Paper
             key={stat.label}
             radius="md"
-          withBorder
+            withBorder
             p="sm"
             className="group shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-white to-gray-50 dark:from-slate-900 dark:to-slate-800"
           >
@@ -327,243 +557,15 @@ function App() {
         </SimpleGrid>
       </section>
 
-      {/* ── FEATURED ── */}
-      <section id="featured" className="space-y-8">
-        <div className="space-y-2">
-          <div className="title2">
-            Featured Work & Writing
-          </div>
-          <p className="mt-1 max-w-3xl text-sm text-slate-600 sm:text-base dark:text-slate-400">
-            A curated selection of projects and articles that best reflect the quality of my work.
-          </p>
-        </div>
+      <div className="grid items-start gap-6 sm:gap-8 lg:grid-cols-2">
+        <Suspense fallback={<ProjectsSkeleton />}>
+          <FeaturedProjectsSection />
+        </Suspense>
 
-        <div className="grid items-start gap-6 sm:gap-8 lg:grid-cols-2">
-          {/* PROJECTS */}
-          <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
-            <Stack gap="md">
-              <Group
-                justify="space-between"
-                align="flex-start"
-                gap="sm"
-                wrap="wrap"
-                className="sm:flex-nowrap sm:items-end"
-              >
-                <div className="min-w-0 flex-1">
-                  <div className='title3'>Featured Projects</div>
-                  <p className="mt-1 text-xs text-slate-600 sm:text-sm dark:text-slate-400">
-                    A selection of standout builds from my portfolio
-                  </p>
-                </div>
-                <Link to="/projects" className="shrink-0">
-                  <Button variant="subtle" size="sm" radius="md" rightSection={<ArrowRight size={16} />}>
-                    View All
-                  </Button>
-                </Link>
-              </Group>
-
-              <div className="-mx-1 overflow-x-auto sm:mx-0">
-              <Table highlightOnHover withTableBorder verticalSpacing="sm" horizontalSpacing="sm" className="min-w-[280px]">
-                <Table.Tbody>
-                  {projects && projects.length > 0 ? (
-                    projects.map((project) => {
-                      const rating = Number(project.avgRating ?? 0)
-                      return (
-                        <Table.Tr
-                          key={project.id}
-                          onClick={() =>
-                            router.navigate({ to: '/projects/$id', params: { id: project.id } })
-                          }
-                          className="cursor-pointer transition hover:bg-gray-50"
-                        >
-                          <Table.Td>
-                            <Group gap="sm" wrap="nowrap">
-                              {project.imageUrl ? (
-                                <Image src={project.imageUrl} w={46} h={46} radius="md" className="object-cover" />
-                              ) : (
-                                <ThemeIcon size={46} radius="md" variant="light" color="gray">
-                                  <FolderKanban size={20} />
-                                </ThemeIcon>
-                              )}
-                              <Stack gap={2} className="min-w-0">
-                                <div className="truncate font-semibold text-slate-900 dark:text-slate-50">
-                                  {project.title}
-                                </div>
-                                <Rating value={rating} readOnly size="sm" />
-                              </Stack>
-                            </Group>
-                          </Table.Td>
-                          <Table.Td w={60}>
-                            <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
-                              View
-                            </span>
-                          </Table.Td>
-                        </Table.Tr>
-                      )
-                    })
-                  ) : (
-                    <Table.Tr>
-                      <Table.Td colSpan={2}>
-                        <Stack align="center" gap="xs" py="xl">
-                          <ThemeIcon size={56} radius="md" variant="light" color="gray">
-                            <FolderOpen size={28} />
-                          </ThemeIcon>
-                          <div className="text-center text-base font-semibold text-slate-900 dark:text-slate-50">
-                            No projects yet
-                          </div>
-                          <p className="text-center text-sm text-slate-600 dark:text-slate-400">
-                            Projects will appear here once they are added.
-                          </p>
-                        </Stack>
-                      </Table.Td>
-                    </Table.Tr>
-                  )}
-                </Table.Tbody>
-              </Table>
-              </div>
-            </Stack>
-          </Paper>
-
-          {/* ARTICLES */}
-          <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
-            <Stack gap="md">
-              <Group
-                justify="space-between"
-                align="flex-start"
-                gap="sm"
-                wrap="wrap"
-                className="sm:flex-nowrap sm:items-end"
-              >
-                <div className="min-w-0 flex-1">
-                  <div className='title3'>Featured Articles</div>
-                  <p className="mt-1 text-xs text-slate-600 sm:text-sm dark:text-slate-400">
-                    A few of the most engaging pieces written by users
-                  </p>
-                </div>
-                <Link to="/articles" search={{ page: 1 }} className="shrink-0">
-                  <Button variant="subtle" radius="md" rightSection={<ArrowRight size={16} />}>
-                    View All
-                  </Button>
-                </Link>
-              </Group>
-
-              <div className="-mx-1 overflow-x-auto sm:mx-0">
-              <Table highlightOnHover withTableBorder verticalSpacing="sm" horizontalSpacing="sm" className="min-w-[280px]">
-                <Table.Tbody>
-                  {blogs && blogs.length > 0 ? (
-                    blogs.map((blog) => (
-                      <Table.Tr
-                        key={blog.id}
-                        onClick={() =>
-                          router.navigate({ to: '/articles/$slug', params: { slug: blog.slug } })
-                        }
-                        className="cursor-pointer transition hover:bg-gray-50"
-                      >
-                        <Table.Td>
-                          <Group gap="sm" wrap="nowrap">
-                            {blog.coverImage ? (
-                              <Image src={blog.coverImage} w={46} h={46} radius="md" className="object-cover" />
-                            ) : (
-                              <ThemeIcon size={40} radius="md" variant="light" color="grape">
-                                <FileText size={18} />
-                              </ThemeIcon>
-                            )}
-                            <div className="min-w-0">
-                              <div className="truncate font-semibold text-slate-900 dark:text-slate-50">
-                                {blog.title}
-                              </div>
-                              <Badge variant="light" radius="md" color="pink" size="sm">
-                                ❤️ {blog.likes_count} Likes
-                              </Badge>
-                            </div>
-                          </Group>
-                        </Table.Td>
-                        <Table.Td w={60}>
-                          <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
-                            Read
-                          </span>
-                        </Table.Td>
-                      </Table.Tr>
-                    ))
-                  ) : (
-                    <Table.Tr>
-                      <Table.Td colSpan={2}>
-                        <Stack align="center" gap="xs" py="xl">
-                          <ThemeIcon size={56} radius="md" variant="light" color="grape">
-                            <BookOpen size={28} />
-                          </ThemeIcon>
-                          <div className="text-center text-base font-semibold text-slate-900 dark:text-slate-50">
-                            No articles yet
-                          </div>
-                          <p className="text-center text-sm text-slate-600 dark:text-slate-400">
-                            Articles will appear here once they are published.
-                          </p>
-                        </Stack>
-                      </Table.Td>
-                    </Table.Tr>
-                  )}
-                </Table.Tbody>
-              </Table>
-              </div>
-            </Stack>
-          </Paper>
-        </div>
-      </section>
-
-      {/* ── CTA ── */}
-      <section id="contact" className="mx-auto max-w-3xl scroll-mt-20">
-        <Paper
-          radius="24px"
-          withBorder
-          shadow="sm"
-          className="relative overflow-hidden border border-slate-200/70 bg-gradient-to-br from-white via-indigo-50 to-blue-50 px-4 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
-        >
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.14),transparent_28%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.12),transparent_30%)]" />
-
-          {/* Center everything */}
-          <div className="relative flex justify-center">
-            <Stack gap="lg" align="center" className="text-center max-w-2xl">
-              <div className="space-y-2">
-                <div className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
-                  Let me turn your idea into reality
-                </div>
-
-                <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-                  I turn ideas into practical software solutions that work
-                  reliably and grow with your business.
-                </p>
-              </div>
-
-              <Group gap="sm" className="pt-2" justify="center" wrap="wrap">
-                <Button
-                  size="sm"
-                  radius="md"
-                  color="yellow"
-                  variant="filled"
-                  onClick={() => router.navigate({ to: '/contact' })}
-                  leftSection={<Mail size={18} />}
-                  className="shadow-sm"
-                >
-                  Start a Conversation
-                </Button>
-
-                <Button
-                  component="a"
-                  href="https://linkedin.com/in/abdallahshee"
-                  target="_blank"
-                  variant="filled"
-                  color="blue"
-                  size="sm"
-                  radius="md"
-                  leftSection={<Linkedin size={18} />}
-                >
-                  Connect on LinkedIn
-                </Button>
-              </Group>
-            </Stack>
-          </div>
-        </Paper>
-      </section>
+        <Suspense fallback={<ArticlesSkeleton />}>
+          <FeaturedArticlesSection />
+        </Suspense>
+      </div>
     </Container>
   )
 }

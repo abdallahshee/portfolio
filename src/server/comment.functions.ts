@@ -4,7 +4,7 @@ import { db } from '../db/index'
 import { CommentSchema } from '@/db/validations/comment.types'
 import { article } from '@/db/schema/article.schema'
 import { comment } from '@/db/schema'
-import { AuthenticatedMiddleware } from './middleware/auth.middleware'
+import { AuthenticatedMiddleware } from './middleware'
 
 export const createComment = createServerFn({ method: 'POST' })
     .middleware([AuthenticatedMiddleware])

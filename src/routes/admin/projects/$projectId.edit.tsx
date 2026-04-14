@@ -34,7 +34,7 @@ import { useState } from "react"
 import { useUpdateProjectMutation } from "@/db/mutations/project.mutations"
 import type { UpdateProjectRequest } from "@/db/validations/project.types"
 import { UpdateProjectSchema } from "@/db/validations/project.types"
-import { AdminMiddleware } from "@/server/middleware/auth.middleware"
+import { AdminMiddleware } from "@/server/middleware"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 
 export const Route = createFileRoute("/admin/projects/$projectId/edit")({

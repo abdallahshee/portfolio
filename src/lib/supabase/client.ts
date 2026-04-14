@@ -1,12 +1,16 @@
+import { createClient } from '@supabase/supabase-js'
 import { nanoid } from 'nanoid'
-import { createBrowserClient } from '@supabase/ssr'
-import type { SupabaseClient } from '@supabase/supabase-js'
 
-export function getSupabaseBrowserClient(): SupabaseClient {
-  return createBrowserClient(
-    import.meta.env.VITE_SUPABASE_URL!,
-    import.meta.env.VITE_SUPABASE_ANON_KEY!
-  )
+
+export function getSupabaseBrowserClient() {
+  const url = import.meta.env.VITE_SUPABASE_URL
+  const key = import.meta.env.VITE_SUPABASE_ANON_KEY
+
+  if (!url || !key) {
+    throw new Error('Missing Supabase environment variables')
+  }
+
+  return createClient(url, key)
 }
 
 export async function uploadArticleImage(file: File, userId: string): Promise<string> {

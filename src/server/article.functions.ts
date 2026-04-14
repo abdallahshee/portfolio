@@ -6,7 +6,7 @@ import { category, comment, user } from "@/db/schema";
 import { ArticleSchema, ArticleUpdateSchema, MyPaginatedArticlesSchema } from "@/db/validations/article.types";
 import { article } from "@/db/schema/article.schema";
 import { articleLike } from "@/db/schema/article-like.schema";
-import { AuthenticatedMiddleware } from "./middleware/auth.middleware";
+import { AuthenticatedMiddleware } from "./middleware";
 
 
 export const createArticle = createServerFn({ method: "POST" })
@@ -74,7 +74,6 @@ export const getArticleBySlug = createServerFn()
             // Blog
             const articleResult = await db
                 .select({
-            
                     tags:article.tags,
                     articleId: article.id,
                     title: article.title,

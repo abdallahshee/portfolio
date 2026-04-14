@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { AdminMiddleware } from "./middleware/auth.middleware";
+import { AdminMiddleware } from "./middleware";
 import { CaseSchema } from "@/db/validations/case.types";
 import { db } from "@/db";
 import { caseStudy } from "@/db/schema/project-case.schema";

@@ -22,18 +22,18 @@ export const useArticleCreateMutation = () => {
 
     return useMutation({
         mutationFn: (data: ArticleRequest) =>createArticle({ data }),
-        onSuccess: async (data) => {
-            queryClient.setQueryData(getArticleBySlugQueryOptions(data.slug).queryKey, {
-                ...data,
-                articleId:data.id,
-                likes: 0,
-                likedByUser: false,
-                comments: [],
-                authorId: data.userId,
-                authorName: null,
-                authorImage: null,
-                categoryName: null
-            })
+        onSuccess: async () => {
+            // queryClient.setQueryData(getArticleBySlugQueryOptions(data.slug).queryKey, {
+            //     ...data,
+            //     articleId:data.id,
+            //     likes: 0,
+            //     likedByUser: false,
+            //     comments: [],
+            //     authorId: data.userId,
+            //     authorName: null,
+            //     authorImage: null,
+            //     categoryName: null
+            // })
             await queryClient.invalidateQueries({ queryKey: getAllArticlesQueryOptions().queryKey })
             
         },

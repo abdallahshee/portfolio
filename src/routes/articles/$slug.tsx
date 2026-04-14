@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import { useQueryClient, useQuery } from '@tanstack/react-query'
 import { getArticleBySlugQueryOptions } from '@/db/queries/article.queries'
-import { OptionalAuthMiddleware } from '@/server/middleware/auth.middleware'
+import { OptionalAuthMiddleware } from '@/server/middleware'
 import { getSupabaseBrowserClient } from '@/lib/supabase/client'
 import { useEffect, useMemo, useState } from 'react'
 import type { AuthChangeEvent, Session } from '@supabase/supabase-js'

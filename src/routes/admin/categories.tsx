@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query"
 import { useForm } from "@mantine/form"
 import {
   Button,
@@ -27,12 +27,19 @@ import {
   useDeleteCategoryMutation,
   useCategoryEditMutation,
 } from "@/db/mutations/category.mutations"
-import type {
-  CategoryRequest,
-  EditCategoryRequest,
+import {
+  CategorySchema,
+  type CategoryRequest,
+  type EditCategoryRequest,
 } from "@/db/validations/category.types"
+import { zod4Resolver } from "mantine-form-zod-resolver"
 
 export const Route = createFileRoute("/admin/categories")({
+  loader: async ({ context }) => {
+    await context.queryClient.prefetchQuery(
+      getAllCategoriesQueryOption()
+    )
+  },
   component: RouteComponent,
 })
 
@@ -45,18 +52,12 @@ function RouteComponent() {
     initialValues: {
       name: "",
     },
-    validate: {
-      name: (value) => {
-        if (!value.trim()) return "Category name is required"
-        if (value.trim().length < 2) return "Category name is too short"
-        return null
-      },
-    },
+    validate: zod4Resolver(CategorySchema)
   })
 
-  const { data: categories, isLoading, isError } = useQuery(
-    getAllCategoriesQueryOption()
-  )
+const { data: categories } = useSuspenseQuery(
+  getAllCategoriesQueryOption()
+)
 
   const createCategoryMutation = useCategoryCreateMutations(() => {
     notifications.show({
@@ -138,236 +139,125 @@ function RouteComponent() {
   return (
     <div className="min-h-screen bg-slate-50 py-8 dark:bg-slate-950 md:py-12">
       <Container size="">
-        <Stack gap="xl">
-          <Paper
-            radius="2xl"
-            p="xl"
-            withBorder
-            className="bg-gradient-to-br from-white to-slate-50 shadow-sm dark:from-slate-900 dark:to-slate-950"
-          >
-            <Group justify="space-between" align="flex-start">
-              <Stack gap={8}>
-                <Group gap="xs">
-                  <ThemeIcon variant="light" color="violet" radius="xl" size="lg">
-                    <Shapes size={18} />
-                  </ThemeIcon>
-                  <Text fw={600} c="dimmed" size="sm">
-                    Admin Category Manager
-                  </Text>
-                </Group>
+<Stack gap="sm">
+  {categories.length === 0 ? (
+    <div className="flex min-h-[220px] items-center justify-center rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
+      <Text size="sm" c="dimmed">
+        No categories found yet.
+      </Text>
+    </div>
+  ) : (
+    categories.map((category) => {
+      const isEditing = editingCategoryId === category.id
 
-                <div className="title2">
-                  Manage Categories
-                </div>
+      return (
+        <Paper
+          key={category.id}
+          withBorder
+          radius="md"
+          p="md"
+          className="transition hover:shadow-sm"
+        >
+          <Group justify="space-between" align="center">
+            <Group gap="sm" className="flex-1">
+              <ThemeIcon variant="light" color="indigo" radius="xl">
+                <Tag size={16} />
+              </ThemeIcon>
 
-                <Text className="max-w-3xl text-base leading-7 text-slate-600 dark:text-slate-300">
-                  Create, edit, and delete categories from one place.
-                </Text>
-              </Stack>
-
-              <Badge variant="light" color="violet" radius="xl" size="lg">
-                Admin
-              </Badge>
+              <div className="flex-1">
+                {isEditing ? (
+                  <Stack gap="xs">
+                    <TextInput
+                      value={editingName}
+                      onChange={(e) => setEditingName(e.currentTarget.value)}
+                      placeholder="Enter category name"
+                      radius="md"
+                      size="sm"
+                    />
+                    <Text size="xs" c="dimmed">
+                      ID: {category.id}
+                    </Text>
+                  </Stack>
+                ) : (
+                  <>
+                    <Text fw={600}>{category.name}</Text>
+                    <Text size="xs" c="dimmed">
+                      ID: {category.id}
+                    </Text>
+                  </>
+                )}
+              </div>
             </Group>
-          </Paper>
 
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-            <div className="lg:col-span-1">
-              <Card radius="2xl" withBorder p="xl" className="shadow-sm">
-                <Stack gap="lg">
-                  <div>
-                    <Group gap="xs" mb="xs">
-                      <ThemeIcon variant="light" color="blue" radius="xl">
-                        <FolderPlus size={16} />
-                      </ThemeIcon>
-                      <div className="title3">Create Category</div>
-                    </Group>
-                    <Text size="sm" c="dimmed">
-                      Add a new category that can be used when creating articles.
-                    </Text>
-                  </div>
+            <Group gap="xs">
+              {isEditing ? (
+                <>
+                  <ActionIcon
+                    variant="light"
+                    color="green"
+                    radius="md"
+                    size="sm"
+                    loading={isEditingCurrent(category.id)}
+                    onClick={() =>
+                      handleEdit({
+                        categoryId: category.id,
+                        name: editingName.trim(),
+                      })
+                    }
+                    disabled={editingName.trim().length < 2}
+                  >
+                    <Check size={16} />
+                  </ActionIcon>
 
-                  <form onSubmit={form.onSubmit(handleSubmit)}>
-                    <Stack gap="md">
-                      <TextInput
-                        label="Category Name"
-                        placeholder="e.g. Technology"
-                        radius="md"
-                        size="sm"
-                        leftSection={<Tag size={16} />}
-                        {...form.getInputProps("name")}
-                      />
+                  <ActionIcon
+                    variant="light"
+                    color="gray"
+                    radius="md"
+                    size="sm"
+                    onClick={cancelEdit}
+                  >
+                    <X size={16} />
+                  </ActionIcon>
+                </>
+              ) : (
+                <>
+                  <ActionIcon
+                    variant="light"
+                    color="blue"
+                    radius="md"
+                    size="sm"
+                    onClick={() => startEdit(category.id, category.name)}
+                  >
+                    <Pencil size={16} />
+                  </ActionIcon>
 
-                      <Button
-                        type="submit"
-                        radius="md"
-                        size="sm"
-                        loading={createCategoryMutation.isPending}
-                      >
-                        Create Category
-                      </Button>
-                    </Stack>
-                  </form>
-                </Stack>
-              </Card>
-            </div>
-
-            <div className="lg:col-span-2">
-              <Card radius="2xl" withBorder p="xl" className="shadow-sm">
-                <Stack gap="lg">
-                  <div>
-                    <Group gap="xs" mb="xs">
-                      <ThemeIcon variant="light" color="teal" radius="xl">
-                        <Tag size={16} />
-                      </ThemeIcon>
-                      <div className="title3">All Categories</div>
-                    </Group>
-                    <Text size="sm" c="dimmed">
-                      View and manage all available categories.
-                    </Text>
-                  </div>
-
-                  <Divider />
-
-                  {isLoading ? (
-                    <div className="flex min-h-[220px] items-center justify-center">
-                      <Group gap="sm">
-                        <Loader size="sm" />
-                        <Text size="sm" c="dimmed">
-                          Loading categories...
-                        </Text>
-                      </Group>
-                    </div>
-                  ) : isError ? (
-                    <div className="flex min-h-[220px] items-center justify-center">
-                      <Text c="red" size="sm">
-                        Failed to load categories.
-                      </Text>
-                    </div>
-                  ) : !categories || categories.length === 0 ? (
-                    <div className="flex min-h-[220px] items-center justify-center rounded-2xl border border-dashed border-slate-300 dark:border-slate-700">
-                      <Text size="sm" c="dimmed">
-                        No categories found yet.
-                      </Text>
-                    </div>
-                  ) : (
-                    <Stack gap="sm">
-                      {categories.map((category) => {
-                        const isEditing = editingCategoryId === category.id
-
-                        return (
-                          <Paper
-                            key={category.id}
-                            withBorder
-                            radius="md"
-                            p="md"
-                            className="transition hover:shadow-sm"
-                          >
-                            <Group justify="space-between" align="center">
-                              <Group gap="sm" className="flex-1">
-                                <ThemeIcon variant="light" color="indigo" radius="xl">
-                                  <Tag size={16} />
-                                </ThemeIcon>
-
-                                <div className="flex-1">
-                                  {isEditing ? (
-                                    <Stack gap="xs">
-                                      <TextInput
-                                        value={editingName}
-                                        onChange={(e) => setEditingName(e.currentTarget.value)}
-                                        placeholder="Enter category name"
-                                        radius="md"
-                                        size="sm"
-                                      />
-                                      <Text size="xs" c="dimmed">
-                                        ID: {category.id}
-                                      </Text>
-                                    </Stack>
-                                  ) : (
-                                    <>
-                                      <Text fw={600}>{category.name}</Text>
-                                      <Text size="xs" c="dimmed">
-                                        ID: {category.id}
-                                      </Text>
-                                    </>
-                                  )}
-                                </div>
-                              </Group>
-
-                              <Group gap="xs">
-                                {isEditing ? (
-                                  <>
-                                    <ActionIcon
-                                      variant="light"
-                                      color="green"
-                                      radius="md"
-                                      size="sm"
-                                      loading={isEditingCurrent(category.id)}
-                                      onClick={() =>
-                                        handleEdit({
-                                          categoryId: category.id,
-                                          name: editingName.trim(),
-                                        })
-                                      }
-                                      disabled={editingName.trim().length < 2}
-                                    >
-                                      <Check size={16} />
-                                    </ActionIcon>
-
-                                    <ActionIcon
-                                      variant="light"
-                                      color="gray"
-                                      radius="md"
-                                      size="sm"
-                                      onClick={cancelEdit}
-                                    >
-                                      <X size={16} />
-                                    </ActionIcon>
-                                  </>
-                                ) : (
-                                  <>
-                                    <ActionIcon
-                                      variant="light"
-                                      color="blue"
-                                      radius="md"
-                                      size="sm"
-                                      onClick={() => startEdit(category.id, category.name)}
-                                    >
-                                      <Pencil size={16} />
-                                    </ActionIcon>
-
-                                    <ActionIcon
-                                      variant="light"
-                                      color="red"
-                                      radius="md"
-                                      size="sm"
-                                      loading={
-                                        deleteCategoryMutation.isPending &&
-                                        deleteCategoryMutation.variables === category.id
-                                      }
-                                      onClick={() =>
-                                        setDeleteTarget({
-                                          id: category.id,
-                                          name: category.name,
-                                        })
-                                      }
-                                    >
-                                      <Trash2 size={16} />
-                                    </ActionIcon>
-                                  </>
-                                )}
-                              </Group>
-                            </Group>
-                          </Paper>
-                        )
-                      })}
-                    </Stack>
-                  )}
-                </Stack>
-              </Card>
-            </div>
-          </div>
-        </Stack>
+                  <ActionIcon
+                    variant="light"
+                    color="red"
+                    radius="md"
+                    size="sm"
+                    loading={
+                      deleteCategoryMutation.isPending &&
+                      deleteCategoryMutation.variables === category.id
+                    }
+                    onClick={() =>
+                      setDeleteTarget({
+                        id: category.id,
+                        name: category.name,
+                      })
+                    }
+                  >
+                    <Trash2 size={16} />
+                  </ActionIcon>
+                </>
+              )}
+            </Group>
+          </Group>
+        </Paper>
+      )
+    })
+  )}
+</Stack>
       </Container>
 
       <Modal

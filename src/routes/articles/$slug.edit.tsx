@@ -51,7 +51,7 @@ import { useQuery } from "@tanstack/react-query"
 import { getAllCategoriesQueryOption } from "@/db/queries/category.queries"
 import { getArticleBySlug } from "@/server/article.functions"
 import { useServerFn } from "@tanstack/react-start"
-import { AuthenticatedMiddleware } from "@/server/middleware/auth.middleware"
+import { AuthenticatedMiddleware } from "@/server/middleware"
 import { useArticleUpdateMutationOption } from "@/db/mutations/article.mutations"
 import { notifications } from "@mantine/notifications"
 

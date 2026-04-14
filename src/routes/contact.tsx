@@ -35,7 +35,7 @@ import { ContactMeEmailTemplate } from "@/lib/htmlTemplates"
 import { EmailTemplateSchema, type EmailTemplateRequest } from "@/db/validations/contact.types"
 import { useServerFn } from "@tanstack/react-start"
 import { sendEmailFn } from "@/server/auth.functions"
-import { AuthenticatedMiddleware } from "@/server/middleware/auth.middleware"
+import { AuthenticatedMiddleware } from "@/server/middleware"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
 
@@ -47,12 +47,12 @@ export const Route = createFileRoute("/contact")({
 })
 
 const SUBJECT_OPTIONS = [
-  { value: "Freelance", label: "💼 Freelance Project" },
-  { value: "Fulltime", label: "🏢 Full-Time Job Opportunity" },
-  { value: "Collaboration", label: "🤝 Collaboration Opportunity" },
-  { value: "Consulting", label: "🧠 Technical Consulting" },
-  { value: "Feedback", label: "💬 Feedback on Work" },
-  { value: "Other", label: "📩 Other" },
+  { value: "freelance", label: "💼 freelance project" },
+  { value: "fulltime", label: "🏢 full-time job opportunity" },
+  { value: "collaboration", label: "🤝 collaboration opportunity" },
+  { value: "consulting", label: "🧠 technical consulting" },
+  { value: "feedback", label: "💬 feedback on work" },
+  { value: "other", label: "📩 other" },
 ]
 
 const WHY_REACH_OUT = [

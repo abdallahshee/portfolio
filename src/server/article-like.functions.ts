@@ -2,7 +2,7 @@ import { createServerFn } from "@tanstack/react-start"
 import { db } from "../db/index"
 import { and, eq, sql } from "drizzle-orm"
 import { articleLike } from "@/db/schema/article-like.schema"
-import {  AuthenticatedMiddleware } from "./middleware/auth.middleware"
+import {  AuthenticatedMiddleware } from "./middleware"
 
 
 // ── helper to get fresh likes count ──────────────────────────────
