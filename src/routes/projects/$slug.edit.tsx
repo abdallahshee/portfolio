@@ -29,7 +29,7 @@ import {
   Clock3,
   LayoutPanelTop,
 } from "lucide-react"
-import { getProjectByIdQueryOptions } from "@/db/queries/project.queries"
+import { getProjectBySlugNameQueryOptions } from "@/db/queries/project.queries"
 import { useState } from "react"
 import type { UpdateProjectRequest } from "@/db/validations/project.types"
 import { UpdateProjectSchema } from "@/db/validations/project.types"
@@ -37,11 +37,11 @@ import { zod4Resolver } from "mantine-form-zod-resolver"
 import { useUpdateProjectMutation } from "@/db/queries/project.mutations"
 import { AuthenticatedMiddleware } from "@/server/middleware"
 
-export const Route = createFileRoute("/projects/$projectId/edit")({
+export const Route = createFileRoute("/projects/$slug/edit")({
   server: { middleware: [AuthenticatedMiddleware] },
   loader: async ({ context, params }) => {
     const data = await context.queryClient.fetchQuery(
-      getProjectByIdQueryOptions(params.projectId)
+      getProjectBySlugNameQueryOptions(params.slug)
     )
     return data
   },
@@ -50,14 +50,14 @@ export const Route = createFileRoute("/projects/$projectId/edit")({
 
 function RouteComponent() {
   const project = Route.useLoaderData()
-  const { projectId } = Route.useParams()
+  const { slug } = Route.useParams()
   const router = useRouter()
   const updateMutation = useUpdateProjectMutation()
   const [loading, setLoading] = useState(false)
 
   const form = useForm<UpdateProjectRequest>({
     initialValues: {
-      projectId: projectId,
+      slug: slug,
       title: project?.title ?? "",
       description: project?.description ?? "",
       imageUrl: project?.imageUrl ?? "",

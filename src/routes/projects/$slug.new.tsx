@@ -23,25 +23,25 @@ import {
   Globe2,
 } from "lucide-react"
 import { createFileRoute, Link } from "@tanstack/react-router"
-import { getProjectByIdQueryOptions } from "@/db/queries/project.queries"
+import { getProjectBySlugNameQueryOptions } from "@/db/queries/project.queries"
 import { useEffect, useState } from "react"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import moment from "moment"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
 
-export const Route = createFileRoute("/projects/$projectId/new")({
+export const Route = createFileRoute("/projects/$slug/new")({
   loader: async ({ context, params }) => {
     await context.queryClient.fetchQuery(
-      getProjectByIdQueryOptions(params.projectId)
+      getProjectBySlugNameQueryOptions(params.slug)
     )
   },
   component: ProjectDetails,
 })
 
 function ProjectDetails() {
-  const { projectId } = Route.useParams()
-  const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(projectId))
+  const { slug} = Route.useParams()
+  const { data: project } = useSuspenseQuery(getProjectBySlugNameQueryOptions(slug))
   const supabase = getSupabaseBrowserClient()
   const [session, setSession] = useState<Session | null>(null)
   const [isSessionLoading, setIsSessionLoading] = useState(true)
@@ -121,8 +121,8 @@ function ProjectDetails() {
 
               {session?.user && (
                 <Link
-                  to="/projects/$projectId/edit"
-                  params={{ projectId: project.id }}
+                  to="/projects/$slug/edit"
+                  params={{ slug: project.slug }}
                 >
                   <Button
                     variant="light"

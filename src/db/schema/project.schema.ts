@@ -7,6 +7,7 @@ import { caseStudy } from "./project-case.schema";
 export const project = pgTable('project', {
   id: text("id").primaryKey().$default(() => nanoid(24)),
   title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
   description: text("description").notNull().unique(),
   imageUrl: text("image_url"),
   isPublic: boolean('is_public').notNull(),

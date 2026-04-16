@@ -131,8 +131,8 @@ function FeaturedProjectsSection() {
         key={project.id}
         onClick={() =>
           router.navigate({
-            to: '/projects/$projectId',
-            params: { projectId: project.id },
+            to: '/projects/$slug',
+            params: {slug: project.slug },
           })
         }
         className="cursor-pointer hover:bg-gray-50"

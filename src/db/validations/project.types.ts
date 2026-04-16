@@ -20,7 +20,7 @@ export const ProjectSchema = createSelectSchema(project,{
 export type ProjectRequest =z.infer<typeof ProjectSchema>
 
 export const UpdateProjectSchema = ProjectSchema.extend({
-    projectId: z.string().nonempty()
+    slug: z.string().nonempty()
 })
 export type UpdateProjectRequest = z.infer<typeof UpdateProjectSchema>
 export type Project=InferSelectModel<typeof project>

@@ -5,19 +5,28 @@ import { project } from "@/db/schema";
 import { ProjectSchema, UpdateProjectSchema } from "@/db/validations/project.types";
 import { AuthenticatedMiddleware } from "./middleware";
 
-
+function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')   // remove special characters
+    .replace(/[\s_]+/g, '-')    // replace spaces and underscores with hyphens
+    .replace(/--+/g, '-')       // collapse multiple hyphens
+    .replace(/^-+|-+$/g, '')    // trim leading/trailing hyphens
+}
 
 export const createProject = createServerFn({ method: 'POST' })
   .middleware([AuthenticatedMiddleware])
   .inputValidator(ProjectSchema)
   .handler(async ({ data }) => {
     try {
-      const [theProjectId] = await db
+      const slug=slugify(data.title)
+      const [theSlug] = await db
         .insert(project)
-        .values({ ...data })
-        .returning({ projectId: project.id });
+        .values({ ...data,slug })
+        .returning({ slug: project.slug });
 
-      return { success: true, projectId: theProjectId.projectId };
+      return { success: true, slug: theSlug };
     } catch (err) {
       console.error('Error creating project:', err);
       return { success: false, projectId: null };
@@ -25,7 +34,7 @@ export const createProject = createServerFn({ method: 'POST' })
   });
 
 
-export const getProjectById = createServerFn({ method: "GET" })
+export const getProjectBySlugName = createServerFn({ method: "GET" })
   .inputValidator((data: { projectId: string }) => data)
   .handler(async ({ data }) => {
     try {
@@ -33,6 +42,7 @@ export const getProjectById = createServerFn({ method: "GET" })
         .select({
           id: project.id,
           title: project.title,
+          slug:project.slug,
           description: project.description,
           imageUrl: project.imageUrl,
           isPublic: project.isPublic,
@@ -65,6 +75,7 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
           .select({
             id: project.id,
             title: project.title,
+             slug:project.slug,
             description: project.description,
             imageUrl: project.imageUrl,
             isPublic: project.isPublic,
@@ -114,7 +125,7 @@ export const updateProject = createServerFn({ method: "POST" })
       const [updatedProject] = await db
         .update(project)
         .set({ ...data })
-        .where(eq(project.id, data.projectId))
+        .where(eq(project.id, data.slug))
         .returning();
 
       if (!updatedProject) return null;
@@ -133,6 +144,7 @@ export const getTopProjects = createServerFn({ method: "GET" })
       const topProjects = await db
         .select({
           id: project.id,
+           slug:project.slug,
           title: project.title,
           imageUrl: project.imageUrl,
           isPublic: project.isPublic,
@@ -168,6 +180,7 @@ export const searchProjects = createServerFn({ method: "GET" })
           .select({
             id: project.id,
             title: project.title,
+             slug:project.slug,
             description: project.description,
             imageUrl: project.imageUrl,
             isPublic: project.isPublic,

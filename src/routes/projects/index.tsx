@@ -18,6 +18,7 @@ import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
 import { ProjectCard } from '@/components/ProjectCard'
 import type { Project } from '@/db/validations/project.types'
+import { Link } from '@tanstack/react-router'
 
 const PAGE_SIZE = 6
 
@@ -35,7 +36,7 @@ function RouteComponent() {
   const [searchInput, setSearchInput] = useState('')
   const [filter, setFilter] = useState<FilterValue>('all')
   const [debouncedSearch] = useDebouncedValue(searchInput, 200)
-
+  // const {slug}=Route.useParams()
   const isSearching = debouncedSearch.trim().length > 0
 
   const { data, isLoading, isFetching, isPlaceholderData } = useQuery(
@@ -207,7 +208,9 @@ function RouteComponent() {
         ) : (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
             {projects.map((project: Project) => (
+              <Link to='/projects/$slug' params={{slug:project.slug}}>
               <ProjectCard key={project.id} project={project} />
+              </Link>
             ))}
           </div>
         )}
