@@ -30,7 +30,7 @@ import moment from "moment"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
 
-export const Route = createFileRoute("/projects/$projectId")({
+export const Route = createFileRoute("/projects/$projectId/new")({
   loader: async ({ context, params }) => {
     await context.queryClient.fetchQuery(
       getProjectByIdQueryOptions(params.projectId)

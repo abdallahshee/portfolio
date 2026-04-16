@@ -1,4 +1,4 @@
-import { getTopArticlesQueryOptions } from '@/db/queries/article.queries'
+
 import { getTopProjectsQueryOptions } from '@/db/queries/project.queries'
 import {
   Badge,
@@ -37,12 +37,12 @@ import {
   Sparkles,
   Send,
 } from 'lucide-react'
+import moment from 'moment'
 import { Suspense } from 'react'
 export const Route = createFileRoute('/')({
   loader: async ({ context }) => {
     await Promise.all([
       context.queryClient.prefetchQuery(getTopProjectsQueryOptions()),
-      context.queryClient.prefetchQuery(getTopArticlesQueryOptions()),
     ])
   },
   component: App,
@@ -51,7 +51,7 @@ export const Route = createFileRoute('/')({
 function ProjectsSkeleton() {
   return (
     <Stack gap="sm">
-      {Array.from({ length: 3 }).map((_, i) => (
+      {Array.from({ length: 5 }).map((_, i) => (
         <div key={i} className="flex items-center gap-3 p-3 border rounded-lg animate-pulse">
           <div className="h-12 w-12 bg-slate-200 dark:bg-slate-700 rounded-md" />
           <div className="flex-1 space-y-2">
@@ -64,21 +64,6 @@ function ProjectsSkeleton() {
   )
 }
 
-function ArticlesSkeleton() {
-  return (
-    <Stack gap="sm">
-      {Array.from({ length: 3 }).map((_, i) => (
-        <div key={i} className="flex items-center gap-3 p-3 border rounded-lg animate-pulse">
-          <div className="h-10 w-10 bg-slate-200 dark:bg-slate-700 rounded-md" />
-          <div className="flex-1 space-y-2">
-            <div className="h-3 w-3/4 bg-slate-200 dark:bg-slate-700 rounded" />
-            <div className="h-2 w-1/4 bg-slate-200 dark:bg-slate-700 rounded" />
-          </div>
-        </div>
-      ))}
-    </Stack>
-  )
-}
 
 
 function FeaturedProjectsSection() {
@@ -116,178 +101,88 @@ function FeaturedProjectsSection() {
                 <BookOpen size={28} />
               </ThemeIcon>
 
-              <div className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                No projects yet
+              <div className="title2">
+                No projects yet!
               </div>
 
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Featured projects will appear here once they are added.
+              <p className="title3">
+                Featured projects will be added soon
               </p>
 
-              <Link to="/articles" search={{ page: 1 }}>
+              <Link to="/">
                 <Button size="xs" variant="light" leftSection={<FolderKanban size={14} />}>
                   Read Articles
                 </Button>
               </Link>
             </div>
           ) : (
-            <Table highlightOnHover withTableBorder>
-              <Table.Tbody>
-                {projects.map((project) => (
-                  <Table.Tr
-                    key={project.id}
-                    onClick={() =>
-                      router.navigate({
-                        to: '/projects/$projectId',
-                        params: { projectId: project.id },
-                      })
-                    }
-                    className="cursor-pointer hover:bg-gray-50"
-                  >
-                    <Table.Td>
-                      <Group gap="sm">
-                        {project.imageUrl ? (
-                          <Image src={project.imageUrl} w={46} h={46} radius="md" />
-                        ) : (
-                          <ThemeIcon size={46} radius="md" variant="light">
-                            <FolderKanban size={20} />
-                          </ThemeIcon>
-                        )}
-
-                        <div>
-                          <div className="font-semibold truncate">
-                            {project.title}
-                          </div>
-                          <Rating
-                            value={Number(project.avgRating ?? 0)}
-                            readOnly
-                            size="sm"
-                          />
-                        </div>
-                      </Group>
-                    </Table.Td>
-
-                    <Table.Td w={60}>
-                      <span className="text-blue-600 font-semibold">View</span>
-                    </Table.Td>
-                  </Table.Tr>
-                ))}
-              </Table.Tbody>
-            </Table>
-          )}
-        </div>
-      </Stack>
-    </Paper>
-  )
-}
-
-function FeaturedArticlesSection() {
-  const { data: blogs } = useSuspenseQuery(getTopArticlesQueryOptions())
-  const router = useRouter()
-
-  const isEmpty = !blogs || blogs.length === 0
-
-  return (
-    <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
-      <Stack gap="md">
-        <Group justify="space-between" align="flex-end">
-          <div>
-            <div className="title3">Featured Articles</div>
-            <p className="text-xs text-slate-500">
-              Most engaging writing
-            </p>
-          </div>
-
-          <Link to="/articles" search={{ page: 1 }}>
-            <Button
-              variant="subtle"
-              rightSection={<ArrowRight size={16} />}
-            >
-              View All
-            </Button>
-          </Link>
-        </Group>
-
-        <div className="-mx-1 overflow-x-auto sm:mx-0">
-          {isEmpty ? (
-            <div className="flex min-h-[180px] flex-col items-center justify-center gap-2 rounded-md border border-dashed border-slate-300 p-6 text-center dark:border-slate-700">
-              <ThemeIcon size={56} radius="md" variant="light" color="grape">
-                <BookOpen size={28} />
+<Table highlightOnHover withTableBorder>
+  <Table.Thead>
+    <Table.Tr>
+      <Table.Th>Project</Table.Th>
+      <Table.Th>Status</Table.Th>
+      <Table.Th>Created</Table.Th>
+      <Table.Th></Table.Th>
+    </Table.Tr>
+  </Table.Thead>
+  <Table.Tbody>
+    {projects.map((project) => (
+      <Table.Tr
+        key={project.id}
+        onClick={() =>
+          router.navigate({
+            to: '/projects/$projectId',
+            params: { projectId: project.id },
+          })
+        }
+        className="cursor-pointer hover:bg-gray-50"
+      >
+        <Table.Td>
+          <Group gap="sm">
+            {project.imageUrl ? (
+              <Image src={project.imageUrl} w={46} h={46} radius="md" />
+            ) : (
+              <ThemeIcon size={46} radius="md" variant="light">
+                <FolderKanban size={20} />
               </ThemeIcon>
+            )}
+            <div className="font-semibold truncate">{project.title}</div>
+          </Group>
+        </Table.Td>
 
-              <div className="text-sm font-semibold text-slate-700 dark:text-slate-200">
-                No articles yet
-              </div>
+        <Table.Td>
+          <Badge
+            variant="light"
+            color={project.isPublic ? 'teal' : 'gray'}
+            radius="md"
+            size="sm"
+          >
+            {project.isPublic ? 'Open Source' : 'Private'}
+          </Badge>
+        </Table.Td>
 
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Published articles will appear here once they are available.
-              </p>
+        <Table.Td>
+          <span className="text-sm text-slate-500 dark:text-slate-400">
+            {moment(project.createdAt).format("DDD- MM-YYYY")}
+            
+          </span>
+        </Table.Td>
 
-              <Link to="/articles/new">
-                <Button
-                  size="xs"
-                  variant="light"
-                  leftSection={<FileText size={14} />}
-                >
-                  Write Article
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <Table highlightOnHover withTableBorder>
-              <Table.Tbody>
-                {blogs.map((blog) => (
-                  <Table.Tr
-                    key={blog.id}
-                    onClick={() =>
-                      router.navigate({
-                        to: '/articles/$slug',
-                        params: { slug: blog.slug },
-                      })
-                    }
-                    className="cursor-pointer hover:bg-gray-50"
-                  >
-                    <Table.Td>
-                      <Group gap="sm">
-                        {blog.coverImage ? (
-                          <Image
-                            src={blog.coverImage}
-                            w={46}
-                            h={46}
-                            radius="md"
-                          />
-                        ) : (
-                          <ThemeIcon size={40} radius="md" variant="light">
-                            <FileText size={18} />
-                          </ThemeIcon>
-                        )}
-
-                        <div>
-                          <div className="font-semibold truncate">
-                            {blog.title}
-                          </div>
-                          <Badge size="sm" variant="light">
-                            ❤️ {blog.likes_count} likes
-                          </Badge>
-                        </div>
-                      </Group>
-                    </Table.Td>
-
-                    <Table.Td w={60}>
-                      <span className="text-blue-600 font-semibold">
-                        Read
-                      </span>
-                    </Table.Td>
-                  </Table.Tr>
-                ))}
-              </Table.Tbody>
-            </Table>
+        <Table.Td w={60}>
+          <span className="text-blue-600 font-semibold">View</span>
+        </Table.Td>
+      </Table.Tr>
+    ))}
+  </Table.Tbody>
+</Table>
           )}
         </div>
       </Stack>
     </Paper>
   )
 }
+
+
 
 const STATS = [
   { icon: <Briefcase size={18} />, value: '4+', label: 'Years Experience', color: 'indigo' },
@@ -557,15 +452,11 @@ function App() {
         </SimpleGrid>
       </section>
 
-      <div className="grid items-start gap-6 sm:gap-8 lg:grid-cols-2">
-        <Suspense fallback={<ProjectsSkeleton />}>
-          <FeaturedProjectsSection />
-        </Suspense>
-
-        <Suspense fallback={<ArticlesSkeleton />}>
-          <FeaturedArticlesSection />
-        </Suspense>
-      </div>
+<div className="mx-auto w-full">
+  <Suspense fallback={<ProjectsSkeleton />}>
+    <FeaturedProjectsSection />
+  </Suspense>
+</div>
     </Container>
   )
 }

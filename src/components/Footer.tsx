@@ -57,9 +57,6 @@ export default function Footer() {
             <Anchor component={Link} to="/contact" className="transition-colors hover:text-indigo-500">
               Contact
             </Anchor>
-            <Anchor component={Link} to="/articles" className="transition-colors hover:text-indigo-500">
-              Blog
-            </Anchor>
           </Stack>
 
           {/* Third Column: Contact */}

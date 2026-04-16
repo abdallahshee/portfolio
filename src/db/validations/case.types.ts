@@ -20,6 +20,4 @@ export const CaseSchema=createSelectSchema(caseStudy,{
 
 export type CaseRequest=z.infer<typeof CaseSchema>
 
-export const CreateCaseFormSchema=CaseSchema.omit({projectId:true})
-
-export type CreateCaseFormRequest=z.infer<typeof CreateCaseFormSchema>
+export type CreateCaseFormRequest=z.infer<typeof CaseSchema>

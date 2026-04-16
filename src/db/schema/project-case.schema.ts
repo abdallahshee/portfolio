@@ -3,9 +3,6 @@ import { pgTable, text, timestamp } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 import { project } from "./project.schema";
 
-
-
-
 export const caseStudy = pgTable('case_study', {
     id: text("id").primaryKey().$default(() => nanoid(24)),
     projectId: text("project_id")

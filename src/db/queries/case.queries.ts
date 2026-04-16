@@ -1,6 +1,6 @@
 import { queryOptions, useMutation } from "@tanstack/react-query"
 import type { CaseRequest } from "../validations/case.types"
-import { createProjectCase,  getProjectCaseStudyByProjectId } from "@/server/case.functions"
+import { createProjectCase,  getCaseStudyByProjectId } from "@/server/case.functions"
 
 export const useCreateCaseStudyMutations=()=>{
     return useMutation({
@@ -8,7 +8,7 @@ export const useCreateCaseStudyMutations=()=>{
     })
 }
 
-export const getCaseStudyByProjectIdQueryOptions=(data:{projectId:string})=>queryOptions({
-    queryKey:['case_studies',data ],
-    queryFn:()=>getProjectCaseStudyByProjectId({data})
+export const getCaseStudyByProjectIdQueryOptions=(projectId:string)=>queryOptions({
+    queryKey:['case_studies',projectId],
+    queryFn:()=>getCaseStudyByProjectId({data:{projectId}})
 })

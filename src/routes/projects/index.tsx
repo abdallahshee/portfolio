@@ -1,26 +1,23 @@
 import { getPaginatedProjectsQueryOptions, searchProjectsQueryOptions } from '@/db/queries/project.queries'
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 import {
   Card,
   Button,
-  Image,
   Group,
   Stack,
   Badge,
   Container,
-  Rating,
   Pagination,
   TextInput,
   Skeleton,
   ThemeIcon,
 } from '@mantine/core'
-import { Search, X, FolderKanban, ListFilter, FolderOpen } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { Search, X, FolderOpen, ListFilter } from 'lucide-react'
+import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
-import { getSupabaseBrowserClient } from '@/lib/supabase/client'
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
 import { ProjectCard } from '@/components/ProjectCard'
+import type { Project } from '@/db/validations/project.types'
 
 const PAGE_SIZE = 6
 
@@ -34,25 +31,6 @@ export const Route = createFileRoute('/projects/')({
 type FilterValue = 'all' | 'public' | 'private'
 
 function RouteComponent() {
-  const supabase = getSupabaseBrowserClient()
-  const [session, setSession] = useState<Session | null>(null)
-  const [isSessionLoading, setIsSessionLoading] = useState(true)
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
-      setSession(data?.session ?? null)
-      setIsSessionLoading(false)
-    })
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event: AuthChangeEvent, session: Session | null) => {
-        setSession(session)
-      }
-    )
-
-    return () => listener.subscription.unsubscribe()
-  }, [])
-
   const [page, setPage] = useState(1)
   const [searchInput, setSearchInput] = useState('')
   const [filter, setFilter] = useState<FilterValue>('all')
@@ -69,7 +47,7 @@ function RouteComponent() {
   const allProjects = data?.projects ?? []
   const totalPages = data?.totalPages ?? 1
 
-  const projects = allProjects.filter((project) => {
+  const projects = allProjects.filter((project: Project) => {
     if (filter === 'public') return project.isPublic === true
     if (filter === 'private') return project.isPublic === false
     return true
@@ -94,11 +72,9 @@ function RouteComponent() {
 
   return (
     <Container size="xl" className="max-w-full space-y-6 px-0 py-6 sm:space-y-8 sm:py-8 md:py-10">
-      {/* Page Header */}
+      {/* ── PAGE HEADER ── */}
       <div className="mb-6 max-w-2xl sm:mb-10">
-        <div className="heading">
-          Built for Real-World Use
-        </div>
+        <div className="heading">Built for Real-World Use</div>
         <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base sm:leading-7 dark:text-slate-400">
           A selection of applications and platforms brought to life from initial concept
           to final delivery. Each project highlights my approach to creating dependable,
@@ -106,14 +82,14 @@ function RouteComponent() {
         </p>
       </div>
 
-      {/* Search & Filter */}
+      {/* ── SEARCH & FILTER ── */}
       <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
         <div className="w-full min-w-0 sm:flex-1" style={{ maxWidth: 420 }}>
           <div className="mb-1.5 text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-400">
             Search
           </div>
           <TextInput
-            placeholder="Search by title, technology, or description…"
+            placeholder="Search by title or description…"
             size="sm"
             radius="md"
             leftSection={<Search size={14} />}
@@ -143,12 +119,10 @@ function RouteComponent() {
               Filter by status
             </span>
           </Group>
-
           <Group gap="xs">
             {(['all', 'public', 'private'] as const).map((value) => {
               const label = value === 'all' ? 'All' : value === 'public' ? 'Open Source' : 'Private'
               const isActive = filter === value
-
               return (
                 <Badge
                   key={value}
@@ -169,7 +143,7 @@ function RouteComponent() {
 
       <div className="mb-12 border-b border-blue-500" />
 
-      {/* Result count */}
+      {/* ── RESULT COUNT ── */}
       {!showSkeleton && projects.length > 0 && (
         <p className="mb-4 text-sm text-slate-600 dark:text-slate-400">
           Showing {projects.length}{' '}
@@ -178,10 +152,11 @@ function RouteComponent() {
         </p>
       )}
 
-      {/* Projects Section */}
+      {/* ── PROJECTS GRID ── */}
       <div
-        className={`min-h-[420px] transition-opacity duration-200 sm:min-h-[560px] md:min-h-[720px] lg:min-h-[900px] ${isPlaceholderData || isFetching ? 'opacity-80' : 'opacity-100'
-          }`}
+        className={`min-h-[420px] transition-opacity duration-200 sm:min-h-[560px] md:min-h-[720px] lg:min-h-[900px] ${
+          isPlaceholderData || isFetching ? 'opacity-80' : 'opacity-100'
+        }`}
       >
         {showSkeleton ? (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -199,18 +174,16 @@ function RouteComponent() {
             ))}
           </div>
         ) : projects.length === 0 ? (
-          <div className="flex min-h-[320px] flex-col items-center justify-center px-4 pt-10 sm:min-h-[480px] sm:pt-16 md:min-h-[640px]">
+          <div className="flex min-h-[320px] flex-col items-center justify-center gap-4 px-4 pt-10 sm:min-h-[480px] sm:pt-16 md:min-h-[640px]">
             <ThemeIcon size={72} radius="md" variant="light" color="indigo">
               <FolderOpen size={36} />
             </ThemeIcon>
-
             <div className="title2 text-center">No projects found</div>
-
             {isSearching ? (
               <>
                 <p className="max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
-                  No projects matched <strong>&quot;{debouncedSearch}&quot;</strong>. Try a different
-                  search term or clear the search.
+                  No projects matched <strong>&quot;{debouncedSearch}&quot;</strong>. Try a
+                  different search term or clear the search.
                 </p>
                 <Button variant="light" color="indigo" onClick={() => handleSearchChange('')}>
                   Clear Search
@@ -233,14 +206,14 @@ function RouteComponent() {
           </div>
         ) : (
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {projects.map((project) => (
-              <ProjectCard project={project} />
+            {projects.map((project: Project) => (
+              <ProjectCard key={project.id} project={project} />
             ))}
           </div>
         )}
       </div>
 
-      {/* Pagination */}
+      {/* ── PAGINATION ── */}
       {!isFetching && !isSearching && filter === 'all' && totalPages > 1 && (
         <Group justify="center" mt="xl">
           <Pagination

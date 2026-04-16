@@ -2,6 +2,7 @@
 import { project } from "../schema"
 import z from "zod"
 import { createSelectSchema } from "drizzle-zod"
+import type { InferSelectModel } from "drizzle-orm"
 
 
 
@@ -22,3 +23,4 @@ export const UpdateProjectSchema = ProjectSchema.extend({
     projectId: z.string().nonempty()
 })
 export type UpdateProjectRequest = z.infer<typeof UpdateProjectSchema>
+export type Project=InferSelectModel<typeof project>

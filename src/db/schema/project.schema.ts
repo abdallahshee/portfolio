@@ -2,7 +2,6 @@
 import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
-import { projectRating } from "./project-rating.schema";
 import { caseStudy } from "./project-case.schema";
 
 export const project = pgTable('project', {
@@ -21,8 +20,7 @@ export const project = pgTable('project', {
 
 
 // Project relations
-export const projectRelations = relations(project, ({ many,one }) => ({
-  ratings: many(projectRating), // all ratings associated with this project
+export const projectRelations = relations(project, ({ one }) => ({
   case:one(caseStudy,{
     fields:[project.id],
     references:[caseStudy.projectId]

@@ -1,72 +1,22 @@
-
 import { db } from "../db/index";
-import { and, avg, count, desc, eq, sql, inArray, ilike, or } from "drizzle-orm";
+import { desc, eq, ilike, or, sql } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
-import { project, projectRating } from "@/db/schema";
+import { project } from "@/db/schema";
 import { ProjectSchema, UpdateProjectSchema } from "@/db/validations/project.types";
-import { AdminMiddleware, OptionalAuthMiddleware } from "./middleware";
+import { AuthenticatedMiddleware } from "./middleware";
 
-export const getPaginatedProjects = createServerFn({ method: "GET" })
-  .inputValidator((data: { page: number; pageSize: number }) => data)
-  .handler(async ({ data }) => {
-    try {
-      const { page, pageSize } = data
-      const offset = (page - 1) * pageSize
-      const [projectRows, totalResult] = await Promise.all([
-        db.select().from(project).limit(pageSize).offset(offset),
-        db.select({ count: sql<number>`count(*)` }).from(project),
-      ])
-      // Fetch ratings for all projects in the current page in one query
-      const projectIds = projectRows.map((p) => p.id)
-      const ratingsResult = projectIds.length
-        ? await db
-          .select({
-            projectId: projectRating.projectId,
-            averageRating: avg(projectRating.rating),
-            totalRatings: count(projectRating.id),
-          })
-          .from(projectRating)
-          .where(inArray(projectRating.projectId, projectIds))
-          .groupBy(projectRating.projectId)
-        : []
-      // Map ratings by projectId for O(1) lookup
-      const ratingsMap = new Map(
-        ratingsResult.map((r) => [
-          r.projectId,
-          {
-            averageRating: r.averageRating
-              ? Number(Number(r.averageRating).toFixed(1))
-              : 0,
-            totalRatings: r.totalRatings ?? 0,
-          },
-        ])
-      )
-      const projects = projectRows.map((p) => ({
-        ...p,
-        averageRating: ratingsMap.get(p.id)?.averageRating ?? 0,
-        totalRatings: ratingsMap.get(p.id)?.totalRatings ?? 0,
-      }))
-      const total = Number(totalResult[0].count)
-      return {
-        projects,
-        total,
-        page,
-        pageSize,
-        totalPages: Math.ceil(total / pageSize),
-      }
-    } catch (err) {
-      console.error("Error fetching projects:", err)
-      return { projects: [], total: 0, page: 1, pageSize: 6, totalPages: 0 }
-    }
-  })
+
 
 export const createProject = createServerFn({ method: 'POST' })
-  .middleware([AdminMiddleware])
-  .inputValidator(ProjectSchema) // validates incoming data using Zod
+  .middleware([AuthenticatedMiddleware])
+  .inputValidator(ProjectSchema)
   .handler(async ({ data }) => {
     try {
-      // Insert the project into the database
-      const [theProjectId] = await db.insert(project).values({ ...data }).returning({ projectId: project.id });
+      const [theProjectId] = await db
+        .insert(project)
+        .values({ ...data })
+        .returning({ projectId: project.id });
+
       return { success: true, projectId: theProjectId.projectId };
     } catch (err) {
       console.error('Error creating project:', err);
@@ -74,14 +24,43 @@ export const createProject = createServerFn({ method: 'POST' })
     }
   });
 
+
 export const getProjectById = createServerFn({ method: "GET" })
   .inputValidator((data: { projectId: string }) => data)
-  .middleware([OptionalAuthMiddleware])
-  .handler(async ({ data, context }) => {
+  .handler(async ({ data }) => {
     try {
-      const userId = context.userId
+      const [theProject] = await db
+        .select({
+          id: project.id,
+          title: project.title,
+          description: project.description,
+          imageUrl: project.imageUrl,
+          isPublic: project.isPublic,
+          url: project.url,
+          createdAt: project.createdAt,
+          updatedAt: project.updatedAt,
+        })
+        .from(project)
+        .where(eq(project.id, data.projectId));
 
-      const [projectResult, ratingResult, userRatingResult] = await Promise.all([
+      if (!theProject) return null;
+
+      return theProject;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  });
+
+export const getPaginatedProjects = createServerFn({ method: "GET" })
+  .inputValidator((data: { page: number; pageSize: number }) => data)
+  .handler(async ({ data }) => {
+    const { page, pageSize } = data  // ← move destructure outside try/catch
+
+    try {
+      const offset = (page - 1) * pageSize
+
+      const [projectRows, totalResult] = await Promise.all([
         db
           .select({
             id: project.id,
@@ -94,96 +73,58 @@ export const getProjectById = createServerFn({ method: "GET" })
             updatedAt: project.updatedAt,
           })
           .from(project)
-          .where(eq(project.id, data.projectId)),
+          .orderBy(desc(project.createdAt))
+          .limit(pageSize)
+          .offset(offset),
 
         db
-          .select({
-            averageRating: avg(projectRating.rating),
-            totalRatings: count(projectRating.id),
-          })
-          .from(projectRating)
-          .where(eq(projectRating.projectId, data.projectId)),
-
-        userId
-          ? db
-              .select({
-                rating: projectRating.rating,
-              })
-              .from(projectRating)
-              .where(
-                and(
-                  eq(projectRating.projectId, data.projectId),
-                  eq(projectRating.userId, userId)
-                )
-              )
-          : Promise.resolve([]),
+          .select({ count: sql<number>`count(*)` })
+          .from(project),
       ])
 
-      const theProject = projectResult[0]
-      const rating = ratingResult[0]
-      const userRating = userRatingResult[0]
-
-      if (!theProject) return null
+      const total = Number(totalResult[0].count)
 
       return {
-        id: theProject.id,
-        title: theProject.title,
-        description: theProject.description,
-        imageUrl: theProject.imageUrl,
-        isPublic: theProject.isPublic,
-        url: theProject.url,
-        createdAt: theProject.createdAt,
-        updatedAt: theProject.updatedAt,
-        averageRating: rating?.averageRating
-          ? Number(Number(rating.averageRating).toFixed(1))
-          : 0,
-        totalRatings: Number(rating?.totalRatings ?? 0),
-        userRating: userRating?.rating ?? null,
+        projects: projectRows,
+        total,
+        page,
+        pageSize,
+        totalPages: Math.ceil(total / pageSize),
+        hasNextPage: page < Math.ceil(total / pageSize),
+        hasPrevPage: page > 1,
       }
     } catch (err) {
-      console.error(err)
-      return null
+      console.error("Error fetching paginated projects:", err)
+      return {
+        projects: [],
+        total: 0,
+        page,
+        pageSize,
+        totalPages: 0,
+        hasNextPage: false,
+        hasPrevPage: false,
+      }
     }
   })
-
-
-// Need to be refactored to use only the rating and the average rating
 export const updateProject = createServerFn({ method: "POST" })
-  .middleware([AdminMiddleware])
+  .middleware([AuthenticatedMiddleware])
   .inputValidator(UpdateProjectSchema)
   .handler(async ({ data }) => {
     try {
-      await db
+      const [updatedProject] = await db
         .update(project)
         .set({ ...data })
         .where(eq(project.id, data.projectId))
-      // Fetch and return the updated project in the same shape as getProjectById
-      const [projectResult, ratingResult] = await Promise.all([
-        db.select().from(project).where(eq(project.id, data.projectId)),
-        db
-          .select({
-            averageRating: avg(projectRating.rating),
-            totalRatings: count(projectRating.id),
-          })
-          .from(projectRating)
-          .where(eq(projectRating.projectId, data.projectId)),
-      ])
-      const theProject = projectResult[0]
-      const rating = ratingResult[0]
-      if (!theProject) return null
-      return {
-        ...theProject,
-        averageRating: rating?.averageRating
-          ? Number(Number(rating.averageRating).toFixed(1))
-          : 0,
-        totalRatings: rating?.totalRatings ?? 0,
-        userRating: null, // admin context has no user rating
-      }
+        .returning();
+
+      if (!updatedProject) return null;
+
+      return updatedProject;
     } catch (err) {
-      console.error(err)
-      return null
+      console.error(err);
+      return null;
     }
-  })
+  });
 
 
 export const getTopProjects = createServerFn({ method: "GET" })
@@ -195,77 +136,78 @@ export const getTopProjects = createServerFn({ method: "GET" })
           title: project.title,
           imageUrl: project.imageUrl,
           isPublic: project.isPublic,
-          avgRating: avg(projectRating.rating), // calculate average rating
+          createdAt:project.createdAt
         })
         .from(project)
-        .leftJoin(projectRating, eq(project.id, projectRating.projectId))
-        .groupBy(project.id)
-        .orderBy(desc(avg(projectRating.rating)))
-        .limit(3); // top 5 projects
+        .limit(5);
+
       return topProjects;
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw err;
     }
   });
 
-// server/project.functions.ts
+
 export const searchProjects = createServerFn({ method: "GET" })
   .inputValidator((data: { query: string; page: number; pageSize: number }) => data)
-  .handler(async ({ data }) => {
+  .handler(async ({ data: { query, page, pageSize } }) => {
     try {
-      const { query, page, pageSize } = data
       const offset = (page - 1) * pageSize
       const search = `%${query}%`
+
       const whereClause = query.trim()
         ? or(
-          ilike(project.title, search),
-          ilike(project.description, search),
-          // sql`${project.technologies}::text ilike ${search}`
-        )
+            ilike(project.title, search),
+            ilike(project.description, search),
+          )
         : undefined
+
       const [projectRows, totalResult] = await Promise.all([
-        db.select().from(project).where(whereClause).limit(pageSize).offset(offset),
-        db.select({ count: sql<number>`count(*)` }).from(project).where(whereClause),
-      ])
-      const projectIds = projectRows.map((p) => p.id)
-      const ratingsResult = projectIds.length
-        ? await db
+        db
           .select({
-            projectId: projectRating.projectId,
-            averageRating: avg(projectRating.rating),
-            totalRatings: count(projectRating.id),
+            id: project.id,
+            title: project.title,
+            description: project.description,
+            imageUrl: project.imageUrl,
+            isPublic: project.isPublic,
+            url: project.url,
+            createdAt: project.createdAt,
+            updatedAt: project.updatedAt,
           })
-          .from(projectRating)
-          .where(inArray(projectRating.projectId, projectIds))
-          .groupBy(projectRating.projectId)
-        : []
-      const ratingsMap = new Map(
-        ratingsResult.map((r) => [
-          r.projectId,
-          {
-            averageRating: r.averageRating
-              ? Number(Number(r.averageRating).toFixed(1))
-              : 0,
-            totalRatings: r.totalRatings ?? 0,
-          },
-        ])
-      )
-      const projects = projectRows.map((p) => ({
-        ...p,
-        averageRating: ratingsMap.get(p.id)?.averageRating ?? 0,
-        totalRatings: ratingsMap.get(p.id)?.totalRatings ?? 0,
-      }))
+          .from(project)
+          .where(whereClause)
+          .orderBy(desc(project.createdAt))
+          .limit(pageSize)
+          .offset(offset),
+
+        db
+          .select({ count: sql<number>`count(*)` })
+          .from(project)
+          .where(whereClause),
+      ])
+
       const total = Number(totalResult[0].count)
+
       return {
-        projects,
+        projects: projectRows,
         total,
         page,
         pageSize,
         totalPages: Math.ceil(total / pageSize),
+        hasNextPage: page < Math.ceil(total / pageSize),
+        hasPrevPage: page > 1,
       }
     } catch (err) {
       console.error("Error searching projects:", err)
-      return { projects: [], total: 0, page: 1, pageSize: 6, totalPages: 0 }
+      return {
+        projects: [],
+        total: 0,
+        page,
+        pageSize,
+        totalPages: 0,
+        hasNextPage: false,
+        hasPrevPage: false,
+      }
     }
   })

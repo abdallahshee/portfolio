@@ -1,13 +1,13 @@
 import { createServerFn } from "@tanstack/react-start";
-import { AdminMiddleware } from "./middleware";
 import { CaseSchema } from "@/db/validations/case.types";
 import { db } from "@/db";
 import { caseStudy } from "@/db/schema/project-case.schema";
 import { eq } from "drizzle-orm";
+import { AuthenticatedMiddleware } from "./middleware";
 
 
 export const createProjectCase = createServerFn({ method: "POST" })
-    .middleware([AdminMiddleware])
+    .middleware([AuthenticatedMiddleware])
     .inputValidator(CaseSchema)
     .handler(async ({ data }) => {
         try {
@@ -19,7 +19,7 @@ export const createProjectCase = createServerFn({ method: "POST" })
     })
 
 
-export const getProjectCaseStudyByProjectId = createServerFn({ method: "GET" })
+export const getCaseStudyByProjectId = createServerFn({ method: "GET" })
   .inputValidator((data: { projectId: string }) => data)
   .handler(async ({ data }) => {
     try {
