@@ -68,7 +68,7 @@ function ContactPage() {
       </Stack>
 
       {/* ── CONTACT CARD ── */}
-      <Card radius="xl" withBorder className="p-6 shadow-sm sm:p-8">
+      <Card radius="md" withBorder className="p-6 shadow-sm sm:p-8">
         <Stack gap="xl">
           {/* Contact links */}
           <Stack gap="md">
