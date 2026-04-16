@@ -20,11 +20,8 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {
   ArrowRight,
-  Mail,
   Linkedin,
   FolderKanban,
-  FileText,
-  FolderOpen,
   BookOpen,
   Briefcase,
   Users,
@@ -186,7 +183,7 @@ function FeaturedProjectsSection() {
 
 const STATS = [
   { icon: <Briefcase size={18} />, value: '4+', label: 'Years Experience', color: 'indigo' },
-  { icon: <FolderKanban size={18} />, value: '10+', label: 'Projects Delivered', color: 'blue' },
+  { icon: <FolderKanban size={18} />, value: '12+', label: 'Projects Delivered', color: 'blue' },
   { icon: <Users size={18} />, value: '10+', label: 'Happy Clients', color: 'green' },
   // { icon: <Star size={18} />, value: '100%', label: 'On-Time Delivery', color: 'yellow' },
 ]
@@ -261,9 +258,9 @@ function App() {
             </div>
 
             <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
-              I build modern digital products with a strong focus on architecture,
-              maintainability, performance, and user experience — turning complex ideas
-              into reliable, production-ready applications.
+              I build mobile-first, responsive digital products with a strong focus on architecture,
+              maintainability, performance, and user experience—turning complex ideas into reliable,
+              production-ready applications.
             </p>
           </Stack>
 

@@ -8,7 +8,7 @@ import {
   Button,
 } from "@mantine/core"
 import { Link } from "@tanstack/react-router"
-import { Sun, Moon } from "lucide-react"
+import { Sun, Moon, Briefcase, Home, Folder, Mail } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 
 import { createClient } from "@supabase/supabase-js"
@@ -33,10 +33,10 @@ function applyThemeMode(mode: ThemeMode) {
 }
 
 const links = [
-  { label: "Home", to: "/" },
-  { label: "Services", to: "/services" },
-  { label: "Projects", to: "/projects" },
-  { label: "Contact", to: "/contact" },
+  { label: "Home", to: "/", icon: Home },
+  { label: "Services", to: "/services", icon: Briefcase },
+  { label: "Projects", to: "/projects", icon: Folder },
+  { label: "Contact", to: "/contact", icon: Mail },
 ]
 
 export default function Header() {
@@ -135,16 +135,20 @@ const supabase=getSupabaseBrowserClient()
             {ThemeButton}
 
             <nav className="flex min-w-0 items-center gap-2.5 md:gap-3 lg:gap-5">
-              {links.map((link) => (
-                <Link
-                  key={link.label}
-                  to={link.to}
-                  className="whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
-                  activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
-                >
-                  {link.label}
-                </Link>
-              ))}
+          {links.map((link) => {
+  const Icon = link.icon
+  return (
+    <Link
+      key={link.label}
+      to={link.to}
+      className="flex items-center gap-1.5 whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
+      activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
+    >
+      <Icon size={16} />
+      {link.label}
+    </Link>
+  )
+})}
             </nav>
 
             {/* ✅ Sign Out (Desktop) */}
@@ -188,17 +192,21 @@ const supabase=getSupabaseBrowserClient()
       >
         <ScrollArea style={{ height: "100%" }}>
           <div className="mt-4 flex flex-col space-y-4 text-lg">
-            {links.map((link) => (
-              <Link
-                key={link.label}
-                to={link.to}
-                className="font-normal text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
-                onClick={() => setOpened(false)}
-                activeProps={{ className: "text-indigo-500 dark:text-indigo-400" }}
-              >
-                {link.label}
-              </Link>
-            ))}
+     {links.map((link) => {
+  const Icon = link.icon
+  return (
+    <Link
+      key={link.label}
+      to={link.to}
+      className="flex items-center gap-3 font-normal text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
+      onClick={() => setOpened(false)}
+      activeProps={{ className: "text-indigo-500 dark:text-indigo-400" }}
+    >
+      <Icon size={20} />
+      {link.label}
+    </Link>
+  )
+})}
 
             {/* ✅ Sign Out (Mobile) */}
             {currentUser && (

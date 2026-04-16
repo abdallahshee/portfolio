@@ -32,6 +32,7 @@ import {
   Lightbulb,
   Plug,
   Workflow,
+  Home,
 } from 'lucide-react'
 export const Route = createFileRoute('/services')({
   component: ServicesPage,
@@ -234,13 +235,13 @@ function ServicesPage() {
           <Group gap="sm" wrap="wrap">
             <Link to="/contact">
               <Button
-                color="green"
+                // color="green"
                 radius="md"
                 variant="filled"
                 size="sm"
-                leftSection={<Lightbulb size={16} color="yellow" />}
+                leftSection={<Lightbulb size={16} />}
               >
-                Discuss Your Idea with Me
+                Let's Discuss Your Idea
               </Button>
             </Link>
 
@@ -249,6 +250,7 @@ function ServicesPage() {
               color="indigo"
               radius="md"
               size="sm"
+              leftSection={<Home size={16}/>}
               onClick={() => router.navigate({ to: "/" })}
             >
               Back to Home
@@ -416,6 +418,7 @@ function ServicesPage() {
           radius="24px"
           withBorder
           shadow="sm"
+          
           className="relative overflow-hidden border border-slate-200/70 bg-linear-to-br from-white via-indigo-50 to-blue-50 px-4 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
         >
           <Stack align="center" gap="md">
@@ -429,7 +432,7 @@ function ServicesPage() {
             <Group justify="center" mt="md" wrap="wrap" gap="sm">
               <Button
                 variant="filled"
-                color="yellow"
+                color="blue"
                 size="sm"
                 radius="md"
                 leftSection={<Mail size={18} />}
@@ -438,7 +441,7 @@ function ServicesPage() {
                 Let's Get Started
               </Button>
               <Link to="/projects">
-                <Button variant="gradient" color="blue" size="sm" radius="md" leftSection={<FolderKanban size={18} />}>
+                <Button variant="outline" color="blue" size="sm" radius="md" leftSection={<FolderKanban size={18} />}>
                   Explore My Projects
                 </Button>
               </Link>
