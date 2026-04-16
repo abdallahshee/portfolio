@@ -172,7 +172,7 @@ const supabase=getSupabaseBrowserClient()
         title={
           <div className="flex items-center gap-2.5">
             <Image
-              src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
+              src="/images/avatar.png"
               alt="Abdallah logo"
               radius="md"
               w={30}

@@ -30,6 +30,7 @@ import { ProjectSchema, type ProjectRequest } from "@/db/validations/project.typ
 
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { useProjectCreateMutation } from "@/db/queries/project.mutations"
+import { uploadProjectImage } from "@/lib/supabase/client"
 
 
 export const Route = createFileRoute("/projects/new")({
@@ -64,9 +65,9 @@ function RouteComponent() {
     try {
       setLoading(true)
 
-      let uploadedImageUrl = values.imageUrl || ""
+      let uploadedImageUrl = values.imageUrl
       if (file) {
-        // uploadedImageUrl = await uploadProjectImage(file)
+       uploadedImageUrl=await uploadProjectImage(file,values.title)
       }
 
       await createProject.mutateAsync({

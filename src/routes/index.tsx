@@ -116,65 +116,65 @@ function FeaturedProjectsSection() {
               </Link>
             </div>
           ) : (
-<Table highlightOnHover withTableBorder>
-  <Table.Thead>
-    <Table.Tr>
-      <Table.Th>Project</Table.Th>
-      <Table.Th>Status</Table.Th>
-      <Table.Th>Created</Table.Th>
-      <Table.Th></Table.Th>
-    </Table.Tr>
-  </Table.Thead>
-  <Table.Tbody>
-    {projects.map((project) => (
-      <Table.Tr
-        key={project.id}
-        onClick={() =>
-          router.navigate({
-            to: '/projects/$slug',
-            params: {slug: project.slug },
-          })
-        }
-        className="cursor-pointer hover:bg-gray-50"
-      >
-        <Table.Td>
-          <Group gap="sm">
-            {project.imageUrl ? (
-              <Image src={project.imageUrl} w={46} h={46} radius="md" />
-            ) : (
-              <ThemeIcon size={46} radius="md" variant="light">
-                <FolderKanban size={20} />
-              </ThemeIcon>
-            )}
-            <div className="font-semibold truncate">{project.title}</div>
-          </Group>
-        </Table.Td>
+            <Table highlightOnHover withTableBorder>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>Project</Table.Th>
+                  <Table.Th>Status</Table.Th>
+                  <Table.Th>Created</Table.Th>
+                  <Table.Th></Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {projects.map((project) => (
+                  <Table.Tr
+                    key={project.id}
+                    onClick={() =>
+                      router.navigate({
+                        to: '/projects/$slug',
+                        params: { slug: project.slug },
+                      })
+                    }
+                    className="cursor-pointer hover:bg-gray-50"
+                  >
+                    <Table.Td>
+                      <Group gap="sm">
+                        {project.imageUrl ? (
+                          <Image src={project.imageUrl} w={46} h={46} radius="md" />
+                        ) : (
+                          <ThemeIcon size={46} radius="md" variant="light">
+                            <FolderKanban size={20} />
+                          </ThemeIcon>
+                        )}
+                        <div className="font-semibold truncate">{project.title}</div>
+                      </Group>
+                    </Table.Td>
 
-        <Table.Td>
-          <Badge
-            variant="light"
-            color={project.isPublic ? 'teal' : 'gray'}
-            radius="md"
-            size="sm"
-          >
-            {project.isPublic ? 'Open Source' : 'Private'}
-          </Badge>
-        </Table.Td>
+                    <Table.Td>
+                      <Badge
+                        variant="light"
+                        color={project.isPublic ? 'teal' : 'gray'}
+                        radius="md"
+                        size="sm"
+                      >
+                        {project.isPublic ? 'Open Source' : 'Private'}
+                      </Badge>
+                    </Table.Td>
 
-        <Table.Td>
-          <span className="text-sm text-slate-500 dark:text-slate-400">
-            {moment(project.createdAt).format("DDD- MM-YYYY")}
-            
-          </span>
-        </Table.Td>
+                    <Table.Td>
+                      <span className="text-sm text-slate-500 dark:text-slate-400">
+                        {moment(project.createdAt).format("DDD- MM-YYYY")}
 
-        <Table.Td w={60}>
-          <span className="text-blue-600 font-semibold">View</span>
-        </Table.Td>
-      </Table.Tr>
-    ))}
-  </Table.Tbody>
-</Table>
+                      </span>
+                    </Table.Td>
+
+                    <Table.Td w={60}>
+                      <span className="text-blue-600 font-semibold">View</span>
+                    </Table.Td>
+                  </Table.Tr>
+                ))}
+              </Table.Tbody>
+            </Table>
           )}
         </div>
       </Stack>
@@ -289,7 +289,7 @@ function App() {
         <div className="flex justify-center lg:justify-end">
           <div className="relative h-[240px] overflow-hidden rounded-2xl sm:h-[280px] lg:h-[320px]">
             <img
-              src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
+              src="/images/avatar.png "
               alt="Abdallah Shee"
               className="block h-full w-full rounded-2xl object-cover"
             />
@@ -357,19 +357,6 @@ function App() {
             I believe good software should feel effortless — it should solve real problems,
             adapt as your business grows, and continue working smoothly long after it’s launched.
           </p>
-
-          {/* <Group>
-            <Link to="/contact">
-              <Button variant="filled" color="indigo" radius="xl" size="md" rightSection={<ArrowRight size={16} />}>
-                Let's Work Together
-              </Button>
-            </Link>
-            <Link to="/services">
-              <Button variant="outline" color="indigo" radius="xl" size="md" rightSection={<ArrowRight size={16} />}>
-                Explore My Services
-              </Button>
-            </Link>
-          </Group> */}
         </Stack>
 
         <Stack gap="lg" className="min-w-0">
@@ -452,11 +439,11 @@ function App() {
         </SimpleGrid>
       </section>
 
-<div className="mx-auto w-full">
-  <Suspense fallback={<ProjectsSkeleton />}>
-    <FeaturedProjectsSection />
-  </Suspense>
-</div>
+      <div className="mx-auto w-full">
+        <Suspense fallback={<ProjectsSkeleton />}>
+          <FeaturedProjectsSection />
+        </Suspense>
+      </div>
     </Container>
   )
 }
