@@ -10,6 +10,7 @@ import {
   SimpleGrid,
   Avatar,
   Timeline,
+  Image,
 } from '@mantine/core'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {
@@ -250,7 +251,7 @@ function ServicesPage() {
               color="indigo"
               radius="md"
               size="sm"
-              leftSection={<Home size={16}/>}
+              leftSection={<Home size={16} />}
               onClick={() => router.navigate({ to: "/" })}
             >
               Back to Home
@@ -268,9 +269,9 @@ function ServicesPage() {
       {/* ── SERVICES GRID ── */}
       <section className="space-y-3">
         <div>
-          <div className="title2">Service Areas</div>
-          <p className="mt-2 max-w-2xl text-sm text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
-            I design and build software solutions tailored precisely to your requirements — with a focus on performance, scalability, and long-term reliability.
+          <div className="title2 ">Service Areas</div>
+          <p className="my-2 w-full text-sm text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
+            I design and build software solutions tailored precisely to your requirements — focusing on performance, scalability, and long-term reliability. From concept to deployment, I ensure every system is structured for maintainability and delivers a seamless user experience across all devices.
           </p>
         </div>
 
@@ -347,13 +348,19 @@ function ServicesPage() {
         {/* RIGHT */}
         <section className="space-y-6 ">
           <div>
-            <div className="title2">
+            <div className="title2 mb-1">
               Tools & Tech Stack
             </div>
-            <p className="mt-2 max-w-md text-sm leading-7 text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
+
+            <p className="mb-4 mt-2 max-w-md text-sm leading-7 text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
               I use a modern, production-proven stack chosen for reliability, developer experience,
               and long-term maintainability.
             </p>
+            <img
+              src="/images/tools.jpg"
+              alt="Distributed software system with multiple connected services"
+              className="block w-full h-38 sm:h-46 md:h-56 rounded-lg object-cover"
+            />
           </div>
 
           <SimpleGrid cols={{ base: 2, sm: 2, lg: 2 }} spacing="sm">
@@ -413,12 +420,12 @@ function ServicesPage() {
         </SimpleGrid>
       </section>
       {/* ── CTA ── */}
-      <section id="contact" className="mx-auto max-w-3xl scroll-mt-20">
+      <section id="contact" className="mx-auto w-full scroll-mt-20">
         <Paper
           radius="24px"
           withBorder
           shadow="sm"
-          
+
           className="relative overflow-hidden border border-slate-200/70 bg-linear-to-br from-white via-indigo-50 to-blue-50 px-4 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
         >
           <Stack align="center" gap="md">

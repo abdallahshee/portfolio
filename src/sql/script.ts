@@ -7,20 +7,29 @@ import { sql } from "drizzle-orm"
 const SQL_DIR = join(import.meta.dirname, ".")
 
 const files = [
-//   "drop.policies.sql",
   "project.policies.sql",
   "case.policies.sql",
   "bucket.images.sql",
 ]
 
-async function runScripts() {
+export async function runScripts() {
   try {
     for (const file of files) {
       const filePath = join(SQL_DIR, file)
       const sqlContent = readFileSync(filePath, "utf-8")
 
-      console.log(`▶ Running ${file}...`)
-      await db.execute(sql.raw(sqlContent))
+      // Split into individual statements and filter empty ones
+      const statements = sqlContent
+        .split(";")
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0 && !s.startsWith("--"))
+
+      console.log(`▶ Running ${file} (${statements.length} statements)...`)
+
+      for (const statement of statements) {
+        await db.execute(sql.raw(statement))
+      }
+
       console.log(`✅ ${file} executed successfully`)
     }
 

@@ -50,7 +50,7 @@ export default function Header() {
   })
 
   // ✅ Supabase client
-const supabase=getSupabaseBrowserClient()
+  const supabase = getSupabaseBrowserClient()
   const handleSignOut = async () => {
     await supabase.auth.signOut()
     window.location.href = "/" // simple + reliable redirect
@@ -74,7 +74,7 @@ const supabase=getSupabaseBrowserClient()
   const BrandLogo = (
     <Link to="/" className="flex flex-shrink-0 items-center gap-2.5 no-underline">
       <Image
-        src="https://images.pexels.com/photos/874158/pexels-photo-874158.jpeg"
+        src="/images/profile.png"
         alt="Abdallah logo"
         radius="md"
         w={36}
@@ -96,7 +96,7 @@ const supabase=getSupabaseBrowserClient()
       {themeMode === "dark" ? (
         <Moon size={24} className="text-indigo-400" />
       ) : (
-                <Sun size={24} className="text-indigo-500" />
+        <Sun size={24} className="text-indigo-500" />
       )}
     </UnstyledButton>
   )
@@ -135,20 +135,20 @@ const supabase=getSupabaseBrowserClient()
             {ThemeButton}
 
             <nav className="flex min-w-0 items-center gap-2.5 md:gap-3 lg:gap-5">
-          {links.map((link) => {
-  const Icon = link.icon
-  return (
-    <Link
-      key={link.label}
-      to={link.to}
-      className="flex items-center gap-1.5 whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
-      activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
-    >
-      <Icon size={16} />
-      {link.label}
-    </Link>
-  )
-})}
+              {links.map((link) => {
+                const Icon = link.icon
+                return (
+                  <Link
+                    key={link.label}
+                    to={link.to}
+                    className="flex items-center gap-1.5 whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
+                    activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
+                  >
+                    <Icon size={16} />
+                    {link.label}
+                  </Link>
+                )
+              })}
             </nav>
 
             {/* ✅ Sign Out (Desktop) */}
@@ -192,21 +192,21 @@ const supabase=getSupabaseBrowserClient()
       >
         <ScrollArea style={{ height: "100%" }}>
           <div className="mt-4 flex flex-col space-y-4 text-lg">
-     {links.map((link) => {
-  const Icon = link.icon
-  return (
-    <Link
-      key={link.label}
-      to={link.to}
-      className="flex items-center gap-3 font-normal text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
-      onClick={() => setOpened(false)}
-      activeProps={{ className: "text-indigo-500 dark:text-indigo-400" }}
-    >
-      <Icon size={20} />
-      {link.label}
-    </Link>
-  )
-})}
+            {links.map((link) => {
+              const Icon = link.icon
+              return (
+                <Link
+                  key={link.label}
+                  to={link.to}
+                  className="flex items-center gap-3 font-normal text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
+                  onClick={() => setOpened(false)}
+                  activeProps={{ className: "text-indigo-500 dark:text-indigo-400" }}
+                >
+                  <Icon size={20} />
+                  {link.label}
+                </Link>
+              )
+            })}
 
             {/* ✅ Sign Out (Mobile) */}
             {currentUser && (

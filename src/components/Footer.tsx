@@ -26,7 +26,7 @@ export default function Footer() {
           <Stack gap="md">
             <Group align="flex-start" wrap="wrap" gap="sm">
               <Image
-             src="/images/avatar.png"
+                src="/images/profile.png"
                 alt="Abdallah Shee"
                 w={60}
                 h={60}

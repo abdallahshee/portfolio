@@ -286,7 +286,7 @@ function App() {
         <div className="flex justify-center lg:justify-end">
           <div className="relative h-[240px] overflow-hidden rounded-2xl sm:h-[280px] lg:h-[320px]">
             <img
-              src="/images/avatar.png "
+              src="/images/profile.png"
               alt="Abdallah Shee"
               className="block h-full w-full rounded-2xl object-cover"
             />
