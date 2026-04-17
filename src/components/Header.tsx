@@ -176,7 +176,7 @@ export default function Header() {
         title={
           <div className="flex items-center gap-2.5">
             <Image
-              src="/images/avatar.png"
+              src="/images/profile.png"
               alt="Abdallah logo"
               radius="md"
               w={30}
