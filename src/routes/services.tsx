@@ -1,4 +1,5 @@
 import ServiceComponent from '@/components/ServiceComponent'
+import { getTestimonialQueryOptions } from '@/db/queries/testimonial.queries'
 import {
   Button,
   Card,
@@ -12,7 +13,12 @@ import {
   Timeline,
   Image,
   Divider,
+  Skeleton,
 } from '@mantine/core'
+import { Carousel } from '@mantine/carousel'
+import Autoplay from 'embla-carousel-autoplay'
+import '@mantine/carousel/styles.css'
+import { Suspense, useRef } from 'react'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {
   Mail,
@@ -31,12 +37,15 @@ import {
   HeartHandshake,
   Quote,
   FolderKanban,
-  Lightbulb,
   Plug,
   Workflow,
-  Home,
+
 } from 'lucide-react'
+import { useSuspenseQuery } from '@tanstack/react-query'
 export const Route = createFileRoute('/services')({
+  loader: async ({ context }) => {
+    await context.queryClient.prefetchQuery(getTestimonialQueryOptions())
+  },
   component: ServicesPage,
 })
 
@@ -188,10 +197,124 @@ const TESTIMONIALS = [
     quote:
       'We needed a custom inventory and sales system. Abdallah scoped the project clearly, kept us in the loop throughout, and the final product exceeded our expectations. Would absolutely work with him again.',
   },
+  {
+    name: 'Sarah Kimani',
+    role: 'COO, PayEase Africa',
+    avatar: 'SK',
+    color: 'orange',
+    quote:
+      'The finance platform Abdallah built for us handles thousands of transactions daily without a hitch. His attention to security and data integrity gave us full confidence in the system from day one.',
+  },
+  {
+    name: 'David Njoroge',
+    role: 'MD, SwiftBook Hotels',
+    avatar: 'DN',
+    color: 'pink',
+    quote:
+      'Our booking system went live in record time. The calendar sync, automated reminders, and online payments work flawlessly. Our front desk team adapted to it instantly — it just makes sense.',
+  },
+  {
+    name: 'Grace Wanjiru',
+    role: 'Head of Ops, Soko SACCO',
+    avatar: 'GW',
+    color: 'green',
+    quote:
+      'Managing member contributions and loan applications used to be a nightmare. Now everything is tracked in one place and our members can check their balances anytime. Game changer for our SACCO.',
+  },
 ]
+
+// ── TESTIMONIALS SKELETON ──
+function TestimonialsSkeleton() {
+  return (
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+      {Array.from({ length: 2 }).map((_, i) => (
+        <Card key={i} radius="lg" withBorder p="xl" className="h-full shadow-sm">
+          <Stack gap="lg" h="100%">
+            <Skeleton height={36} width={36} radius="md" />
+            <Stack gap="sm" className="flex-1">
+              <Skeleton height={12} radius="md" />
+              <Skeleton height={12} width="90%" radius="md" />
+              <Skeleton height={12} width="80%" radius="md" />
+              <Skeleton height={12} width="70%" radius="md" />
+            </Stack>
+            <Group gap="sm" wrap="nowrap">
+              <Skeleton height={42} width={42} radius="md" />
+              <Stack gap={6}>
+                <Skeleton height={12} width={120} radius="md" />
+                <Skeleton height={10} width={80} radius="md" />
+              </Stack>
+            </Group>
+          </Stack>
+        </Card>
+      ))}
+    </div>
+  )
+}
+
+// ── TESTIMONIALS CAROUSEL ──
+function TestimonialsCarousel() {
+  const { data: testimonials } = useSuspenseQuery(getTestimonialQueryOptions())
+  const autoplay = useRef(Autoplay({ delay: 4000 }))
+
+  return (
+    <Carousel
+      withIndicators
+      slideSize="100%"
+      slideGap="md"
+      emblaOptions={{ loop: true, align: 'start' }}
+      plugins={[autoplay.current]}
+      onMouseEnter={autoplay.current.stop}
+      onMouseLeave={autoplay.current.reset}
+      previousControlProps={{ style: { marginLeft: '-16px' } }}
+      nextControlProps={{ style: { marginRight: '-16px' } }}
+      styles={{
+        root: { paddingLeft: '40px', paddingRight: '40px' },
+        indicator: { background: 'var(--mantine-color-indigo-4)' },
+        control: {
+          border: '1px solid var(--mantine-color-gray-3)',
+          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+        },
+      }}
+    >
+      {Array.from({ length: Math.ceil(testimonials.length / 2) }).map((_, slideIndex) => (
+        <Carousel.Slide key={slideIndex}>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {testimonials.slice(slideIndex * 2, slideIndex * 2 + 2).map((t) => (
+              <Card key={t.authorName} radius="lg" withBorder p="xl" className="h-full shadow-sm">
+                <Stack gap="lg" h="100%">
+                  <ThemeIcon variant="light" color="pink" radius="md" size={36} className="opacity-60">
+                    <Quote size={18} />
+                  </ThemeIcon>
+
+                  <p className="flex-1 text-sm leading-7 text-slate-600 italic sm:text-base dark:text-slate-400">
+                    &ldquo;{t.quote}&rdquo;
+                  </p>
+
+                  <Group gap="sm" wrap="nowrap" className="min-w-0">
+                    <Avatar color="blue" radius="md" size={42} className="shrink-0">
+                      {t.authorName}
+                    </Avatar>
+                    <div className="min-w-0">
+                      <div className="text-base font-bold text-slate-900 dark:text-slate-50">
+                        {t.authorName}
+                      </div>
+                      <div className="text-sm text-slate-600 dark:text-slate-400">{t.authorTitle}</div>
+                    </div>
+                  </Group>
+                </Stack>
+              </Card>
+            ))}
+          </div>
+        </Carousel.Slide>
+      ))}
+    </Carousel>
+  )
+}
 
 function ServicesPage() {
   const router = useRouter()
+  const autoplay = useRef(Autoplay({ delay: 4000 }))
+  const { data: testimonials } = useSuspenseQuery(getTestimonialQueryOptions())
 
   return (
     <Container size="xl" className="max-w-full space-y-10 px-0 py-6 sm:space-y-12 sm:py-8 md:space-y-16 md:py-10">
@@ -389,29 +512,9 @@ function ServicesPage() {
           </p>
         </div>
 
-        <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="md">
-          {TESTIMONIALS.map((t) => (
-            <Card key={t.name} radius="lg" withBorder p="xl" className="shadow-sm">
-              <Stack gap="lg">
-                <ThemeIcon variant="light" color="pink" radius="md" size={36} className="opacity-60">
-                  <Quote size={18} />
-                </ThemeIcon>
-
-                <p className="text-sm leading-7 text-slate-600 italic sm:text-base dark:text-slate-400">
-                  &ldquo;{t.quote}&rdquo;
-                </p>
-
-                <Group gap="sm" wrap="nowrap" className="min-w-0">
-                  <Avatar color={t.color} radius="md" size={42} className="shrink-0">{t.avatar}</Avatar>
-                  <div className="min-w-0">
-                    <div className="text-base font-bold text-slate-900 dark:text-slate-50">{t.name}</div>
-                    <div className="text-sm text-slate-600 dark:text-slate-400">{t.role}</div>
-                  </div>
-                </Group>
-              </Stack>
-            </Card>
-          ))}
-        </SimpleGrid>
+        <Suspense fallback={<TestimonialsSkeleton />}>
+          <TestimonialsCarousel />
+        </Suspense>
       </section>
       {/* ── CTA ── */}
       <section id="contact" className="mx-auto w-full scroll-mt-20">

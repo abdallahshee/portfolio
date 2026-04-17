@@ -254,18 +254,18 @@ function App() {
               I build mobile-first, responsive digital products with a strong focus on architecture, maintainability, performance, and user experience — turning complex ideas into reliable, production-ready applications. From planning and system design to development and deployment, I ensure every solution is structured for scalability, clarity, and long-term success.
             </p>
             {/* STATS ROW */}
-            <div className="grid w-full  gap-y-4 border-b border-blue-400 py-2 grid-cols-3">
-              {STATS.map((stat) => (
-                <div key={stat.label} className="flex flex-col items-center text-center">
-                  <span className="title2 text-slate-900 dark:text-slate-50">
-                    {stat.value}
-                  </span>
-                  <span className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
-            </div>
+       <div className="grid w-full  gap-y-4 border-b border-blue-400 py-2 grid-cols-3">
+  {STATS.map((stat) => (
+    <div key={stat.label} className="flex flex-col items-center text-center">
+      <span className="title2 text-slate-900 dark:text-slate-50">
+        {stat.value}
+      </span>
+      <span className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+        {stat.label}
+      </span>
+    </div>
+  ))}
+</div>
           </div>
 
           {/* RIGHT — profile image */}
