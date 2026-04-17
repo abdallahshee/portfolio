@@ -11,6 +11,7 @@ import {
   Avatar,
   Timeline,
   Image,
+  Divider,
 } from '@mantine/core'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {
@@ -196,76 +197,69 @@ function ServicesPage() {
     <Container size="xl" className="max-w-full space-y-10 px-0 py-6 sm:space-y-12 sm:py-8 md:space-y-16 md:py-10">
 
       {/* ── HERO ── */}
-      <section className="grid items-stretch gap-6 sm:gap-8 lg:grid-cols-[2fr_1fr] lg:gap-14">
-        <Stack gap="md" className="min-w-0">
-          <Stack gap="md" className="min-w-0">
-            <div className="heading">
+      <section className="grid items-stretch gap-10 sm:gap-12">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-3 lg:gap-14">
+
+          {/* LEFT (2/3) */}
+          <div className="lg:col-span-2 flex flex-col gap-6 w-full">
+
+            {/* TITLE */}
+            <div className="heading leading-tight">
               Software solutions for real business needs
             </div>
 
+            {/* DESCRIPTION */}
             <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
               I help businesses and startups turn ideas into reliable, production-ready
               systems — from management platforms and SaaS products to tailored web
               applications built for performance, scalability, and long-term growth.
             </p>
-          </Stack>
 
-          <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm">
-            <Paper withBorder radius="md" p="md" className="min-w-0 shadow-sm">
-              <div className="text-sm font-bold text-slate-900 dark:text-slate-50">Scalable Systems</div>
-              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
-                Designed to grow with your users and workflows.
-              </p>
-            </Paper>
+            {/* FEATURE CARDS */}
+            <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm">
+              <Paper withBorder radius="md" p="md" className="shadow-sm transition hover:shadow-md">
+                <div className="text-sm font-bold text-slate-900 dark:text-slate-50">
+                  Scalable Systems
+                </div>
+                <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
+                  Designed to grow with your users and workflows.
+                </p>
+              </Paper>
 
-            <Paper withBorder radius="md" p="md" className="min-w-0 shadow-sm">
-              <div className="text-sm font-bold text-slate-900 dark:text-slate-50">Clean Architecture</div>
-              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
-                Maintainable codebases built for long-term success.
-              </p>
-            </Paper>
+              <Paper withBorder radius="md" p="md" className="shadow-sm transition hover:shadow-md">
+                <div className="text-sm font-bold text-slate-900 dark:text-slate-50">
+                  Clean Architecture
+                </div>
+                <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
+                  Maintainable codebases built for long-term success.
+                </p>
+              </Paper>
 
-            <Paper withBorder radius="md" p="md" className="min-w-0 shadow-sm">
-              <div className="text-sm font-bold text-slate-900 dark:text-slate-50">Business Focused</div>
-              <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
-                Solutions aligned with real operational needs.
-              </p>
-            </Paper>
-          </SimpleGrid>
-
-          <Group gap="sm" wrap="wrap">
-            <Link to="/contact">
-              <Button
-                // color="green"
-                radius="md"
-                variant="filled"
-                size="sm"
-                leftSection={<Lightbulb size={16} />}
-              >
-                Let's Discuss Your Idea
-              </Button>
-            </Link>
-
-            <Button
-              variant="outline"
-              color="indigo"
-              radius="md"
-              size="sm"
-              leftSection={<Home size={16} />}
-              onClick={() => router.navigate({ to: "/" })}
-            >
-              Back to Home
-            </Button>
-          </Group>
-        </Stack>
-
-        <div className="flex items-stretch justify-center lg:justify-end">
-          <div className="mx-auto w-full max-w-full sm:max-w-[26rem] lg:mx-0" style={{ isolation: 'isolate' }}>
-            <ServiceComponent />
+              <Paper withBorder radius="md" p="md" className="shadow-sm transition hover:shadow-md">
+                <div className="text-sm font-bold text-slate-900 dark:text-slate-50">
+                  Business Focused
+                </div>
+                <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
+                  Solutions aligned with real operational needs.
+                </p>
+              </Paper>
+            </SimpleGrid>
           </div>
+
+          {/* RIGHT (1/3) */}
+          <div className="lg:col-span-1 flex items-center justify-center lg:justify-end">
+            <div className="w-full max-w-sm sm:max-w-md lg:max-w-full transition-transform duration-300 hover:scale-[1.02]">
+              <div className="rounded-2xl overflow-hidden shadow-md">
+                <ServiceComponent />
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
-
+     <div className="my-4 sm:my-5">
+  <Divider color="blue" />
+</div>
       {/* ── SERVICES GRID ── */}
       <section className="space-y-3">
         <div>
@@ -311,7 +305,7 @@ function ServicesPage() {
       {/* ── HOW I WORK ── */}
       <div className="grid grid-cols-1 gap-8 sm:gap-10 lg:grid-cols-[1.5fr_1fr] lg:items-start">
         {/* LEFT */}
-        <section className="space-y-6 border-b-4 border-blue-500 pb-6 sm:space-y-8 lg:border-b-0 lg:border-r-4 lg:pb-0 lg:pr-6">
+        <section className="space-y-2 border-b-2 border-blue-400 pb-2 sm:space-y-8 lg:border-b-0 lg:border-r-2 lg:pb-0 lg:pr-6">
           <div className="min-w-0">
             <div className="title2">
               How I Work
@@ -352,7 +346,7 @@ function ServicesPage() {
               Tools & Tech Stack
             </div>
 
-            <p className="mb-4 mt-2 max-w-md text-sm leading-7 text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
+            <p className="mb-4 mt-2 w-full text-sm leading-7 text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
               I use a modern, production-proven stack chosen for reliability, developer experience,
               and long-term maintainability.
             </p>

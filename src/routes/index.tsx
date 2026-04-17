@@ -33,6 +33,8 @@ import {
   Gauge,
   Sparkles,
   Send,
+  MailCheck,
+  Mail,
 } from 'lucide-react'
 import moment from 'moment'
 import { Suspense } from 'react'
@@ -242,98 +244,49 @@ function App() {
 
   return (
     <Container size="xl" className="max-w-full space-y-8 px-0 py-6 sm:space-y-10 sm:py-8 md:space-y-12 md:py-10">
-      {/* ── HERO ── */}
-      <section className="grid items-center gap-8 sm:gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-14">
-        <Stack gap="xl" className="max-w-3xl min-w-0">
-          <Stack gap="md" className="max-w-3xl min-w-0">
-            <div className="relative mb-2 inline-block min-w-0 title2">
-              <span className="text-blue-500">Full-Stack Software Developer</span>
-              <span className="absolute left-0 -bottom-1 sm:-bottom-2 h-[3px] sm:h-[4px] w-3/5 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 rounded-full"></span>
-            </div>
+      <section className="grid items-center gap-10 sm:gap-12">
+        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_340px] lg:gap-14">
 
-            <div className="min-w-0">
-              <h1 className="heading break-words">
-                Designing maintainable and scalable web products & software systems
-              </h1>
-            </div>
-
-            <p className="max-w-2xl text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
-              I build mobile-first, responsive digital products with a strong focus on architecture,
-              maintainability, performance, and user experience—turning complex ideas into reliable,
-              production-ready applications.
+          {/* LEFT */}
+          <div className="flex flex-col gap-6 w-full"> {/* ROLE */} <div className="relative inline-block title2"> <span className="text-blue-500">Full-Stack Software Developer</span> <span className="absolute left-0 -bottom-1 sm:-bottom-2 h-[3px] sm:h-[4px] w-2/3 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 rounded-full" />
+          </div> {/* HEADING */} <h1 className="heading leading-tight w-full"> Designing maintainable and scalable web products & software systems </h1> {/* DESCRIPTION */}
+            <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
+              I build mobile-first, responsive digital products with a strong focus on architecture, maintainability, performance, and user experience — turning complex ideas into reliable, production-ready applications. From planning and system design to development and deployment, I ensure every solution is structured for scalability, clarity, and long-term success.
             </p>
-          </Stack>
-
-          <Group wrap="wrap" gap="sm" className="gap-3">
-            <Link to="/projects">
-              <Button
-                size="sm"
-                radius="md"
-                className="bg-indigo-500 hover:bg-indigo-600"
-                rightSection={<ArrowRight size={18} />}
-              >
-                Explore My Projects
-              </Button>
-            </Link>
-            <Link to="/contact">
-              <Button size="sm" radius="md" variant="filled" color="yellow" rightSection={<Send size={18} />}>
-                Contact Me
-              </Button>
-            </Link>
-          </Group>
-        </Stack>
-
-        <div className="flex justify-center lg:justify-end">
-          <div className="relative h-[240px] overflow-hidden rounded-2xl sm:h-[280px] lg:h-[320px]">
-            <img
-              src="/images/profile.png"
-              alt="Abdallah Shee"
-              className="block h-full w-full rounded-2xl object-cover"
-            />
+            {/* STATS ROW */}
+       <div className="grid w-full  gap-y-4 border-b border-blue-400 py-2 grid-cols-3">
+  {STATS.map((stat) => (
+    <div key={stat.label} className="flex flex-col items-center text-center">
+      <span className="title2 text-slate-900 dark:text-slate-50">
+        {stat.value}
+      </span>
+      <span className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+        {stat.label}
+      </span>
+    </div>
+  ))}
+</div>
           </div>
+
+          {/* RIGHT — profile image */}
+          <div className="relative order-first mx-auto w-full max-w-[280px] lg:order-last lg:max-w-none">
+            <div className="relative overflow-hidden rounded-3xl shadow-xl h-[300px] lg:h-[400px]">
+              <img
+                src="/images/profile.png"
+                alt="Abdallah Shee"
+                className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
+              />
+              {/* subtle overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+            </div>
+          </div>
+
         </div>
       </section>
 
-      {/* ── STATS ── */}
-      <SimpleGrid cols={{ base: 1, sm: 3 }} spacing="sm">
-        {STATS.map((stat) => (
-          <Paper
-            key={stat.label}
-            radius="md"
-            withBorder
-            p="sm"
-            className="group shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-white to-gray-50 dark:from-slate-900 dark:to-slate-800"
-          >
-            <Group align="center" gap="sm" wrap="wrap">
-              <ThemeIcon
-                variant="light"
-                color={stat.color}
-                radius="md"
-                size={36}
-                className="shadow-sm transition-transform group-hover:scale-110"
-              >
-                {stat.icon}
-              </ThemeIcon>
-
-              <div className="flex min-w-0 flex-wrap items-center gap-3 sm:gap-4">
-                <div className="text-2xl font-extrabold leading-none tracking-tight">
-                  {stat.value}
-                </div>
-
-                <span className="text-sm text-slate-600 sm:text-base dark:text-slate-400">
-                  {stat.label}
-                </span>
-              </div>
-            </Group>
-          </Paper>
-        ))}
-      </SimpleGrid>
-
-      {/* <Divider /> */}
-
       {/* ── ABOUT ── */}
       <section className="grid items-start gap-8 sm:gap-10 lg:grid-cols-[1.2fr_0.8fr]">
-        <Stack gap="lg" className="min-w-0 border-b-4 border-blue-500 pb-6 lg:border-b-0 lg:border-r-4 lg:pb-0 lg:pr-6">
+        <Stack gap="lg" className="min-w-0 border-b-2 border-blue-400 pb-6 lg:border-b-0 lg:border-r-2 lg:pb-0 lg:pr-6">
           <div className="title2">
             About Me
           </div>
@@ -378,33 +331,6 @@ function App() {
         </Stack>
 
       </section>
-      <section className="flex justify-center">
-        <Group justify="center" gap="md" wrap="wrap" className="sm:gap-8">
-          <Link to="/contact">
-            <Button
-              variant="filled"
-              color="indigo"
-              radius="md"
-              size="sm"
-              rightSection={<ArrowRight size={16} />}
-            >
-              Let&apos;s Work Together
-            </Button>
-          </Link>
-
-          <Link to="/services">
-            <Button
-              variant="outline"
-              color="indigo"
-              radius="md"
-              size="sm"
-              rightSection={<ArrowRight size={16} />}
-            >
-              Explore My Services
-            </Button>
-          </Link>
-        </Group>
-      </section>
 
       {/* ── STRENGTHS ── */}
       <section className="space-y-6">
@@ -441,6 +367,55 @@ function App() {
           <FeaturedProjectsSection />
         </Suspense>
       </div>
+      <section id="contact" className="mx-auto w-full scroll-mt-20">
+        <Paper
+          radius="24px"
+          withBorder
+          shadow="sm"
+          className="relative overflow-hidden border border-slate-200/70 bg-linear-to-br from-white via-indigo-50 to-blue-50 px-4 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
+        >
+          <Stack align="center" gap="md">
+
+            {/* TITLE */}
+            <div className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent text-center">
+              Have an idea or project in mind?
+            </div>
+
+            {/* DESCRIPTION */}
+            <p className="max-w-2xl px-1 text-center text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+              Whether you're starting from scratch or improving an existing system, I can help you design and build something reliable, scalable, and easy to use — tailored to your goals and users.
+            </p>
+
+            {/* CTA BUTTONS */}
+            <Group justify="center" mt="md" wrap="wrap" gap="sm">
+              <Link to="/contact">
+                <Button
+                  variant="filled"
+                  color="blue"
+                  size="sm"
+                  radius="md"
+                  leftSection={<Mail size={18} />}
+
+                >
+                  Start a Conversation
+                </Button>
+              </Link>
+              <Link to="/projects">
+                <Button
+                  variant="outline"
+                  color="blue"
+                  size="sm"
+                  radius="md"
+                  leftSection={<FolderKanban size={18} />}
+                >
+                  View My Work
+                </Button>
+              </Link>
+            </Group>
+
+          </Stack>
+        </Paper>
+      </section>
     </Container>
   )
 }
