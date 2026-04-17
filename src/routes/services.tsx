@@ -257,9 +257,9 @@ function ServicesPage() {
 
         </div>
       </section>
-     <div className="my-4 sm:my-5">
-  <Divider color="blue" />
-</div>
+      <div className="my-4 sm:my-5">
+        <Divider color="blue" />
+      </div>
       {/* ── SERVICES GRID ── */}
       <section className="space-y-3">
         <div>
