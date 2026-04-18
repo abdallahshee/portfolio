@@ -188,9 +188,14 @@ export default function Header() {
               fit="cover"
               className="transition-opacity duration-200 hover:opacity-80"
             />
-            <span className="text-[16px] font-semibold text-slate-800 dark:text-slate-100">
-              Abdallah
-            </span>
+            <div className="flex flex-col leading-tight">
+              <span className="text-sm font-semibold tracking-tight text-slate-800 dark:text-slate-100">
+                Abdallah Shee
+              </span>
+              <span className="text-xs font-medium tracking-wide text-slate-500 dark:text-slate-400">
+                Full-Stack Software Developer
+              </span>
+            </div>
           </div>
         }
         className="md:hidden"
