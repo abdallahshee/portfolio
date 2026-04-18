@@ -7,36 +7,36 @@ import { AuthenticatedMiddleware } from "./middleware";
 
 
 export const createProjectCase = createServerFn({ method: "POST" })
-    .middleware([AuthenticatedMiddleware])
-    .inputValidator(CaseSchema)
-    .handler(async ({ data }) => {
-        try {
-            const [theCaseStudy] = await db.insert(caseStudy).values(data).returning()
-            return theCaseStudy
-        } catch (err) {
-            throw err
-        }
-    })
+  .middleware([AuthenticatedMiddleware])
+  .inputValidator(CaseSchema)
+  .handler(async ({ data }) => {
+    try {
+      const [theCaseStudy] = await db.insert(caseStudy).values(data).returning()
+      return theCaseStudy
+    } catch (err) {
+      throw err
+    }
+  })
 
 
 export const getCaseStudyByProjectId = createServerFn({ method: "GET" })
   .inputValidator((data: { projectId: string }) => data)
   .handler(async ({ data }) => {
     try {
-      const result = await db.query.caseStudy.findFirst({where:eq(caseStudy.projectId,data.projectId)}) 
-       return result ?? null    
+      const result = await db.query.caseStudy.findFirst({ where: eq(caseStudy.projectId, data.projectId) })
+      return result ?? null
     } catch (err) {
       console.error("Failed to fetch case study:", err)
       throw err
     }
   })
 
-  export const getCaseStudyById = createServerFn({ method: "GET" })
+export const getCaseStudyById = createServerFn({ method: "GET" })
   .inputValidator((data: { caseId: string }) => data)
   .handler(async ({ data }) => {
     try {
-      const result = await db.query.caseStudy.findFirst({where:eq(caseStudy.id,data.caseId)}) 
-       return result ?? null    
+      const result = await db.query.caseStudy.findFirst({ where: eq(caseStudy.id, data.caseId) })
+      return result ?? null
     } catch (err) {
       console.error("Failed to fetch case study:", err)
       throw err
@@ -53,9 +53,9 @@ export const getPaginatedCaseStudies = createServerFn({ method: "GET" })
 
       const whereClause = query?.trim()
         ? or(
-            ilike(caseStudy.title, search),
-            ilike(caseStudy.projectId, search),
-          )
+          ilike(caseStudy.title, search),
+          ilike(caseStudy.projectId, search),
+        )
         : undefined
 
       const [rows, totalResult] = await Promise.all([

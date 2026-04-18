@@ -13,7 +13,7 @@ import {
   ThemeIcon,
   TagsInput,
 } from '@mantine/core'
-import {DatePickerInput } from '@mantine/dates'
+import { DatePickerInput } from '@mantine/dates'
 import '@mantine/dates/styles.css'
 import { useForm } from '@mantine/form'
 import { useState } from 'react'
@@ -45,8 +45,8 @@ function RouteComponent() {
 
   const form = useForm<CaseRequest>({
     initialValues: {
-      title:caseStudy?.title??'',
-      projectId: caseStudy?.projectId ??'',
+      title: caseStudy?.title ?? '',
+      projectId: caseStudy?.projectId ?? '',
       startDate: caseStudy?.startDate ?? '',
       endDate: caseStudy?.endDate ?? '',
       technologies: caseStudy?.technologies ?? [],
@@ -58,12 +58,12 @@ function RouteComponent() {
     validate: zod4Resolver(CaseSchema),
     validateInputOnBlur: true,
   })
-const mutateCase=useCaseUpdateMutation()
+  const mutateCase = useCaseUpdateMutation()
   const handleSubmit = async (values: CaseRequest) => {
     try {
       setIsSubmitting(true)
       setError(null)
-      await mutateCase.mutateAsync({...values })
+      await mutateCase.mutateAsync({ ...values })
       notifications.show({
         title: 'Case study updated!',
         message: 'The case study has been saved successfully.',
@@ -130,7 +130,7 @@ const mutateCase=useCaseUpdateMutation()
                   valueFormat="YYYY-MM-DD"
                   value={form.values.startDate!}
                   onChange={(date) =>
-                    form.setFieldValue('startDate', date! )
+                    form.setFieldValue('startDate', date!)
                   }
                   error={form.errors.startDate}
                 />

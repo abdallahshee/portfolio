@@ -9,15 +9,15 @@ export const caseStudy = pgTable('case_study', {
         .notNull()
         .unique() // ✅ ensures 1:1 relationship
         .references(() => project.id, { onDelete: "cascade" }),
-    title:text("title").notNull().unique(),
+    title: text("title").notNull().unique(),
     overview: text("overview"), // short summary
     problem: text("problem").notNull(),
     solution: text("solution").notNull(),
     implementation: text("implementation").notNull(),
-    startDate: timestamp("start_date",{mode:"string"}).notNull(),
-    endDate: timestamp("end_date",{mode:"string"}).notNull(), //
+    startDate: timestamp("start_date", { mode: "string" }).notNull(),
+    endDate: timestamp("end_date", { mode: "string" }).notNull(), //
     technologies: text("technologies").array(), // optional override
-    outcomes:text("outcome").notNull(),
+    outcomes: text("outcome").notNull(),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
         .defaultNow()

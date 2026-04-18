@@ -253,9 +253,8 @@ function RouteComponent() {
           <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
             {isFetching
               ? 'Searching…'
-              : `${data?.total ?? 0} result${
-                  (data?.total ?? 0) !== 1 ? 's' : ''
-                } for "${debouncedSearch}"`}
+              : `${data?.total ?? 0} result${(data?.total ?? 0) !== 1 ? 's' : ''
+              } for "${debouncedSearch}"`}
           </p>
         )}
       </div>
@@ -272,9 +271,8 @@ function RouteComponent() {
 
       {/* ── GRID ── */}
       <div
-        className={`min-h-[420px] transition-opacity duration-200 sm:min-h-[560px] md:min-h-[720px] lg:min-h-[900px] ${
-          isFetching ? 'opacity-80' : 'opacity-100'
-        }`}
+        className={`min-h-[420px] transition-opacity duration-200 sm:min-h-[560px] md:min-h-[720px] lg:min-h-[900px] ${isFetching ? 'opacity-80' : 'opacity-100'
+          }`}
       >
         <Suspense fallback={<CasesGridSkeleton />}>
           <CasesGrid

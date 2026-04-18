@@ -67,7 +67,7 @@ function RouteComponent() {
 
       let uploadedImageUrl = values.imageUrl
       if (file) {
-       uploadedImageUrl=await uploadProjectImage(file,values.title)
+        uploadedImageUrl = await uploadProjectImage(file, values.title)
       }
 
       await createProject.mutateAsync({
@@ -200,7 +200,7 @@ function RouteComponent() {
                   <div className="title3">Project Image</div>
                 </Group>
 
-             
+
 
                 <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/40">
                   {previewUrl || form.values.imageUrl ? (
@@ -223,24 +223,24 @@ function RouteComponent() {
                   <Text size="sm" c="red">{form.errors.imageUrl}</Text>
                 )}
               </Stack>
-                 <SimpleGrid cols={{ base: 1}} spacing="md" mt='md'>
-                  <FileInput
-                    label="Upload image"
-                    placeholder="Choose a project image"
-                    radius="md"
-                    size="sm"
-                    leftSection={<ImagePlus size={15} />}
-                    accept="image/*"
-                    value={file}
-                    onChange={(f) => {
-                      setFile(f)
-                      // clear the URL field when a file is chosen
-                      if (f) form.setFieldValue("imageUrl", "")
-                    }}
-                  />
+              <SimpleGrid cols={{ base: 1 }} spacing="md" mt='md'>
+                <FileInput
+                  label="Upload image"
+                  placeholder="Choose a project image"
+                  radius="md"
+                  size="sm"
+                  leftSection={<ImagePlus size={15} />}
+                  accept="image/*"
+                  value={file}
+                  onChange={(f) => {
+                    setFile(f)
+                    // clear the URL field when a file is chosen
+                    if (f) form.setFieldValue("imageUrl", "")
+                  }}
+                />
 
-           
-                </SimpleGrid>
+
+              </SimpleGrid>
             </Card>
 
             {/* Submit */}

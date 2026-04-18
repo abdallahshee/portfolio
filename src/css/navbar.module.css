@@ -26,6 +26,7 @@
   }
 
   &[data-active] {
+
     &,
     &:hover {
       box-shadow: var(--mantine-shadow-sm);

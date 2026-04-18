@@ -16,7 +16,8 @@ function RouteComponent() {
   const form = useForm<TestimonialRequest>({
     initialValues: {
       quote: '',
-      authorName: '',
+      authorFirstname: '',
+      authorLastname: '',
       authorTitle: '',
       company: '',
     },
@@ -52,10 +53,17 @@ function RouteComponent() {
 
               {/* AUTHOR NAME */}
               <TextInput
-                label="Author Name"
+                label="Author Firstname"
                 placeholder="John Doe"
-                {...form.getInputProps('authorName')}
+                {...form.getInputProps('authorFirstname')}
               />
+                   {/* AUTHOR NAME */}
+              <TextInput
+                label="Author Lastname"
+                placeholder="John Doe"
+                {...form.getInputProps('authorLastname')}
+              />
+
 
               {/* AUTHOR TITLE */}
               <TextInput

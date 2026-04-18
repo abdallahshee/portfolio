@@ -105,31 +105,27 @@ function AppShell({ children }: { children: React.ReactNode }) {
     }
   }, [])
 
-  const isAdminRoute = useRouterState({
-    select: (s) => s.location.pathname.startsWith('/admin'),
-  })
 
-  const showHeader = !isAdminRoute
 
   return (
     <>
       <Notifications position="top-right" />
 
-      {showHeader && <Header />}
+
 
       <main
-        className={
-          showHeader
-            ? 'container mx-auto w-full max-w-full px-3 pb-10 pt-20 sm:px-4 sm:pb-12 md:px-6 md:pb-14 lg:px-8 lg:pb-16'
-            : ''
-        }
+        className=
+
+        'container mx-auto w-full max-w-full px-3 pb-10 pt-20 sm:px-4 sm:pb-12 md:px-6 md:pb-14 lg:px-8 lg:pb-16'
+
+
       >
         <ScrollToTopOnRouteChange />
         {children}
         <ScrollToTop />
       </main>
 
-      {!isAdminRoute && <Footer />}
+      <Footer />
 
       <TanStackDevtools
         config={{ position: 'bottom-right' }}

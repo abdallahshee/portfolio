@@ -40,7 +40,7 @@ export const Route = createFileRoute("/projects/$slug/new")({
 })
 
 function ProjectDetails() {
-  const { slug} = Route.useParams()
+  const { slug } = Route.useParams()
   const { data: project } = useSuspenseQuery(getProjectBySlugNameQueryOptions(slug))
   const supabase = getSupabaseBrowserClient()
   const [session, setSession] = useState<Session | null>(null)

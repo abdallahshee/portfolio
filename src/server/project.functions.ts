@@ -20,10 +20,10 @@ export const createProject = createServerFn({ method: 'POST' })
   .inputValidator(ProjectSchema)
   .handler(async ({ data }) => {
     try {
-      const slug=slugify(data.title)
+      const slug = slugify(data.title)
       const [theSlug] = await db
         .insert(project)
-        .values({ ...data,slug })
+        .values({ ...data, slug })
         .returning({ slug: project.slug });
 
       return { success: true, slug: theSlug };
@@ -42,7 +42,7 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
         .select({
           id: project.id,
           title: project.title,
-          slug:project.slug,
+          slug: project.slug,
           description: project.description,
           imageUrl: project.imageUrl,
           isPublic: project.isPublic,
@@ -71,7 +71,7 @@ export const getProjectById = createServerFn({ method: "GET" })
         .select({
           id: project.id,
           title: project.title,
-          slug:project.slug,
+          slug: project.slug,
           description: project.description,
           imageUrl: project.imageUrl,
           isPublic: project.isPublic,
@@ -104,7 +104,7 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
           .select({
             id: project.id,
             title: project.title,
-             slug:project.slug,
+            slug: project.slug,
             description: project.description,
             imageUrl: project.imageUrl,
             isPublic: project.isPublic,
@@ -173,11 +173,11 @@ export const getTopProjects = createServerFn({ method: "GET" })
       const topProjects = await db
         .select({
           id: project.id,
-           slug:project.slug,
+          slug: project.slug,
           title: project.title,
           imageUrl: project.imageUrl,
           isPublic: project.isPublic,
-          createdAt:project.createdAt
+          createdAt: project.createdAt
         })
         .from(project)
         .limit(5);
@@ -199,9 +199,9 @@ export const searchProjects = createServerFn({ method: "GET" })
 
       const whereClause = query.trim()
         ? or(
-            ilike(project.title, search),
-            ilike(project.description, search),
-          )
+          ilike(project.title, search),
+          ilike(project.description, search),
+        )
         : undefined
 
       const [projectRows, totalResult] = await Promise.all([
@@ -209,7 +209,7 @@ export const searchProjects = createServerFn({ method: "GET" })
           .select({
             id: project.id,
             title: project.title,
-             slug:project.slug,
+            slug: project.slug,
             description: project.description,
             imageUrl: project.imageUrl,
             isPublic: project.isPublic,

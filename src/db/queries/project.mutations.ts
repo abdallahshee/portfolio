@@ -9,7 +9,7 @@ export const useUpdateProjectMutation = () => {
   // const router = useRouter()
 
   return useMutation({
-    mutationFn: (data: UpdateProjectRequest) => updateProject({ data}),
+    mutationFn: (data: UpdateProjectRequest) => updateProject({ data }),
     onSuccess: async (_, variables) => {
       // ✅ Wait for fresh data then navigate
       await queryClient.refetchQueries({
@@ -19,13 +19,13 @@ export const useUpdateProjectMutation = () => {
   })
 }
 
-export const useProjectCreateMutation=()=>{
-  const queryClient=useQueryClient()
+export const useProjectCreateMutation = () => {
+  const queryClient = useQueryClient()
   // const router=useRouter()
   return useMutation({
-    mutationFn:(data:ProjectRequest)=>createProject({data}),
-    onSuccess:async() =>{
-      await queryClient.refetchQueries({queryKey:getPaginatedProjectsQueryOptions(1).queryKey})
+    mutationFn: (data: ProjectRequest) => createProject({ data }),
+    onSuccess: async () => {
+      await queryClient.refetchQueries({ queryKey: getPaginatedProjectsQueryOptions(1).queryKey })
     },
   })
 }

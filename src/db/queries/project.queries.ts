@@ -12,7 +12,7 @@ export const getProjectBySlugNameQueryOptions = (slug: string) =>
   })
 
 
-  export const getProjectByIdQueryOptions = (projectId: string) =>
+export const getProjectByIdQueryOptions = (projectId: string) =>
   queryOptions({
     queryKey: ['projects', projectId],
     queryFn: () => getProjectById({ data: { projectId: projectId } }),

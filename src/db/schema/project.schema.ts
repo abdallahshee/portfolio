@@ -22,11 +22,11 @@ export const project = pgTable('project', {
 
 // Project relations
 export const projectRelations = relations(project, ({ one }) => ({
-  case:one(caseStudy,{
-    fields:[project.id],
-    references:[caseStudy.projectId]
+  case: one(caseStudy, {
+    fields: [project.id],
+    references: [caseStudy.projectId]
   })
-//  case: one(caseStudy)
+  //  case: one(caseStudy)
 }));
 
 

@@ -16,10 +16,11 @@
   font-weight: 500;
   font-size: var(--mantine-font-size-sm);
 
- @media (max-width: 48em) {
-  height: 42px;
-  width: 100%;
-}
+  @media (max-width: 48em) {
+    height: 42px;
+    width: 100%;
+  }
+
   @mixin hover {
     background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
   }

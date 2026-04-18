@@ -42,6 +42,7 @@ import {
 
 } from 'lucide-react'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import type { Testimonial } from '@/db/validations/testimonial.types'
 export const Route = createFileRoute('/services')({
   loader: async ({ context }) => {
     await context.queryClient.prefetchQuery(getTestimonialQueryOptions())
@@ -174,52 +175,70 @@ const TECH_STACK = [
 
 const TESTIMONIALS = [
   {
-    name: 'James Mwangi',
-    role: 'Founder, LetsRent Kenya',
-    avatar: 'JM',
-    color: 'teal',
+    id: '1',
+    authorFirstname: 'James',
+    authorLastname: 'Mwangi',
+    authorTitle: 'Founder',
+    company: 'LetsRent Kenya',
     quote:
       'Abdallah built our entire rental management platform from scratch. He understood the local context — M-Pesa integration, tenant communication flows — and delivered a system our team actually loves using.',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    name: 'Amina Hassan',
-    role: 'Director, Greenfield Academy',
-    avatar: 'AH',
-    color: 'violet',
+    id: '2',
+    authorFirstname: 'Amina',
+    authorLastname: 'Hassan',
+    authorTitle: 'Director',
+    company: 'Greenfield Academy',
     quote:
       'The school system he built transformed how we handle fees, attendance, and parent communication. What used to take days now takes minutes. Highly professional, communicates clearly, and delivers on time.',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    name: 'Brian Otieno',
-    role: 'CEO, TradeTrack SME',
-    avatar: 'BO',
-    color: 'blue',
+    id: '3',
+    authorFirstname: 'Brian',
+    authorLastname: 'Otieno',
+    authorTitle: 'CEO',
+    company: 'TradeTrack SME',
     quote:
       'We needed a custom inventory and sales system. Abdallah scoped the project clearly, kept us in the loop throughout, and the final product exceeded our expectations. Would absolutely work with him again.',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    name: 'Sarah Kimani',
-    role: 'COO, PayEase Africa',
-    avatar: 'SK',
-    color: 'orange',
+    id: '4',
+    authorFirstname: 'Sarah',
+    authorLastname: 'Kimani',
+    authorTitle: 'COO',
+    company: 'PayEase Africa',
     quote:
       'The finance platform Abdallah built for us handles thousands of transactions daily without a hitch. His attention to security and data integrity gave us full confidence in the system from day one.',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    name: 'David Njoroge',
-    role: 'MD, SwiftBook Hotels',
-    avatar: 'DN',
-    color: 'pink',
+    id: '5',
+    authorFirstname: 'David',
+    authorLastname: 'Njoroge',
+    authorTitle: 'MD',
+    company: 'SwiftBook Hotels',
     quote:
       'Our booking system went live in record time. The calendar sync, automated reminders, and online payments work flawlessly. Our front desk team adapted to it instantly — it just makes sense.',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
   {
-    name: 'Grace Wanjiru',
-    role: 'Head of Ops, Soko SACCO',
-    avatar: 'GW',
-    color: 'green',
+    id: '6',
+    authorFirstname: 'Grace',
+    authorLastname: 'Wanjiru',
+    authorTitle: 'Head of Ops',
+    company: 'Soko SACCO',
     quote:
       'Managing member contributions and loan applications used to be a nightmare. Now everything is tracked in one place and our members can check their balances anytime. Game changer for our SACCO.',
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
 ]
 
@@ -250,11 +269,82 @@ function TestimonialsSkeleton() {
     </div>
   )
 }
-
+interface CarouselProps {
+  testimonials: Testimonial[]
+}
 // ── TESTIMONIALS CAROUSEL ──
-function TestimonialsCarousel() {
-  const { data: testimonials } = useSuspenseQuery(getTestimonialQueryOptions())
+function TestimonialsCarousel({ testimonials }: CarouselProps) {
+  // const { data: testimonials } = useSuspenseQuery(getTestimonialQueryOptions())
   const autoplay = useRef(Autoplay({ delay: 4000 }))
+
+  if (!testimonials || testimonials.length === 0) {
+    return (
+      <div className="flex min-h-[200px] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-slate-300 p-8 text-center dark:border-slate-700">
+        <ThemeIcon size={56} radius="md" variant="light" color="pink">
+          <Quote size={28} />
+        </ThemeIcon>
+        <div className="title2 text-slate-700 dark:text-slate-200">
+          No testimonials yet
+        </div>
+        <p className="max-w-2xl px-1 text-center text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+          Client feedback will appear here once projects have been completed and reviewed.
+        </p>
+      </div>
+    )
+  }
+
+  if (testimonials.length === 1) {
+    const t = testimonials[0]
+    return (
+      <Card
+        radius="lg"
+        withBorder
+        p="xl"
+        className="h-full shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+      >
+        <Stack gap="md" h="100%">
+
+          {/* QUOTE ICON */}
+          <ThemeIcon
+            variant="light"
+            color="pink"
+            radius="md"
+            size={36}
+            className="opacity-70"
+          >
+            <Quote size={18} />
+          </ThemeIcon>
+
+          {/* QUOTE */}
+          <p className="flex-1 text-sm leading-7 text-slate-600 italic sm:text-base dark:text-slate-400">
+            &ldquo;{t.quote}&rdquo;
+          </p>
+
+          {/* FOOTER */}
+          <Group mt="auto" gap="sm" wrap="nowrap" className="min-w-0 items-center">
+
+            {/* AVATAR (INITIALS) */}
+            <Avatar color="blue" radius="md" size={42} className="shrink-0">
+              {`${t.authorFirstname?.[0] ?? ''}${t.authorLastname?.[0] ?? ''}`}
+            </Avatar>
+
+            {/* AUTHOR INFO */}
+            <div className="min-w-0">
+              <div className="text-sm font-semibold text-slate-900 truncate dark:text-slate-50">
+                {t.authorFirstname} {t.authorLastname}
+              </div>
+
+              <div className="text-xs text-slate-500 truncate dark:text-slate-400">
+                {t.authorTitle}
+                {t.company && ` • ${t.company}`}
+              </div>
+            </div>
+          </Group>
+
+        </Stack>
+      </Card>
+    )
+  }
 
   return (
     <Carousel
@@ -279,31 +369,63 @@ function TestimonialsCarousel() {
       {Array.from({ length: Math.ceil(testimonials.length / 2) }).map((_, slideIndex) => (
         <Carousel.Slide key={slideIndex}>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            {testimonials.slice(slideIndex * 2, slideIndex * 2 + 2).map((t) => (
-              <Card key={t.authorName} radius="lg" withBorder p="xl" className="h-full shadow-sm">
-                <Stack gap="lg" h="100%">
-                  <ThemeIcon variant="light" color="pink" radius="md" size={36} className="opacity-60">
-                    <Quote size={18} />
-                  </ThemeIcon>
+            {testimonials
+              .slice(slideIndex * 2, slideIndex * 2 + 2)
+              .map((t) => (
+                <Card
+                  key={t.id}
+                  radius="lg"
+                  withBorder
+                  p="xl"
+                  className="h-full shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+                >
+                  <Stack gap="md" h="100%">
 
-                  <p className="flex-1 text-sm leading-7 text-slate-600 italic sm:text-base dark:text-slate-400">
-                    &ldquo;{t.quote}&rdquo;
-                  </p>
+                    {/* TOP ICON */}
+                    <ThemeIcon
+                      variant="light"
+                      color="pink"
+                      radius="md"
+                      size={34}
+                      className="opacity-70"
+                    >
+                      <Quote size={16} />
+                    </ThemeIcon>
 
-                  <Group gap="sm" wrap="nowrap" className="min-w-0">
-                    <Avatar color="blue" radius="md" size={42} className="shrink-0">
-                      {t.authorName}
-                    </Avatar>
-                    <div className="min-w-0">
-                      <div className="text-base font-bold text-slate-900 dark:text-slate-50">
-                        {t.authorName}
+                    {/* QUOTE */}
+                    <p className="flex-1 text-sm leading-7 italic text-slate-600 sm:text-base dark:text-slate-400">
+                      &ldquo;{t.quote}&rdquo;
+                    </p>
+
+                    {/* AUTHOR */}
+                    <Group
+                      mt="auto"
+                      gap="sm"
+                      wrap="nowrap"
+                      className="min-w-0 items-center"
+                    >
+
+                      {/* AVATAR (INITIALS) */}
+                      <Avatar color="blue" radius="md" size={42} className="shrink-0">
+                        {`${t.authorFirstname?.[0] ?? ''}${t.authorLastname?.[0] ?? ''}`}
+                      </Avatar>
+
+                      {/* DETAILS */}
+                      <div className="min-w-0">
+                        <div className="text-sm font-semibold text-slate-900 truncate dark:text-slate-50">
+                          {t.authorFirstname} {t.authorLastname}
+                        </div>
+
+                        <div className="text-xs text-slate-500 truncate dark:text-slate-400">
+                          {t.authorTitle}
+                          {t.company && ` • ${t.company}`}
+                        </div>
                       </div>
-                      <div className="text-sm text-slate-600 dark:text-slate-400">{t.authorTitle}</div>
-                    </div>
-                  </Group>
-                </Stack>
-              </Card>
-            ))}
+                    </Group>
+
+                  </Stack>
+                </Card>
+              ))}
           </div>
         </Carousel.Slide>
       ))}
@@ -313,7 +435,6 @@ function TestimonialsCarousel() {
 
 function ServicesPage() {
   const router = useRouter()
-  const autoplay = useRef(Autoplay({ delay: 4000 }))
   const { data: testimonials } = useSuspenseQuery(getTestimonialQueryOptions())
 
   return (
@@ -513,9 +634,11 @@ function ServicesPage() {
         </div>
 
         <Suspense fallback={<TestimonialsSkeleton />}>
-          <TestimonialsCarousel />
+          {/* <TestimonialsCarousel testimonials={testimonials} /> */}
+          <TestimonialsCarousel testimonials={TESTIMONIALS} />
         </Suspense>
       </section>
+
       {/* ── CTA ── */}
       <section id="contact" className="mx-auto w-full scroll-mt-20">
         <Paper

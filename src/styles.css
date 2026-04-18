@@ -3,29 +3,19 @@
 @plugin '@tailwindcss/typography';
 
 @import 'tw-animate-css';
+
 .title1 {
-  @apply 
-  font-semibold 
-  text-3xl sm:text-4xl lg:text-5xl xl:text-6xl 
-  leading-tight 
-  tracking-tight;
+  @apply font-semibold text-3xl sm:text-4xl lg:text-5xl xl:text-6xl leading-tight tracking-tight;
 }
 
 .title2 {
-  @apply 
-  font-semibold
-  text-2xl sm:text-3xl lg:text-4xl 
-  leading-snug 
-  tracking-tight;
+  @apply font-semibold text-2xl sm:text-3xl lg:text-4xl leading-snug tracking-tight;
 }
 
 .title3 {
-  @apply 
-  font-normal
-  text-lg sm:text-xl lg:text-2xl 
-  leading-snug 
-  tracking-tight;
+  @apply font-normal text-lg sm:text-xl lg:text-2xl leading-snug tracking-tight;
 }
+
 /* This replaces darkMode: 'class' in the old config */
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -51,19 +41,14 @@
   --kicker: rgba(51, 65, 85, 0.72);
   --header-bg: rgba(255, 255, 255, 0.96);
 }
+
 .heading {
-  @apply 
- font-semibold 
-  text-2xl sm:text-3xl lg:text-4xl 
-  leading-snug 
-  tracking-tight;
+  @apply font-semibold text-2xl sm:text-3xl lg:text-4xl leading-snug tracking-tight;
   color: var(--sea-ink);
 }
+
 .heading2 {
-  @apply 
-   font-semibold 
-  text-2xl sm:text-3xl lg:text-4xl 
-  leading-snug;
+  @apply font-semibold text-2xl sm:text-3xl lg:text-4xl leading-snug;
   color: var(--sea-ink);
 }
 
@@ -165,6 +150,7 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 }
+
 html {
   scroll-padding-top: 80px;
 }
@@ -298,18 +284,24 @@ a {
 
 
 @keyframes float-node {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) scale(1);
   }
+
   50% {
     transform: translateY(-6px) scale(1.06);
   }
 }
 
 @keyframes float-node-slow {
-  0%, 100% {
+
+  0%,
+  100% {
     transform: translateY(0px) scale(1);
   }
+
   50% {
     transform: translateY(-4px) scale(1.04);
   }
@@ -356,6 +348,7 @@ a {
 .flow-delay-3 {
   animation-delay: 0.3s;
 }
+
 .site-footer {
   border-top: 1px solid var(--line);
   background: color-mix(in oklab, var(--header-bg) 84%, transparent 16%);
@@ -377,7 +370,8 @@ html {
   scrollbar-gutter: stable;
 }
 
-html, body {
+html,
+body {
   height: 100%;
   overflow-y: auto;
 }
@@ -454,6 +448,7 @@ html, body {
   }
 
   &[data-active] {
+
     &,
     &:hover {
       background-color: var(--mantine-color-blue-light);
@@ -502,6 +497,7 @@ html, body {
   }
 
   &[data-active] {
+
     &,
     &:hover {
       border-left-color: var(--mantine-color-blue-filled);
