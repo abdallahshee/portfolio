@@ -51,7 +51,7 @@ const test_samples: Testimonial[] = [
     id: '1',
     createdAt: new Date('2024-01-15'),
     updatedAt: new Date('2024-01-15'),
-    quote: 'Abdallah built our entire rental management platform from scratch. He understood the local context — M-Pesa integration, tenant communication flows — and delivered a system our team actually loves using.',
+    quote: 'Abdallah built our rental platform from scratch. He understood local context — M-Pesa integration, tenant flows — and delivered a system our team actually loves using every day.',
     authorFirstname: 'James',
     authorLastname: 'Mwangi',
     authorTitle: 'Founder',
@@ -61,17 +61,17 @@ const test_samples: Testimonial[] = [
     id: '2',
     createdAt: new Date('2024-02-20'),
     updatedAt: new Date('2024-02-20'),
-    quote: 'The school system he built transformed how we handle fees, attendance, and parent communication. What used to take days now takes minutes. Highly professional, communicates clearly, and delivers on time.',
+    quote: 'The school system he built changed how we handle fees, attendance, and parent communication. What took days now takes minutes. Professional, clear communicator, and always on time.',
     authorFirstname: 'Amina',
     authorLastname: 'Hassan',
     authorTitle: 'Director',
-    company: 'Greenfield Academy',
+    company: 'Greenfield',
   },
   {
     id: '3',
     createdAt: new Date('2024-03-10'),
     updatedAt: new Date('2024-03-10'),
-    quote: 'We needed a custom inventory and sales system. Abdallah scoped the project clearly, kept us in the loop throughout, and the final product exceeded our expectations. Would absolutely work with him again.',
+    quote: 'We needed a custom inventory and sales system. Abdallah scoped it clearly, kept us informed throughout, and the final product exceeded our expectations. Would absolutely work with him again.',
     authorFirstname: 'Brian',
     authorLastname: 'Otieno',
     authorTitle: 'CEO',
@@ -81,7 +81,7 @@ const test_samples: Testimonial[] = [
     id: '4',
     createdAt: new Date('2024-04-05'),
     updatedAt: new Date('2024-04-05'),
-    quote: 'The finance platform Abdallah built for us handles thousands of transactions daily without a hitch. His attention to security and data integrity gave us full confidence in the system from day one.',
+    quote: 'The finance platform handles thousands of transactions daily without a hitch. His focus on security and data integrity gave us full confidence in the system from the very first day.',
     authorFirstname: 'Sarah',
     authorLastname: 'Kimani',
     authorTitle: 'COO',
@@ -91,20 +91,20 @@ const test_samples: Testimonial[] = [
     id: '5',
     createdAt: new Date('2024-05-18'),
     updatedAt: new Date('2024-05-18'),
-    quote: 'Our booking system went live in record time. The calendar sync, automated reminders, and online payments work flawlessly. Our front desk team adapted to it instantly — it just makes sense.',
+    quote: 'Our booking system went live fast. Calendar sync, automated reminders, and online payments all work flawlessly. Our front desk team adapted instantly — the system just makes sense.',
     authorFirstname: 'David',
     authorLastname: 'Njoroge',
-    authorTitle: 'Managing Director',
+    authorTitle: 'MD',
     company: 'SwiftBook Hotels',
   },
   {
     id: '6',
     createdAt: new Date('2024-06-22'),
     updatedAt: new Date('2024-06-22'),
-    quote: 'Managing member contributions and loan applications used to be a nightmare. Now everything is tracked in one place and our members can check their balances anytime. Game changer for our SACCO.',
+    quote: 'Managing contributions and loan applications used to be a nightmare. Now everything is tracked in one place and our members check balances anytime. A true game changer for our SACCO.',
     authorFirstname: 'Grace',
     authorLastname: 'Wanjiru',
-    authorTitle: 'Head of Operations',
+    authorTitle: 'Head of Ops',
     company: 'Soko SACCO',
   },
 ]
@@ -280,9 +280,7 @@ function TestimonialsCarousel({ testimonials }: CarouselProps) {
   if (!testimonials || testimonials.length === 0) {
     return (
       <div className="flex min-h-[200px] flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-slate-300 p-8 text-center dark:border-slate-700">
-        <ThemeIcon size={56} radius="md" variant="light" color="pink">
-          <Quote size={28} />
-        </ThemeIcon>
+
         <div className="title2 text-slate-700 dark:text-slate-200">
           No testimonials yet
         </div>
@@ -303,9 +301,7 @@ function TestimonialsCarousel({ testimonials }: CarouselProps) {
         className="h-full shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
       >
         <Stack gap="md" h="100%">
-          <ThemeIcon variant="light" color="pink" radius="md" size={36} className="opacity-70">
-            <Quote size={18} />
-          </ThemeIcon>
+
 
           <p className="flex-1 text-sm leading-7 text-slate-600 italic sm:text-base dark:text-slate-400">
             &ldquo;{t.quote}&rdquo;
@@ -332,17 +328,17 @@ function TestimonialsCarousel({ testimonials }: CarouselProps) {
 
   return (
     <Carousel
-      withIndicators
+      // withIndicators
       slideSize="100%"
       slideGap="md"
       emblaOptions={{ loop: true, align: 'start' }}
       plugins={[autoplay.current]}
       onMouseEnter={autoplay.current.stop}
       onMouseLeave={autoplay.current.reset}
-      previousControlProps={{ style: { marginLeft: '-16px' } }}
-      nextControlProps={{ style: { marginRight: '-16px' } }}
+      previousControlProps={{ style: { marginLeft: '-8px' } }}
+      nextControlProps={{ style: { marginRight: '-8px' } }}
       styles={{
-        root: { paddingLeft: '40px', paddingRight: '40px' },
+        root: { paddingLeft: '24px', paddingRight: '24px' },
         indicator: { background: 'var(--mantine-color-indigo-4)' },
         control: {
           border: '1px solid var(--mantine-color-gray-3)',
@@ -365,7 +361,7 @@ function TestimonialsCarousel({ testimonials }: CarouselProps) {
                 >
                   <Stack gap="md" h="100%">
                     <ThemeIcon variant="light" color="pink" radius="md" size={34} className="opacity-70">
-                      <Quote size={16} />
+                      <Quote size={12} />
                     </ThemeIcon>
 
                     <p className="flex-1 text-sm leading-7 italic text-slate-600 sm:text-base dark:text-slate-400">

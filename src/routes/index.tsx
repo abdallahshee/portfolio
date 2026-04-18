@@ -9,7 +9,6 @@ import {
   Image,
   Group,
   Stack,
-  Rating,
   Paper,
   ThemeIcon,
   SimpleGrid,
@@ -32,11 +31,10 @@ import {
   Network,
   Gauge,
   Sparkles,
-  Send,
-  MailCheck,
+
   Mail,
   BriefcaseBusiness,
-  BriefcaseBusinessIcon,
+
 } from 'lucide-react'
 import moment from 'moment'
 import { Suspense } from 'react'
@@ -113,7 +111,7 @@ function FeaturedProjectsSection() {
               </p>
 
               <Link to="/services">
-                <Button size="sm" variant="light" leftSection={<BriefcaseBusinessIcon size={16} />}>
+                <Button size="sm" variant="light" leftSection={<BriefcaseBusiness size={16} />}>
                   See My Services
                 </Button>
               </Link>
@@ -274,16 +272,17 @@ function App() {
 
           {/* RIGHT — profile image */}
           <div className="relative order-first mx-auto w-full max-w-[280px] lg:order-last lg:max-w-none">
-            <div className="relative overflow-hidden rounded-3xl shadow-xl h-[300px] lg:h-[400px]">
-              <Link to="/">
-                <img
-                  src="/images/profile.jpg"
-                  alt="Abdallah Shee"
-                  className="h-full w-full cursor-pointer object-cover transition-transform duration-500 hover:scale-105"
-                />
-              </Link>
+            <div className="group relative overflow-hidden rounded-xl shadow-xl h-[300px] lg:h-[400px]">
+              <img
+                src="/images/profile.jpg"
+                alt="Abdallah Shee"
+                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                onClick={() => {
+                  window.location.hash = 'about'
+                }}
+              />
               {/* subtle overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent transition-opacity duration-500 group-hover:opacity-60" />
             </div>
           </div>
 
@@ -291,16 +290,17 @@ function App() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section className="grid items-start gap-8 sm:gap-10 lg:grid-cols-[1.2fr_0.8fr]" id="about">
+      <section
+        id="about"
+        className="grid scroll-mt-24 items-start gap-8 sm:gap-10 lg:grid-cols-[1.2fr_0.8fr]"
+      >
         <Stack gap="lg" className="min-w-0 border-b-2 border-blue-400 pb-6 lg:border-b-0 lg:border-r-2 lg:pb-0 lg:pr-6">
-          <div className="title2">
-            About Me
-          </div>
+          <div className="title2">About Me</div>
 
           <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
             I'm <strong>Abdallah Shee</strong>, a software developer based in Nairobi, Kenya 🇰🇪.
             I help businesses and startups turn ideas into reliable, easy-to-use digital products —
-            whether it’s a platform, a system, or a custom solution tailored to their needs.
+            whether it's a platform, a system, or a custom solution tailored to their needs.
           </p>
 
           <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
@@ -311,14 +311,12 @@ function App() {
 
           <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
             I believe good software should feel effortless — it should solve real problems,
-            adapt as your business grows, and continue working smoothly long after it’s launched.
+            adapt as your business grows, and continue working smoothly long after it's launched.
           </p>
         </Stack>
 
         <Stack gap="lg" className="min-w-0">
-          <div className="title2">
-            Core Skills & Technologies
-          </div>
+          <div className="title2">Core Skills & Technologies</div>
           <List
             spacing="sm"
             size="md"
@@ -330,12 +328,13 @@ function App() {
           >
             {CORE_SKILLS.map((skill) => (
               <List.Item key={skill}>
-                <span className="text-sm text-slate-600 sm:text-base dark:text-slate-400">{skill}</span>
+                <span className="text-sm text-slate-600 sm:text-base dark:text-slate-400">
+                  {skill}
+                </span>
               </List.Item>
             ))}
           </List>
         </Stack>
-
       </section>
 
       {/* ── STRENGTHS ── */}
