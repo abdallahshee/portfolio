@@ -35,6 +35,8 @@ import {
   Send,
   MailCheck,
   Mail,
+  BriefcaseBusiness,
+  BriefcaseBusinessIcon,
 } from 'lucide-react'
 import moment from 'moment'
 import { Suspense } from 'react'
@@ -70,27 +72,27 @@ function FeaturedProjectsSection() {
   const router = useRouter()
 
   const isEmpty = !projects || projects.length === 0
-
   return (
     <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
       <Stack gap="md">
         <Group justify="space-between" align="flex-end">
           <div>
             <div className="title3">Featured Projects</div>
-            <p className="text-xs text-slate-500">
+            <p className="text-sm text-slate-500">
               A selection of standout builds
             </p>
           </div>
 
-          <Link to="/projects">
-            <Button
-              variant="subtle"
-              size="sm"
-              rightSection={<ArrowRight size={16} />}
-            >
-              View All
-            </Button>
-          </Link>
+          {!isEmpty &&
+            <Link to="/projects">
+              <Button
+                variant="subtle"
+                size="sm"
+                rightSection={<ArrowRight size={16} />}
+              >
+                View All
+              </Button>
+            </Link>}
         </Group>
 
         <div className="-mx-1 overflow-x-auto sm:mx-0">
@@ -108,9 +110,9 @@ function FeaturedProjectsSection() {
                 Featured projects will be added soon
               </p>
 
-              <Link to="/">
-                <Button size="xs" variant="light" leftSection={<FolderKanban size={14} />}>
-                  Read Articles
+              <Link to="/services">
+                <Button size="sm" variant="light" leftSection={<BriefcaseBusinessIcon size={16} />}>
+                  See My Services
                 </Button>
               </Link>
             </div>
@@ -254,7 +256,7 @@ function App() {
               I build mobile-first, responsive digital products with a strong focus on architecture, maintainability, performance, and user experience — turning complex ideas into reliable, production-ready applications. From planning and system design to development and deployment, I ensure every solution is structured for scalability, clarity, and long-term success.
             </p>
             {/* STATS ROW */}
-            <div className="grid w-full  gap-y-4 border-b border-blue-400 py-2 grid-cols-3">
+            <div className="grid w-full  gap-y-4 border-b border-blue-400 py-2 grid-cols-3" >
               {STATS.map((stat) => (
                 <div key={stat.label} className="flex flex-col items-center text-center">
                   <span className="title2 text-slate-900 dark:text-slate-50">
@@ -271,11 +273,13 @@ function App() {
           {/* RIGHT — profile image */}
           <div className="relative order-first mx-auto w-full max-w-[280px] lg:order-last lg:max-w-none">
             <div className="relative overflow-hidden rounded-3xl shadow-xl h-[300px] lg:h-[400px]">
-              <img
-                src="/images/profile.png"
-                alt="Abdallah Shee"
-                className="h-full w-full object-cover transition-transform duration-500 hover:scale-105"
-              />
+              <Link to="/">
+                <img
+                  src="/images/profile.jpg"
+                  alt="Abdallah Shee"
+                  className="h-full w-full cursor-pointer object-cover transition-transform duration-500 hover:scale-105"
+                />
+              </Link>
               {/* subtle overlay */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
             </div>
@@ -285,7 +289,7 @@ function App() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section className="grid items-start gap-8 sm:gap-10 lg:grid-cols-[1.2fr_0.8fr]">
+      <section className="grid items-start gap-8 sm:gap-10 lg:grid-cols-[1.2fr_0.8fr]" id="about">
         <Stack gap="lg" className="min-w-0 border-b-2 border-blue-400 pb-6 lg:border-b-0 lg:border-r-2 lg:pb-0 lg:pr-6">
           <div className="title2">
             About Me
@@ -362,7 +366,7 @@ function App() {
         </SimpleGrid>
       </section>
 
-      <div className="mx-auto w-full">
+      <div className="mx-auto w-full scroll-mt-20">
         <Suspense fallback={<ProjectsSkeleton />}>
           <FeaturedProjectsSection />
         </Suspense>

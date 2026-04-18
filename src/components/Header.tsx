@@ -10,8 +10,6 @@ import {
 import { Link } from "@tanstack/react-router"
 import { Sun, Moon, Briefcase, Home, Folder, Mail } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
-
-import { createClient } from "@supabase/supabase-js"
 import { getCurrentUserQueryOptions } from "@/db/queries/project.queries"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 
@@ -19,8 +17,8 @@ import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 type ThemeMode = "light" | "dark"
 
 function getInitialMode(): ThemeMode {
-  if (typeof window === "undefined") return "light"
-  return window.localStorage.getItem("theme") === "dark" ? "dark" : "light"
+  if (typeof window === "undefined") return "dark"
+  return window.localStorage.getItem("theme") === "light" ? "light" : "dark" // ← defaults to dark
 }
 
 function applyThemeMode(mode: ThemeMode) {
@@ -74,16 +72,22 @@ export default function Header() {
   const BrandLogo = (
     <Link to="/" className="flex flex-shrink-0 items-center gap-2.5 no-underline">
       <Image
-        src="/images/profile.png"
-        alt="Abdallah logo"
+        src="/images/profile.jpg"
+        alt="Abdallah Shee"
         radius="md"
         w={36}
         h={36}
         fit="cover"
+        className="transition-opacity duration-200 hover:opacity-80"
       />
-      <span className="text-[17px] font-semibold tracking-tight text-slate-800 dark:text-slate-100">
-        Abdallah
-      </span>
+      <div className="flex flex-col leading-tight">
+        <span className="text-sm font-semibold tracking-tight text-slate-800 dark:text-slate-100">
+          Abdallah Shee
+        </span>
+        <span className="text-xs font-medium tracking-wide text-slate-500 dark:text-slate-400">
+          Full-Stack Software Developer
+        </span>
+      </div>
     </Link>
   )
 
@@ -176,12 +180,13 @@ export default function Header() {
         title={
           <div className="flex items-center gap-2.5">
             <Image
-              src="/images/profile.png"
-              alt="Abdallah logo"
+              src="/images/profile.jpg"
+              alt="Abdallah Shee"
               radius="md"
               w={30}
               h={30}
               fit="cover"
+              className="transition-opacity duration-200 hover:opacity-80"
             />
             <span className="text-[16px] font-semibold text-slate-800 dark:text-slate-100">
               Abdallah

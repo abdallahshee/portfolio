@@ -21,7 +21,6 @@ import { Notifications } from '@mantine/notifications'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollTop'
 import NotFound from "../components/NotFound"
-import { getSupabaseBrowserClient } from '@/lib/supabase/client'
 import { useEffect } from 'react'
 import { ScrollToTopOnRouteChange } from '@/components/ScrollTopOnRouteChnage'
 
@@ -32,7 +31,7 @@ interface MyRouterContext {
 const THEME_INIT_SCRIPT = `(function(){
   try {
     var stored = window.localStorage.getItem('theme');
-    var resolved = stored === 'dark' ? 'dark' : 'light';
+    var resolved = stored === 'light' ? 'light' : 'dark'; // ← defaults to dark if nothing stored
     var root = document.documentElement;
     root.classList.remove('light', 'dark');
     root.classList.add(resolved);
@@ -110,7 +109,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
-        <MantineProvider defaultColorScheme="auto">
+      <MantineProvider defaultColorScheme="dark">
           <TanStackQueryProvider>
             <AppShell>{children}</AppShell>
           </TanStackQueryProvider>

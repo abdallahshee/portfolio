@@ -22,54 +22,55 @@ export default function Footer() {
     <footer className="mt-10 border-t border-slate-200 bg-gradient-to-b from-white to-slate-50 dark:border-slate-800 dark:from-slate-950 dark:to-slate-900 sm:mt-12">
       <div className="container mx-auto w-full max-w-full px-3 py-10 sm:px-4 sm:py-12 md:px-6 md:py-14 lg:px-8">
         <SimpleGrid cols={{ base: 1, sm: 2, md: 4 }} spacing={{ base: 'lg', sm: 'xl' }}>
-          {/* First Column: Identity */}
+
+          {/* ── Identity ── */}
           <Stack gap="md">
-            <Group align="flex-start" wrap="wrap" gap="sm">
+            <Link to="/" className="inline-block w-fit">
               <Image
-                src="/images/profile.png"
+                src="/images/profile.jpg"
                 alt="Abdallah Shee"
-                w={60}
-                h={60}
-                radius="sm"
+                w={56}
+                h={56}
+                radius="md"
                 fit="cover"
-                style={{ flexShrink: 0 }}
+                className="transition-opacity duration-200 hover:opacity-80"
               />
-              <div className="min-w-0 flex-1">
-                <div className="title3">
-                  Abdallah Shee
-                </div>
-                <div className="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                  <span className="block sm:inline">Software Developer,</span>{' '}
-                  <span className="block sm:inline">Nairobi, Kenya 🇰🇪.</span>
-                </div>
+            </Link>
+            <div className="min-w-0">
+              <div className="title3">Abdallah Shee</div>
+              <div className="mt-1 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                <span className="block sm:inline">Software Developer,</span>{' '}
+                <span className="block sm:inline">Nairobi, Kenya 🇰🇪.</span>
               </div>
-            </Group>
+            </div>
           </Stack>
 
-          {/* Second Column: Explore */}
+          {/* ── Explore ── */}
           <Stack gap="sm">
+            <div className="title3">Explore</div>
             <Anchor component={Link} to="/services" className="transition-colors hover:text-indigo-500">
               Services
             </Anchor>
             <Anchor component={Link} to="/projects" className="transition-colors hover:text-indigo-500">
               Projects
             </Anchor>
+            <Anchor component={Link} to="/cases" className="transition-colors hover:text-indigo-500">
+              Case Studies
+            </Anchor>
             <Anchor component={Link} to="/contact" className="transition-colors hover:text-indigo-500">
               Contact
             </Anchor>
           </Stack>
 
-          {/* Third Column: Contact */}
+          {/* ── Contact ── */}
           <Stack gap="sm">
             <div className="title3">Contact</div>
-
             <Group gap="xs" wrap="nowrap" align="flex-start" className="min-w-0">
               <Phone size={16} className="mt-0.5 shrink-0 text-slate-500" />
               <span className="min-w-0 break-words text-sm text-slate-800 dark:text-slate-100">
                 +254 796 515 302
               </span>
             </Group>
-
             <Group gap="xs" wrap="nowrap" align="flex-start" className="min-w-0">
               <Mail size={16} className="mt-0.5 shrink-0 text-slate-500" />
               <span className="min-w-0 break-all text-sm text-slate-800 dark:text-slate-100">
@@ -78,10 +79,9 @@ export default function Footer() {
             </Group>
           </Stack>
 
-          {/* Fourth Column: Connect */}
+          {/* ── Connect ── */}
           <Stack gap="sm">
             <div className="title3">Connect</div>
-
             <Group gap="sm">
               <ActionIcon
                 component="a"
@@ -121,7 +121,7 @@ export default function Footer() {
 
         <Divider my="xl" />
 
-        <Group justify="center" wrap="wrap" gap="sm">
+        <Group justify="center">
           <p className="px-1 text-center text-sm text-slate-600 dark:text-slate-400">
             © {new Date().getFullYear()} Abdallah Shee. All rights reserved.
           </p>
