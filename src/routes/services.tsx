@@ -43,6 +43,7 @@ import {
 } from 'lucide-react'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { Testimonial } from '@/db/validations/testimonial.types'
+import { useMediaQuery } from '@mantine/hooks'
 
 
 const test_samples: Testimonial[] = [
@@ -272,8 +273,9 @@ interface CarouselProps {
 }
 // ── TESTIMONIALS CAROUSEL ──
 function TestimonialsCarousel({ testimonials }: CarouselProps) {
-  // const { data: testimonials } = useSuspenseQuery(getTestimonialQueryOptions())
   const autoplay = useRef(Autoplay({ delay: 4000 }))
+  const isSm = useMediaQuery('(min-width: 640px)')
+  const itemsPerSlide = isSm ? 2 : 1
 
   if (!testimonials || testimonials.length === 0) {
     return (
@@ -301,44 +303,28 @@ function TestimonialsCarousel({ testimonials }: CarouselProps) {
         className="h-full shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
       >
         <Stack gap="md" h="100%">
-
-          {/* QUOTE ICON */}
-          <ThemeIcon
-            variant="light"
-            color="pink"
-            radius="md"
-            size={36}
-            className="opacity-70"
-          >
+          <ThemeIcon variant="light" color="pink" radius="md" size={36} className="opacity-70">
             <Quote size={18} />
           </ThemeIcon>
 
-          {/* QUOTE */}
           <p className="flex-1 text-sm leading-7 text-slate-600 italic sm:text-base dark:text-slate-400">
             &ldquo;{t.quote}&rdquo;
           </p>
 
-          {/* FOOTER */}
           <Group mt="auto" gap="sm" wrap="nowrap" className="min-w-0 items-center">
-
-            {/* AVATAR (INITIALS) */}
             <Avatar color="blue" radius="md" size={42} className="shrink-0">
               {`${t.authorFirstname?.[0] ?? ''}${t.authorLastname?.[0] ?? ''}`}
             </Avatar>
-
-            {/* AUTHOR INFO */}
             <div className="min-w-0">
               <div className="text-sm font-semibold text-slate-900 truncate dark:text-slate-50">
                 {t.authorFirstname} {t.authorLastname}
               </div>
-
               <div className="text-xs text-slate-500 truncate dark:text-slate-400">
                 {t.authorTitle}
                 {t.company && ` • ${t.company}`}
               </div>
             </div>
           </Group>
-
         </Stack>
       </Card>
     )
@@ -364,11 +350,11 @@ function TestimonialsCarousel({ testimonials }: CarouselProps) {
         },
       }}
     >
-      {Array.from({ length: Math.ceil(testimonials.length / 2) }).map((_, slideIndex) => (
+      {Array.from({ length: Math.ceil(testimonials.length / itemsPerSlide) }).map((_, slideIndex) => (
         <Carousel.Slide key={slideIndex}>
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className={`grid gap-4 ${isSm ? 'grid-cols-2' : 'grid-cols-1'}`}>
             {testimonials
-              .slice(slideIndex * 2, slideIndex * 2 + 2)
+              .slice(slideIndex * itemsPerSlide, slideIndex * itemsPerSlide + itemsPerSlide)
               .map((t) => (
                 <Card
                   key={t.id}
@@ -378,49 +364,28 @@ function TestimonialsCarousel({ testimonials }: CarouselProps) {
                   className="h-full shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
                 >
                   <Stack gap="md" h="100%">
-
-                    {/* TOP ICON */}
-                    <ThemeIcon
-                      variant="light"
-                      color="pink"
-                      radius="md"
-                      size={34}
-                      className="opacity-70"
-                    >
+                    <ThemeIcon variant="light" color="pink" radius="md" size={34} className="opacity-70">
                       <Quote size={16} />
                     </ThemeIcon>
 
-                    {/* QUOTE */}
                     <p className="flex-1 text-sm leading-7 italic text-slate-600 sm:text-base dark:text-slate-400">
                       &ldquo;{t.quote}&rdquo;
                     </p>
 
-                    {/* AUTHOR */}
-                    <Group
-                      mt="auto"
-                      gap="sm"
-                      wrap="nowrap"
-                      className="min-w-0 items-center"
-                    >
-
-                      {/* AVATAR (INITIALS) */}
+                    <Group mt="auto" gap="sm" wrap="nowrap" className="min-w-0 items-center">
                       <Avatar color="blue" radius="md" size={42} className="shrink-0">
                         {`${t.authorFirstname?.[0] ?? ''}${t.authorLastname?.[0] ?? ''}`}
                       </Avatar>
-
-                      {/* DETAILS */}
                       <div className="min-w-0">
                         <div className="text-sm font-semibold text-slate-900 truncate dark:text-slate-50">
                           {t.authorFirstname} {t.authorLastname}
                         </div>
-
                         <div className="text-xs text-slate-500 truncate dark:text-slate-400">
                           {t.authorTitle}
                           {t.company && ` • ${t.company}`}
                         </div>
                       </div>
                     </Group>
-
                   </Stack>
                 </Card>
               ))}
