@@ -9,6 +9,7 @@ export const caseStudy = pgTable('case_study', {
         .notNull()
         .unique() // ✅ ensures 1:1 relationship
         .references(() => project.id, { onDelete: "cascade" }),
+    title:text("title").notNull().unique(),
     overview: text("overview"), // short summary
     problem: text("problem").notNull(),
     solution: text("solution").notNull(),

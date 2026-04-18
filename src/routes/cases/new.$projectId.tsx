@@ -32,9 +32,13 @@ import { useState } from 'react'
 import { notifications } from '@mantine/notifications'
 import { useCreateCaseStudyMutations } from '@/db/queries/case.queries'
 import type z from 'zod'
-
+import { getProjectByIdQueryOptions } from '@/db/queries/project.queries'
+import { useSuspenseQuery } from '@tanstack/react-query'
 
 export const Route = createFileRoute('/cases/new/$projectId')({
+  loader: async ({ context, params }) => {
+    await context.queryClient.prefetchQuery(getProjectByIdQueryOptions(params.projectId))
+  },
   component: RouteComponent,
 })
 
@@ -44,16 +48,18 @@ function RouteComponent() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [techInput, setTechInput] = useState('')
-const TheSchema=CaseSchema.omit({projectId:true})
-type CaseRequest=z.infer<typeof TheSchema>
+  const TheSchema = CaseSchema.omit({ projectId: true })
+  const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(projectId))
+  type CaseRequest = z.infer<typeof TheSchema>
   const form = useForm<CaseRequest>({
     initialValues: {
+      title: project?.title ?? '',
       problem: '',
       solution: '',
       implementation: '',
       startDate: '',
       endDate: '',
-      outcomes:"",
+      outcomes: "",
       technologies: [],
     },
     validate: zod4Resolver(CaseSchema),
@@ -92,7 +98,7 @@ type CaseRequest=z.infer<typeof TheSchema>
     )
   }
 
-  const handleSubmit = async (values:CaseRequest ) => {
+  const handleSubmit = async (values: CaseRequest) => {
     try {
       setLoading(true)
       createCaseMutation.mutateAsync({ ...values, projectId })
@@ -156,7 +162,26 @@ type CaseRequest=z.infer<typeof TheSchema>
           <Paper radius="xl" p="xl" withBorder className="shadow-sm">
             <form onSubmit={form.onSubmit(handleSubmit)}>
               <Stack gap="xl">
+                {/* Title */}
+                <Stack gap="md">
+                  <Group gap="xs">
+                    <ThemeIcon variant="light" color="indigo" radius="lg" size={32}>
+                      <BookOpen size={15} />
+                    </ThemeIcon>
+                    <Text fw={600} size="md">Case Study Title</Text>
+                  </Group>
+                  <Text size="sm" c="dimmed">
+                    Give this case study a clear, descriptive title.
+                  </Text>
+                  <TextInput
+                    placeholder="e.g. Building a School Management System for Greenfield Academy"
+                    radius="md"
+                    size="sm"
+                    {...form.getInputProps('title')}
+                  />
+                </Stack>
 
+                <Divider />
                 {/* Timeline */}
                 <Stack gap="md">
                   <Group gap="xs">
@@ -195,7 +220,7 @@ type CaseRequest=z.infer<typeof TheSchema>
                       value={form.values.startDate}
                       onChange={(date) =>
                         form.setFieldValue(
-                          'endDate',
+                          'startDate',
                           date!
                         )
                       }
@@ -355,7 +380,7 @@ type CaseRequest=z.infer<typeof TheSchema>
                   </Text>
                 </Stack>
 
-                       {/* Implementation */}
+                {/* Implementation */}
                 <Stack gap="md">
                   <Group gap="xs">
                     <ThemeIcon variant="light" color="grape" radius="lg" size={32}>

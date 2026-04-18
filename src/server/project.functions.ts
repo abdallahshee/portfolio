@@ -35,6 +35,35 @@ export const createProject = createServerFn({ method: 'POST' })
 
 
 export const getProjectBySlugName = createServerFn({ method: "GET" })
+  .inputValidator((data: { slug: string }) => data)
+  .handler(async ({ data }) => {
+    try {
+      const [theProject] = await db
+        .select({
+          id: project.id,
+          title: project.title,
+          slug:project.slug,
+          description: project.description,
+          imageUrl: project.imageUrl,
+          isPublic: project.isPublic,
+          url: project.url,
+          createdAt: project.createdAt,
+          updatedAt: project.updatedAt,
+        })
+        .from(project)
+        .where(eq(project.slug, data.slug));
+
+      if (!theProject) return null;
+
+      return theProject;
+    } catch (err) {
+      console.error(err);
+      return null;
+    }
+  });
+
+
+export const getProjectById = createServerFn({ method: "GET" })
   .inputValidator((data: { projectId: string }) => data)
   .handler(async ({ data }) => {
     try {

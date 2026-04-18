@@ -27,7 +27,7 @@ import { Route as AccountRegisterRouteImport } from './routes/account/register'
 import { Route as ProjectsSlugNewRouteImport } from './routes/projects/$slug.new'
 import { Route as ProjectsSlugEditRouteImport } from './routes/projects/$slug.edit'
 import { Route as CasesNewProjectIdRouteImport } from './routes/cases/new.$projectId'
-import { Route as CasesEditSlugRouteImport } from './routes/cases/edit.$slug'
+import { Route as CasesEditCaseIdRouteImport } from './routes/cases/edit.$caseId'
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
   id: '/unauthorized',
@@ -119,9 +119,9 @@ const CasesNewProjectIdRoute = CasesNewProjectIdRouteImport.update({
   path: '/new/$projectId',
   getParentRoute: () => CasesRouteRoute,
 } as any)
-const CasesEditSlugRoute = CasesEditSlugRouteImport.update({
-  id: '/edit/$slug',
-  path: '/edit/$slug',
+const CasesEditCaseIdRoute = CasesEditCaseIdRouteImport.update({
+  id: '/edit/$caseId',
+  path: '/edit/$caseId',
   getParentRoute: () => CasesRouteRoute,
 } as any)
 
@@ -141,7 +141,7 @@ export interface FileRoutesByFullPath {
   '/cases/': typeof CasesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/testimonials/': typeof TestimonialsIndexRoute
-  '/cases/edit/$slug': typeof CasesEditSlugRoute
+  '/cases/edit/$caseId': typeof CasesEditCaseIdRoute
   '/cases/new/$projectId': typeof CasesNewProjectIdRoute
   '/projects/$slug/edit': typeof ProjectsSlugEditRoute
   '/projects/$slug/new': typeof ProjectsSlugNewRoute
@@ -159,7 +159,7 @@ export interface FileRoutesByTo {
   '/cases': typeof CasesIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/testimonials': typeof TestimonialsIndexRoute
-  '/cases/edit/$slug': typeof CasesEditSlugRoute
+  '/cases/edit/$caseId': typeof CasesEditCaseIdRoute
   '/cases/new/$projectId': typeof CasesNewProjectIdRoute
   '/projects/$slug/edit': typeof ProjectsSlugEditRoute
   '/projects/$slug/new': typeof ProjectsSlugNewRoute
@@ -181,7 +181,7 @@ export interface FileRoutesById {
   '/cases/': typeof CasesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/testimonials/': typeof TestimonialsIndexRoute
-  '/cases/edit/$slug': typeof CasesEditSlugRoute
+  '/cases/edit/$caseId': typeof CasesEditCaseIdRoute
   '/cases/new/$projectId': typeof CasesNewProjectIdRoute
   '/projects/$slug/edit': typeof ProjectsSlugEditRoute
   '/projects/$slug/new': typeof ProjectsSlugNewRoute
@@ -204,7 +204,7 @@ export interface FileRouteTypes {
     | '/cases/'
     | '/projects/'
     | '/testimonials/'
-    | '/cases/edit/$slug'
+    | '/cases/edit/$caseId'
     | '/cases/new/$projectId'
     | '/projects/$slug/edit'
     | '/projects/$slug/new'
@@ -222,7 +222,7 @@ export interface FileRouteTypes {
     | '/cases'
     | '/projects'
     | '/testimonials'
-    | '/cases/edit/$slug'
+    | '/cases/edit/$caseId'
     | '/cases/new/$projectId'
     | '/projects/$slug/edit'
     | '/projects/$slug/new'
@@ -243,7 +243,7 @@ export interface FileRouteTypes {
     | '/cases/'
     | '/projects/'
     | '/testimonials/'
-    | '/cases/edit/$slug'
+    | '/cases/edit/$caseId'
     | '/cases/new/$projectId'
     | '/projects/$slug/edit'
     | '/projects/$slug/new'
@@ -390,11 +390,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CasesNewProjectIdRouteImport
       parentRoute: typeof CasesRouteRoute
     }
-    '/cases/edit/$slug': {
-      id: '/cases/edit/$slug'
-      path: '/edit/$slug'
-      fullPath: '/cases/edit/$slug'
-      preLoaderRoute: typeof CasesEditSlugRouteImport
+    '/cases/edit/$caseId': {
+      id: '/cases/edit/$caseId'
+      path: '/edit/$caseId'
+      fullPath: '/cases/edit/$caseId'
+      preLoaderRoute: typeof CasesEditCaseIdRouteImport
       parentRoute: typeof CasesRouteRoute
     }
   }
@@ -416,13 +416,13 @@ const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
 
 interface CasesRouteRouteChildren {
   CasesIndexRoute: typeof CasesIndexRoute
-  CasesEditSlugRoute: typeof CasesEditSlugRoute
+  CasesEditCaseIdRoute: typeof CasesEditCaseIdRoute
   CasesNewProjectIdRoute: typeof CasesNewProjectIdRoute
 }
 
 const CasesRouteRouteChildren: CasesRouteRouteChildren = {
   CasesIndexRoute: CasesIndexRoute,
-  CasesEditSlugRoute: CasesEditSlugRoute,
+  CasesEditCaseIdRoute: CasesEditCaseIdRoute,
   CasesNewProjectIdRoute: CasesNewProjectIdRoute,
 }
 

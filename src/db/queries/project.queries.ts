@@ -1,14 +1,21 @@
-import { getPaginatedProjects, getProjectBySlugName, getTopProjects, searchProjects } from "@/server/project.functions"
+import { getPaginatedProjects, getProjectById, getProjectBySlugName, getTopProjects, searchProjects } from "@/server/project.functions"
 import { getCurrentUser } from "@/server/user.functions"
 import { queryOptions } from "@tanstack/react-query"
 
 //Geting all projects
 
 
-export const getProjectBySlugNameQueryOptions = (projectId: string) =>
+export const getProjectBySlugNameQueryOptions = (slug: string) =>
+  queryOptions({
+    queryKey: ['projects', slug],
+    queryFn: () => getProjectBySlugName({ data: { slug } }),
+  })
+
+
+  export const getProjectByIdQueryOptions = (projectId: string) =>
   queryOptions({
     queryKey: ['projects', projectId],
-    queryFn: () => getProjectBySlugName({ data: { projectId: projectId } }),
+    queryFn: () => getProjectById({ data: { projectId: projectId } }),
   })
 
 export const getTopProjectsQueryOptions = () =>
