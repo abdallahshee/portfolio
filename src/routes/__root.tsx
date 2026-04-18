@@ -21,10 +21,8 @@ import { Notifications } from '@mantine/notifications'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollTop'
 import NotFound from "../components/NotFound"
-import { useRouterState } from '@tanstack/react-router'
 import { getSupabaseBrowserClient } from '@/lib/supabase/client'
-import { useEffect, useState } from 'react'
-import type { AuthChangeEvent, Session } from '@supabase/supabase-js'
+import { useEffect } from 'react'
 import { ScrollToTopOnRouteChange } from '@/components/ScrollTopOnRouteChnage'
 
 interface MyRouterContext {
@@ -69,57 +67,23 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
 })
 
 function AppShell({ children }: { children: React.ReactNode }) {
-  const supabase = getSupabaseBrowserClient()
-  const [session, setSession] = useState<Session | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-
-  // ✅ EXISTING AUTH EFFECT
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
-      setSession(data?.session ?? null)
-      setIsLoading(false)
-    })
-
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event: AuthChangeEvent, session: Session | null) => {
-        setSession(session)
-        setIsLoading(false)
-      }
-    )
-
-    return () => listener.subscription.unsubscribe()
-  }, [supabase])
-
-  // ✅ NEW: Handle Vite dynamic import errors (VERY IMPORTANT)
   useEffect(() => {
     const handler = (event: any) => {
       console.warn("Vite preload error detected → reloading app")
       event.preventDefault()
       window.location.reload()
     }
-
     window.addEventListener("vite:preloadError", handler)
-
-    return () => {
-      window.removeEventListener("vite:preloadError", handler)
-    }
+    return () => window.removeEventListener("vite:preloadError", handler)
   }, [])
 
-
-
   return (
-    <>
+    <div className="flex min-h-screen flex-col">
       <Notifications position="top-right" />
 
+      <Header />
 
-
-      <main
-        className=
-
-        'container mx-auto w-full max-w-full px-3 pb-10 pt-20 sm:px-4 sm:pb-12 md:px-6 md:pb-14 lg:px-8 lg:pb-16'
-
-
-      >
+      <main className="flex-1 container mx-auto w-full max-w-full px-3 pb-10 pt-20 sm:px-4 sm:pb-12 md:px-6 md:pb-14 lg:px-8 lg:pb-16">
         <ScrollToTopOnRouteChange />
         {children}
         <ScrollToTop />
@@ -134,7 +98,7 @@ function AppShell({ children }: { children: React.ReactNode }) {
           TanStackQueryDevtools,
         ]}
       />
-    </>
+    </div>
   )
 }
 
