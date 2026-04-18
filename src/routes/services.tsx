@@ -43,6 +43,71 @@ import {
 } from 'lucide-react'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { Testimonial } from '@/db/validations/testimonial.types'
+
+
+const test_samples: Testimonial[] = [
+  {
+    id: '1',
+    createdAt: new Date('2024-01-15'),
+    updatedAt: new Date('2024-01-15'),
+    quote: 'Abdallah built our entire rental management platform from scratch. He understood the local context — M-Pesa integration, tenant communication flows — and delivered a system our team actually loves using.',
+    authorFirstname: 'James',
+    authorLastname: 'Mwangi',
+    authorTitle: 'Founder',
+    company: 'LetsRent Kenya',
+  },
+  {
+    id: '2',
+    createdAt: new Date('2024-02-20'),
+    updatedAt: new Date('2024-02-20'),
+    quote: 'The school system he built transformed how we handle fees, attendance, and parent communication. What used to take days now takes minutes. Highly professional, communicates clearly, and delivers on time.',
+    authorFirstname: 'Amina',
+    authorLastname: 'Hassan',
+    authorTitle: 'Director',
+    company: 'Greenfield Academy',
+  },
+  {
+    id: '3',
+    createdAt: new Date('2024-03-10'),
+    updatedAt: new Date('2024-03-10'),
+    quote: 'We needed a custom inventory and sales system. Abdallah scoped the project clearly, kept us in the loop throughout, and the final product exceeded our expectations. Would absolutely work with him again.',
+    authorFirstname: 'Brian',
+    authorLastname: 'Otieno',
+    authorTitle: 'CEO',
+    company: 'TradeTrack SME',
+  },
+  {
+    id: '4',
+    createdAt: new Date('2024-04-05'),
+    updatedAt: new Date('2024-04-05'),
+    quote: 'The finance platform Abdallah built for us handles thousands of transactions daily without a hitch. His attention to security and data integrity gave us full confidence in the system from day one.',
+    authorFirstname: 'Sarah',
+    authorLastname: 'Kimani',
+    authorTitle: 'COO',
+    company: 'PayEase Africa',
+  },
+  {
+    id: '5',
+    createdAt: new Date('2024-05-18'),
+    updatedAt: new Date('2024-05-18'),
+    quote: 'Our booking system went live in record time. The calendar sync, automated reminders, and online payments work flawlessly. Our front desk team adapted to it instantly — it just makes sense.',
+    authorFirstname: 'David',
+    authorLastname: 'Njoroge',
+    authorTitle: 'Managing Director',
+    company: 'SwiftBook Hotels',
+  },
+  {
+    id: '6',
+    createdAt: new Date('2024-06-22'),
+    updatedAt: new Date('2024-06-22'),
+    quote: 'Managing member contributions and loan applications used to be a nightmare. Now everything is tracked in one place and our members can check their balances anytime. Game changer for our SACCO.',
+    authorFirstname: 'Grace',
+    authorLastname: 'Wanjiru',
+    authorTitle: 'Head of Operations',
+    company: 'Soko SACCO',
+  },
+]
+
 export const Route = createFileRoute('/services')({
   loader: async ({ context }) => {
     await context.queryClient.prefetchQuery(getTestimonialQueryOptions())
@@ -173,74 +238,7 @@ const TECH_STACK = [
 
 ]
 
-const TESTIMONIALS = [
-  {
-    id: '1',
-    authorFirstname: 'James',
-    authorLastname: 'Mwangi',
-    authorTitle: 'Founder',
-    company: 'LetsRent Kenya',
-    quote:
-      'Abdallah built our entire rental management platform from scratch. He understood the local context — M-Pesa integration, tenant communication flows — and delivered a system our team actually loves using.',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: '2',
-    authorFirstname: 'Amina',
-    authorLastname: 'Hassan',
-    authorTitle: 'Director',
-    company: 'Greenfield Academy',
-    quote:
-      'The school system he built transformed how we handle fees, attendance, and parent communication. What used to take days now takes minutes. Highly professional, communicates clearly, and delivers on time.',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: '3',
-    authorFirstname: 'Brian',
-    authorLastname: 'Otieno',
-    authorTitle: 'CEO',
-    company: 'TradeTrack SME',
-    quote:
-      'We needed a custom inventory and sales system. Abdallah scoped the project clearly, kept us in the loop throughout, and the final product exceeded our expectations. Would absolutely work with him again.',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: '4',
-    authorFirstname: 'Sarah',
-    authorLastname: 'Kimani',
-    authorTitle: 'COO',
-    company: 'PayEase Africa',
-    quote:
-      'The finance platform Abdallah built for us handles thousands of transactions daily without a hitch. His attention to security and data integrity gave us full confidence in the system from day one.',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: '5',
-    authorFirstname: 'David',
-    authorLastname: 'Njoroge',
-    authorTitle: 'MD',
-    company: 'SwiftBook Hotels',
-    quote:
-      'Our booking system went live in record time. The calendar sync, automated reminders, and online payments work flawlessly. Our front desk team adapted to it instantly — it just makes sense.',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-  {
-    id: '6',
-    authorFirstname: 'Grace',
-    authorLastname: 'Wanjiru',
-    authorTitle: 'Head of Ops',
-    company: 'Soko SACCO',
-    quote:
-      'Managing member contributions and loan applications used to be a nightmare. Now everything is tracked in one place and our members can check their balances anytime. Game changer for our SACCO.',
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  },
-]
+
 
 // ── TESTIMONIALS SKELETON ──
 function TestimonialsSkeleton() {
@@ -635,7 +633,7 @@ function ServicesPage() {
 
         <Suspense fallback={<TestimonialsSkeleton />}>
           {/* <TestimonialsCarousel testimonials={testimonials} /> */}
-          <TestimonialsCarousel testimonials={TESTIMONIALS} />
+          <TestimonialsCarousel testimonials={test_samples} />
         </Suspense>
       </section>
 
