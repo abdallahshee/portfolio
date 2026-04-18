@@ -1,12 +1,15 @@
 // src/sql/script.ts
+// src/sql/script.ts
+import 'dotenv/config'  // ← add this as the very first line
+
 import { readFileSync } from "fs"
 import { join } from "path"
 import { db } from "../db/index"
 import { sql } from "drizzle-orm"
-
 const SQL_DIR = join(import.meta.dirname, ".")
 
 const files = [
+  "drop.policies.sql",
   "project.policies.sql",
   "case.policies.sql",
   "bucket.images.sql",
