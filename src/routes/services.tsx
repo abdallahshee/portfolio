@@ -244,22 +244,31 @@ const TECH_STACK = [
 // ── TESTIMONIALS SKELETON ──
 function TestimonialsSkeleton() {
   return (
-    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div
+      style={{ paddingLeft: '24px', paddingRight: '24px' }}
+      className="grid grid-cols-1 gap-4 sm:grid-cols-2"
+    >
       {Array.from({ length: 2 }).map((_, i) => (
-        <Card key={i} radius="lg" withBorder p="xl" className="h-full shadow-sm">
-          <Stack gap="lg" h="100%">
-            <Skeleton height={36} width={36} radius="md" />
+        <Card key={i} radius="lg" withBorder p="xl" className="shadow-sm" style={{ height: '280px' }}>
+          <Stack gap="md" h="100%" style={{ overflow: 'hidden' }}>
+            {/* Quote icon */}
+            <Skeleton height={34} width={34} radius="md" />
+
+            {/* Quote lines — 5 lines to match WebkitLineClamp */}
             <Stack gap="sm" className="flex-1">
               <Skeleton height={12} radius="md" />
+              <Skeleton height={12} width="95%" radius="md" />
               <Skeleton height={12} width="90%" radius="md" />
-              <Skeleton height={12} width="80%" radius="md" />
-              <Skeleton height={12} width="70%" radius="md" />
+              <Skeleton height={12} width="85%" radius="md" />
+              <Skeleton height={12} width="60%" radius="md" />
             </Stack>
-            <Group gap="sm" wrap="nowrap">
+
+            {/* Author */}
+            <Group gap="sm" wrap="nowrap" className="shrink-0">
               <Skeleton height={42} width={42} radius="md" />
               <Stack gap={6}>
-                <Skeleton height={12} width={120} radius="md" />
-                <Skeleton height={10} width={80} radius="md" />
+                <Skeleton height={12} width={100} radius="md" />
+                <Skeleton height={10} width={70} radius="md" />
               </Stack>
             </Group>
           </Stack>
@@ -295,19 +304,25 @@ function TestimonialsCarousel({ testimonials }: CarouselProps) {
     const t = testimonials[0]
     return (
       <Card
+        key={t.id}
         radius="lg"
         withBorder
         p="xl"
-        className="h-full shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+        className="shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md"
+        style={{ height: '280px' }}
       >
-        <Stack gap="md" h="100%">
+        <Stack gap="md" h="100%" style={{ overflow: 'hidden' }}>
+          <ThemeIcon variant="light" color="pink" radius="md" size={34} className="opacity-70">
+            <Quote size={12} />
+          </ThemeIcon>
 
-
-          <p className="flex-1 text-sm leading-7 text-slate-600 italic sm:text-base dark:text-slate-400">
+          <p className="flex-1 text-sm leading-7 italic text-slate-600 sm:text-base dark:text-slate-400"
+            style={{ overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 5, WebkitBoxOrient: 'vertical' }}
+          >
             &ldquo;{t.quote}&rdquo;
           </p>
 
-          <Group mt="auto" gap="sm" wrap="nowrap" className="min-w-0 items-center">
+          <Group mt="auto" gap="sm" wrap="nowrap" className="min-w-0 items-center shrink-0">
             <Avatar color="blue" radius="md" size={42} className="shrink-0">
               {`${t.authorFirstname?.[0] ?? ''}${t.authorLastname?.[0] ?? ''}`}
             </Avatar>
