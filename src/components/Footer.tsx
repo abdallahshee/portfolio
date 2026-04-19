@@ -64,7 +64,7 @@ export default function Footer() {
 
           {/* ── Contact ── */}
           <Stack gap="sm">
-            <div className="title3">Contact</div>
+            <div className="title3">Contacts</div>
             <Group gap="xs" wrap="nowrap" align="flex-start" className="min-w-0">
               <Phone size={16} className="mt-0.5 shrink-0 text-slate-500" />
               <span className="min-w-0 break-words text-sm text-slate-800 dark:text-slate-100">

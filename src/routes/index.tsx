@@ -395,7 +395,7 @@ function App() {
         <Group justify="center" mt="md" wrap="wrap" gap="sm">
           <Link to="/contacts">
             <Button variant="filled" color="blue" size="sm" radius="md" leftSection={<Mail size={18} />}>
-              Start a Conversation
+              Let's Discuss it
             </Button>
           </Link>
           <Link to="/projects">
