@@ -415,8 +415,8 @@ function ServicesPage() {
           <div className="lg:col-span-2 flex flex-col gap-6 w-full">
 
             {/* TITLE */}
-            <div className="heading leading-tight">
-              Software solutions for real business needs
+            <div className="heading">
+              Software Built for Real Business
             </div>
 
             {/* DESCRIPTION */}

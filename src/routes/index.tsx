@@ -235,189 +235,179 @@ const STRENGTHS = [
 function App() {
 
   return (
-    <Container size="xl" className="max-w-full space-y-8 px-0 py-6 sm:space-y-10 sm:py-8 md:space-y-12 md:py-10">
-      <section className="grid items-center gap-10 sm:gap-12">
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_340px] lg:gap-14">
+ <Container size="xl" className="max-w-full space-y-8 px-0 py-6 sm:space-y-10 sm:py-8 md:space-y-12 md:py-10">
 
-          {/* LEFT */}
-          <div className="flex flex-col gap-6 w-full">
+  {/* ── HERO + ABOUT grouped with smaller gap ── */}
+  <div className="space-y-6 sm:space-y-8">
 
-            {/* ROLE */}
-            <div className="inline-flex self-start flex-col title2">
-              <span className="text-blue-500">Software Developer</span>
-              <span
-                className="h-[3px] sm:h-[4px] bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 rounded-full mt-1"
-                style={{ width: 'calc(100% + 0.6ch)' }}
-              />
-            </div>
+    {/* ── HERO ── */}
+<section className="grid items-center gap-10 sm:gap-12">
+  <div className="grid grid-cols-1 gap-10 lg:grid-cols-[3fr_1fr] lg:gap-14">
 
-            {/* HEADING */}
-            <h1 className="heading leading-tight w-full">
-              Designing maintainable and scalable web products & software systems
-            </h1>
-
-            {/* DESCRIPTION */}
-            <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
-              I build mobile-first, responsive digital products with a strong focus on architecture,
-              maintainability, performance, and user experience — turning complex ideas into reliable,
-              production-ready applications. From planning and system design to development and deployment,
-              I ensure every solution is structured for scalability, clarity, and long-term success.
-            </p>
-
-            {/* STATS ROW */}
-            <div className="grid w-full gap-y-4 border-b border-blue-400 py-2 grid-cols-3">
-              {STATS.map((stat) => (
-                <div key={stat.label} className="flex flex-col items-center text-center">
-                  <span className="title2 text-slate-900 dark:text-slate-50">
-                    {stat.value}
-                  </span>
-                  <span className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* RIGHT — profile image */}
-          <div className="relative order-first mx-auto w-full max-w-[280px] lg:order-last lg:max-w-none">
-            <div
-              className="group relative h-[300px] overflow-hidden rounded-xl shadow-xl lg:h-[400px]"
-              style={{
-                isolation: 'isolate',
-                willChange: 'transform',
-                borderRadius: '0.75rem',
-                WebkitMaskImage: 'radial-gradient(white, black)',
-              }}
-            >
-              <img
-                src="/images/profile.jpg"
-                alt="Abdallah Shee"
-                className="h-full w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-110"
-                style={{ borderRadius: '0.75rem' }}
-                onClick={() => {
-                  window.location.hash = 'about'
-                }}
-              />
-              <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 via-transparent to-transparent transition-opacity duration-500 group-hover:opacity-60" />
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ── ABOUT ── */}
-      <section id="about" className="scroll-mt-24">
-        <Stack gap="lg" className="w-full border-b-2 border-blue-400 pb-6 lg:border-b-0 lg:pb-0">
-          <div className="title2">About Me</div>
-
-          <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-            I'm <strong>Abdallah Shee</strong>, a software developer based in Nairobi, Kenya 🇰🇪.
-            I help businesses and startups turn ideas into reliable, easy-to-use digital products —
-            whether it's a platform, a system, or a custom solution tailored to their needs.
-            With expertise across both frontend and backend, I bring a full-picture perspective
-            to every project I take on.
-          </p>
-
-          <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-            From planning and system design to development and deployment, I focus on building
-            systems that are simple to use, efficient, and built to handle growth. My goal is
-            always to make things clear, practical, and valuable — writing clean, maintainable
-            code that stands the test of time.
-          </p>
-
-          <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-            I believe good software should feel effortless — it should solve real problems,
-            adapt as your business grows, and continue working smoothly long after it's launched.
-            Whatever you're building, I'm here to make sure it's done right.
-          </p>
-        </Stack>
-      </section>
-
-      {/* ── STRENGTHS ── */}
-      <section className="space-y-6">
-        <div>
-          <div className="title2">
-            Core Strengths
-          </div>
-          <p className="mt-2 max-w-3xl text-sm text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
-            The areas where I consistently deliver the most impact and value.
-          </p>
-        </div>
-
-        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
-          {STRENGTHS.map((strength) => (
-            <Card key={strength.title} withBorder p="lg" radius="lg" className="shadow-sm ">
-              <Group gap="md" align="flex-start">
-                <ThemeIcon variant="light" color={strength.color} radius="md" size="lg">
-                  {strength.icon}
-                </ThemeIcon>
-                <Stack gap={4} className="min-w-0 flex-1">
-                  <div className="font-bold text-slate-900 dark:text-slate-50">{strength.title}</div>
-                  <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
-                    {strength.desc}
-                  </p>
-                </Stack>
-              </Group>
-            </Card>
-          ))}
-        </SimpleGrid>
-      </section>
-
-      <div className="mx-auto w-full scroll-mt-20">
-        <Suspense fallback={<ProjectsSkeleton />}>
-          <FeaturedProjectsSection />
-        </Suspense>
+    {/* LEFT */}
+    <div id="left" className="flex flex-col gap-6 w-full">
+      <div className="heading w-full">
+        Crafting Scalable Digital Products
       </div>
-      <section id="contact" className="mx-auto w-full scroll-mt-20">
-        <Paper
-          radius="24px"
-          withBorder
-          shadow="sm"
-          className="relative overflow-hidden border border-slate-200/70 bg-linear-to-br from-white via-indigo-50 to-blue-50 px-4 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
-        >
-          <Stack align="center" gap="md">
 
-            {/* TITLE */}
-            <div className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent text-center">
-              Have an idea or project in mind?
-            </div>
+      <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
+        I build mobile-first, responsive digital products with a strong focus on architecture,
+        maintainability, performance, and user experience — turning complex ideas into reliable,
+        production-ready applications. From planning and system design to development and deployment,
+        I ensure every solution is structured for scalability, clarity, and long-term success.
+        Whether you are a startup finding your footing or an established business scaling up,
+        I bring the technical depth and practical thinking to deliver software that works — and keeps working.
+      </p>
 
-            {/* DESCRIPTION */}
-            <p className="max-w-2xl px-1 text-center text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-              Whether you're starting from scratch or improving an existing system, I can help you design and build something reliable, scalable, and easy to use — tailored to your goals and users.
-            </p>
+      <div className="grid w-full gap-y-4 border-b border-blue-400 py-2 grid-cols-3">
+        {STATS.map((stat) => (
+          <div key={stat.label} className="flex flex-col items-center text-center">
+            <span className="title2 text-slate-900 dark:text-slate-50">
+              {stat.value}
+            </span>
+            <span className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              {stat.label}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
 
-            {/* CTA BUTTONS */}
-            <Group justify="center" mt="md" wrap="wrap" gap="sm">
-              <Link to="/contact">
-                <Button
-                  variant="filled"
-                  color="blue"
-                  size="sm"
-                  radius="md"
-                  leftSection={<Mail size={18} />}
+    {/* RIGHT — responsive image */}
+ {/* RIGHT — responsive image */}
+<div id="right" className="order-first w-full lg:order-last">
+  <div className="mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-none">
+    <div
+      className="group relative w-full overflow-hidden rounded-xl shadow-xl"
+      style={{
+        aspectRatio: '3 / 3',
+        isolation: 'isolate',
+        willChange: 'transform',
+        borderRadius: '0.75rem',
+        WebkitMaskImage: 'radial-gradient(white, black)',
+      }}
+    >
+      <img
+        src="/images/profile.jpg"
+        alt="Abdallah Shee"
+        className="absolute inset-0 h-full w-full rounded-xl object-cover object-top transition-transform duration-500 group-hover:scale-110"
+        onClick={() => { window.location.hash = 'about' }}
+      />
 
-                >
-                  Start a Conversation
-                </Button>
-              </Link>
-              <Link to="/projects">
-                <Button
-                  variant="outline"
-                  color="blue"
-                  size="sm"
-                  radius="md"
-                  leftSection={<FolderKanban size={18} />}
-                >
-                  View My Work
-                </Button>
-              </Link>
-            </Group>
+      {/* ── OVERLAY ── */}
+      <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
-          </Stack>
-        </Paper>
-      </section>
-    </Container>
+      {/* ── LABEL ── */}
+      <div className="absolute bottom-4 left-0 right-0 flex flex-col items-center gap-1">
+        <span className="text-sm font-semibold tracking-widest text-white/90">
+          Software Developer
+        </span>
+        <span className="h-[2px] w-10 rounded-full bg-gradient-to-r from-blue-400 via-teal-400 to-green-400" />
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+</section>
+
+    {/* ── ABOUT ── */}
+    <section id="about" className="scroll-mt-24">
+      <Stack gap="lg" className="w-full border-b-2 border-blue-400 pb-6 lg:border-b-0 lg:pb-0">
+        <div className="title2">About Me</div>
+
+        <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+          I'm <strong>Abdallah Shee</strong>, a software developer based in Nairobi, Kenya 🇰🇪.
+          I help businesses and startups turn ideas into reliable, easy-to-use digital products —
+          whether it's a platform, a system, or a custom solution tailored to their needs.
+          With expertise across both frontend and backend, I bring a full-picture perspective
+          to every project I take on.
+        </p>
+
+        <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+          From planning and system design to development and deployment, I focus on building
+          systems that are simple to use, efficient, and built to handle growth. My goal is
+          always to make things clear, practical, and valuable — writing clean, maintainable
+          code that stands the test of time.
+        </p>
+
+        <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+          I believe good software should feel effortless — it should solve real problems,
+          adapt as your business grows, and continue working smoothly long after it's launched.
+          Whatever you're building, I'm here to make sure it's done right.
+        </p>
+      </Stack>
+    </section>
+
+  </div>
+
+  {/* ── STRENGTHS ── */}
+  <section className="space-y-6">
+    <div>
+      <div className="title2">Core Strengths</div>
+      <p className="mt-2 max-w-3xl text-sm text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
+        The areas where I consistently deliver the most impact and value.
+      </p>
+    </div>
+
+    <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
+      {STRENGTHS.map((strength) => (
+        <Card key={strength.title} withBorder p="lg" radius="lg" className="shadow-sm">
+          <Group gap="md" align="flex-start">
+            <ThemeIcon variant="light" color={strength.color} radius="md" size="lg">
+              {strength.icon}
+            </ThemeIcon>
+            <Stack gap={4} className="min-w-0 flex-1">
+              <div className="font-bold text-slate-900 dark:text-slate-50">{strength.title}</div>
+              <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+                {strength.desc}
+              </p>
+            </Stack>
+          </Group>
+        </Card>
+      ))}
+    </SimpleGrid>
+  </section>
+
+  {/* ── FEATURED PROJECTS ── */}
+  <div className="mx-auto w-full scroll-mt-20">
+    <Suspense fallback={<ProjectsSkeleton />}>
+      <FeaturedProjectsSection />
+    </Suspense>
+  </div>
+
+  {/* ── CTA ── */}
+  <section id="contact" className="mx-auto w-full scroll-mt-20">
+    <Paper
+      radius="24px"
+      withBorder
+      shadow="sm"
+      className="relative overflow-hidden border border-slate-200/70 bg-linear-to-br from-white via-indigo-50 to-blue-50 px-4 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
+    >
+      <Stack align="center" gap="md">
+        <div className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent text-center">
+          Have an idea or project in mind?
+        </div>
+        <p className="max-w-2xl px-1 text-center text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+          Whether you're starting from scratch or improving an existing system, I can help you
+          design and build something reliable, scalable, and easy to use — tailored to your goals and users.
+        </p>
+        <Group justify="center" mt="md" wrap="wrap" gap="sm">
+          <Link to="/contact">
+            <Button variant="filled" color="blue" size="sm" radius="md" leftSection={<Mail size={18} />}>
+              Start a Conversation
+            </Button>
+          </Link>
+          <Link to="/projects">
+            <Button variant="outline" color="blue" size="sm" radius="md" leftSection={<FolderKanban size={18} />}>
+              View My Work
+            </Button>
+          </Link>
+        </Group>
+      </Stack>
+    </Paper>
+  </section>
+
+</Container>
   )
 }
