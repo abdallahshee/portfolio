@@ -247,7 +247,7 @@ function App() {
     {/* LEFT */}
     <div id="left" className="flex flex-col gap-6 w-full">
       <div className="heading w-full">
-        Crafting Scalable Digital Products
+       Built to Scale, Designed to Last
       </div>
 
       <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">

@@ -81,7 +81,7 @@ function HowIWorkPage() {
             {/* ── PAGE HEADER ── */}
             <section className="w-full space-y-6">
                 <div className="heading">
-                    How I Build and What I Build With
+                    How I Think, Plan and Build Software
                 </div>
 
                 <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">

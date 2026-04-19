@@ -416,7 +416,7 @@ function ServicesPage() {
 
             {/* TITLE */}
             <div className="heading">
-              Software Built for Real Business
+            From Concept to Production, Done Right
             </div>
 
             {/* DESCRIPTION */}
