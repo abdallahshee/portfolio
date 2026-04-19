@@ -23,7 +23,6 @@ import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as TestimonialsNewRouteImport } from './routes/testimonials/new'
 import { Route as ProjectsNewRouteImport } from './routes/projects/new'
 import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
-import { Route as AccountRegisterRouteImport } from './routes/account/register'
 import { Route as ProjectsSlugNewRouteImport } from './routes/projects/$slug.new'
 import { Route as ProjectsSlugEditRouteImport } from './routes/projects/$slug.edit'
 import { Route as CasesNewProjectIdRouteImport } from './routes/cases/new.$projectId'
@@ -99,11 +98,6 @@ const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
   path: '/projects/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AccountRegisterRoute = AccountRegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => AccountRouteRoute,
-} as any)
 const ProjectsSlugNewRoute = ProjectsSlugNewRouteImport.update({
   id: '/new',
   path: '/new',
@@ -133,7 +127,6 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/services': typeof ServicesRoute
   '/unauthorized': typeof UnauthorizedRoute
-  '/account/register': typeof AccountRegisterRoute
   '/projects/$slug': typeof ProjectsSlugRouteWithChildren
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
@@ -151,7 +144,6 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/services': typeof ServicesRoute
   '/unauthorized': typeof UnauthorizedRoute
-  '/account/register': typeof AccountRegisterRoute
   '/projects/$slug': typeof ProjectsSlugRouteWithChildren
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
@@ -173,7 +165,6 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/services': typeof ServicesRoute
   '/unauthorized': typeof UnauthorizedRoute
-  '/account/register': typeof AccountRegisterRoute
   '/projects/$slug': typeof ProjectsSlugRouteWithChildren
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
@@ -196,7 +187,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/services'
     | '/unauthorized'
-    | '/account/register'
     | '/projects/$slug'
     | '/projects/new'
     | '/testimonials/new'
@@ -214,7 +204,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/services'
     | '/unauthorized'
-    | '/account/register'
     | '/projects/$slug'
     | '/projects/new'
     | '/testimonials/new'
@@ -235,7 +224,6 @@ export interface FileRouteTypes {
     | '/contact'
     | '/services'
     | '/unauthorized'
-    | '/account/register'
     | '/projects/$slug'
     | '/projects/new'
     | '/testimonials/new'
@@ -362,13 +350,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/account/register': {
-      id: '/account/register'
-      path: '/register'
-      fullPath: '/account/register'
-      preLoaderRoute: typeof AccountRegisterRouteImport
-      parentRoute: typeof AccountRouteRoute
-    }
     '/projects/$slug/new': {
       id: '/projects/$slug/new'
       path: '/new'
@@ -401,12 +382,10 @@ declare module '@tanstack/react-router' {
 }
 
 interface AccountRouteRouteChildren {
-  AccountRegisterRoute: typeof AccountRegisterRoute
   AccountIndexRoute: typeof AccountIndexRoute
 }
 
 const AccountRouteRouteChildren: AccountRouteRouteChildren = {
-  AccountRegisterRoute: AccountRegisterRoute,
   AccountIndexRoute: AccountIndexRoute,
 }
 

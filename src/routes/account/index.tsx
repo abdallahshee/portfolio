@@ -1,10 +1,9 @@
-import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import {
   TextInput,
   PasswordInput,
   Button,
   Stack,
-  Paper,
   Divider,
   Alert,
 } from '@mantine/core'
@@ -13,7 +12,7 @@ import { zod4Resolver } from 'mantine-form-zod-resolver'
 import { z } from 'zod'
 import { useState } from 'react'
 import { getSupabaseBrowserClient } from '@/lib/supabase/client'
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle, Lock } from 'lucide-react'
 
 export const Route = createFileRoute('/account/')({
   component: RouteComponent,
@@ -68,9 +67,9 @@ function RouteComponent() {
     <div>
       <Stack gap="lg">
         <div>
-          <div className="title3">Welcome Back</div>
+          <div className="title3">Admin Sign In</div>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Sign in to your account to continue
+            This area is restricted to authorised users only.
           </p>
         </div>
 
@@ -93,7 +92,7 @@ function RouteComponent() {
           <Stack gap="md">
             <TextInput
               label="Email Address"
-              placeholder="john@email.com"
+              placeholder="your@email.com"
               radius="md"
               size="sm"
               {...form.getInputProps('email')}
@@ -114,19 +113,10 @@ function RouteComponent() {
               fullWidth
               loading={isSubmitting}
               mt="xs"
+              leftSection={<Lock size={16} />}
             >
               Sign In
             </Button>
-
-            <p className="text-center text-sm text-slate-500 dark:text-slate-400">
-              Don&apos;t have an account?{' '}
-              <Link
-                to="/account/register"
-                className="font-medium text-indigo-600 hover:underline dark:text-indigo-400"
-              >
-                Create one
-              </Link>
-            </p>
           </Stack>
         </form>
       </Stack>

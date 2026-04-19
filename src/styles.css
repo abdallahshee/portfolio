@@ -10,6 +10,7 @@
 
 .title2 {
   @apply font-semibold text-2xl sm:text-3xl lg:text-4xl leading-snug tracking-tight;
+   /* @apply font-semibold text-2xl sm:text-3xl lg:text-4xl leading-snug tracking-tight; */
 }
 
 .title3 {

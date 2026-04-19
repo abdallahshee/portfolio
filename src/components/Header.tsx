@@ -12,6 +12,7 @@ import { Sun, Moon, Briefcase, Home, Folder, Mail } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { getCurrentUserQueryOptions } from "@/db/queries/project.queries"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import { useRouter } from "@tanstack/react-router"
 
 
 type ThemeMode = "light" | "dark"
@@ -40,7 +41,7 @@ const links = [
 export default function Header() {
   const [opened, setOpened] = useState(false)
   const [themeMode, setThemeMode] = useState<ThemeMode>("light")
-
+const router=useRouter()
   // ✅ Auth state
   const { data: currentUser } = useQuery({
     ...getCurrentUserQueryOptions(),
@@ -51,7 +52,7 @@ export default function Header() {
   const supabase = getSupabaseBrowserClient()
   const handleSignOut = async () => {
     await supabase.auth.signOut()
-    window.location.href = "/" // simple + reliable redirect
+   router.navigate({to:"/"})
   }
 
   useEffect(() => {
@@ -85,7 +86,7 @@ export default function Header() {
           Abdallah Shee
         </span>
         <span className="text-xs font-medium tracking-wide text-slate-500 dark:text-slate-400">
-          Full-Stack Software Developer
+          Software Developer
         </span>
       </div>
     </Link>
@@ -167,6 +168,7 @@ export default function Header() {
                 Sign Out
               </Button>
             )}
+            
           </div>
         </div>
       </div>
@@ -193,7 +195,7 @@ export default function Header() {
                 Abdallah Shee
               </span>
               <span className="text-xs font-medium tracking-wide text-slate-500 dark:text-slate-400">
-                Full-Stack Software Developer
+                Software Developer
               </span>
             </div>
           </div>

@@ -234,10 +234,11 @@ const STRENGTHS = [
 const CORE_SKILLS = [
   'TypeScript',
   'React 19 & TanStack Start',
-  // 'TanStack Query & TanStack Router',
+  'TanStack Query & TanStack Router',
   'PostgreSQL & Drizzle ORM',
   'Supabase (Auth, Storage, Realtime)',
   'Mantine UI & Tailwind CSS',
+  'ExpressJs & MeteorJS',
   'REST APIs & Server Functions',
   'Git, CI/CD & Agile workflows',
 ]
@@ -250,13 +251,32 @@ function App() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[1fr_340px] lg:gap-14">
 
           {/* LEFT */}
-          <div className="flex flex-col gap-6 w-full"> {/* ROLE */} <div className="relative inline-block title2"> <span className="text-blue-500">Full-Stack Software Developer</span> <span className="absolute left-0 -bottom-1 sm:-bottom-2 h-[3px] sm:h-[4px] w-2/3 bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 rounded-full" />
-          </div> {/* HEADING */} <h1 className="heading leading-tight w-full"> Designing maintainable and scalable web products & software systems </h1> {/* DESCRIPTION */}
+          <div className="flex flex-col gap-6 w-full">
+
+            {/* ROLE */}
+            <div className="inline-flex self-start flex-col title2">
+              <span className="text-blue-500">Software Developer</span>
+              <span
+                className="h-[3px] sm:h-[4px] bg-gradient-to-r from-blue-500 via-teal-400 to-green-500 rounded-full mt-1"
+                style={{ width: 'calc(100% + 0.6ch)' }}
+              />
+            </div>
+
+            {/* HEADING */}
+            <h1 className="heading leading-tight w-full">
+              Designing maintainable and scalable web products & software systems
+            </h1>
+
+            {/* DESCRIPTION */}
             <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
-              I build mobile-first, responsive digital products with a strong focus on architecture, maintainability, performance, and user experience — turning complex ideas into reliable, production-ready applications. From planning and system design to development and deployment, I ensure every solution is structured for scalability, clarity, and long-term success.
+              I build mobile-first, responsive digital products with a strong focus on architecture,
+              maintainability, performance, and user experience — turning complex ideas into reliable,
+              production-ready applications. From planning and system design to development and deployment,
+              I ensure every solution is structured for scalability, clarity, and long-term success.
             </p>
+
             {/* STATS ROW */}
-            <div className="grid w-full  gap-y-4 border-b border-blue-400 py-2 grid-cols-3" >
+            <div className="grid w-full gap-y-4 border-b border-blue-400 py-2 grid-cols-3">
               {STATS.map((stat) => (
                 <div key={stat.label} className="flex flex-col items-center text-center">
                   <span className="title2 text-slate-900 dark:text-slate-50">
@@ -272,17 +292,25 @@ function App() {
 
           {/* RIGHT — profile image */}
           <div className="relative order-first mx-auto w-full max-w-[280px] lg:order-last lg:max-w-none">
-            <div className="group relative overflow-hidden rounded-xl shadow-xl h-[300px] lg:h-[400px]">
+            <div
+              className="group relative h-[300px] overflow-hidden rounded-xl shadow-xl lg:h-[400px]"
+              style={{
+                isolation: 'isolate',
+                willChange: 'transform',
+                borderRadius: '0.75rem',
+                WebkitMaskImage: 'radial-gradient(white, black)',
+              }}
+            >
               <img
                 src="/images/profile.jpg"
                 alt="Abdallah Shee"
-                className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className="h-full w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-110"
+                style={{ borderRadius: '0.75rem' }}
                 onClick={() => {
                   window.location.hash = 'about'
                 }}
               />
-              {/* subtle overlay */}
-              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent transition-opacity duration-500 group-hover:opacity-60" />
+              <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-t from-black/20 via-transparent to-transparent transition-opacity duration-500 group-hover:opacity-60" />
             </div>
           </div>
 
