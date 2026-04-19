@@ -102,11 +102,11 @@ function FeaturedProjectsSection() {
                 <BookOpen size={28} />
               </ThemeIcon>
 
-              <div className="title2">
+              <div className="title2 text-slate-400 dark:text-slate-500">
                 No projects yet!
               </div>
 
-              <p className="title3">
+              <p className="title3 text-slate-400 dark:text-slate-500">
                 Featured projects will be added soon
               </p>
 
@@ -231,17 +231,7 @@ const STRENGTHS = [
   },
 ]
 
-const CORE_SKILLS = [
-  'TypeScript',
-  'React 19 & TanStack Start',
-  'TanStack Query & TanStack Router',
-  'PostgreSQL & Drizzle ORM',
-  'Supabase (Auth, Storage, Realtime)',
-  'Mantine UI & Tailwind CSS',
-  'ExpressJs & MeteorJS',
-  'REST APIs & Server Functions',
-  'Git, CI/CD & Agile workflows',
-]
+
 
 function App() {
 
@@ -318,52 +308,32 @@ function App() {
       </section>
 
       {/* ── ABOUT ── */}
-      <section
-        id="about"
-        className="grid scroll-mt-24 items-start gap-8 sm:gap-10 lg:grid-cols-[1.2fr_0.8fr]"
-      >
-        <Stack gap="lg" className="min-w-0 border-b-2 border-blue-400 pb-6 lg:border-b-0 lg:border-r-2 lg:pb-0 lg:pr-6">
-          <div className="title2">About Me</div>
+<section id="about" className="scroll-mt-24">
+  <Stack gap="lg" className="w-full border-b-2 border-blue-400 pb-6 lg:border-b-0 lg:pb-0">
+    <div className="title2">About Me</div>
 
-          <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-            I'm <strong>Abdallah Shee</strong>, a software developer based in Nairobi, Kenya 🇰🇪.
-            I help businesses and startups turn ideas into reliable, easy-to-use digital products —
-            whether it's a platform, a system, or a custom solution tailored to their needs.
-          </p>
+    <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+      I'm <strong>Abdallah Shee</strong>, a software developer based in Nairobi, Kenya 🇰🇪.
+      I help businesses and startups turn ideas into reliable, easy-to-use digital products —
+      whether it's a platform, a system, or a custom solution tailored to their needs.
+      With expertise across both frontend and backend, I bring a full-picture perspective
+      to every project I take on.
+    </p>
 
-          <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-            From planning how everything should work to building and refining the final product,
-            I focus on creating systems that are simple to use, efficient, and built to handle growth.
-            My goal is always to make things clear, practical, and valuable for the people who use them.
-          </p>
+    <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+      From planning and system design to development and deployment, I focus on building
+      systems that are simple to use, efficient, and built to handle growth. My goal is
+      always to make things clear, practical, and valuable — writing clean, maintainable
+      code that stands the test of time.
+    </p>
 
-          <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-            I believe good software should feel effortless — it should solve real problems,
-            adapt as your business grows, and continue working smoothly long after it's launched.
-          </p>
-        </Stack>
-
-        <Stack gap="lg" className="min-w-0">
-          <div className="title2">Core Skills & Technologies</div>
-          <List
-            spacing="sm"
-            size="md"
-            icon={
-              <ThemeIcon color="indigo" size={22} radius="md" variant="light">
-                <CheckCircle size={16} />
-              </ThemeIcon>
-            }
-          >
-            {CORE_SKILLS.map((skill) => (
-              <List.Item key={skill}>
-                <span className="text-sm text-slate-600 sm:text-base dark:text-slate-400">
-                  {skill}
-                </span>
-              </List.Item>
-            ))}
-          </List>
-        </Stack>
-      </section>
+    <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+      I believe good software should feel effortless — it should solve real problems,
+      adapt as your business grows, and continue working smoothly long after it's launched.
+      Whatever you're building, I'm here to make sure it's done right.
+    </p>
+  </Stack>
+</section>
 
       {/* ── STRENGTHS ── */}
       <section className="space-y-6">
