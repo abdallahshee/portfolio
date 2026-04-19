@@ -18,7 +18,6 @@ import {
     HeartHandshake,
     CheckCircle,
     Mail,
-    FolderKanban,
     ArrowRight,
 } from 'lucide-react'
 import { Link, useRouter } from '@tanstack/react-router'

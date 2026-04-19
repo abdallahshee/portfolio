@@ -10,11 +10,8 @@ import {
   ThemeIcon,
   SimpleGrid,
   Avatar,
-  Timeline,
-  Image,
   Divider,
   Skeleton,
-  List,
 } from '@mantine/core'
 import { Carousel } from '@mantine/carousel'
 import Autoplay from 'embla-carousel-autoplay'
@@ -31,17 +28,10 @@ import {
   Cpu,
   Wallet,
   MessageSquare,
-  Search,
-  Pencil,
-  Code2,
-  Rocket,
-  HeartHandshake,
   Quote,
   FolderKanban,
   Plug,
   Workflow,
-  CheckCircle,
-
 } from 'lucide-react'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import type { Testimonial } from '@/db/validations/testimonial.types'
@@ -190,38 +180,6 @@ const SERVICES = [
 
 ]
 
-const PROCESS = [
-  {
-    icon: <Search size={18} />,
-    title: 'Discovery & Scoping',
-    desc: 'We start with a detailed conversation about your goals, users, and requirements. I map out the system, define scope, and propose a clear technical approach before any code is written.',
-    color: 'indigo',
-  },
-  {
-    icon: <Pencil size={18} />,
-    title: 'Design & Architecture',
-    desc: 'I design the database schema, system architecture, and UI wireframes. This stage ensures we agree on structure and flow before building — saving time and rework down the line.',
-    color: 'blue',
-  },
-  {
-    icon: <Code2 size={18} />,
-    title: 'Development & Iteration',
-    desc: 'I build in focused sprints with regular check-ins and previews. You get visibility throughout — not just at the end. Feedback is incorporated continuously.',
-    color: 'teal',
-  },
-  {
-    icon: <Rocket size={18} />,
-    title: 'Testing & Deployment',
-    desc: 'The product is thoroughly tested, optimized for performance, and deployed to production with proper CI/CD pipelines, environment config, and monitoring.',
-    color: 'orange',
-  },
-  {
-    icon: <HeartHandshake size={18} />,
-    title: 'Handover & Support',
-    desc: 'You receive full documentation, source code access, and a handover session. Post-launch support is available to ensure everything runs smoothly.',
-    color: 'green',
-  },
-]
 
 // ── TESTIMONIALS SKELETON ──
 function TestimonialsSkeleton() {
@@ -391,17 +349,7 @@ function TestimonialsCarousel({ testimonials }: CarouselProps) {
 
 function ServicesPage() {
   const router = useRouter()
-  const CORE_SKILLS = [
-    'TypeScript and Python',
-    'React 19 & TanStack Start',
-    'TanStack Query & TanStack Router',
-    'PostgreSQL & Drizzle ORM',
-    'Supabase (Auth, Storage, Realtime)',
-    'Material UI & Tailwind CSS',
-    'ExpressJs & MeteorJS',
-    'REST APIs & Server Functions',
-    'Git, CI/CD & Agile workflows',
-  ]
+
   const { data: testimonials } = useSuspenseQuery(getTestimonialQueryOptions())
 
   return (

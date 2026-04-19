@@ -12,7 +12,6 @@ import {
   Paper,
   ThemeIcon,
   SimpleGrid,
-  List,
 } from '@mantine/core'
 
 import { useSuspenseQuery } from '@tanstack/react-query'
@@ -30,10 +29,8 @@ import {
   Network,
   Gauge,
   Sparkles,
-
   Mail,
   BriefcaseBusiness,
-
 } from 'lucide-react'
 import moment from 'moment'
 import { Suspense } from 'react'
