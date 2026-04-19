@@ -223,26 +223,6 @@ const PROCESS = [
   },
 ]
 
-// const TECH_STACK = [
-//   { name: 'TypeScript', category: 'Language', color: 'blue' },
-//   { name: 'React 19', category: 'Frontend', color: 'cyan' },
-//   { name: 'TanStack Start', category: 'Framework', color: 'orange' },
-//   { name: 'TanStack Query', category: 'Data Fetching', color: 'red' },
-//   { name: 'TanStack Router', category: 'Routing', color: 'orange' },
-//   { name: 'Tailwind CSS', category: 'Styling', color: 'teal' },
-//   { name: 'Mantine UI', category: 'Component Library', color: 'blue' },
-//   { name: 'PostgreSQL', category: 'Database', color: 'blue' },
-//   { name: 'Drizzle ORM', category: 'ORM', color: 'green' },
-//   { name: 'Supabase', category: 'Backend-as-a-Service', color: 'green' },
-//   { name: 'Python', category: 'Language', color: 'yellow' },
-//   { name: 'Zod', category: 'Validation', color: 'violet' },
-//   { name: 'Vercel', category: 'Deployment', color: 'gray' },
-//   { name: 'Git', category: 'Version Control', color: 'orange' },
-
-// ]
-
-
-
 // ── TESTIMONIALS SKELETON ──
 function TestimonialsSkeleton() {
   return (
@@ -412,12 +392,12 @@ function TestimonialsCarousel({ testimonials }: CarouselProps) {
 function ServicesPage() {
   const router = useRouter()
   const CORE_SKILLS = [
-    'TypeScript',
+    'TypeScript and Python',
     'React 19 & TanStack Start',
     'TanStack Query & TanStack Router',
     'PostgreSQL & Drizzle ORM',
     'Supabase (Auth, Storage, Realtime)',
-    'Mantine UI & Tailwind CSS',
+    'Material UI & Tailwind CSS',
     'ExpressJs & MeteorJS',
     'REST APIs & Server Functions',
     'Git, CI/CD & Agile workflows',
@@ -571,47 +551,47 @@ function ServicesPage() {
         </section>
 
         {/* RIGHT */}
-      <section className="space-y-6">
-  {/* ── HEADER ── */}
-  <div>
-    <div className="title2">Core Skills & Technologies</div>
-    <p className="mt-2 text-sm leading-7 text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
-      I use a modern, production-proven stack chosen for reliability, developer experience,
-      and long-term maintainability.
-    </p>
-  </div>
+        <section className="space-y-6">
+          {/* ── HEADER ── */}
+          <div>
+            <div className="title2">Core Skills & Technologies</div>
+            <p className="mt-2 text-sm leading-7 text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
+              I use a modern, production-proven stack chosen for reliability, developer experience,
+              and long-term maintainability.
+            </p>
+          </div>
 
-  {/* ── IMAGE ── */}
-  <img
-    src="/images/tools.jpg"
-    alt="Distributed software system with multiple connected services"
-    className="block h-38 w-full rounded-lg object-cover sm:h-46 md:h-56"
-  />
+          {/* ── IMAGE ── */}
+          <img
+            src="/images/tools.jpg"
+            alt="Distributed software system with multiple connected services"
+            className="block h-38 w-full rounded-lg object-cover sm:h-46 md:h-56"
+          />
 
- 
 
-  {/* ── CORE SKILLS ── */}
-  <div className="space-y-4">
- 
-    <List
-      spacing="sm"
-      size="md"
-      icon={
-        <ThemeIcon color="indigo" size={22} radius="md" variant="light">
-          <CheckCircle size={16} />
-        </ThemeIcon>
-      }
-    >
-      {CORE_SKILLS.map((skill) => (
-        <List.Item key={skill}>
-          <span className="text-sm text-slate-600 sm:text-base dark:text-slate-400">
-            {skill}
-          </span>
-        </List.Item>
-      ))}
-    </List>
-  </div>
-</section>
+
+          {/* ── CORE SKILLS ── */}
+          <div className="space-y-4">
+
+            <List
+              spacing="sm"
+              size="md"
+              icon={
+                <ThemeIcon color="indigo" size={22} radius="md" variant="light">
+                  <CheckCircle size={16} />
+                </ThemeIcon>
+              }
+            >
+              {CORE_SKILLS.map((skill) => (
+                <List.Item key={skill}>
+                  <span className="text-sm text-slate-600 sm:text-base dark:text-slate-400">
+                    {skill}
+                  </span>
+                </List.Item>
+              ))}
+            </List>
+          </div>
+        </section>
       </div>
 
       {/* ── TESTIMONIALS ── */}

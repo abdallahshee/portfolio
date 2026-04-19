@@ -24,7 +24,6 @@ import {
   BookOpen,
   Briefcase,
   Users,
-  CheckCircle,
   Database,
   Layout,
   Server,
@@ -308,32 +307,32 @@ function App() {
       </section>
 
       {/* ── ABOUT ── */}
-<section id="about" className="scroll-mt-24">
-  <Stack gap="lg" className="w-full border-b-2 border-blue-400 pb-6 lg:border-b-0 lg:pb-0">
-    <div className="title2">About Me</div>
+      <section id="about" className="scroll-mt-24">
+        <Stack gap="lg" className="w-full border-b-2 border-blue-400 pb-6 lg:border-b-0 lg:pb-0">
+          <div className="title2">About Me</div>
 
-    <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-      I'm <strong>Abdallah Shee</strong>, a software developer based in Nairobi, Kenya 🇰🇪.
-      I help businesses and startups turn ideas into reliable, easy-to-use digital products —
-      whether it's a platform, a system, or a custom solution tailored to their needs.
-      With expertise across both frontend and backend, I bring a full-picture perspective
-      to every project I take on.
-    </p>
+          <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+            I'm <strong>Abdallah Shee</strong>, a software developer based in Nairobi, Kenya 🇰🇪.
+            I help businesses and startups turn ideas into reliable, easy-to-use digital products —
+            whether it's a platform, a system, or a custom solution tailored to their needs.
+            With expertise across both frontend and backend, I bring a full-picture perspective
+            to every project I take on.
+          </p>
 
-    <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-      From planning and system design to development and deployment, I focus on building
-      systems that are simple to use, efficient, and built to handle growth. My goal is
-      always to make things clear, practical, and valuable — writing clean, maintainable
-      code that stands the test of time.
-    </p>
+          <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+            From planning and system design to development and deployment, I focus on building
+            systems that are simple to use, efficient, and built to handle growth. My goal is
+            always to make things clear, practical, and valuable — writing clean, maintainable
+            code that stands the test of time.
+          </p>
 
-    <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-      I believe good software should feel effortless — it should solve real problems,
-      adapt as your business grows, and continue working smoothly long after it's launched.
-      Whatever you're building, I'm here to make sure it's done right.
-    </p>
-  </Stack>
-</section>
+          <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
+            I believe good software should feel effortless — it should solve real problems,
+            adapt as your business grows, and continue working smoothly long after it's launched.
+            Whatever you're building, I'm here to make sure it's done right.
+          </p>
+        </Stack>
+      </section>
 
       {/* ── STRENGTHS ── */}
       <section className="space-y-6">
