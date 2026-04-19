@@ -59,7 +59,7 @@ function ContactPage() {
   return (
     <Container size="sm" className="max-w-full space-y-8 px-0 py-6 sm:py-8 md:py-10">
       {/* ── PAGE HEADER ── */}
-      <Stack gap="xs" className="text-center">
+      <Stack gap="sm">
         <div className="heading">Get in Touch</div>
         <p className="text-sm leading-7 text-slate-600 sm:text-base sm:leading-8 dark:text-slate-400">
           Have a project, idea, or opportunity you'd like to discuss?

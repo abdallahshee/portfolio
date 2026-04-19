@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnauthorizedRouteImport } from './routes/unauthorized'
+import { Route as ToolsProcessRouteImport } from './routes/tools-process'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as TestimonialsRouteRouteImport } from './routes/testimonials/route'
@@ -31,6 +32,11 @@ import { Route as CasesEditCaseIdRouteImport } from './routes/cases/edit.$caseId
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
   id: '/unauthorized',
   path: '/unauthorized',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ToolsProcessRoute = ToolsProcessRouteImport.update({
+  id: '/tools-process',
+  path: '/tools-process',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -126,6 +132,7 @@ export interface FileRoutesByFullPath {
   '/testimonials': typeof TestimonialsRouteRouteWithChildren
   '/contact': typeof ContactRoute
   '/services': typeof ServicesRoute
+  '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/projects/$slug': typeof ProjectsSlugRouteWithChildren
   '/projects/new': typeof ProjectsNewRoute
@@ -143,6 +150,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/contact': typeof ContactRoute
   '/services': typeof ServicesRoute
+  '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/projects/$slug': typeof ProjectsSlugRouteWithChildren
   '/projects/new': typeof ProjectsNewRoute
@@ -164,6 +172,7 @@ export interface FileRoutesById {
   '/testimonials': typeof TestimonialsRouteRouteWithChildren
   '/contact': typeof ContactRoute
   '/services': typeof ServicesRoute
+  '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/projects/$slug': typeof ProjectsSlugRouteWithChildren
   '/projects/new': typeof ProjectsNewRoute
@@ -186,6 +195,7 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/contact'
     | '/services'
+    | '/tools-process'
     | '/unauthorized'
     | '/projects/$slug'
     | '/projects/new'
@@ -203,6 +213,7 @@ export interface FileRouteTypes {
     | '/'
     | '/contact'
     | '/services'
+    | '/tools-process'
     | '/unauthorized'
     | '/projects/$slug'
     | '/projects/new'
@@ -223,6 +234,7 @@ export interface FileRouteTypes {
     | '/testimonials'
     | '/contact'
     | '/services'
+    | '/tools-process'
     | '/unauthorized'
     | '/projects/$slug'
     | '/projects/new'
@@ -244,6 +256,7 @@ export interface RootRouteChildren {
   TestimonialsRouteRoute: typeof TestimonialsRouteRouteWithChildren
   ContactRoute: typeof ContactRoute
   ServicesRoute: typeof ServicesRoute
+  ToolsProcessRoute: typeof ToolsProcessRoute
   UnauthorizedRoute: typeof UnauthorizedRoute
   ProjectsSlugRoute: typeof ProjectsSlugRouteWithChildren
   ProjectsNewRoute: typeof ProjectsNewRoute
@@ -257,6 +270,13 @@ declare module '@tanstack/react-router' {
       path: '/unauthorized'
       fullPath: '/unauthorized'
       preLoaderRoute: typeof UnauthorizedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tools-process': {
+      id: '/tools-process'
+      path: '/tools-process'
+      fullPath: '/tools-process'
+      preLoaderRoute: typeof ToolsProcessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -443,6 +463,7 @@ const rootRouteChildren: RootRouteChildren = {
   TestimonialsRouteRoute: TestimonialsRouteRouteWithChildren,
   ContactRoute: ContactRoute,
   ServicesRoute: ServicesRoute,
+  ToolsProcessRoute: ToolsProcessRoute,
   UnauthorizedRoute: UnauthorizedRoute,
   ProjectsSlugRoute: ProjectsSlugRouteWithChildren,
   ProjectsNewRoute: ProjectsNewRoute,

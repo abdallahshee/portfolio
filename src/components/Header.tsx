@@ -8,7 +8,7 @@ import {
   Button,
 } from "@mantine/core"
 import { Link } from "@tanstack/react-router"
-import { Sun, Moon, Briefcase, Home, Folder, Mail } from "lucide-react"
+import { Sun, Moon, Briefcase, Home, Folder, Mail, Wrench } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { getCurrentUserQueryOptions } from "@/db/queries/project.queries"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
@@ -34,8 +34,10 @@ function applyThemeMode(mode: ThemeMode) {
 const links = [
   { label: "Home", to: "/", icon: Home },
   { label: "Services", to: "/services", icon: Briefcase },
-  { label: "Projects", to: "/projects", icon: Folder },
   { label: "Contact", to: "/contact", icon: Mail },
+  { label: "Projects", to: "/projects", icon: Folder },
+  { label: "Tools & Process", to: "/tools-process", icon: Wrench },
+  
 ]
 
 export default function Header() {
