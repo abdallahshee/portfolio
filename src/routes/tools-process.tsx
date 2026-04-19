@@ -193,6 +193,7 @@ function HowIWorkPage() {
                     </p>
                     <Group justify="center" mt="md" wrap="wrap" gap="sm">
                         <Button
+                            className="min-w-[200px] justify-center"
                             variant="filled"
                             color="blue"
                             size="sm"
@@ -202,8 +203,10 @@ function HowIWorkPage() {
                         >
                             Contact Me
                         </Button>
+
                         <Link to="/services">
                             <Button
+                                className="min-w-[200px] justify-center"
                                 variant="outline"
                                 color="blue"
                                 size="sm"

@@ -548,6 +548,7 @@ function ServicesPage() {
             </p>
             <Group justify="center" mt="md" wrap="wrap" gap="sm">
               <Button
+                className="min-w-[200px] justify-center"
                 variant="filled"
                 color="blue"
                 size="sm"
@@ -557,8 +558,16 @@ function ServicesPage() {
               >
                 Let's Get Started
               </Button>
+
               <Link to="/projects">
-                <Button variant="outline" color="blue" size="sm" radius="md" leftSection={<FolderKanban size={18} />}>
+                <Button
+                  className="min-w-[200px] justify-center"
+                  variant="outline"
+                  color="blue"
+                  size="sm"
+                  radius="md"
+                  leftSection={<FolderKanban size={18} />}
+                >
                   Explore My Projects
                 </Button>
               </Link>
