@@ -54,11 +54,11 @@ export default function Footer() {
             <Anchor component={Link} to="/projects" className="transition-colors hover:text-indigo-500">
               Projects
             </Anchor>
-            <Anchor component={Link} to="/cases" className="transition-colors hover:text-indigo-500">
-              Case Studies
+            <Anchor component={Link} to="/tools-process" className="transition-colors hover:text-indigo-500">
+              Tools & Process
             </Anchor>
-            <Anchor component={Link} to="/contact" className="transition-colors hover:text-indigo-500">
-              Contact
+            <Anchor component={Link} to="/contacts" className="transition-colors hover:text-indigo-500">
+              Contacts
             </Anchor>
           </Stack>
 
@@ -108,7 +108,7 @@ export default function Footer() {
               </ActionIcon>
 
               <ActionIcon
-                onClick={() => router.navigate({ to: "/contact" })}
+                onClick={() => router.navigate({ to: "/contacts" })}
                 variant="light"
                 radius="md"
                 size="sm"

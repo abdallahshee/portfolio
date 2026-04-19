@@ -198,9 +198,9 @@ function HowIWorkPage() {
                             size="sm"
                             radius="md"
                             leftSection={<Mail size={18} />}
-                            onClick={() => router.navigate({ to: '/contact' })}
+                            onClick={() => router.navigate({ to: '/contacts' })}
                         >
-                            Start a Conversation
+                            Contact Me
                         </Button>
                         <Link to="/services">
                             <Button
@@ -210,7 +210,7 @@ function HowIWorkPage() {
                                 radius="md"
                                 rightSection={<ArrowRight size={16} />}
                             >
-                                Explore My Services
+                                Explore Services
                             </Button>
                         </Link>
                     </Group>

@@ -393,7 +393,7 @@ function App() {
           design and build something reliable, scalable, and easy to use — tailored to your goals and users.
         </p>
         <Group justify="center" mt="md" wrap="wrap" gap="sm">
-          <Link to="/contact">
+          <Link to="/contacts">
             <Button variant="filled" color="blue" size="sm" radius="md" leftSection={<Mail size={18} />}>
               Start a Conversation
             </Button>

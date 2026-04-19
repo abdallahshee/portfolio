@@ -17,7 +17,7 @@ import {
   Phone,
 } from "lucide-react"
 
-export const Route = createFileRoute("/contact")({
+export const Route = createFileRoute("/contacts")({
   component: ContactPage,
 })
 

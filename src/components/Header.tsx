@@ -34,7 +34,7 @@ function applyThemeMode(mode: ThemeMode) {
 const links = [
   { label: "Home", to: "/", icon: Home },
   { label: "Services", to: "/services", icon: Briefcase },
-  { label: "Contact", to: "/contact", icon: Mail },
+  { label: "Contacts", to: "/contacts", icon: Mail },
   { label: "Projects", to: "/projects", icon: Folder },
   { label: "Tools & Process", to: "/tools-process", icon: Wrench },
   

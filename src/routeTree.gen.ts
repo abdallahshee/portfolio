@@ -12,7 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnauthorizedRouteImport } from './routes/unauthorized'
 import { Route as ToolsProcessRouteImport } from './routes/tools-process'
 import { Route as ServicesRouteImport } from './routes/services'
-import { Route as ContactRouteImport } from './routes/contact'
+import { Route as ContactsRouteImport } from './routes/contacts'
 import { Route as TestimonialsRouteRouteImport } from './routes/testimonials/route'
 import { Route as CasesRouteRouteImport } from './routes/cases/route'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
@@ -44,9 +44,9 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ContactRoute = ContactRouteImport.update({
-  id: '/contact',
-  path: '/contact',
+const ContactsRoute = ContactsRouteImport.update({
+  id: '/contacts',
+  path: '/contacts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TestimonialsRouteRoute = TestimonialsRouteRouteImport.update({
@@ -130,7 +130,7 @@ export interface FileRoutesByFullPath {
   '/account': typeof AccountRouteRouteWithChildren
   '/cases': typeof CasesRouteRouteWithChildren
   '/testimonials': typeof TestimonialsRouteRouteWithChildren
-  '/contact': typeof ContactRoute
+  '/contacts': typeof ContactsRoute
   '/services': typeof ServicesRoute
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
@@ -148,7 +148,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/contact': typeof ContactRoute
+  '/contacts': typeof ContactsRoute
   '/services': typeof ServicesRoute
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
@@ -170,7 +170,7 @@ export interface FileRoutesById {
   '/account': typeof AccountRouteRouteWithChildren
   '/cases': typeof CasesRouteRouteWithChildren
   '/testimonials': typeof TestimonialsRouteRouteWithChildren
-  '/contact': typeof ContactRoute
+  '/contacts': typeof ContactsRoute
   '/services': typeof ServicesRoute
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
@@ -193,7 +193,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/cases'
     | '/testimonials'
-    | '/contact'
+    | '/contacts'
     | '/services'
     | '/tools-process'
     | '/unauthorized'
@@ -211,7 +211,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/contact'
+    | '/contacts'
     | '/services'
     | '/tools-process'
     | '/unauthorized'
@@ -232,7 +232,7 @@ export interface FileRouteTypes {
     | '/account'
     | '/cases'
     | '/testimonials'
-    | '/contact'
+    | '/contacts'
     | '/services'
     | '/tools-process'
     | '/unauthorized'
@@ -254,7 +254,7 @@ export interface RootRouteChildren {
   AccountRouteRoute: typeof AccountRouteRouteWithChildren
   CasesRouteRoute: typeof CasesRouteRouteWithChildren
   TestimonialsRouteRoute: typeof TestimonialsRouteRouteWithChildren
-  ContactRoute: typeof ContactRoute
+  ContactsRoute: typeof ContactsRoute
   ServicesRoute: typeof ServicesRoute
   ToolsProcessRoute: typeof ToolsProcessRoute
   UnauthorizedRoute: typeof UnauthorizedRoute
@@ -286,11 +286,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/contact': {
-      id: '/contact'
-      path: '/contact'
-      fullPath: '/contact'
-      preLoaderRoute: typeof ContactRouteImport
+    '/contacts': {
+      id: '/contacts'
+      path: '/contacts'
+      fullPath: '/contacts'
+      preLoaderRoute: typeof ContactsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/testimonials': {
@@ -461,7 +461,7 @@ const rootRouteChildren: RootRouteChildren = {
   AccountRouteRoute: AccountRouteRouteWithChildren,
   CasesRouteRoute: CasesRouteRouteWithChildren,
   TestimonialsRouteRoute: TestimonialsRouteRouteWithChildren,
-  ContactRoute: ContactRoute,
+  ContactsRoute: ContactsRoute,
   ServicesRoute: ServicesRoute,
   ToolsProcessRoute: ToolsProcessRoute,
   UnauthorizedRoute: UnauthorizedRoute,

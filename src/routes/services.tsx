@@ -553,7 +553,7 @@ function ServicesPage() {
                 size="sm"
                 radius="md"
                 leftSection={<Mail size={18} />}
-                onClick={() => router.navigate({ to: '/contact' })}
+                onClick={() => router.navigate({ to: '/contacts' })}
               >
                 Let's Get Started
               </Button>
