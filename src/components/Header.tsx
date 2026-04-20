@@ -7,7 +7,7 @@ import {
   UnstyledButton,
   Button,
 } from "@mantine/core"
-import { Link } from "@tanstack/react-router"
+import { Link, linkOptions } from "@tanstack/react-router"
 import { Sun, Moon, Briefcase, Home, Folder, Mail, Wrench } from "lucide-react"
 import { useQuery } from "@tanstack/react-query"
 import { getCurrentUserQueryOptions } from "@/db/queries/project.queries"
@@ -31,14 +31,14 @@ function applyThemeMode(mode: ThemeMode) {
   root.setAttribute("data-theme", mode)
 }
 
-const links = [
+const links =linkOptions( [
   { label: "Home", to: "/", icon: Home },
   { label: "Services", to: "/services", icon: Briefcase },
   { label: "Contacts", to: "/contacts", icon: Mail },
   { label: "Projects", to: "/projects", icon: Folder },
   { label: "Tools & Process", to: "/tools-process", icon: Wrench },
   
-]
+])
 
 export default function Header() {
   const [opened, setOpened] = useState(false)

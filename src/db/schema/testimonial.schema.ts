@@ -3,10 +3,10 @@ import { nanoid } from "nanoid";
 
 export const testimonial = pgTable('testimonial', {
   id: text("id").primaryKey().$default(() => nanoid(24)),
-  quote: text('quote').notNull(),
-  authorFirstname: text('author_firstname').notNull(),
-  authorLastname: text('author_lasttname').notNull(),
-  authorTitle: text("author_title").notNull(),
+  quote: text('quote'),
+  authorFirstname: text('author_firstname'),
+  authorLastname: text('author_lasttname'),
+  authorTitle: text("author_title"),
   company: text("company").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

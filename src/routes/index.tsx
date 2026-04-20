@@ -129,7 +129,7 @@ function FeaturedProjectsSection() {
                     onClick={() =>
                       router.navigate({
                         to: '/projects/$slug',
-                        params: { slug: project.slug },
+                        params: { slug: project?.slug! },
                       })
                     }
                     className="cursor-pointer hover:bg-gray-50"

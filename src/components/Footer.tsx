@@ -17,15 +17,15 @@ import {
   Folder,
   Wrench,
 } from "lucide-react"
-import { Link, useRouter } from "@tanstack/react-router"
+import { Link, linkOptions, useRouter } from "@tanstack/react-router"
 
-const links = [
+const links =linkOptions ([
   { label: "Home", to: "/", icon: Home },
   { label: "Services", to: "/services", icon: Briefcase },
   { label: "Projects", to: "/projects", icon: Folder },
   { label: "Tools & Process", to: "/tools-process", icon: Wrench },
-  { label: "Contacts", to: "/contacts", icon: Mail },
-]
+  // { label: "Contacts", to: "/contacts", icon: Mail },
+])
 
 export default function Footer() {
   const router = useRouter()
@@ -63,41 +63,7 @@ export default function Footer() {
             </Stack>
 
             {/* Social Icons */}
-            <Group gap="xs" mt="xs">
-              <ActionIcon
-                component="a"
-                href="https://github.com/abdallahshee"
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="light"
-                color="dark"
-                radius="md"
-                size="md"
-              >
-                <Github size={16} />
-              </ActionIcon>
-              <ActionIcon
-                component="a"
-                href="https://linkedin.com/in/abdallahshee"
-                target="_blank"
-                rel="noopener noreferrer"
-                variant="light"
-                color="blue"
-                radius="md"
-                size="md"
-              >
-                <Linkedin size={16} />
-              </ActionIcon>
-              <ActionIcon
-                onClick={() => router.navigate({ to: "/contacts" })}
-                variant="light"
-                color="indigo"
-                radius="md"
-                size="md"
-              >
-                <Mail size={16} />
-              </ActionIcon>
-            </Group>
+     
           </Stack>
 
           {/* ── Explore ── */}
@@ -158,6 +124,41 @@ export default function Footer() {
               >
                 +254 796 515 302
               </a>
+            </Group>
+                   <Group gap="xs" mt="xs">
+              <ActionIcon
+                component="a"
+                href="https://github.com/abdallahshee"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="light"
+                color="dark"
+                radius="md"
+                size="md"
+              >
+                <Github size={16} />
+              </ActionIcon>
+              <ActionIcon
+                component="a"
+                href="https://linkedin.com/in/abdallahshee"
+                target="_blank"
+                rel="noopener noreferrer"
+                variant="light"
+                color="blue"
+                radius="md"
+                size="md"
+              >
+                <Linkedin size={16} />
+              </ActionIcon>
+              <ActionIcon
+                onClick={() => router.navigate({ to: "/contacts" })}
+                variant="light"
+                color="indigo"
+                radius="md"
+                size="md"
+              >
+                <Mail size={16} />
+              </ActionIcon>
             </Group>
           </Stack>
 

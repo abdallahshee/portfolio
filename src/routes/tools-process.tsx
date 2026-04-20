@@ -19,6 +19,7 @@ import {
     CheckCircle,
     Mail,
     ArrowRight,
+    ShieldCheck,
 } from 'lucide-react'
 import { Link, useRouter } from '@tanstack/react-router'
 
@@ -26,37 +27,45 @@ export const Route = createFileRoute('/tools-process')({
     component: HowIWorkPage,
 })
 
+
+
 const PROCESS = [
-    {
-        icon: <Search size={18} />,
-        title: 'Discovery & Scoping',
-        desc: 'We start with a detailed conversation about your goals, users, and requirements. I map out the system, define scope, and propose a clear technical approach before any code is written.',
-        color: 'indigo',
-    },
-    {
-        icon: <Pencil size={18} />,
-        title: 'Design & Architecture',
-        desc: 'I design the database schema, system architecture, and UI wireframes. This stage ensures we agree on structure and flow before building — saving time and rework down the line.',
-        color: 'blue',
-    },
-    {
-        icon: <Code2 size={18} />,
-        title: 'Development & Iteration',
-        desc: 'I build in focused sprints with regular check-ins and previews. You get visibility throughout — not just at the end. Feedback is incorporated continuously.',
-        color: 'teal',
-    },
-    {
-        icon: <Rocket size={18} />,
-        title: 'Testing & Deployment',
-        desc: 'The product is thoroughly tested, optimized for performance, and deployed to production with proper CI/CD pipelines, environment config, and monitoring.',
-        color: 'orange',
-    },
-    {
-        icon: <HeartHandshake size={18} />,
-        title: 'Handover & Support',
-        desc: 'You receive full documentation, source code access, and a handover session. Post-launch support is available to ensure everything runs smoothly.',
-        color: 'green',
-    },
+  {
+    icon: <Search size={18} />,
+    title: 'Discovery & Scoping',
+    desc: 'We start with a detailed conversation about your goals, users, and requirements. I map out the system, define scope, and propose a clear technical approach before any code is written.',
+    color: 'indigo',
+  },
+  {
+    icon: <Pencil size={18} />,
+    title: 'Design & Architecture',
+    desc: 'I design the database schema, system architecture, and UI wireframes. This stage ensures we agree on structure and flow before building — saving time and rework down the line.',
+    color: 'blue',
+  },
+  {
+    icon: <Code2 size={18} />,
+    title: 'Development & Iteration',
+    desc: 'I build in focused sprints with regular check-ins and previews. You get visibility throughout — not just at the end. Feedback is incorporated continuously.',
+    color: 'teal',
+  },
+  {
+    icon: <ShieldCheck size={18} />,
+    title: 'Quality Assurance',
+    desc: 'Every feature is tested against real-world scenarios — unit tests, integration checks, and manual walkthroughs ensure the product behaves exactly as expected before it ships.',
+    color: 'violet',
+  },
+  {
+    icon: <Rocket size={18} />,
+    title: 'Deployment & Launch',
+    desc: 'The product is optimized for performance and deployed to production with proper CI/CD pipelines, environment configuration, monitoring, and zero-downtime releases.',
+    color: 'orange',
+  },
+  {
+    icon: <HeartHandshake size={18} />,
+    title: 'Handover & Support',
+    desc: 'You receive full documentation, source code access, and a handover session. Post-launch support is available to ensure everything runs smoothly.',
+    color: 'green',
+  },
 ]
 
 const CORE_SKILLS = [
@@ -69,6 +78,8 @@ const CORE_SKILLS = [
     'ExpressJs & MeteorJS',
     'REST APIs & Server Functions',
     'Git, CI/CD & Agile workflows',
+    "Serveless & Cloud Development",
+    "System Analysis & Design"
 ]
 
 function HowIWorkPage() {
