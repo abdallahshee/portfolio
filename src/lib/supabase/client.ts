@@ -1,19 +1,27 @@
-import type { SupabaseClient } from '@supabase/supabase-js'
-import { createClient } from '@supabase/supabase-js'
+import { createBrowserClient } from '@supabase/ssr'
 
 
 
-let client: SupabaseClient | null = null
 
-export function getSupabaseBrowserClient() {
-  if (!client) {
-    client = createClient(
-      import.meta.env.VITE_SUPABASE_URL!,
-      import.meta.env.VITE_SUPABASE_ANON_KEY!
-    )
-  }
-  return client
-}
+// let client: SupabaseClient | null = null
+
+// export function getSupabaseBrowserClient() {
+//   if (!client) {
+//     client = createClient(
+//       import.meta.env.VITE_SUPABASE_URL!,
+//       import.meta.env.VITE_SUPABASE_ANON_KEY!
+//     )
+//   }
+//   return client
+// }
+
+
+// Browser client must use cookies storage, not localStorage
+export const getSupabaseBrowserClient = () =>
+  createBrowserClient(
+    import.meta.env.VITE_SUPABASE_URL!,
+    import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY!,
+  )
 
 function slugify(text: string): string {
   return text
@@ -27,7 +35,7 @@ function slugify(text: string): string {
 
 export async function uploadProjectImage(file: File, title: string): Promise<string> {
   const slug=slugify(title)
-  const supabase = getSupabaseBrowserClient()
+const supabase = getSupabaseBrowserClient()
   const fileExt = file.name.split('.').pop()
   // ✅ must be {userId}/filename for policies to work
   const filePath = `${slug}/project.${fileExt}`

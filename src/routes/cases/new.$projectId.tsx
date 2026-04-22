@@ -34,8 +34,17 @@ import { useCreateCaseStudyMutations } from '@/db/queries/case.queries'
 import type z from 'zod'
 import { getProjectByIdQueryOptions } from '@/db/queries/project.queries'
 import { useSuspenseQuery } from '@tanstack/react-query'
+import {redirect} from '@tanstack/react-router'
 
 export const Route = createFileRoute('/cases/new/$projectId')({
+        beforeLoad: async ({context}) => {
+        const isAdmin = await context.isAdmin
+        if (!isAdmin) {
+          throw redirect ({
+            to: "/unauthorized",
+          })
+        }
+      },
   loader: async ({ context, params }) => {
     await context.queryClient.prefetchQuery(getProjectByIdQueryOptions(params.projectId))
   },

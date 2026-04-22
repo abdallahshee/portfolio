@@ -1,4 +1,4 @@
-import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { createFileRoute, useRouter,redirect } from '@tanstack/react-router'
 import { useForm} from '@mantine/form'
 import { TextInput, Textarea, Button, Stack, Paper, Title } from '@mantine/core'
 import { TestimonialSchema, type TestimonialRequest } from '@/db/validations/testimonial.types'
@@ -7,6 +7,14 @@ import { useCreateTestimonialMutation } from '@/db/queries/testimonial.queries'
 
 
 export const Route = createFileRoute('/testimonials/new')({
+  beforeLoad(ctx) {
+    const isAdmin=ctx.context.isAdmin
+      if (!isAdmin) {
+        throw redirect({
+          to: "/unauthorized",
+        })
+      }
+  },
   component: RouteComponent,
 })
 

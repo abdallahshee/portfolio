@@ -4,7 +4,6 @@ import {
   PasswordInput,
   Button,
   Stack,
-  Paper,
   Divider,
   Alert,
 } from '@mantine/core'
@@ -12,44 +11,29 @@ import { useForm } from '@mantine/form'
 import { zod4Resolver } from 'mantine-form-zod-resolver'
 import { z } from 'zod'
 import { useState } from 'react'
-import { getSupabaseBrowserClient } from '@/lib/supabase/client'
 import { AlertCircle, CheckCircle } from 'lucide-react'
+import { RegisterSchema } from '@/db/validations/profile.types'
+import { getSupabaseBrowserClient } from '@/lib/supabase/client'
+
 
 export const Route = createFileRoute('/account/register')({
   component: RouteComponent,
 })
-const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_]).{8,}$/
-const RegisterSchema = z
-  .object({
-    name: z.string().min(2, 'Name must be at least 2 characters'),
-    email: z
-      .string()
-      .regex(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/, 'Invalid email address'),
-    password: z
-      .string()
-      .regex(
-        passwordRegex,
-        'Password must be at least 8 characters and include uppercase, lowercase, and a special character'
-      ),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['confirmPassword'],
-  })
+
 
 type RegisterFormValues = z.infer<typeof RegisterSchema>
 
 function RouteComponent() {
-  const supabase = getSupabaseBrowserClient()
+const supabase = getSupabaseBrowserClient()
   const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
-
+ 
   const form = useForm<RegisterFormValues>({
     initialValues: {
-      name: '',
+      firstname: '',
+      lastname: '',
       email: '',
       password: '',
       confirmPassword: '',
@@ -68,7 +52,8 @@ function RouteComponent() {
         password: values.password,
         options: {
           data: {
-            name: values.name,
+            firstname: values.firstname,
+            lastname: values.lastname,
           },
         },
       })
@@ -127,11 +112,19 @@ function RouteComponent() {
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="md">
             <TextInput
-              label="Full Name"
+              label="Firstname"
               placeholder="John Doe"
               radius="md"
               size="sm"
-              {...form.getInputProps('name')}
+              {...form.getInputProps('firstname')}
+            />
+
+                <TextInput
+              label="Lastname"
+              placeholder="John Doe"
+              radius="md"
+              size="sm"
+              {...form.getInputProps('lastname')}
             />
 
             <TextInput

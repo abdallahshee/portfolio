@@ -9,10 +9,9 @@ import {
 } from "@mantine/core"
 import { Link, linkOptions } from "@tanstack/react-router"
 import { Sun, Moon, Briefcase, Home, Folder, Mail, Wrench } from "lucide-react"
-import { useQuery } from "@tanstack/react-query"
-import { getCurrentUserQueryOptions } from "@/db/queries/project.queries"
-import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import { useRouter } from "@tanstack/react-router"
+import type { Session } from "@supabase/supabase-js"
+import { getSupabaseBrowserClient} from "@/lib/supabase/client"
 
 
 type ThemeMode = "light" | "dark"
@@ -43,20 +42,42 @@ const links =linkOptions( [
 export default function Header() {
   const [opened, setOpened] = useState(false)
   const [themeMode, setThemeMode] = useState<ThemeMode>("light")
+  const [session, setSession] = useState<Session | null>(null)
 const router=useRouter()
-  // ✅ Auth state
-  const { data: currentUser } = useQuery({
-    ...getCurrentUserQueryOptions(),
-    retry: false,
-  })
+  // // ✅ Auth state
+  // const { data: currentUser } = useQuery({
+  //   ...getCurrentUserQueryOptions(),
+  //   retry: false,
+  // })
 
   // ✅ Supabase client
   const supabase = getSupabaseBrowserClient()
   const handleSignOut = async () => {
     await supabase.auth.signOut()
-   router.navigate({to:"/"})
+   router.navigate({to:"/account"})
   }
 
+useEffect(() => {
+  const supabase = getSupabaseBrowserClient()
+
+  // Get initial session
+  supabase.auth.getSession().then(({ data }) => {
+    setSession(data.session)
+    // console.log('first ',JSON.stringify(data.session))
+  })
+
+  // Listen to changes
+  const {
+    data: { subscription },
+  } = supabase.auth.onAuthStateChange((_event, session) => {
+    setSession(session)
+  })
+
+  return () => {
+    subscription.unsubscribe()
+  }
+}, [])
+const currentUser = session?.user
   useEffect(() => {
     const initial = getInitialMode()
     setThemeMode(initial)

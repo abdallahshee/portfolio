@@ -22,8 +22,17 @@ import { AlertCircle, BookOpen, Calendar, CheckCircle, Layers, Save, X } from 'l
 import { notifications } from '@mantine/notifications'
 import { CaseSchema, type CaseRequest } from '@/db/validations/case.types'
 import { zod4Resolver } from 'mantine-form-zod-resolver'
+import {redirect} from '@tanstack/react-router'
 
 export const Route = createFileRoute('/cases/edit/$caseId')({
+      beforeLoad: async ({context}) => {
+      const isAdmin = context.isAdmin
+      if (!isAdmin) {
+        throw redirect ({
+          to: "/unauthorized",
+        })
+      }
+    },
   loader: async ({ context, params }) => {
     await context.queryClient.prefetchQuery(
       getCaseStudyByIdQueryOptions(params.caseId)

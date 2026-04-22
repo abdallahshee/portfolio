@@ -23,6 +23,7 @@ import ScrollToTop from '@/components/ScrollTop'
 import NotFound from "../components/NotFound"
 import { useEffect } from 'react'
 import { ScrollToTopOnRouteChange } from '@/components/ScrollTopOnRouteChnage'
+import { getUserAndRole } from '@/server/user.functions'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -49,6 +50,10 @@ const THEME_INIT_SCRIPT = `(function(){
 })();`
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
+  beforeLoad:async()=>{
+    const {user,isAdmin}=await getUserAndRole()
+    return {user,isAdmin}
+  },
   head: () => ({
     meta: [
       { charSet: 'utf-8' },

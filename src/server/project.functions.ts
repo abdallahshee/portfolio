@@ -103,6 +103,7 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
         db
           .select({
             id: project.id,
+            status:project.status,
             title: project.title,
             slug: project.slug,
             description: project.description,
@@ -208,6 +209,7 @@ export const searchProjects = createServerFn({ method: "GET" })
         db
           .select({
             id: project.id,
+            status:project.status,
             title: project.title,
             slug: project.slug,
             description: project.description,

@@ -2,6 +2,7 @@ import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { Container, Paper } from '@mantine/core'
 
 export const Route = createFileRoute('/account')({
+
   component: RouteComponent,
 })
 

@@ -11,6 +11,7 @@ export const project = pgTable('project', {
   description: text("description").unique(),
   imageUrl: text("image_url"),
   isPublic: boolean('is_public'),
+ status: text({ enum: ["progress", "completed"] }),
   url: text('url').notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at")

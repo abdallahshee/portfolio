@@ -22,7 +22,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           {project.imageUrl ? (
             <Image
               src={project.imageUrl}
-              alt={project.title}
+              alt={project.title!}
               height={180}
               fit="cover"
               className="h-full w-full transition-transform duration-300 hover:scale-105"
@@ -58,7 +58,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
 
       {/* CTA */}
       <Stack mt="md" gap="xs">
-        <Link to="/projects/$slug" params={{ slug: project.slug }} className="no-underline">
+        <Link to="/projects/$slug" params={{ slug: project.slug! }} className="no-underline">
           <Button
             radius="md"
             leftSection={<FolderKanban size={16} />}

@@ -1,4 +1,4 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router"
+import { createFileRoute, redirect, useRouter } from "@tanstack/react-router"
 import {
   Badge,
   Button,
@@ -35,10 +35,17 @@ import type { UpdateProjectRequest } from "@/db/validations/project.types"
 import { UpdateProjectSchema } from "@/db/validations/project.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { useUpdateProjectMutation } from "@/db/queries/project.mutations"
-import { AuthenticatedMiddleware } from "@/server/middleware"
 
 export const Route = createFileRoute("/projects/$slug/edit")({
-  server: { middleware: [AuthenticatedMiddleware] },
+  beforeLoad: async (ctx) => {
+    const isAdmin = ctx.context.isAdmin
+    if (!isAdmin) {
+      throw redirect({
+        to: "/unauthorized",
+      })
+    }
+
+  },
   loader: async ({ context, params }) => {
     const data = await context.queryClient.fetchQuery(
       getProjectBySlugNameQueryOptions(params.slug)

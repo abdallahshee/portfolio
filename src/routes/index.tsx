@@ -128,7 +128,7 @@ function FeaturedProjectsSection() {
                     key={project.id}
                     onClick={() =>
                       router.navigate({
-                        to: '/projects/$slug',
+                        to: '/projects/$slug/details',
                         params: { slug: project?.slug! },
                       })
                     }

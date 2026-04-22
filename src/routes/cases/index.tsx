@@ -23,13 +23,21 @@ import {
 import { Suspense, useState } from 'react'
 import { useSuspenseQuery, useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
-import { Link } from '@tanstack/react-router'
+import { Link,redirect } from '@tanstack/react-router'
 import { getPaginatedCaseStudiesQueryOptions } from '@/db/queries/case.queries'
 import moment from 'moment'
 
 const PAGE_SIZE = 6
 
 export const Route = createFileRoute('/cases/')({
+        beforeLoad: async ({context}) => {
+        const isAdmin = context.isAdmin
+        if (!isAdmin) {
+          throw redirect ({
+            to: "/unauthorized",
+          })
+        }
+      },
   loader: async ({ context }) => {
     await context.queryClient.prefetchQuery(
       getPaginatedCaseStudiesQueryOptions(1, PAGE_SIZE, '')
@@ -117,7 +125,7 @@ function CaseStudyCard({ caseItem }: { caseItem: any }) {
 
       {/* CTA */}
       <Link
-        to="/projects/$slug"
+        to="/cases/$slug"
         params={{ slug: caseItem.projectId }}
         className="mt-4 block"
       >

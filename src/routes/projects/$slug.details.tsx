@@ -27,10 +27,11 @@ import { getProjectBySlugNameQueryOptions } from "@/db/queries/project.queries"
 import { useEffect, useState } from "react"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import moment from "moment"
-import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 
-export const Route = createFileRoute("/projects/$slug/new")({
+
+export const Route = createFileRoute("/projects/$slug/details")({
   loader: async ({ context, params }) => {
     await context.queryClient.fetchQuery(
       getProjectBySlugNameQueryOptions(params.slug)
@@ -42,9 +43,9 @@ export const Route = createFileRoute("/projects/$slug/new")({
 function ProjectDetails() {
   const { slug } = Route.useParams()
   const { data: project } = useSuspenseQuery(getProjectBySlugNameQueryOptions(slug))
-  const supabase = getSupabaseBrowserClient()
   const [session, setSession] = useState<Session | null>(null)
   const [isSessionLoading, setIsSessionLoading] = useState(true)
+  const supabase = getSupabaseBrowserClient()
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
@@ -122,7 +123,7 @@ function ProjectDetails() {
               {session?.user && (
                 <Link
                   to="/projects/$slug/edit"
-                  params={{ slug: project.slug }}
+                  params={{ slug: project.slug! }}
                 >
                   <Button
                     variant="light"
@@ -147,7 +148,7 @@ function ProjectDetails() {
               {project.imageUrl ? (
                 <Image
                   src={project.imageUrl}
-                  alt={project.title}
+                  alt={project.title!}
                   radius="md"
                   fit="cover"
                   className="max-h-[460px] w-full"

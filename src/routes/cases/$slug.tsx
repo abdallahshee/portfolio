@@ -32,13 +32,12 @@ import {
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { getProjectBySlugNameQueryOptions } from "@/db/queries/project.queries"
 import { getCaseStudyByProjectIdQueryOptions } from "@/db/queries/case.queries"
-import { Suspense, useEffect, useState } from "react"
+import { Suspense,useState } from "react"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import moment from "moment"
-import { getSupabaseBrowserClient } from "@/lib/supabase/client"
-import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
 
-export const Route = createFileRoute("/projects/$slug")({
+
+export const Route = createFileRoute("/cases/$slug")({
   loader: async ({ context, params }) => {
     await context.queryClient.fetchQuery(
       getProjectBySlugNameQueryOptions(params.slug)
@@ -226,24 +225,9 @@ function CaseStudyContent({ projectId }: { projectId: string }) {
 // ── MAIN COMPONENT ──
 function ProjectDetails() {
   const { slug } = Route.useParams()
+  const {isAdmin}=Route.useRouteContext()
   const { data: project } = useSuspenseQuery(getProjectBySlugNameQueryOptions(slug))
-  const supabase = getSupabaseBrowserClient()
-  const [session, setSession] = useState<Session | null>(null)
-  const [isSessionLoading, setIsSessionLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<string | null>('details')
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
-      setSession(data?.session ?? null)
-      setIsSessionLoading(false)
-    })
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event: AuthChangeEvent, session: Session | null) => {
-        setSession(session)
-      }
-    )
-    return () => listener.subscription.unsubscribe()
-  }, [])
 
   if (!project) {
     return (
@@ -298,8 +282,8 @@ function ProjectDetails() {
                   Back to Projects
                 </Button>
               </Link>
-              {session?.user && (
-                <Link to="/projects/$slug/edit" params={{ slug: project.slug }}>
+              {isAdmin && (
+                <Link to="/projects/$slug/edit" params={{ slug: project.slug! }}>
                   <Button
                     variant="light"
                     color="indigo"
@@ -336,7 +320,7 @@ function ProjectDetails() {
                     {project.imageUrl ? (
                       <Image
                         src={project.imageUrl}
-                        alt={project.title}
+                        alt={project.title!}
                         radius="md"
                         fit="cover"
                         className="max-h-[460px] w-full"
@@ -424,7 +408,7 @@ function ProjectDetails() {
                 </Button>
 
                 {/* Add Case Study — authenticated only */}
-                {session?.user && (
+                {isAdmin && (
                   <Link
                     to="/cases/new/$projectId"
                     params={{ projectId: project.id }}

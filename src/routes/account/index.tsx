@@ -11,8 +11,8 @@ import { useForm } from '@mantine/form'
 import { zod4Resolver } from 'mantine-form-zod-resolver'
 import { z } from 'zod'
 import { useState } from 'react'
-import { getSupabaseBrowserClient } from '@/lib/supabase/client'
 import { AlertCircle, Lock } from 'lucide-react'
+import { getSupabaseBrowserClient} from '@/lib/supabase/client'
 
 export const Route = createFileRoute('/account/')({
   component: RouteComponent,
@@ -26,7 +26,7 @@ const SignInSchema = z.object({
 type SignInFormValues = z.infer<typeof SignInSchema>
 
 function RouteComponent() {
-  const supabase = getSupabaseBrowserClient()
+const supabase = getSupabaseBrowserClient()
   const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)

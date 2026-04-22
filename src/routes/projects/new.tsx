@@ -1,4 +1,4 @@
-import { createFileRoute, useRouter } from "@tanstack/react-router"
+import { createFileRoute, useRouter, redirect, useRouteContext } from "@tanstack/react-router"
 import {
   Button,
   Card,
@@ -31,12 +31,26 @@ import { ProjectSchema, type ProjectRequest } from "@/db/validations/project.typ
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { useProjectCreateMutation } from "@/db/queries/project.mutations"
 import { uploadProjectImage } from "@/lib/supabase/client"
+import { getUserRole } from "@/server/user.functions"
+
+
 
 
 export const Route = createFileRoute("/projects/new")({
-
+  beforeLoad: async ({ context }) => {
+    const isAdmin = context.isAdmin
+    if (!isAdmin) {
+      throw redirect({
+        to: "/unauthorized",
+      })
+    }
+  },
+  loader: async ({ context }) => {
+    console.log(context.isAdmin) // ← available here
+  },
   component: RouteComponent,
 })
+
 
 function RouteComponent() {
   const router = useRouter()
