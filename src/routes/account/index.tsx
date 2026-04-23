@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router'
 import {
   TextInput,
   PasswordInput,
@@ -12,21 +12,18 @@ import { zod4Resolver } from 'mantine-form-zod-resolver'
 import { z } from 'zod'
 import { useState } from 'react'
 import { AlertCircle, Lock } from 'lucide-react'
-import { getSupabaseBrowserClient} from '@/lib/supabase/client'
+import { getSupabaseBrowserClient } from '@/lib/supabase/client'
+import { SignInSchema } from '@/db/validations/profile.types'
 
 export const Route = createFileRoute('/account/')({
   component: RouteComponent,
 })
 
-const SignInSchema = z.object({
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(1, 'Password is required'),
-})
 
 type SignInFormValues = z.infer<typeof SignInSchema>
 
 function RouteComponent() {
-const supabase = getSupabaseBrowserClient()
+  const supabase = getSupabaseBrowserClient()
   const navigate = useNavigate()
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -118,6 +115,15 @@ const supabase = getSupabaseBrowserClient()
             >
               Sign In
             </Button>
+            {/* <p className="text-center text-sm text-slate-500 dark:text-slate-400">
+              Already have an account?{' '}
+              <Link
+                to="/account"
+                className="font-medium text-indigo-600 hover:underline dark:text-indigo-400"
+              >
+                Sign in
+              </Link>
+            </p> */}
           </Stack>
         </form>
       </Stack>

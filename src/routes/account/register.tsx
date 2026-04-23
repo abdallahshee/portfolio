@@ -15,11 +15,9 @@ import { AlertCircle, CheckCircle } from 'lucide-react'
 import { RegisterSchema } from '@/db/validations/profile.types'
 import { getSupabaseBrowserClient } from '@/lib/supabase/client'
 
-
 export const Route = createFileRoute('/account/register')({
   component: RouteComponent,
 })
-
 
 type RegisterFormValues = z.infer<typeof RegisterSchema>
 
