@@ -19,7 +19,6 @@ import {
     CheckCircle,
     Mail,
     ArrowRight,
-    ShieldCheck,
 } from 'lucide-react'
 import { Link, useRouter } from '@tanstack/react-router'
 
@@ -49,12 +48,6 @@ const PROCESS = [
     color: 'teal',
   },
   {
-    icon: <ShieldCheck size={18} />,
-    title: 'Quality Assurance',
-    desc: 'Every feature is tested against real-world scenarios — unit tests, integration checks, and manual walkthroughs ensure the product behaves exactly as expected before it ships.',
-    color: 'violet',
-  },
-  {
     icon: <Rocket size={18} />,
     title: 'Deployment & Launch',
     desc: 'The product is optimized for performance and deployed to production with proper CI/CD pipelines, environment configuration, monitoring, and zero-downtime releases.',
@@ -76,10 +69,10 @@ const CORE_SKILLS = [
     'Supabase (Auth, Storage, Realtime)',
     'Material UI & Tailwind CSS',
     'ExpressJs & MeteorJS',
-    'REST APIs & Server Functions',
+    // 'REST APIs & Server Functions',
     'Git, CI/CD & Agile workflows',
     "Serveless & Cloud Development",
-    "System Analysis & Design"
+    // "System Analysis & Design"
 ]
 
 function HowIWorkPage() {

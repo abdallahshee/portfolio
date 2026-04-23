@@ -43,6 +43,7 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
           id: project.id,
           title: project.title,
           slug: project.slug,
+          status:project.status,
           description: project.description,
           imageUrl: project.imageUrl,
           isPublic: project.isPublic,
@@ -180,7 +181,7 @@ export const getTopProjects = createServerFn({ method: "GET" })
           isPublic: project.isPublic,
           createdAt: project.createdAt
         })
-        .from(project)
+        .from(project).where(eq(project.status,"completed"))
         .limit(5);
 
       return topProjects;

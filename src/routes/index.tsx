@@ -38,9 +38,7 @@ import { Suspense } from 'react'
 
 export const Route = createFileRoute('/')({
   loader: async ({ context }) => {
-    await Promise.all([
-      context.queryClient.prefetchQuery(getTopProjectsQueryOptions()),
-    ])
+    await context.queryClient.prefetchQuery(getTopProjectsQueryOptions())
   },
   component: App,
 })

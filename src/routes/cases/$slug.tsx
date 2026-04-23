@@ -101,7 +101,7 @@ function CaseStudyContent({ projectId }: { projectId: string }) {
 
   return (
     <Stack gap="lg">
-      {caseStudy.overview && (
+     
         <Paper radius="2xl" withBorder p="xl" className="shadow-sm">
           <Stack gap="md">
             <div className="title3">Overview</div>
@@ -111,7 +111,6 @@ function CaseStudyContent({ projectId }: { projectId: string }) {
             </Text>
           </Stack>
         </Paper>
-      )}
 
       <Paper radius="2xl" withBorder p="xl" className="shadow-sm">
         <Stack gap="md">

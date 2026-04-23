@@ -31,10 +31,6 @@ import { ProjectSchema, type ProjectRequest } from "@/db/validations/project.typ
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { useProjectCreateMutation } from "@/db/queries/project.mutations"
 import { uploadProjectImage } from "@/lib/supabase/client"
-import { getUserRole } from "@/server/user.functions"
-
-
-
 
 export const Route = createFileRoute("/projects/new")({
   beforeLoad: async ({ context }) => {
@@ -61,6 +57,7 @@ function RouteComponent() {
   const form = useForm<ProjectRequest>({
     initialValues: {
       title: "",
+      status:"completed",
       url: "",
       description: "",
       imageUrl: "",

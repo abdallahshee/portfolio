@@ -43,22 +43,7 @@ export const Route = createFileRoute("/projects/$slug/details")({
 function ProjectDetails() {
   const { slug } = Route.useParams()
   const { data: project } = useSuspenseQuery(getProjectBySlugNameQueryOptions(slug))
-  const [session, setSession] = useState<Session | null>(null)
-  const [isSessionLoading, setIsSessionLoading] = useState(true)
-  const supabase = getSupabaseBrowserClient()
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
-      setSession(data?.session ?? null)
-      setIsSessionLoading(false)
-    })
-    const { data: listener } = supabase.auth.onAuthStateChange(
-      (_event: AuthChangeEvent, session: Session | null) => {
-        setSession(session)
-      }
-    )
-    return () => listener.subscription.unsubscribe()
-  }, [])
+  const {isAdmin}=Route.useRouteContext()
 
   if (!project) {
     return (
@@ -120,7 +105,7 @@ function ProjectDetails() {
                 </Button>
               </Link>
 
-              {session?.user && (
+              {isAdmin && (
                 <Link
                   to="/projects/$slug/edit"
                   params={{ slug: project.slug! }}

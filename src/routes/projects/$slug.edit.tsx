@@ -65,6 +65,7 @@ function RouteComponent() {
   const form = useForm<UpdateProjectRequest>({
     initialValues: {
       slug: slug,
+      status:project?.status??"completed",
       title: project?.title ?? "",
       description: project?.description ?? "",
       imageUrl: project?.imageUrl ?? "",

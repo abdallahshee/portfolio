@@ -69,16 +69,7 @@ const test_samples: Testimonial[] = [
     authorTitle: 'CEO',
     company: 'TradeTrack SME',
   },
-  // {
-  //   id: '4',
-  //   createdAt: new Date('2024-04-05'),
-  //   updatedAt: new Date('2024-04-05'),
-  //   quote: 'The finance platform handles thousands of transactions daily without a hitch. His focus on security and data integrity gave us full confidence in the system from the very first day.',
-  //   authorFirstname: 'Sarah',
-  //   authorLastname: 'Kimani',
-  //   authorTitle: 'COO',
-  //   company: 'PayEase Africa',
-  // },
+
   {
     id: '5',
     createdAt: new Date('2024-05-18'),
@@ -89,16 +80,7 @@ const test_samples: Testimonial[] = [
     authorTitle: 'MD',
     company: 'SwiftBook Hotels',
   },
-  // {
-  //   id: '6',
-  //   createdAt: new Date('2024-06-22'),
-  //   updatedAt: new Date('2024-06-22'),
-  //   quote: 'Managing contributions and loan applications used to be a nightmare. Now everything is tracked in one place and our members check balances anytime. A true game changer for our SACCO.',
-  //   authorFirstname: 'Grace',
-  //   authorLastname: 'Wanjiru',
-  //   authorTitle: 'Head of Ops',
-  //   company: 'Soko SACCO',
-  // },
+
 ]
 
 export const Route = createFileRoute('/services')({

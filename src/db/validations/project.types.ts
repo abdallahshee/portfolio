@@ -12,9 +12,10 @@ export const ProjectSchema = createSelectSchema(project, {
         .max(160, "Description out of range 00-160 characters"),
     imageUrl: z.string(),
     url: z.string().nonempty(),
-    isPublic: z.boolean().default(false)
+    isPublic: z.boolean().default(false),
+  status: z.enum(["progress", "completed"]),
 }).pick({
-    title: true, description: true, imageUrl: true, url: true, isPublic: true
+    title: true, description: true, imageUrl: true, url: true, isPublic: true,status:true
 })
 
 export type ProjectRequest = z.infer<typeof ProjectSchema>
