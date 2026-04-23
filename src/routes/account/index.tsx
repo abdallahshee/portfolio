@@ -52,6 +52,7 @@ const supabase = getSupabaseBrowserClient()
 
       if (signInError) {
         setError(signInError.message)
+        console.log(signInError)
         return
       }
 

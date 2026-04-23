@@ -20,7 +20,6 @@ import type { QueryClient } from '@tanstack/react-query'
 import { Notifications } from '@mantine/notifications'
 import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollTop'
-import NotFound from "../components/NotFound"
 import { useEffect } from 'react'
 import { ScrollToTopOnRouteChange } from '@/components/ScrollTopOnRouteChnage'
 import { getUserAndRole } from '@/server/user.functions'
@@ -66,7 +65,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
   shellComponent: RootDocument,
-  notFoundComponent: NotFound,
+  // notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent,
 })
 

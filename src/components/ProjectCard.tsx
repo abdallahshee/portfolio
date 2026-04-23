@@ -58,7 +58,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
 
       {/* CTA */}
       <Stack mt="md" gap="xs">
-        <Link to="/projects/$slug" params={{ slug: project.slug! }} className="no-underline">
+        <Link to="/projects/$slug/details" params={{ slug: project.slug! }} className="no-underline">
           <Button
             radius="md"
             leftSection={<FolderKanban size={16} />}

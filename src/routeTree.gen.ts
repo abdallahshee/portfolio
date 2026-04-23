@@ -13,6 +13,7 @@ import { Route as UnauthorizedRouteImport } from './routes/unauthorized'
 import { Route as ToolsProcessRouteImport } from './routes/tools-process'
 import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ContactsRouteImport } from './routes/contacts'
+import { Route as SplatRouteImport } from './routes/$'
 import { Route as TestimonialsRouteRouteImport } from './routes/testimonials/route'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
 import { Route as CasesRouteRouteImport } from './routes/cases/route'
@@ -25,6 +26,7 @@ import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as TestimonialsNewRouteImport } from './routes/testimonials/new'
 import { Route as ProjectsNewRouteImport } from './routes/projects/new'
 import { Route as CasesSlugRouteImport } from './routes/cases/$slug'
+import { Route as AccountRegisterRouteImport } from './routes/account/register'
 import { Route as ProjectsSlugEditRouteImport } from './routes/projects/$slug.edit'
 import { Route as ProjectsSlugDetailsRouteImport } from './routes/projects/$slug.details'
 import { Route as CasesNewProjectIdRouteImport } from './routes/cases/new.$projectId'
@@ -48,6 +50,11 @@ const ServicesRoute = ServicesRouteImport.update({
 const ContactsRoute = ContactsRouteImport.update({
   id: '/contacts',
   path: '/contacts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SplatRoute = SplatRouteImport.update({
+  id: '/$',
+  path: '/$',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TestimonialsRouteRoute = TestimonialsRouteRouteImport.update({
@@ -110,6 +117,11 @@ const CasesSlugRoute = CasesSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => CasesRouteRoute,
 } as any)
+const AccountRegisterRoute = AccountRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => AccountRouteRoute,
+} as any)
 const ProjectsSlugEditRoute = ProjectsSlugEditRouteImport.update({
   id: '/$slug/edit',
   path: '/$slug/edit',
@@ -137,10 +149,12 @@ export interface FileRoutesByFullPath {
   '/cases': typeof CasesRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/testimonials': typeof TestimonialsRouteRouteWithChildren
+  '/$': typeof SplatRoute
   '/contacts': typeof ContactsRoute
   '/services': typeof ServicesRoute
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
+  '/account/register': typeof AccountRegisterRoute
   '/cases/$slug': typeof CasesSlugRoute
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
@@ -155,10 +169,12 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/$': typeof SplatRoute
   '/contacts': typeof ContactsRoute
   '/services': typeof ServicesRoute
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
+  '/account/register': typeof AccountRegisterRoute
   '/cases/$slug': typeof CasesSlugRoute
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
@@ -178,10 +194,12 @@ export interface FileRoutesById {
   '/cases': typeof CasesRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/testimonials': typeof TestimonialsRouteRouteWithChildren
+  '/$': typeof SplatRoute
   '/contacts': typeof ContactsRoute
   '/services': typeof ServicesRoute
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
+  '/account/register': typeof AccountRegisterRoute
   '/cases/$slug': typeof CasesSlugRoute
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
@@ -202,10 +220,12 @@ export interface FileRouteTypes {
     | '/cases'
     | '/projects'
     | '/testimonials'
+    | '/$'
     | '/contacts'
     | '/services'
     | '/tools-process'
     | '/unauthorized'
+    | '/account/register'
     | '/cases/$slug'
     | '/projects/new'
     | '/testimonials/new'
@@ -220,10 +240,12 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/$'
     | '/contacts'
     | '/services'
     | '/tools-process'
     | '/unauthorized'
+    | '/account/register'
     | '/cases/$slug'
     | '/projects/new'
     | '/testimonials/new'
@@ -242,10 +264,12 @@ export interface FileRouteTypes {
     | '/cases'
     | '/projects'
     | '/testimonials'
+    | '/$'
     | '/contacts'
     | '/services'
     | '/tools-process'
     | '/unauthorized'
+    | '/account/register'
     | '/cases/$slug'
     | '/projects/new'
     | '/testimonials/new'
@@ -265,6 +289,7 @@ export interface RootRouteChildren {
   CasesRouteRoute: typeof CasesRouteRouteWithChildren
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
   TestimonialsRouteRoute: typeof TestimonialsRouteRouteWithChildren
+  SplatRoute: typeof SplatRoute
   ContactsRoute: typeof ContactsRoute
   ServicesRoute: typeof ServicesRoute
   ToolsProcessRoute: typeof ToolsProcessRoute
@@ -299,6 +324,13 @@ declare module '@tanstack/react-router' {
       path: '/contacts'
       fullPath: '/contacts'
       preLoaderRoute: typeof ContactsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/$': {
+      id: '/$'
+      path: '/$'
+      fullPath: '/$'
+      preLoaderRoute: typeof SplatRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/testimonials': {
@@ -385,6 +417,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CasesSlugRouteImport
       parentRoute: typeof CasesRouteRoute
     }
+    '/account/register': {
+      id: '/account/register'
+      path: '/register'
+      fullPath: '/account/register'
+      preLoaderRoute: typeof AccountRegisterRouteImport
+      parentRoute: typeof AccountRouteRoute
+    }
     '/projects/$slug/edit': {
       id: '/projects/$slug/edit'
       path: '/$slug/edit'
@@ -417,10 +456,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AccountRouteRouteChildren {
+  AccountRegisterRoute: typeof AccountRegisterRoute
   AccountIndexRoute: typeof AccountIndexRoute
 }
 
 const AccountRouteRouteChildren: AccountRouteRouteChildren = {
+  AccountRegisterRoute: AccountRegisterRoute,
   AccountIndexRoute: AccountIndexRoute,
 }
 
@@ -483,6 +524,7 @@ const rootRouteChildren: RootRouteChildren = {
   CasesRouteRoute: CasesRouteRouteWithChildren,
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
   TestimonialsRouteRoute: TestimonialsRouteRouteWithChildren,
+  SplatRoute: SplatRoute,
   ContactsRoute: ContactsRoute,
   ServicesRoute: ServicesRoute,
   ToolsProcessRoute: ToolsProcessRoute,
