@@ -47,7 +47,7 @@ export default function Footer() {
                 h={60}
                 radius="md"
                 fit="cover"
-                className="transition-opacity duration-200 hover:opacity-80 dark:ring-indigo-900"
+                className="transition-opacity duration-200 hover:opacity-80"
               />
             </Link>
             <Stack gap={4}>
