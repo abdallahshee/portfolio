@@ -31,7 +31,7 @@ const emailRegex=/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/
 
 
   export const SignInSchema = z.object({
-    email: z.string().regex(passwordRegex,'Invalid email address'),
+    email: z.string().regex(emailRegex,'Invalid email address'),
     password: z
       .string()
       .regex(

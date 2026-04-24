@@ -1,35 +1,30 @@
 import { queryOptions, useMutation } from "@tanstack/react-query"
-import type { CaseRequest } from "../validations/case.types"
-import { createProjectCase, getCaseStudyById, getCaseStudyByProjectId, getPaginatedCaseStudies, updateCaseStudy } from "@/server/case.functions"
+import type { CreateCaseFormRequest } from "../validations/case.types"
+import { createCase, getCaseBySlug, getPaginatedCases, updateCase } from "@/server/case.functions"
 
-export const useCreateCaseStudyMutations = () => {
+export const useCreateCaseMutations = () => {
     return useMutation({
-        mutationFn: (data: CaseRequest) => createProjectCase({ data })
+        mutationFn: (data:CreateCaseFormRequest) => createCase({ data })
     })
 }
 
-export const getCaseStudyByProjectIdQueryOptions = (projectId: string) => queryOptions({
-    queryKey: ['case_studies', projectId],
-    queryFn: () => getCaseStudyByProjectId({ data: { projectId } })
-})
-
-export const getCaseStudyByIdQueryOptions = (caseId: string) => queryOptions({
-    queryKey: ['case_studies', caseId],
-    queryFn: () => getCaseStudyById({ data: { caseId } })
+export const getCaseBySlugQueryOptions = (slug: string) => queryOptions({
+    queryKey: ['case_studies', slug],
+    queryFn: () => getCaseBySlug({ data: { slug } })
 })
 
 export const useCaseUpdateMutation = () => {
     return useMutation({
-        mutationFn: (data: CaseRequest) => updateCaseStudy({ data })
+        mutationFn: (data: CreateCaseFormRequest) => updateCase({ data })
     })
 }
 
-export const getPaginatedCaseStudiesQueryOptions = (
+export const getPaginatedCasesQueryOptions = (
     page: number,
     pageSize = 6,
     query = ''
 ) =>
     queryOptions({
         queryKey: ['cases', 'paginated', page, pageSize, query] as (string | number)[],
-        queryFn: () => getPaginatedCaseStudies({ data: { page, pageSize, query } }),
+        queryFn: () => getPaginatedCases({ data: { page, pageSize, query } }),
     })

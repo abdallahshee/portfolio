@@ -1,4 +1,4 @@
-import { getCaseStudyByIdQueryOptions, getCaseStudyByProjectIdQueryOptions, useCaseUpdateMutation } from '@/db/queries/case.queries'
+import { getCaseBySlugQueryOptions, useCaseUpdateMutation } from '@/db/queries/case.queries'
 import { createFileRoute } from '@tanstack/react-router'
 import {
   TextInput,
@@ -22,20 +22,20 @@ import { AlertCircle, BookOpen, Calendar, CheckCircle, Layers, Save, X } from 'l
 import { notifications } from '@mantine/notifications'
 import { CaseSchema, type CaseRequest } from '@/db/validations/case.types'
 import { zod4Resolver } from 'mantine-form-zod-resolver'
-import {redirect} from '@tanstack/react-router'
+import { redirect } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/cases/edit/$caseId')({
-      beforeLoad: async ({context}) => {
-      const isAdmin = context.isAdmin
-      if (!isAdmin) {
-        throw redirect ({
-          to: "/unauthorized",
-        })
-      }
-    },
+export const Route = createFileRoute('/cases/$slug/edit')({
+  beforeLoad: async ({ context }) => {
+    const isAdmin = context.isAdmin
+    if (!isAdmin) {
+      throw redirect({
+        to: "/unauthorized",
+      })
+    }
+  },
   loader: async ({ context, params }) => {
     await context.queryClient.prefetchQuery(
-      getCaseStudyByIdQueryOptions(params.caseId)
+      getCaseBySlugQueryOptions(params.slug)
     )
   },
   component: RouteComponent,
@@ -44,9 +44,9 @@ export const Route = createFileRoute('/cases/edit/$caseId')({
 
 
 function RouteComponent() {
-  const { caseId } = Route.useParams()
+  const { slug } = Route.useParams()
   const { data: caseStudy } = useSuspenseQuery(
-    getCaseStudyByIdQueryOptions(caseId)
+    getCaseBySlugQueryOptions(slug)
   )
 
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -54,8 +54,8 @@ function RouteComponent() {
 
   const form = useForm<CaseRequest>({
     initialValues: {
-      title: caseStudy?.title ?? '',
-      projectId: caseStudy?.projectId ?? '',
+      slug:slug,
+      overview:caseStudy?.overview??'',
       startDate: caseStudy?.startDate ?? '',
       endDate: caseStudy?.endDate ?? '',
       technologies: caseStudy?.technologies ?? [],

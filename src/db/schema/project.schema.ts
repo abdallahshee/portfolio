@@ -2,7 +2,7 @@
 import { relations } from "drizzle-orm";
 import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
-import { caseStudy } from "./project-case.schema";
+import { caseStudy } from "./case.schema";
 
 export const project = pgTable('project', {
   id: text("id").primaryKey().$default(() => nanoid(24)),
@@ -24,8 +24,8 @@ export const project = pgTable('project', {
 // Project relations
 export const projectRelations = relations(project, ({ one }) => ({
   case: one(caseStudy, {
-    fields: [project.id],
-    references: [caseStudy.projectId]
+    fields: [project.slug],
+    references: [caseStudy.slug]
   })
   //  case: one(caseStudy)
 }));

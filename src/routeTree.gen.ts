@@ -25,12 +25,12 @@ import { Route as CasesIndexRouteImport } from './routes/cases/index'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as TestimonialsNewRouteImport } from './routes/testimonials/new'
 import { Route as ProjectsNewRouteImport } from './routes/projects/new'
-import { Route as CasesSlugRouteImport } from './routes/cases/$slug'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
 import { Route as ProjectsSlugEditRouteImport } from './routes/projects/$slug.edit'
 import { Route as ProjectsSlugDetailsRouteImport } from './routes/projects/$slug.details'
-import { Route as CasesNewProjectIdRouteImport } from './routes/cases/new.$projectId'
-import { Route as CasesEditCaseIdRouteImport } from './routes/cases/edit.$caseId'
+import { Route as CasesNewSlugRouteImport } from './routes/cases/new.$slug'
+import { Route as CasesSlugEditRouteImport } from './routes/cases/$slug.edit'
+import { Route as CasesSlugDetailsRouteImport } from './routes/cases/$slug.details'
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
   id: '/unauthorized',
@@ -112,11 +112,6 @@ const ProjectsNewRoute = ProjectsNewRouteImport.update({
   path: '/new',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
-const CasesSlugRoute = CasesSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => CasesRouteRoute,
-} as any)
 const AccountRegisterRoute = AccountRegisterRouteImport.update({
   id: '/register',
   path: '/register',
@@ -132,14 +127,19 @@ const ProjectsSlugDetailsRoute = ProjectsSlugDetailsRouteImport.update({
   path: '/$slug/details',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
-const CasesNewProjectIdRoute = CasesNewProjectIdRouteImport.update({
-  id: '/new/$projectId',
-  path: '/new/$projectId',
+const CasesNewSlugRoute = CasesNewSlugRouteImport.update({
+  id: '/new/$slug',
+  path: '/new/$slug',
   getParentRoute: () => CasesRouteRoute,
 } as any)
-const CasesEditCaseIdRoute = CasesEditCaseIdRouteImport.update({
-  id: '/edit/$caseId',
-  path: '/edit/$caseId',
+const CasesSlugEditRoute = CasesSlugEditRouteImport.update({
+  id: '/$slug/edit',
+  path: '/$slug/edit',
+  getParentRoute: () => CasesRouteRoute,
+} as any)
+const CasesSlugDetailsRoute = CasesSlugDetailsRouteImport.update({
+  id: '/$slug/details',
+  path: '/$slug/details',
   getParentRoute: () => CasesRouteRoute,
 } as any)
 
@@ -155,15 +155,15 @@ export interface FileRoutesByFullPath {
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/account/register': typeof AccountRegisterRoute
-  '/cases/$slug': typeof CasesSlugRoute
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
   '/account/': typeof AccountIndexRoute
   '/cases/': typeof CasesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/testimonials/': typeof TestimonialsIndexRoute
-  '/cases/edit/$caseId': typeof CasesEditCaseIdRoute
-  '/cases/new/$projectId': typeof CasesNewProjectIdRoute
+  '/cases/$slug/details': typeof CasesSlugDetailsRoute
+  '/cases/$slug/edit': typeof CasesSlugEditRoute
+  '/cases/new/$slug': typeof CasesNewSlugRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
   '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
@@ -175,15 +175,15 @@ export interface FileRoutesByTo {
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/account/register': typeof AccountRegisterRoute
-  '/cases/$slug': typeof CasesSlugRoute
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
   '/account': typeof AccountIndexRoute
   '/cases': typeof CasesIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/testimonials': typeof TestimonialsIndexRoute
-  '/cases/edit/$caseId': typeof CasesEditCaseIdRoute
-  '/cases/new/$projectId': typeof CasesNewProjectIdRoute
+  '/cases/$slug/details': typeof CasesSlugDetailsRoute
+  '/cases/$slug/edit': typeof CasesSlugEditRoute
+  '/cases/new/$slug': typeof CasesNewSlugRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
   '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
@@ -200,15 +200,15 @@ export interface FileRoutesById {
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/account/register': typeof AccountRegisterRoute
-  '/cases/$slug': typeof CasesSlugRoute
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
   '/account/': typeof AccountIndexRoute
   '/cases/': typeof CasesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/testimonials/': typeof TestimonialsIndexRoute
-  '/cases/edit/$caseId': typeof CasesEditCaseIdRoute
-  '/cases/new/$projectId': typeof CasesNewProjectIdRoute
+  '/cases/$slug/details': typeof CasesSlugDetailsRoute
+  '/cases/$slug/edit': typeof CasesSlugEditRoute
+  '/cases/new/$slug': typeof CasesNewSlugRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
   '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
@@ -226,15 +226,15 @@ export interface FileRouteTypes {
     | '/tools-process'
     | '/unauthorized'
     | '/account/register'
-    | '/cases/$slug'
     | '/projects/new'
     | '/testimonials/new'
     | '/account/'
     | '/cases/'
     | '/projects/'
     | '/testimonials/'
-    | '/cases/edit/$caseId'
-    | '/cases/new/$projectId'
+    | '/cases/$slug/details'
+    | '/cases/$slug/edit'
+    | '/cases/new/$slug'
     | '/projects/$slug/details'
     | '/projects/$slug/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -246,15 +246,15 @@ export interface FileRouteTypes {
     | '/tools-process'
     | '/unauthorized'
     | '/account/register'
-    | '/cases/$slug'
     | '/projects/new'
     | '/testimonials/new'
     | '/account'
     | '/cases'
     | '/projects'
     | '/testimonials'
-    | '/cases/edit/$caseId'
-    | '/cases/new/$projectId'
+    | '/cases/$slug/details'
+    | '/cases/$slug/edit'
+    | '/cases/new/$slug'
     | '/projects/$slug/details'
     | '/projects/$slug/edit'
   id:
@@ -270,15 +270,15 @@ export interface FileRouteTypes {
     | '/tools-process'
     | '/unauthorized'
     | '/account/register'
-    | '/cases/$slug'
     | '/projects/new'
     | '/testimonials/new'
     | '/account/'
     | '/cases/'
     | '/projects/'
     | '/testimonials/'
-    | '/cases/edit/$caseId'
-    | '/cases/new/$projectId'
+    | '/cases/$slug/details'
+    | '/cases/$slug/edit'
+    | '/cases/new/$slug'
     | '/projects/$slug/details'
     | '/projects/$slug/edit'
   fileRoutesById: FileRoutesById
@@ -410,13 +410,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsNewRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
-    '/cases/$slug': {
-      id: '/cases/$slug'
-      path: '/$slug'
-      fullPath: '/cases/$slug'
-      preLoaderRoute: typeof CasesSlugRouteImport
-      parentRoute: typeof CasesRouteRoute
-    }
     '/account/register': {
       id: '/account/register'
       path: '/register'
@@ -438,18 +431,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsSlugDetailsRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
-    '/cases/new/$projectId': {
-      id: '/cases/new/$projectId'
-      path: '/new/$projectId'
-      fullPath: '/cases/new/$projectId'
-      preLoaderRoute: typeof CasesNewProjectIdRouteImport
+    '/cases/new/$slug': {
+      id: '/cases/new/$slug'
+      path: '/new/$slug'
+      fullPath: '/cases/new/$slug'
+      preLoaderRoute: typeof CasesNewSlugRouteImport
       parentRoute: typeof CasesRouteRoute
     }
-    '/cases/edit/$caseId': {
-      id: '/cases/edit/$caseId'
-      path: '/edit/$caseId'
-      fullPath: '/cases/edit/$caseId'
-      preLoaderRoute: typeof CasesEditCaseIdRouteImport
+    '/cases/$slug/edit': {
+      id: '/cases/$slug/edit'
+      path: '/$slug/edit'
+      fullPath: '/cases/$slug/edit'
+      preLoaderRoute: typeof CasesSlugEditRouteImport
+      parentRoute: typeof CasesRouteRoute
+    }
+    '/cases/$slug/details': {
+      id: '/cases/$slug/details'
+      path: '/$slug/details'
+      fullPath: '/cases/$slug/details'
+      preLoaderRoute: typeof CasesSlugDetailsRouteImport
       parentRoute: typeof CasesRouteRoute
     }
   }
@@ -470,17 +470,17 @@ const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
 )
 
 interface CasesRouteRouteChildren {
-  CasesSlugRoute: typeof CasesSlugRoute
   CasesIndexRoute: typeof CasesIndexRoute
-  CasesEditCaseIdRoute: typeof CasesEditCaseIdRoute
-  CasesNewProjectIdRoute: typeof CasesNewProjectIdRoute
+  CasesSlugDetailsRoute: typeof CasesSlugDetailsRoute
+  CasesSlugEditRoute: typeof CasesSlugEditRoute
+  CasesNewSlugRoute: typeof CasesNewSlugRoute
 }
 
 const CasesRouteRouteChildren: CasesRouteRouteChildren = {
-  CasesSlugRoute: CasesSlugRoute,
   CasesIndexRoute: CasesIndexRoute,
-  CasesEditCaseIdRoute: CasesEditCaseIdRoute,
-  CasesNewProjectIdRoute: CasesNewProjectIdRoute,
+  CasesSlugDetailsRoute: CasesSlugDetailsRoute,
+  CasesSlugEditRoute: CasesSlugEditRoute,
+  CasesNewSlugRoute: CasesNewSlugRoute,
 }
 
 const CasesRouteRouteWithChildren = CasesRouteRoute._addFileChildren(

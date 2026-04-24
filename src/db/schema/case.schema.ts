@@ -5,10 +5,10 @@ import { project } from "./project.schema";
 
 export const caseStudy = pgTable('case_study', {
     id: text("id").primaryKey().$default(() => nanoid(24)),
-    projectId: text("project_id")
+    slug: text("slug")
         .notNull()
         .unique() // ✅ ensures 1:1 relationship
-        .references(() => project.id, { onDelete: "cascade" }),
+        .references(() => project.slug, { onDelete: "cascade" }),
     title: text("title").unique(),
     overview: text("overview"), // short summary
     problem: text("problem"),
@@ -27,8 +27,8 @@ export const caseStudy = pgTable('case_study', {
 
 export const caseStudyRelations = relations(caseStudy, ({ one }) => ({
     project: one(project, {
-        fields: [caseStudy.projectId],
-        references: [project.id],
+        fields: [caseStudy.slug],
+        references: [project.slug],
     }),
 
 }))

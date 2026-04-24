@@ -23,24 +23,24 @@ import {
 import { Suspense, useState } from 'react'
 import { useSuspenseQuery, useQuery } from '@tanstack/react-query'
 import { useDebouncedValue } from '@mantine/hooks'
-import { Link,redirect } from '@tanstack/react-router'
-import { getPaginatedCaseStudiesQueryOptions } from '@/db/queries/case.queries'
+import { Link, redirect } from '@tanstack/react-router'
+import { getPaginatedCasesQueryOptions } from '@/db/queries/case.queries'
 import moment from 'moment'
 
 const PAGE_SIZE = 6
 
 export const Route = createFileRoute('/cases/')({
-        beforeLoad: async ({context}) => {
-        const isAdmin = context.isAdmin
-        if (!isAdmin) {
-          throw redirect ({
-            to: "/unauthorized",
-          })
-        }
-      },
+  beforeLoad: async ({ context }) => {
+    const isAdmin = context.isAdmin
+    if (!isAdmin) {
+      throw redirect({
+        to: "/unauthorized",
+      })
+    }
+  },
   loader: async ({ context }) => {
     await context.queryClient.prefetchQuery(
-      getPaginatedCaseStudiesQueryOptions(1, PAGE_SIZE, '')
+      getPaginatedCasesQueryOptions(1, PAGE_SIZE, '')
     )
   },
   component: RouteComponent,
@@ -125,8 +125,8 @@ function CaseStudyCard({ caseItem }: { caseItem: any }) {
 
       {/* CTA */}
       <Link
-        to="/cases/$slug"
-        params={{ slug: caseItem.projectId }}
+        to="/projects/$slug/details"
+        params={{ slug: caseItem }}
         className="mt-4 block"
       >
         <Button
@@ -155,7 +155,7 @@ function CasesGrid({
   onQueryChange: (value: string) => void
 }) {
   const { data } = useSuspenseQuery(
-    getPaginatedCaseStudiesQueryOptions(page, PAGE_SIZE, query)
+    getPaginatedCasesQueryOptions(page, PAGE_SIZE, query)
   )
 
   const cases = data?.cases ?? []
@@ -207,7 +207,7 @@ function RouteComponent() {
 
   // plain useQuery for totalPages + isFetching only — does not block render
   const { data, isFetching } = useQuery(
-    getPaginatedCaseStudiesQueryOptions(page, PAGE_SIZE, debouncedSearch)
+    getPaginatedCasesQueryOptions(page, PAGE_SIZE, debouncedSearch)
   )
 
   const totalPages = data?.totalPages ?? 1

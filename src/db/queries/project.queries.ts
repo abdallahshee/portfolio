@@ -1,22 +1,22 @@
-import { getPaginatedProjects, getProjectById, getProjectBySlugName, getTopProjects, searchProjects } from "@/server/project.functions"
-import { getCurrentUser } from "@/server/user.functions"
+import { getPaginatedProjects, getProjectBySlugName, getTopProjects, searchProjects } from "@/server/project.functions"
+import { getUserAndRole } from "@/server/user.functions"
 import { queryOptions } from "@tanstack/react-query"
 
 //Geting all projects
 
 
-export const getProjectBySlugNameQueryOptions = (slug: string) =>
+export const getProjectBySlugQueryOptions = (slug: string) =>
   queryOptions({
     queryKey: ['projects', slug],
     queryFn: () => getProjectBySlugName({ data: { slug } }),
   })
 
 
-export const getProjectByIdQueryOptions = (projectId: string) =>
-  queryOptions({
-    queryKey: ['projects', projectId],
-    queryFn: () => getProjectById({ data: { projectId: projectId } }),
-  })
+// export const getProjectByIdQueryOptions = (projectId: string) =>
+//   queryOptions({
+//     queryKey: ['projects', projectId],
+//     queryFn: () => getProjectById({ data: { projectId: projectId } }),
+//   })
 
 export const getTopProjectsQueryOptions = () =>
   queryOptions({
@@ -38,10 +38,10 @@ export const searchProjectsQueryOptions = (query: string, page: number, pageSize
   })
 
 
-export const getCurrentUserQueryOptions = () =>
+export const getUserAndRoleQueryOptions = () =>
   queryOptions({
     queryKey: ["currentUser"],
-    queryFn: () => getCurrentUser(),
+    queryFn: () => getUserAndRole(),
     staleTime: 1000 * 60 * 5, // 5 mins (avoid refetch spam)
     retry: false, // ❗ prevents infinite retries when not logged in
   })

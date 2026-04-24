@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createProject, updateProject } from "@/server/project.functions"
-import { getPaginatedProjectsQueryOptions, getProjectBySlugNameQueryOptions } from "../queries/project.queries"
+import { getPaginatedProjectsQueryOptions, getProjectBySlugQueryOptions } from "../queries/project.queries"
 import type { ProjectRequest, UpdateProjectRequest } from "../validations/project.types"
 
 
@@ -13,7 +13,7 @@ export const useUpdateProjectMutation = () => {
     onSuccess: async (_, variables) => {
       // ✅ Wait for fresh data then navigate
       await queryClient.refetchQueries({
-        queryKey: getProjectBySlugNameQueryOptions(variables.slug).queryKey,
+        queryKey: getProjectBySlugQueryOptions(variables.slug).queryKey,
       })
     },
   })

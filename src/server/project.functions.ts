@@ -5,7 +5,7 @@ import { project } from "@/db/schema";
 import { ProjectSchema, UpdateProjectSchema } from "@/db/validations/project.types";
 import { AuthenticatedMiddleware } from "./middleware";
 
-function slugify(text: string): string {
+export function slugify(text: string): string {
   return text
     .toLowerCase()
     .trim()

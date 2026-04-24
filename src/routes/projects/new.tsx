@@ -57,7 +57,7 @@ function RouteComponent() {
   const form = useForm<ProjectRequest>({
     initialValues: {
       title: "",
-      status:"completed",
+      status: "completed",
       url: "",
       description: "",
       imageUrl: "",
@@ -188,8 +188,9 @@ function RouteComponent() {
                     </Text>
                   </Group>
                 </div>
-
-                <Stack gap={4}>
+              </Stack>
+              <Group id="btns" justify="space-between" align="flex-start" wrap="nowrap">
+                <Stack gap={4} style={{ flex: 1 }}>
                   <Checkbox
                     label="Make project public"
                     {...form.getInputProps("isPublic", { type: "checkbox" })}
@@ -198,7 +199,17 @@ function RouteComponent() {
                     Public projects appear on your portfolio. Private projects are stored for admin use only.
                   </Text>
                 </Stack>
-              </Stack>
+
+                <Stack gap={4} style={{ flex: 1 }}>
+                  <Checkbox
+                    label="Enable featured project"
+                    {...form.getInputProps("isPublic", { type: "checkbox" })}
+                  />
+                  <Text size="xs" c="dimmed" ml={28}>
+                    Featured projects are highlighted on the homepage and portfolio sections.
+                  </Text>
+                </Stack>
+              </Group>
             </Card>
 
             {/* Project Image */}
@@ -249,7 +260,6 @@ function RouteComponent() {
                     if (f) form.setFieldValue("imageUrl", "")
                   }}
                 />
-
 
               </SimpleGrid>
             </Card>

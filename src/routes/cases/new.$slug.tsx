@@ -1,4 +1,4 @@
-import { CaseSchema, type CreateCaseFormRequest } from '@/db/validations/case.types'
+import { CaseSchema } from '@/db/validations/case.types'
 import { createFileRoute, useRouter } from '@tanstack/react-router'
 import { useForm } from "@mantine/form"
 import { zod4Resolver } from 'mantine-form-zod-resolver'
@@ -30,39 +30,39 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import { notifications } from '@mantine/notifications'
-import { useCreateCaseStudyMutations } from '@/db/queries/case.queries'
+import { useCreateCaseMutations } from '@/db/queries/case.queries'
 import type z from 'zod'
-import { getProjectByIdQueryOptions } from '@/db/queries/project.queries'
-import { useSuspenseQuery } from '@tanstack/react-query'
-import {redirect} from '@tanstack/react-router'
 
-export const Route = createFileRoute('/cases/new/$projectId')({
-        beforeLoad: async ({context}) => {
-        const isAdmin = await context.isAdmin
-        if (!isAdmin) {
-          throw redirect ({
-            to: "/unauthorized",
-          })
-        }
-      },
+import { redirect } from '@tanstack/react-router'
+import { getProjectBySlugQueryOptions } from '@/db/queries/project.queries'
+
+export const Route = createFileRoute('/cases/new/$slug')({
+  beforeLoad: async ({ context }) => {
+    const isAdmin = await context.isAdmin
+    if (!isAdmin) {
+      throw redirect({
+        to: "/unauthorized",
+      })
+    }
+  },
   loader: async ({ context, params }) => {
-    await context.queryClient.prefetchQuery(getProjectByIdQueryOptions(params.projectId))
+    await context.queryClient.prefetchQuery(getProjectBySlugQueryOptions(params.slug))
   },
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { projectId } = Route.useParams()
-  const createCaseMutation = useCreateCaseStudyMutations()
+  const { slug } = Route.useParams()
+  const createCaseMutation = useCreateCaseMutations()
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [techInput, setTechInput] = useState('')
-  const TheSchema = CaseSchema.omit({ projectId: true })
-  const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(projectId))
+  const TheSchema = CaseSchema.omit({ slug: true })
+  // const { data: project } = useSuspenseQuery(getProjectByIdQueryOptions(projectId))
   type CaseRequest = z.infer<typeof TheSchema>
   const form = useForm<CaseRequest>({
     initialValues: {
-      title: project?.title ?? '',
+      overview: "",
       problem: '',
       solution: '',
       implementation: '',
@@ -71,7 +71,7 @@ function RouteComponent() {
       outcomes: "",
       technologies: [],
     },
-    validate: zod4Resolver(CaseSchema),
+    validate: zod4Resolver(TheSchema),
     validateInputOnBlur: true,
   })
 
@@ -80,7 +80,7 @@ function RouteComponent() {
     if (!tech) return
 
     const exists = form.values.technologies.some(
-      (t) => t.toLowerCase() === tech.toLowerCase()
+      (t: string) => t.toLowerCase() === tech.toLowerCase()
     )
     if (exists) {
       setTechInput('')
@@ -110,8 +110,8 @@ function RouteComponent() {
   const handleSubmit = async (values: CaseRequest) => {
     try {
       setLoading(true)
-      createCaseMutation.mutateAsync({ ...values, projectId })
-      console.log({ ...values, projectId })
+      createCaseMutation.mutateAsync({ ...values, slug })
+      // console.log({ ...values, projectId })
       notifications.show({
         title: 'Case study saved',
         message: 'The case study was created successfully.',
@@ -171,22 +171,24 @@ function RouteComponent() {
           <Paper radius="xl" p="xl" withBorder className="shadow-sm">
             <form onSubmit={form.onSubmit(handleSubmit)}>
               <Stack gap="xl">
-                {/* Title */}
+                {/* Overview */}
                 <Stack gap="md">
                   <Group gap="xs">
                     <ThemeIcon variant="light" color="indigo" radius="lg" size={32}>
                       <BookOpen size={15} />
                     </ThemeIcon>
-                    <Text fw={600} size="md">Case Study Title</Text>
+                    <Text fw={600} size="md">Case Study Overview</Text>
                   </Group>
                   <Text size="sm" c="dimmed">
-                    Give this case study a clear, descriptive title.
+                    Give this case study a clear, concise overview.
                   </Text>
-                  <TextInput
-                    placeholder="e.g. Building a School Management System for Greenfield Academy"
+                  <Textarea
+                    placeholder="e.g. Built a School Management System that streamlined operations for 500+ students at Greenfield Academy"
                     radius="md"
                     size="sm"
-                    {...form.getInputProps('title')}
+                    autosize
+                    minRows={3}
+                    {...form.getInputProps('overview')}
                   />
                 </Stack>
 

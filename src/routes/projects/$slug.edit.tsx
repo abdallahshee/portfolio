@@ -28,8 +28,10 @@ import {
   Eye,
   Clock3,
   LayoutPanelTop,
+  CheckCircle2,
+  CircleDot,
 } from "lucide-react"
-import { getProjectBySlugNameQueryOptions } from "@/db/queries/project.queries"
+import { getProjectBySlugQueryOptions } from "@/db/queries/project.queries"
 import { useState } from "react"
 import type { UpdateProjectRequest } from "@/db/validations/project.types"
 import { UpdateProjectSchema } from "@/db/validations/project.types"
@@ -48,7 +50,7 @@ export const Route = createFileRoute("/projects/$slug/edit")({
   },
   loader: async ({ context, params }) => {
     const data = await context.queryClient.fetchQuery(
-      getProjectBySlugNameQueryOptions(params.slug)
+      getProjectBySlugQueryOptions(params.slug)
     )
     return data
   },
@@ -65,7 +67,7 @@ function RouteComponent() {
   const form = useForm<UpdateProjectRequest>({
     initialValues: {
       slug: slug,
-      status:project?.status??"completed",
+      status: project?.status ?? "completed",
       title: project?.title ?? "",
       description: project?.description ?? "",
       imageUrl: project?.imageUrl ?? "",
@@ -145,7 +147,43 @@ function RouteComponent() {
                       </ThemeIcon>
                       <div className="title3">Basic Information</div>
                     </Group>
+                    <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+                      <div>
+                        <Text size="sm" fw={500} mb={6}>
+                          Project Status
+                        </Text>
 
+                        <Group id="status" gap="xs">
+                          {/* Progress */}
+                          <Badge
+                            variant={form.values.status === "progress" ? "filled" : "light"}
+                            color="orange"
+                            leftSection={<CircleDot size={14} />}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => form.setFieldValue("status", "progress")}
+                          >
+                            In Progress
+                          </Badge>
+
+                          {/* Completed */}
+                          <Badge
+                            variant={form.values.status === "completed" ? "filled" : "light"}
+                            color="green"
+                            leftSection={<CheckCircle2 size={14} />}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => form.setFieldValue("status", "completed")}
+                          >
+                            Completed
+                          </Badge>
+                        </Group>
+
+                        {form.errors.status && (
+                          <Text size="xs" c="red" mt={4}>
+                            {form.errors.status}
+                          </Text>
+                        )}
+                      </div>
+                    </SimpleGrid>
                     <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
                       <div>
                         <TextInput

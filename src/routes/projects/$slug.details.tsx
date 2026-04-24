@@ -23,7 +23,7 @@ import {
   Globe2,
 } from "lucide-react"
 import { createFileRoute, Link } from "@tanstack/react-router"
-import { getProjectBySlugNameQueryOptions } from "@/db/queries/project.queries"
+import { getProjectBySlugQueryOptions } from "@/db/queries/project.queries"
 import { useEffect, useState } from "react"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import moment from "moment"
@@ -34,7 +34,7 @@ import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 export const Route = createFileRoute("/projects/$slug/details")({
   loader: async ({ context, params }) => {
     await context.queryClient.fetchQuery(
-      getProjectBySlugNameQueryOptions(params.slug)
+      getProjectBySlugQueryOptions(params.slug)
     )
   },
   component: ProjectDetails,
@@ -42,8 +42,8 @@ export const Route = createFileRoute("/projects/$slug/details")({
 
 function ProjectDetails() {
   const { slug } = Route.useParams()
-  const { data: project } = useSuspenseQuery(getProjectBySlugNameQueryOptions(slug))
-  const {isAdmin}=Route.useRouteContext()
+  const { data: project } = useSuspenseQuery(getProjectBySlugQueryOptions(slug))
+  const { isAdmin } = Route.useRouteContext()
 
   if (!project) {
     return (
@@ -106,20 +106,39 @@ function ProjectDetails() {
               </Link>
 
               {isAdmin && (
-                <Link
-                  to="/projects/$slug/edit"
-                  params={{ slug: project.slug! }}
-                >
-                  <Button
-                    variant="light"
-                    color="indigo"
-                    radius="md"
-                    size="sm"
-                    leftSection={<Pencil size={16} />}
+                <Group gap="xs">
+                  {/* Edit Project */}
+                  <Link
+                    to="/projects/$slug/edit"
+                    params={{ slug: project.slug! }}
                   >
-                    Edit Project
-                  </Button>
-                </Link>
+                    <Button
+                      variant="light"
+                      color="indigo"
+                      radius="md"
+                      size="sm"
+                      leftSection={<Pencil size={16} />}
+                    >
+                      Edit
+                    </Button>
+                  </Link>
+
+                  {/* Create Case Study */}
+                  <Link
+                    to="/cases/new/$slug"
+                    params={{ slug: project.slug! }}
+                  >
+                    <Button
+                      variant="filled"
+                      color="violet"
+                      radius="md"
+                      size="sm"
+                      leftSection={<WandSparkles size={16} />}
+                    >
+                      Case Study
+                    </Button>
+                  </Link>
+                </Group>
               )}
             </Group>
           </Group>

@@ -10,9 +10,8 @@ import {
 import { Link, linkOptions } from "@tanstack/react-router"
 import { Sun, Moon, Briefcase, Home, Folder, Mail, Wrench } from "lucide-react"
 import { useRouter } from "@tanstack/react-router"
-import type { Session } from "@supabase/supabase-js"
-import { getSupabaseBrowserClient} from "@/lib/supabase/client"
-
+import { Route as RootRoute } from "@/routes/__root"
+import { getSupabaseBrowserClient } from "@/lib/supabase/client"
 
 type ThemeMode = "light" | "dark"
 
@@ -30,54 +29,30 @@ function applyThemeMode(mode: ThemeMode) {
   root.setAttribute("data-theme", mode)
 }
 
-const links =linkOptions( [
+const links = linkOptions([
   { label: "Home", to: "/", icon: Home },
   { label: "Services", to: "/services", icon: Briefcase },
   { label: "Contacts", to: "/contacts", icon: Mail },
   { label: "Projects", to: "/projects", icon: Folder },
   { label: "Tools & Process", to: "/tools-process", icon: Wrench },
-  
+
 ])
 
 export default function Header() {
   const [opened, setOpened] = useState(false)
   const [themeMode, setThemeMode] = useState<ThemeMode>("light")
-  const [session, setSession] = useState<Session | null>(null)
-const router=useRouter()
-  // // ✅ Auth state
-  // const { data: currentUser } = useQuery({
-  //   ...getCurrentUserQueryOptions(),
-  //   retry: false,
-  // })
-
+  const { user } = RootRoute.useRouteContext()
+  const router = useRouter()
   // ✅ Supabase client
   const supabase = getSupabaseBrowserClient()
   const handleSignOut = async () => {
     await supabase.auth.signOut()
-   router.navigate({to:"/account"})
+    await router.invalidate()
+    await router.navigate({ to: "/account" })
   }
 
-useEffect(() => {
-  const supabase = getSupabaseBrowserClient()
 
-  // Get initial session
-  supabase.auth.getSession().then(({ data }) => {
-    setSession(data.session)
-    // console.log('first ',JSON.stringify(data.session))
-  })
-
-  // Listen to changes
-  const {
-    data: { subscription },
-  } = supabase.auth.onAuthStateChange((_event, session) => {
-    setSession(session)
-  })
-
-  return () => {
-    subscription.unsubscribe()
-  }
-}, [])
-const currentUser = session?.user
+  const currentUser = user
   useEffect(() => {
     const initial = getInitialMode()
     setThemeMode(initial)
@@ -191,7 +166,7 @@ const currentUser = session?.user
                 Sign Out
               </Button>
             )}
-            
+
           </div>
         </div>
       </div>
