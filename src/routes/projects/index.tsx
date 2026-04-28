@@ -162,7 +162,7 @@ function RouteComponent() {
     <Container size="xl" className="max-w-full space-y-6 px-0 py-6 sm:space-y-8 sm:py-8 md:py-10">
       {/* ── PAGE HEADER ── */}
       <div className="mb-6 w-full sm:mb-10">
-        <div className="heading">Real Software, Real Solutions</div>
+        <div className="heading">Real Projects, Real Software</div>
         <p className="mt-2 text-sm leading-relaxed text-slate-600 sm:text-base sm:leading-7 dark:text-slate-400">
           A selection of applications and platforms brought to life from initial concept
           to final delivery. Each project highlights my approach to creating dependable,
