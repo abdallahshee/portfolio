@@ -70,7 +70,7 @@ function ContactPage() {
     <Container size="sm" className="max-w-full space-y-8 px-0 py-6 sm:py-8 md:py-10">
       {/* ── PAGE HEADER ── */}
       <Stack gap="sm">
-        <div className="heading">Let's Turn Your Idea Into Reality</div>
+        <div className="heading">Let's Bring Your Idea to Life</div>
         <p className="text-sm leading-7 text-slate-600 sm:text-base sm:leading-8 dark:text-slate-400">
           Have a project, idea, or opportunity you'd like to discuss?
           Reach out directly — I respond to every message.
