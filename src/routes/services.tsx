@@ -346,7 +346,7 @@ function ServicesPage() {
 
             {/* TITLE */}
             <div className="heading">
-            Business Problems, Software Solutions
+           Problems Solved With Software
             </div>
 
             {/* DESCRIPTION */}
