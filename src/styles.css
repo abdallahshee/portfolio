@@ -51,7 +51,9 @@
   @apply font-semibold text-[1.25rem] sm:text-2xl lg:text-[2.25rem] leading-snug tracking-tight;
   color: var(--sea-ink);
 }
-
+.stat{
+  color: var(--sea-ink);
+}
 .heading2 {
   @apply font-semibold text-2xl sm:text-3xl lg:text-4xl leading-snug;
   color: var(--sea-ink);

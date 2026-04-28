@@ -242,22 +242,22 @@ function App() {
             {/* LEFT */}
             <div id="left" className="flex flex-col gap-6 w-full">
               <div className="heading w-full">
-              Designed to grow, easy to maintain
+                Designed to grow, easy to maintain
               </div>
 
               <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
-                I build mobile-first, responsive digital products with a strong focus on architecture,
+                I build mobile-first, responsive digital products focused on architecture,
                 maintainability, performance, and user experience — turning complex ideas into reliable,
-                production-ready applications. From planning and system design to development and deployment,
-                I ensure every solution is structured for scalability, clarity, and long-term success.
-                Whether you are a startup finding your footing or an established business scaling up,
-                I bring the technical depth and practical thinking to deliver software that works — and keeps working.
+                production-ready applications. From planning and design to deployment, I ensure every
+                solution is structured for scalability and long-term success. Whether you're a startup
+                or an established business scaling up, I bring the technical depth to deliver software
+                that works — and keeps working.
               </p>
 
               <div className="grid w-full gap-y-4 border-b border-blue-400 py-2 grid-cols-3">
                 {STATS.map((stat) => (
-                  <div key={stat.label} className="flex flex-col items-center text-center">
-                    <span className="title2 text-slate-900 dark:text-slate-50">
+                  <div key={stat.label} className="flex flex-col text-start">
+                    <span className="title2 stat text-slate-900 dark:text-slate-50">
                       {stat.value}
                     </span>
                     <span className="mt-1 text-sm text-slate-500 dark:text-slate-400">
@@ -313,22 +313,14 @@ function App() {
 
             <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
               I'm <strong>Abdallah Shee</strong>, a software developer based in Nairobi, Kenya 🇰🇪.
-              I help businesses and startups turn ideas into reliable, easy-to-use digital products —
-              whether it's a platform, a system, or a custom solution tailored to their needs.
-              With expertise across both frontend and backend, I bring a full-picture perspective
-              to every project I take on.
+              I help businesses and startups turn ideas into reliable digital products — platforms,
+              systems, or custom solutions tailored to their needs. With expertise across frontend
+              and backend, I cover everything from planning and design to deployment.
             </p>
 
             <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-              From planning and system design to development and deployment, I focus on building
-              systems that are simple to use, efficient, and built to handle growth. My goal is
-              always to make things clear, practical, and valuable — writing clean, maintainable
-              code that stands the test of time.
-            </p>
-
-            <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-              I believe good software should feel effortless — it should solve real problems,
-              adapt as your business grows, and continue working smoothly long after it's launched.
+              I focus on building systems that are simple, efficient, and built to grow. Good software
+              should feel effortless — solving real problems and working smoothly long after launch.
               Whatever you're building, I'm here to make sure it's done right.
             </p>
           </Stack>
