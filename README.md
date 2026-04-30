@@ -114,21 +114,47 @@ npm run dev
 
 ## Environment Variables
 
-If your project uses API keys or environment variables, create a `.env.local` file.
+Supabase Environment Variables Setup
+
+This project uses Supabase for authentication, database access, and file storage.
+
+Step 1: Create a Supabase Project
+Go to the Supabase dashboard.
+Create a new project.
+Wait for the database and project to finish provisioning.
+Step 2: Get Your Supabase Credentials
+
+Inside your Supabase project:
+
+Open Project Settings.
+Navigate to API.
+Copy the following values:
+Project URL
+Publishable / Anonymous Key
+Step 3: Create an Environment File
+
+Create a .env.local file in the root of your project.
 
 Example:
+# Supabase Project URL
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
 
-```env
-SUPABASE_URL=your_api_url
-VITE_SUPABASE_URL=your_api_url
-SUPABASE_PUBLISHABLE_KEY=your_api_url
-VITE_SUPABASE_PUBLISHABLE_KEY=your_api_url
-```
+# Supabase Public Anonymous Key
+VITE_SUPABASE_PUBLISHABLE_KEY=your_public_anon_key
 
+# Optional Server Variables
+SUPABASE_URL=https://your-project-id.supabase.co
+SUPABASE_PUBLISHABLE_KEY=your_public_anon_key
 ---
 
-## Screenshots
+Important Notes
+Never expose your Supabase service role key on the frontend.
+Only use public anonymous keys in client-side code.
+Add .env.local to .gitignore to avoid pushing secrets to GitHub.
+Screenshots
 
+
+## Screenshots
 Add screenshots of your portfolio here.
 
 Example:
@@ -137,23 +163,29 @@ Example:
 ![Homepage Screenshot](./public/screenshot.png)
 ```
 
----
-
 ## Deployment
 
 You can deploy this project using:
 
-* Vercel
-* Netlify
-* GitHub Pages
-* Render
+Vercel
+Netlify
+GitHub Pages
+Render
+
+When deploying, remember to add your Supabase environment variables to your hosting platform.
+
+For example, in Vercel:
+
+Open your project dashboard.
+Navigate to Settings → Environment Variables.
+Add the same variables from your .env.local file.
+Redeploy the application.
 
 ---
 
 ## Future Improvements
 
 * Add blog section
-* Add dark/light theme toggle
 * Improve animations and transitions
 * Add CMS integration
 * Add analytics tracking
