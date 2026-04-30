@@ -346,7 +346,7 @@ function ServicesPage() {
 
             {/* TITLE */}
             <div className="heading">
-             Services Built For Your Needs
+              Services Built For Your Needs
             </div>
 
             {/* DESCRIPTION */}

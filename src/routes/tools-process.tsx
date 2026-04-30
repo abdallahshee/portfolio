@@ -85,6 +85,7 @@ function HowIWorkPage() {
             <section className="w-full space-y-6">
                 <div className="heading">
                  My Process: Think, Plan, Build
+                 {/* Thinking, Planning & Building */}
                 </div>
 
                 <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">

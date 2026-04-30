@@ -132,7 +132,7 @@ function RouteComponent() {
   const [searchInput, setSearchInput] = useState('')
   const [filter, setFilter] = useState<FilterValue>('all')
   const [debouncedSearch] = useDebouncedValue(searchInput, 200)
-  const {isAdmin}=Route.useRouteContext()
+  const { isAdmin } = Route.useRouteContext()
   const isSearching = debouncedSearch.trim().length > 0
 
   const { data, isFetching } = useQuery(
@@ -168,95 +168,94 @@ function RouteComponent() {
           to final delivery. Each project highlights my approach to creating dependable,
           well-structured systems that are built to scale and easy to use.
         </p>
-        
       </div>
-  
+
       {/* ── SEARCH & FILTER ── */}
-   <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
-  {/* Left Side */}
-  <div className="w-full min-w-0 sm:flex-1" style={{ maxWidth: 420 }}>
-    <div className="mb-1.5 text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-400">
-      Search
-    </div>
+      <div className="flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-end sm:justify-between">
+        {/* Left Side */}
+        <div className="w-full min-w-0 sm:flex-1" style={{ maxWidth: 420 }}>
+          <div className="mb-1.5 text-xs font-medium uppercase tracking-widest text-slate-500 dark:text-slate-400">
+            Search
+          </div>
 
-    <TextInput
-      placeholder="Search by title or description…"
-      size="sm"
-      radius="md"
-      leftSection={<Search size={14} />}
-      rightSection={
-        searchInput ? (
-          <button type="button" onClick={() => handleSearchChange('')}>
-            <X size={13} className="text-slate-400 hover:text-slate-600" />
-          </button>
-        ) : null
-      }
-      value={searchInput}
-      onChange={(e) => handleSearchChange(e.currentTarget.value)}
-    />
+          <TextInput
+            placeholder="Search by title or description…"
+            size="sm"
+            radius="md"
+            leftSection={<Search size={14} />}
+            rightSection={
+              searchInput ? (
+                <button type="button" onClick={() => handleSearchChange('')}>
+                  <X size={13} className="text-slate-400 hover:text-slate-600" />
+                </button>
+              ) : null
+            }
+            value={searchInput}
+            onChange={(e) => handleSearchChange(e.currentTarget.value)}
+          />
 
-    {isSearching && (
-      <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
-        {isFetching
-          ? 'Searching…'
-          : `${data?.total ?? 0} result${(data?.total ?? 0) !== 1 ? 's' : ''} for "${debouncedSearch}"`}
-      </p>
-    )}
-  </div>
+          {isSearching && (
+            <p className="mt-2 text-xs text-slate-500 dark:text-slate-400">
+              {isFetching
+                ? 'Searching…'
+                : `${data?.total ?? 0} result${(data?.total ?? 0) !== 1 ? 's' : ''} for "${debouncedSearch}"`}
+            </p>
+          )}
+        </div>
 
-  {/* Right Side */}
-  <div className="flex w-full flex-col gap-4 sm:w-auto sm:items-end">
-    {/* Create Project Button */}
-{isAdmin &&
-    <Button
-      component={Link}
-      to="/projects/new"
-      radius="md"
-      size="sm"
-      leftSection={<FolderPlus size={16} />}
-      className="w-full sm:w-auto"
-    >
-      Create Project
-    </Button>
-}
-    {/* Filters */}
-    <div className="w-full shrink-0 sm:w-auto">
-      <Group gap="xs" mb={5} align="center" wrap="wrap">
-        <ListFilter size={12} className="text-slate-400" />
-        <span className="text-xs font-medium uppercase tracking-widest text-slate-500 sm:text-sm dark:text-slate-400">
-          Filter by status
-        </span>
-      </Group>
-
-      <Group gap="xs">
-        {(['all', 'public', 'private'] as const).map((value) => {
-          const label =
-            value === 'all'
-              ? 'All'
-              : value === 'public'
-              ? 'Open Source'
-              : 'Private'
-
-          const isActive = filter === value
-
-          return (
-            <Badge
-              key={value}
-              variant={isActive ? 'filled' : 'light'}
-              color="blue"
+        {/* Right Side */}
+        <div className="flex w-full flex-col gap-4 sm:w-auto sm:items-end">
+          {/* Create Project Button */}
+          {isAdmin &&
+            <Button
+              component={Link}
+              to="/projects/new"
               radius="md"
-              size="md"
-              style={{ cursor: 'pointer', userSelect: 'none' }}
-              onClick={() => handleFilterChange(value)}
+              size="sm"
+              leftSection={<FolderPlus size={16} />}
+              className="w-full sm:w-auto"
             >
-              {label}
-            </Badge>
-          )
-        })}
-      </Group>
-    </div>
-  </div>
-</div>
+              Create Project
+            </Button>
+          }
+          {/* Filters */}
+          <div className="w-full shrink-0 sm:w-auto">
+            <Group gap="xs" mb={5} align="center" wrap="wrap">
+              <ListFilter size={12} className="text-slate-400" />
+              <span className="text-xs font-medium uppercase tracking-widest text-slate-500 sm:text-sm dark:text-slate-400">
+                Filter by status
+              </span>
+            </Group>
+
+            <Group gap="xs">
+              {(['all', 'public', 'private'] as const).map((value) => {
+                const label =
+                  value === 'all'
+                    ? 'All'
+                    : value === 'public'
+                      ? 'Open Source'
+                      : 'Private'
+
+                const isActive = filter === value
+
+                return (
+                  <Badge
+                    key={value}
+                    variant={isActive ? 'filled' : 'light'}
+                    color="blue"
+                    radius="md"
+                    size="md"
+                    style={{ cursor: 'pointer', userSelect: 'none' }}
+                    onClick={() => handleFilterChange(value)}
+                  >
+                    {label}
+                  </Badge>
+                )
+              })}
+            </Group>
+          </div>
+        </div>
+      </div>
 
       <div className="mb-12 border-b border-blue-500" />
 
