@@ -245,14 +245,6 @@ export const searchProjects = createServerFn({ method: "GET" })
       }
     } catch (err) {
       console.error("Error searching projects:", err)
-      return {
-        projects: [],
-        total: 0,
-        page,
-        pageSize,
-        totalPages: 0,
-        hasNextPage: false,
-        hasPrevPage: false,
-      }
+      throw err
     }
   })

@@ -70,7 +70,7 @@ const CORE_SKILLS = [
     'Material UI & Tailwind CSS',
     'ExpressJs & MeteorJS',
     // 'REST APIs & Server Functions',
-    'Git, CI/CD & Agile workflows',
+    // 'Git, CI/CD & Agile workflows',
     "Serveless & Cloud Development",
     // "System Analysis & Design"
 ]
