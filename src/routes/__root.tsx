@@ -11,7 +11,7 @@ import Footer from '../components/Footer'
 import '@mantine/core/styles.css'
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-import { MantineProvider } from '@mantine/core'
+import { Container, MantineProvider } from '@mantine/core'
 import '@mantine/notifications/styles.css'
 import "@mantine/tiptap/styles.css"
 import appCss from '../styles.css?url'
@@ -49,9 +49,9 @@ const THEME_INIT_SCRIPT = `(function(){
 })();`
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  beforeLoad:async()=>{
-    const {user,isAdmin}=await getUserAndRole()
-    return {user,isAdmin}
+  beforeLoad: async () => {
+    const { user, isAdmin } = await getUserAndRole()
+    return { user, isAdmin }
   },
   head: () => ({
     meta: [
@@ -86,11 +86,11 @@ function AppShell({ children }: { children: React.ReactNode }) {
 
       <Header />
 
-      <main className="flex-1 container mx-auto w-full max-w-full px-3 pb-10 pt-20 sm:px-4 sm:pb-12 md:px-6 md:pb-14 lg:px-8 lg:pb-16">
-        <ScrollToTopOnRouteChange />
-        {children}
-        <ScrollToTop />
-      </main>
+    <main className="flex-1 px-3 pb-10 pt-20 sm:px-4 sm:pb-12 md:px-6 md:pb-14 lg:px-8 lg:pb-16">
+  <ScrollToTopOnRouteChange />
+  {children}
+  <ScrollToTop />
+</main>
 
       <Footer />
 
@@ -113,7 +113,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
-      <MantineProvider defaultColorScheme="dark">
+        <MantineProvider defaultColorScheme="dark">
           <TanStackQueryProvider>
             <AppShell>{children}</AppShell>
           </TanStackQueryProvider>

@@ -43,7 +43,7 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
           id: project.id,
           title: project.title,
           slug: project.slug,
-          status:project.status,
+          githubUrl:project.githubUrl,
           description: project.description,
           imageUrl: project.imageUrl,
           isPublic: project.isPublic,
@@ -76,7 +76,7 @@ export const getProjectById = createServerFn({ method: "GET" })
           description: project.description,
           imageUrl: project.imageUrl,
           isPublic: project.isPublic,
-          url: project.url,
+          // url: project.url,
           createdAt: project.createdAt,
           updatedAt: project.updatedAt,
         })
@@ -104,7 +104,7 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
         db
           .select({
             id: project.id,
-            status:project.status,
+            githubUrl:project.githubUrl,
             title: project.title,
             slug: project.slug,
             description: project.description,
@@ -181,7 +181,7 @@ export const getTopProjects = createServerFn({ method: "GET" })
           isPublic: project.isPublic,
           createdAt: project.createdAt
         })
-        .from(project).where(eq(project.status,"completed"))
+        .from(project)
         .limit(5);
 
       return topProjects;
@@ -210,7 +210,7 @@ export const searchProjects = createServerFn({ method: "GET" })
         db
           .select({
             id: project.id,
-            status:project.status,
+            githubUrl:project.githubUrl,
             title: project.title,
             slug: project.slug,
             description: project.description,

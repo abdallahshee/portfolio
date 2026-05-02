@@ -11,7 +11,7 @@ function NotFoundPage() {
 
   return (
     <div className="flex min-h-screen items-center justify-center">
-      <Container size="sm" className="w-full">
+    
         <Paper
           radius="24px"
           withBorder
@@ -61,7 +61,7 @@ function NotFoundPage() {
 
           </Stack>
         </Paper>
-      </Container>
+ 
     </div>
   )
 }

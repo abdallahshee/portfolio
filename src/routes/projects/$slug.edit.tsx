@@ -67,7 +67,7 @@ function RouteComponent() {
   const form = useForm<UpdateProjectRequest>({
     initialValues: {
       slug: slug,
-      status: project?.status ?? "completed",
+      githubUrl: project?.githubUrl??"",
       title: project?.title ?? "",
       description: project?.description ?? "",
       imageUrl: project?.imageUrl ?? "",
@@ -95,7 +95,7 @@ function RouteComponent() {
   const descriptionLength = form.values.description.trim().length
 
   return (
-    <Container size="xl" className="space-y-8 py-10">
+  <div className="space-y-8 py-10">
       <Stack gap="xl">
 
         {/* Header */}
@@ -147,43 +147,7 @@ function RouteComponent() {
                       </ThemeIcon>
                       <div className="title3">Basic Information</div>
                     </Group>
-                    <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
-                      <div>
-                        <Text size="sm" fw={500} mb={6}>
-                          Project Status
-                        </Text>
-
-                        <Group id="status" gap="xs">
-                          {/* Progress */}
-                          <Badge
-                            variant={form.values.status === "progress" ? "filled" : "light"}
-                            color="orange"
-                            leftSection={<CircleDot size={14} />}
-                            style={{ cursor: "pointer" }}
-                            onClick={() => form.setFieldValue("status", "progress")}
-                          >
-                            In Progress
-                          </Badge>
-
-                          {/* Completed */}
-                          <Badge
-                            variant={form.values.status === "completed" ? "filled" : "light"}
-                            color="green"
-                            leftSection={<CheckCircle2 size={14} />}
-                            style={{ cursor: "pointer" }}
-                            onClick={() => form.setFieldValue("status", "completed")}
-                          >
-                            Completed
-                          </Badge>
-                        </Group>
-
-                        {form.errors.status && (
-                          <Text size="xs" c="red" mt={4}>
-                            {form.errors.status}
-                          </Text>
-                        )}
-                      </div>
-                    </SimpleGrid>
+        
                     <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
                       <div>
                         <TextInput
@@ -208,6 +172,14 @@ function RouteComponent() {
                         size="sm"
                         leftSection={<Globe size={15} />}
                         {...form.getInputProps("url")}
+                      />
+                              <TextInput
+                        label="Github URL"
+                        placeholder="https://myproject.com"
+                        radius="md"
+                        size="sm"
+                        leftSection={<Globe size={15} />}
+                        {...form.getInputProps("githubUrl")}
                       />
                     </SimpleGrid>
 
@@ -424,6 +396,6 @@ function RouteComponent() {
           </Stack>
         </SimpleGrid>
       </Stack>
-    </Container>
+    </div>
   )
 }

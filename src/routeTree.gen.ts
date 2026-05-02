@@ -16,21 +16,16 @@ import { Route as ContactsRouteImport } from './routes/contacts'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as TestimonialsRouteRouteImport } from './routes/testimonials/route'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
-import { Route as CasesRouteRouteImport } from './routes/cases/route'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TestimonialsIndexRouteImport } from './routes/testimonials/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
-import { Route as CasesIndexRouteImport } from './routes/cases/index'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as TestimonialsNewRouteImport } from './routes/testimonials/new'
 import { Route as ProjectsNewRouteImport } from './routes/projects/new'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
 import { Route as ProjectsSlugEditRouteImport } from './routes/projects/$slug.edit'
 import { Route as ProjectsSlugDetailsRouteImport } from './routes/projects/$slug.details'
-import { Route as CasesNewSlugRouteImport } from './routes/cases/new.$slug'
-import { Route as CasesSlugEditRouteImport } from './routes/cases/$slug.edit'
-import { Route as CasesSlugDetailsRouteImport } from './routes/cases/$slug.details'
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
   id: '/unauthorized',
@@ -67,11 +62,6 @@ const ProjectsRouteRoute = ProjectsRouteRouteImport.update({
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CasesRouteRoute = CasesRouteRouteImport.update({
-  id: '/cases',
-  path: '/cases',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AccountRouteRoute = AccountRouteRouteImport.update({
   id: '/account',
   path: '/account',
@@ -91,11 +81,6 @@ const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => ProjectsRouteRoute,
-} as any)
-const CasesIndexRoute = CasesIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => CasesRouteRoute,
 } as any)
 const AccountIndexRoute = AccountIndexRouteImport.update({
   id: '/',
@@ -127,26 +112,10 @@ const ProjectsSlugDetailsRoute = ProjectsSlugDetailsRouteImport.update({
   path: '/$slug/details',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
-const CasesNewSlugRoute = CasesNewSlugRouteImport.update({
-  id: '/new/$slug',
-  path: '/new/$slug',
-  getParentRoute: () => CasesRouteRoute,
-} as any)
-const CasesSlugEditRoute = CasesSlugEditRouteImport.update({
-  id: '/$slug/edit',
-  path: '/$slug/edit',
-  getParentRoute: () => CasesRouteRoute,
-} as any)
-const CasesSlugDetailsRoute = CasesSlugDetailsRouteImport.update({
-  id: '/$slug/details',
-  path: '/$slug/details',
-  getParentRoute: () => CasesRouteRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
-  '/cases': typeof CasesRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/testimonials': typeof TestimonialsRouteRouteWithChildren
   '/$': typeof SplatRoute
@@ -158,12 +127,8 @@ export interface FileRoutesByFullPath {
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
   '/account/': typeof AccountIndexRoute
-  '/cases/': typeof CasesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/testimonials/': typeof TestimonialsIndexRoute
-  '/cases/$slug/details': typeof CasesSlugDetailsRoute
-  '/cases/$slug/edit': typeof CasesSlugEditRoute
-  '/cases/new/$slug': typeof CasesNewSlugRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
   '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
@@ -178,12 +143,8 @@ export interface FileRoutesByTo {
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
   '/account': typeof AccountIndexRoute
-  '/cases': typeof CasesIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/testimonials': typeof TestimonialsIndexRoute
-  '/cases/$slug/details': typeof CasesSlugDetailsRoute
-  '/cases/$slug/edit': typeof CasesSlugEditRoute
-  '/cases/new/$slug': typeof CasesNewSlugRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
   '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
@@ -191,7 +152,6 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
-  '/cases': typeof CasesRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/testimonials': typeof TestimonialsRouteRouteWithChildren
   '/$': typeof SplatRoute
@@ -203,12 +163,8 @@ export interface FileRoutesById {
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
   '/account/': typeof AccountIndexRoute
-  '/cases/': typeof CasesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/testimonials/': typeof TestimonialsIndexRoute
-  '/cases/$slug/details': typeof CasesSlugDetailsRoute
-  '/cases/$slug/edit': typeof CasesSlugEditRoute
-  '/cases/new/$slug': typeof CasesNewSlugRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
   '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
@@ -217,7 +173,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/account'
-    | '/cases'
     | '/projects'
     | '/testimonials'
     | '/$'
@@ -229,12 +184,8 @@ export interface FileRouteTypes {
     | '/projects/new'
     | '/testimonials/new'
     | '/account/'
-    | '/cases/'
     | '/projects/'
     | '/testimonials/'
-    | '/cases/$slug/details'
-    | '/cases/$slug/edit'
-    | '/cases/new/$slug'
     | '/projects/$slug/details'
     | '/projects/$slug/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -249,19 +200,14 @@ export interface FileRouteTypes {
     | '/projects/new'
     | '/testimonials/new'
     | '/account'
-    | '/cases'
     | '/projects'
     | '/testimonials'
-    | '/cases/$slug/details'
-    | '/cases/$slug/edit'
-    | '/cases/new/$slug'
     | '/projects/$slug/details'
     | '/projects/$slug/edit'
   id:
     | '__root__'
     | '/'
     | '/account'
-    | '/cases'
     | '/projects'
     | '/testimonials'
     | '/$'
@@ -273,12 +219,8 @@ export interface FileRouteTypes {
     | '/projects/new'
     | '/testimonials/new'
     | '/account/'
-    | '/cases/'
     | '/projects/'
     | '/testimonials/'
-    | '/cases/$slug/details'
-    | '/cases/$slug/edit'
-    | '/cases/new/$slug'
     | '/projects/$slug/details'
     | '/projects/$slug/edit'
   fileRoutesById: FileRoutesById
@@ -286,7 +228,6 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRouteRoute: typeof AccountRouteRouteWithChildren
-  CasesRouteRoute: typeof CasesRouteRouteWithChildren
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
   TestimonialsRouteRoute: typeof TestimonialsRouteRouteWithChildren
   SplatRoute: typeof SplatRoute
@@ -347,13 +288,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/cases': {
-      id: '/cases'
-      path: '/cases'
-      fullPath: '/cases'
-      preLoaderRoute: typeof CasesRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/account': {
       id: '/account'
       path: '/account'
@@ -381,13 +315,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/projects/'
       preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof ProjectsRouteRoute
-    }
-    '/cases/': {
-      id: '/cases/'
-      path: '/'
-      fullPath: '/cases/'
-      preLoaderRoute: typeof CasesIndexRouteImport
-      parentRoute: typeof CasesRouteRoute
     }
     '/account/': {
       id: '/account/'
@@ -431,27 +358,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsSlugDetailsRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
-    '/cases/new/$slug': {
-      id: '/cases/new/$slug'
-      path: '/new/$slug'
-      fullPath: '/cases/new/$slug'
-      preLoaderRoute: typeof CasesNewSlugRouteImport
-      parentRoute: typeof CasesRouteRoute
-    }
-    '/cases/$slug/edit': {
-      id: '/cases/$slug/edit'
-      path: '/$slug/edit'
-      fullPath: '/cases/$slug/edit'
-      preLoaderRoute: typeof CasesSlugEditRouteImport
-      parentRoute: typeof CasesRouteRoute
-    }
-    '/cases/$slug/details': {
-      id: '/cases/$slug/details'
-      path: '/$slug/details'
-      fullPath: '/cases/$slug/details'
-      preLoaderRoute: typeof CasesSlugDetailsRouteImport
-      parentRoute: typeof CasesRouteRoute
-    }
   }
 }
 
@@ -467,24 +373,6 @@ const AccountRouteRouteChildren: AccountRouteRouteChildren = {
 
 const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
   AccountRouteRouteChildren,
-)
-
-interface CasesRouteRouteChildren {
-  CasesIndexRoute: typeof CasesIndexRoute
-  CasesSlugDetailsRoute: typeof CasesSlugDetailsRoute
-  CasesSlugEditRoute: typeof CasesSlugEditRoute
-  CasesNewSlugRoute: typeof CasesNewSlugRoute
-}
-
-const CasesRouteRouteChildren: CasesRouteRouteChildren = {
-  CasesIndexRoute: CasesIndexRoute,
-  CasesSlugDetailsRoute: CasesSlugDetailsRoute,
-  CasesSlugEditRoute: CasesSlugEditRoute,
-  CasesNewSlugRoute: CasesNewSlugRoute,
-}
-
-const CasesRouteRouteWithChildren = CasesRouteRoute._addFileChildren(
-  CasesRouteRouteChildren,
 )
 
 interface ProjectsRouteRouteChildren {
@@ -521,7 +409,6 @@ const TestimonialsRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRouteRoute: AccountRouteRouteWithChildren,
-  CasesRouteRoute: CasesRouteRouteWithChildren,
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
   TestimonialsRouteRoute: TestimonialsRouteRouteWithChildren,
   SplatRoute: SplatRoute,

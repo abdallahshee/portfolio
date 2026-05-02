@@ -230,7 +230,7 @@ const STRENGTHS = [
 function App() {
 
   return (
-    <Container size="xl" className="max-w-full space-y-8 px-0 py-6 sm:space-y-10 sm:py-8 md:space-y-12 md:py-10">
+    <div className="max-w-full space-y-8 px-0 py-6 sm:space-y-10 sm:py-8 md:space-y-12 md:py-10">
 
       {/* ── HERO + ABOUT grouped with smaller gap ── */}
       <div className="space-y-6 sm:space-y-8">
@@ -395,6 +395,6 @@ function App() {
         </Paper>
       </section>
 
-    </Container>
+    </div>
   )
 }

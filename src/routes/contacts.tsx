@@ -67,7 +67,7 @@ const CONTACT_LINKS = [
 
 function ContactPage() {
   return (
-    <Container size="sm" className="max-w-full space-y-8 px-0 py-6 sm:py-8 md:py-10">
+    <div className="max-w-full space-y-8 px-0 py-6 sm:py-8 md:py-10">
       {/* ── PAGE HEADER ── */}
       <Stack gap="sm">
         <div className="heading">Let's Bring Your Idea to Life</div>
@@ -133,6 +133,6 @@ function ContactPage() {
           </Stack>
         </Stack>
       </Card>
-    </Container>
+    </div>
   )
 }

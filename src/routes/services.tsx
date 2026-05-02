@@ -335,7 +335,7 @@ function ServicesPage() {
   const { data: testimonials } = useSuspenseQuery(getTestimonialQueryOptions())
 
   return (
-    <Container size="xl" className="max-w-full space-y-10 px-0 py-6 sm:space-y-12 sm:py-8 md:space-y-16 md:py-10">
+    <div className="max-w-full space-y-10 px-0 py-6 sm:space-y-12 sm:py-8 md:space-y-16 md:py-10">
 
       {/* ── HERO ── */}
       <section className="grid items-stretch gap-10 sm:gap-12">
@@ -506,6 +506,6 @@ function ServicesPage() {
         </Paper>
       </section>
 
-    </Container>
+    </div>
   )
 }

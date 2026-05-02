@@ -12,7 +12,6 @@ function UnauthorizedPage() {
   return (
     <div className="flex min-h-screen items-center justify-center">
 
-      <Container size="sm" className="w-full">
         <Paper
           radius="24px"
           withBorder
@@ -62,7 +61,7 @@ function UnauthorizedPage() {
 
           </Stack>
         </Paper>
-      </Container>
+      
     </div>
   )
 }

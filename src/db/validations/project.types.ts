@@ -13,9 +13,9 @@ export const ProjectSchema = createSelectSchema(project, {
     imageUrl: z.string(),
     url: z.string().nonempty(),
     isPublic: z.boolean().default(false),
-  status: z.enum(["progress", "completed"]),
+    githubUrl: z.string(),
 }).pick({
-    title: true, description: true, imageUrl: true, url: true, isPublic: true,status:true
+    title: true, description: true, imageUrl: true, url: true, isPublic: true,githubUrl:true
 })
 
 export type ProjectRequest = z.infer<typeof ProjectSchema>

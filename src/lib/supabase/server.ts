@@ -1,5 +1,4 @@
 import { createServerClient } from "@supabase/ssr"
-import { createServerFn } from "@tanstack/react-start"
 import { getCookies, setCookie } from "@tanstack/react-start/server"
 
 

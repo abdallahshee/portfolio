@@ -24,12 +24,8 @@ import {
 } from "lucide-react"
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { getProjectBySlugQueryOptions } from "@/db/queries/project.queries"
-import { useEffect, useState } from "react"
 import { useSuspenseQuery } from "@tanstack/react-query"
 import moment from "moment"
-import type { AuthChangeEvent, Session } from "@supabase/supabase-js"
-import { getSupabaseBrowserClient } from "@/lib/supabase/client"
-
 
 export const Route = createFileRoute("/projects/$slug/details")({
   loader: async ({ context, params }) => {
@@ -54,7 +50,7 @@ function ProjectDetails() {
   }
 
   return (
-    <Container size="xl" className="space-y-8 py-10">
+    <div className="space-y-8 py-10">
       <Stack gap="xl">
         {/* ── HEADER ── */}
         <Paper
@@ -120,22 +116,6 @@ function ProjectDetails() {
                       leftSection={<Pencil size={16} />}
                     >
                       Edit
-                    </Button>
-                  </Link>
-
-                  {/* Create Case Study */}
-                  <Link
-                    to="/cases/new/$slug"
-                    params={{ slug: project.slug! }}
-                  >
-                    <Button
-                      variant="filled"
-                      color="violet"
-                      radius="md"
-                      size="sm"
-                      leftSection={<WandSparkles size={16} />}
-                    >
-                      Case Study
                     </Button>
                   </Link>
                 </Group>
@@ -222,7 +202,7 @@ function ProjectDetails() {
                 {/* CTA */}
                 <Button
                   component="a"
-                  href={project.url}
+                  href={!project.isPublic? project.url!:project.githubUrl!}
                   target="_blank"
                   radius="md"
                   size="sm"
@@ -248,7 +228,7 @@ function ProjectDetails() {
           </Stack>
         </div>
       </Stack>
-    </Container>
+    </div>
   )
 }
 

@@ -159,7 +159,7 @@ function RouteComponent() {
   }
 
   return (
-    <Container size="xl" className="max-w-full space-y-6 px-0 py-6 sm:space-y-8 sm:py-8 md:py-10">
+    <div className="max-w-full space-y-6 px-0 py-6 sm:space-y-8 sm:py-8 md:py-10">
       {/* ── PAGE HEADER ── */}
       <div className="mb-6 w-full sm:mb-10">
         <div className="heading">Real Projects, Real Software</div>
@@ -296,6 +296,6 @@ function RouteComponent() {
           />
         </Group>
       )}
-    </Container>
+    </div>
   )
 }

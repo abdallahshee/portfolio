@@ -79,7 +79,7 @@ function HowIWorkPage() {
     const router = useRouter()
 
     return (
-        <Container size="xl" className="max-w-full space-y-10 px-0 py-6 sm:space-y-12 sm:py-8 md:py-10">
+        <div className="max-w-full space-y-10 px-0 py-6 sm:space-y-12 sm:py-8 md:py-10">
 
             {/* ── PAGE HEADER ── */}
             <section className="w-full space-y-6">
@@ -224,6 +224,6 @@ function HowIWorkPage() {
                 </Stack>
             </Paper>
 
-        </Container>
+        </div>
     )
 }

@@ -57,7 +57,7 @@ function RouteComponent() {
   const form = useForm<ProjectRequest>({
     initialValues: {
       title: "",
-      status: "completed",
+      githubUrl: "",
       url: "",
       description: "",
       imageUrl: "",
@@ -98,7 +98,7 @@ function RouteComponent() {
   const descriptionLength = form.values.description.trim().length
 
   return (
-    <Container size="xl" className="space-y-8 py-10">
+    <div className="space-y-8 py-10">
       <Stack gap="xl">
 
         {/* Header */}
@@ -168,6 +168,15 @@ function RouteComponent() {
                     size="sm"
                     leftSection={<Globe size={15} />}
                     {...form.getInputProps("url")}
+                  />
+
+                  <TextInput
+                    label="Github URL"
+                    placeholder="https://myproject.com"
+                    radius="md"
+                    size="sm"
+                    leftSection={<Globe size={15} />}
+                    {...form.getInputProps("githubUrl")}
                   />
                 </SimpleGrid>
 
@@ -299,6 +308,6 @@ function RouteComponent() {
           </Stack>
         </form>
       </Stack>
-    </Container>
+    </div>
   )
 }
