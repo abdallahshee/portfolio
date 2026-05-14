@@ -84,9 +84,9 @@ const test_samples: Testimonial[] = [
 ]
 
 export const Route = createFileRoute('/services')({
-  loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(getTestimonialQueryOptions())
-  },
+  // loader: async ({ context }) => {
+  //   await context.queryClient.prefetchQuery(getTestimonialQueryOptions())
+  // },
   component: ServicesPage,
 })
 

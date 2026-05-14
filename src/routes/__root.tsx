@@ -85,13 +85,13 @@ function AppShell({ children }: { children: React.ReactNode }) {
       <Notifications position="top-right" />
 
       <Header />
-
-    <main className="flex-1 px-3 pb-10 pt-20 sm:px-4 sm:pb-12 md:px-6 md:pb-14 lg:px-8 lg:pb-16">
-  <ScrollToTopOnRouteChange />
-  {children}
-  <ScrollToTop />
-</main>
-
+<Container size='2xl'>
+      <main className="flex-1 px-3 pb-10 pt-20 sm:px-4 sm:pb-12 md:px-6 md:pb-14 lg:px-8 lg:pb-16">
+        <ScrollToTopOnRouteChange />
+        {children}
+        <ScrollToTop />
+      </main>
+</Container>
       <Footer />
 
       <TanStackDevtools

@@ -1,10 +1,8 @@
-
 import { getTopProjectsQueryOptions } from '@/db/queries/project.queries'
 import {
   Badge,
   Button,
   Card,
-  Container,
   Table,
   Image,
   Group,
@@ -13,12 +11,10 @@ import {
   ThemeIcon,
   SimpleGrid,
 } from '@mantine/core'
-
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {
   ArrowRight,
-  Linkedin,
   FolderKanban,
   BookOpen,
   Briefcase,
@@ -43,6 +39,7 @@ export const Route = createFileRoute('/')({
   component: App,
 })
 
+// ── SKELETONS ──
 function ProjectsSkeleton() {
   return (
     <Stack gap="sm">
@@ -59,133 +56,134 @@ function ProjectsSkeleton() {
   )
 }
 
-
-
-function FeaturedProjectsSection() {
-  const { data: projects } = useSuspenseQuery(getTopProjectsQueryOptions())
-  const router = useRouter()
-
-  const isEmpty = !projects || projects.length === 0
+// ── PLACEHOLDER — shown on error or empty ──
+function ProjectsPlaceholder() {
   return (
     <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
       <Stack gap="md">
-        <Group justify="space-between" align="flex-end">
-          <div>
-            <div className="title3">Featured Projects</div>
-            <p className="text-sm text-slate-500">
-              A selection of standout builds
-            </p>
+        <div>
+          <div className="title3">Featured Projects</div>
+          <p className="text-sm text-slate-500">A selection of standout builds</p>
+        </div>
+
+        <div className="flex min-h-[180px] flex-col items-center justify-center gap-3 rounded-md border border-dashed border-slate-300 p-6 text-center dark:border-slate-700">
+          <ThemeIcon size={56} radius="md" variant="light" color="gray">
+            <BookOpen size={28} />
+          </ThemeIcon>
+          <div className="title2 text-slate-400 dark:text-slate-500">
+            Projects coming soon
           </div>
-
-          {!isEmpty &&
-            <Link to="/projects">
-              <Button
-                variant="subtle"
-                size="sm"
-                rightSection={<ArrowRight size={16} />}
-              >
-                View All
-              </Button>
-            </Link>}
-        </Group>
-
-        <div className="-mx-1 overflow-x-auto sm:mx-0">
-          {isEmpty ? (
-            <div className="flex min-h-[180px] flex-col items-center justify-center gap-2 rounded-md border border-dashed border-slate-300 p-6 text-center dark:border-slate-700">
-              <ThemeIcon size={56} radius="md" variant="light" color="gray">
-                <BookOpen size={28} />
-              </ThemeIcon>
-
-              <div className="title2 text-slate-400 dark:text-slate-500">
-                No projects yet!
-              </div>
-
-              <p className="title3 text-slate-400 dark:text-slate-500">
-                Featured projects will be added soon
-              </p>
-
-              <Link to="/services">
-                <Button size="sm" variant="light" leftSection={<BriefcaseBusiness size={16} />}>
-                  See My Services
-                </Button>
-              </Link>
-            </div>
-          ) : (
-            <Table highlightOnHover withTableBorder>
-              <Table.Thead>
-                <Table.Tr>
-                  <Table.Th>Project</Table.Th>
-                  <Table.Th>Status</Table.Th>
-                  <Table.Th>Created</Table.Th>
-                  <Table.Th></Table.Th>
-                </Table.Tr>
-              </Table.Thead>
-              <Table.Tbody>
-                {projects.map((project) => (
-                  <Table.Tr
-                    key={project.id}
-                    onClick={() =>
-                      router.navigate({
-                        to: '/projects/$slug/details',
-                        params: { slug: project?.slug! },
-                      })
-                    }
-                    className="cursor-pointer hover:bg-gray-50"
-                  >
-                    <Table.Td>
-                      <Group gap="sm">
-                        {project.imageUrl ? (
-                          <Image src={project.imageUrl} w={46} h={46} radius="md" />
-                        ) : (
-                          <ThemeIcon size={46} radius="md" variant="light">
-                            <FolderKanban size={20} />
-                          </ThemeIcon>
-                        )}
-                        <div className="font-semibold truncate">{project.title}</div>
-                      </Group>
-                    </Table.Td>
-
-                    <Table.Td>
-                      <Badge
-                        variant="light"
-                        color={project.isPublic ? 'teal' : 'gray'}
-                        radius="md"
-                        size="sm"
-                      >
-                        {project.isPublic ? 'Open Source' : 'Private'}
-                      </Badge>
-                    </Table.Td>
-
-                    <Table.Td>
-                      <span className="text-sm text-slate-500 dark:text-slate-400">
-                        {moment(project.createdAt).format("DDD- MM-YYYY")}
-
-                      </span>
-                    </Table.Td>
-
-                    <Table.Td w={60}>
-                      <span className="text-blue-600 font-semibold">View</span>
-                    </Table.Td>
-                  </Table.Tr>
-                ))}
-              </Table.Tbody>
-            </Table>
-          )}
+          <p className="text-sm text-slate-400 dark:text-slate-500">
+            Featured projects will be added here shortly
+          </p>
+          <Link to="/services">
+            <Button size="sm" variant="light" leftSection={<BriefcaseBusiness size={16} />}>
+              See My Services
+            </Button>
+          </Link>
         </div>
       </Stack>
     </Paper>
   )
 }
 
+// ── FEATURED PROJECTS ──
+function FeaturedProjectsSection() {
+  const { data: projects } = useSuspenseQuery(getTopProjectsQueryOptions())
+  const router = useRouter()
 
+  const isEmpty = !projects || projects.length === 0
 
+  if (isEmpty) return <ProjectsPlaceholder />
+
+  return (
+    <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
+      <Stack gap="md">
+        <Group justify="space-between" align="flex-end">
+          <div>
+            <div className="title3">Featured Projects</div>
+            <p className="text-sm text-slate-500">A selection of standout builds</p>
+          </div>
+          <Link to="/projects">
+            <Button variant="subtle" size="sm" rightSection={<ArrowRight size={16} />}>
+              View All
+            </Button>
+          </Link>
+        </Group>
+
+        <div className="-mx-1 overflow-x-auto sm:mx-0">
+          <Table highlightOnHover withTableBorder>
+            <Table.Thead>
+              <Table.Tr>
+                <Table.Th>Project</Table.Th>
+                <Table.Th>Status</Table.Th>
+                <Table.Th>Created</Table.Th>
+                <Table.Th />
+              </Table.Tr>
+            </Table.Thead>
+            <Table.Tbody>
+              {projects.map((project) => (
+                <Table.Tr
+                  key={project.id}
+                  onClick={() =>
+                    router.navigate({
+                      to: '/projects/$slug/details',
+                      params: { slug: project.slug! },
+                    })
+                  }
+                  className="cursor-pointer"
+                >
+                  <Table.Td>
+                    <Group gap="sm">
+                      {project.imageUrl ? (
+                        <Image src={project.imageUrl} w={46} h={46} radius="md" />
+                      ) : (
+                        <ThemeIcon size={46} radius="md" variant="light">
+                          <FolderKanban size={20} />
+                        </ThemeIcon>
+                      )}
+                      <div className="font-semibold truncate">{project.title}</div>
+                    </Group>
+                  </Table.Td>
+
+                  <Table.Td>
+                    <Badge
+                      variant="light"
+                      color={project.isPublic ? 'teal' : 'gray'}
+                      radius="md"
+                      size="sm"
+                    >
+                      {project.isPublic ? 'Open Source' : 'Private'}
+                    </Badge>
+                  </Table.Td>
+
+                  <Table.Td>
+                    <span className="text-sm text-slate-500 dark:text-slate-400">
+                      {moment(project.createdAt).format('DD MMM YYYY')}
+                    </span>
+                  </Table.Td>
+
+                  <Table.Td w={60}>
+                    <span className="text-blue-600 font-semibold">View</span>
+                  </Table.Td>
+                </Table.Tr>
+              ))}
+            </Table.Tbody>
+          </Table>
+        </div>
+      </Stack>
+    </Paper>
+  )
+}
+
+// ── STATS ──
 const STATS = [
   { icon: <Briefcase size={18} />, value: '4+', label: 'Years Experience', color: 'indigo' },
   { icon: <FolderKanban size={18} />, value: '12+', label: 'Projects Delivered', color: 'blue' },
   { icon: <Users size={18} />, value: '10+', label: 'Happy Clients', color: 'green' },
-  // { icon: <Star size={18} />, value: '100%', label: 'On-Time Delivery', color: 'yellow' },
 ]
 
+// ── STRENGTHS ──
 const STRENGTHS = [
   {
     icon: <Layout size={20} />,
@@ -225,14 +223,12 @@ const STRENGTHS = [
   },
 ]
 
-
-
+// ── PAGE ──
 function App() {
-
   return (
     <div className="max-w-full space-y-8 px-0 py-6 sm:space-y-10 sm:py-8 md:space-y-12 md:py-10">
 
-      {/* ── HERO + ABOUT grouped with smaller gap ── */}
+      {/* ── HERO + ABOUT ── */}
       <div className="space-y-6 sm:space-y-8">
 
         {/* ── HERO ── */}
@@ -242,7 +238,7 @@ function App() {
             {/* LEFT */}
             <div id="left" className="flex flex-col gap-6 w-full">
               <div className="heading w-full">
-              Designed to grow, easy to maintain
+                Designed to grow, easy to maintain
               </div>
 
               <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
@@ -257,19 +253,14 @@ function App() {
               <div className="grid w-full gap-y-4 border-b border-blue-400 py-2 grid-cols-3">
                 {STATS.map((stat) => (
                   <div key={stat.label} className="flex flex-col items-center text-center">
-                    <span className="title2 text-slate-900 dark:text-slate-50">
-                      {stat.value}
-                    </span>
-                    <span className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                      {stat.label}
-                    </span>
+                    <span className="title2 text-slate-900 dark:text-slate-50">{stat.value}</span>
+                    <span className="mt-1 text-sm text-slate-500 dark:text-slate-400">{stat.label}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* RIGHT — responsive image */}
-            {/* RIGHT — responsive image */}
+            {/* RIGHT */}
             <div id="right" className="order-first w-full lg:order-last">
               <div className="mx-auto w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-none">
                 <div
@@ -288,11 +279,7 @@ function App() {
                     className="absolute inset-0 h-full w-full rounded-xl object-cover object-top transition-transform duration-500 group-hover:scale-110"
                     onClick={() => { window.location.hash = 'about' }}
                   />
-
-                  {/* ── OVERLAY ── */}
                   <div className="pointer-events-none absolute inset-0 rounded-xl bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-
-                  {/* ── LABEL ── */}
                   <div className="absolute bottom-4 left-0 right-0 flex flex-col items-center gap-1">
                     <span className="text-sm font-semibold tracking-widest text-white/90">
                       Software Developer
@@ -310,7 +297,6 @@ function App() {
         <section id="about" className="scroll-mt-24">
           <Stack gap="lg" className="w-full border-b-2 border-blue-400 pb-6 lg:border-b-0 lg:pb-0">
             <div className="title2">About Me</div>
-
             <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
               I'm <strong>Abdallah Shee</strong>, a software developer based in Nairobi, Kenya 🇰🇪.
               I help businesses and startups turn ideas into reliable, easy-to-use digital products —
@@ -318,14 +304,12 @@ function App() {
               With expertise across both frontend and backend, I bring a full-picture perspective
               to every project I take on.
             </p>
-
             <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
               From planning and system design to development and deployment, I focus on building
               systems that are simple to use, efficient, and built to handle growth. My goal is
               always to make things clear, practical, and valuable — writing clean, maintainable
               code that stands the test of time.
             </p>
-
             <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
               I believe good software should feel effortless — it should solve real problems,
               adapt as your business grows, and continue working smoothly long after it's launched.
@@ -366,9 +350,11 @@ function App() {
 
       {/* ── FEATURED PROJECTS ── */}
       <div className="mx-auto w-full scroll-mt-20">
-        <Suspense fallback={<ProjectsSkeleton />}>
-          <FeaturedProjectsSection />
-        </Suspense>
+        {/* <ErrorBoundary fallback={<ProjectsPlaceholder />}> */}
+          <Suspense fallback={<ProjectsSkeleton />}>
+            <FeaturedProjectsSection />
+          </Suspense>
+        {/* </ErrorBoundary> */}
       </div>
 
       {/* ── CTA ── */}
