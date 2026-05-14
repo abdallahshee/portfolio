@@ -86,7 +86,7 @@ function ProjectsGrid({
         <ThemeIcon size={72} radius="md" variant="light" color="indigo">
           <FolderOpen size={36} />
         </ThemeIcon>
-        <div className="title2 text-center">No projects found</div>
+        {/* <div className="title2 text-center"> Projects will be added soon.</div> */}
         {isSearching ? (
           <>
             <p className="max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
@@ -107,9 +107,10 @@ function ProjectsGrid({
             </Button>
           </>
         ) : (
-          <p className="mx-auto max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
-            No projects have been added yet.
-          </p>
+          // <p className="mx-auto max-w-md px-2 text-center text-sm text-slate-600 sm:text-base dark:text-slate-400">
+          //   Projects will be added soon.
+          // </p>
+                <div className="title3 text-center mx-auto  px-2 "> Projects will be added soon.</div>
         )}
       </div>
     )
