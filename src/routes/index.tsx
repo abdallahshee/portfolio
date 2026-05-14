@@ -246,7 +246,7 @@ function App() {
             onClick={() => {
               window.location.hash = 'about'
             }}
-            className="h-[200px] w-full cursor-pointer object-cover object-center transition-transform duration-500 hover:scale-[1.02] sm:h-[260px] md:h-[320px] lg:h-[380px]"
+            className="h-[180px] w-full cursor-pointer object-cover object-center transition-transform duration-500 hover:scale-[1.02] sm:h-[260px] md:h-[320px] lg:h-[380px]"
           />
 
           {/* Overlay */}
