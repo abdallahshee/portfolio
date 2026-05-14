@@ -6,12 +6,13 @@ import {
   Stack,
   Divider,
   Alert,
+  SimpleGrid,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { zod4Resolver } from 'mantine-form-zod-resolver'
 import { z } from 'zod'
 import { useState } from 'react'
-import { AlertCircle, CheckCircle } from 'lucide-react'
+import { AlertCircle, CheckCircle, UserPlus } from 'lucide-react'
 import { RegisterSchema } from '@/db/validations/profile.types'
 import { getSupabaseBrowserClient } from '@/lib/supabase/client'
 
@@ -22,12 +23,13 @@ export const Route = createFileRoute('/account/register')({
 type RegisterFormValues = z.infer<typeof RegisterSchema>
 
 function RouteComponent() {
-const supabase = getSupabaseBrowserClient()
+  const supabase = getSupabaseBrowserClient()
   const navigate = useNavigate()
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState(false)
- 
+
   const form = useForm<RegisterFormValues>({
     initialValues: {
       firstname: '',
@@ -37,7 +39,6 @@ const supabase = getSupabaseBrowserClient()
       confirmPassword: '',
     },
     validate: zod4Resolver(RegisterSchema),
-    validateInputOnBlur: true,
   })
 
   const handleSubmit = async (values: RegisterFormValues) => {
@@ -62,21 +63,28 @@ const supabase = getSupabaseBrowserClient()
       }
 
       setSuccess(true)
-      setTimeout(() => navigate({ to: '/account' }), 3000)
+
+      setTimeout(() => {
+        navigate({ to: '/account' })
+      }, 3000)
     } catch (err: any) {
-      setError(err?.message ?? 'Something went wrong. Please try again.')
+      setError(err?.message ?? 'Something went wrong.')
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <div>
-      <Stack gap="lg">
+    <div className="mx-auto w-full max-w-xl">
+      <Stack gap="lg" className="w-full">
+
         <div>
-          <div className="title3">Create an Account</div>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Fill in the details below to get started
+          <div className="flex items-center gap-2">
+            <UserPlus size={20} />
+            <div className="title3">Create Account</div>
+          </div>
+          <p className="mt-1 text-sm text-slate-500">
+            Fill in your details to register.
           </p>
         </div>
 
@@ -85,7 +93,6 @@ const supabase = getSupabaseBrowserClient()
         {error && (
           <Alert
             color="red"
-            radius="md"
             icon={<AlertCircle size={18} />}
             title="Registration failed"
             withCloseButton
@@ -98,78 +105,48 @@ const supabase = getSupabaseBrowserClient()
         {success && (
           <Alert
             color="green"
-            radius="md"
             icon={<CheckCircle size={18} />}
-            title="Account created!"
+            title="Account created"
           >
-            Please check your email to confirm your account. Redirecting to
-            sign in…
+            Please check your email to confirm your account.
           </Alert>
         )}
 
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack gap="md">
-            <TextInput
-              label="Firstname"
-              placeholder="John Doe"
-              radius="md"
-              size="sm"
-              {...form.getInputProps('firstname')}
-            />
+        <form onSubmit={form.onSubmit(handleSubmit)} className="w-full">
+          <Stack gap="md" className="w-full">
 
-                <TextInput
-              label="Lastname"
-              placeholder="John Doe"
-              radius="md"
-              size="sm"
-              {...form.getInputProps('lastname')}
-            />
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+              <TextInput
+                label="First Name"
+                {...form.getInputProps('firstname')}
+              />
+              <TextInput
+                label="Last Name"
+                {...form.getInputProps('lastname')}
+              />
+            </SimpleGrid>
 
             <TextInput
               label="Email Address"
-              placeholder="john@email.com"
-              radius="md"
-              size="sm"
               {...form.getInputProps('email')}
             />
 
-            <PasswordInput
-              label="Password"
-              placeholder="At least 8 characters"
-              radius="md"
-              size="sm"
-              {...form.getInputProps('password')}
-            />
+            <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+              <PasswordInput
+                label="Password"
+                {...form.getInputProps('password')}
+              />
+              <PasswordInput
+                label="Confirm Password"
+                {...form.getInputProps('confirmPassword')}
+              
+              />
+            </SimpleGrid>
 
-            <PasswordInput
-              label="Confirm Password"
-              placeholder="Repeat your password"
-              radius="md"
-              size="sm"
-              {...form.getInputProps('confirmPassword')}
-            />
-
-            <Button
-              type="submit"
-              radius="md"
-              size="sm"
-              fullWidth
-              loading={isSubmitting}
-              disabled={success}
-              mt="xs"
-            >
+            <Button type="submit" fullWidth loading={isSubmitting}>
               Create Account
             </Button>
 
-            <p className="text-center text-sm text-slate-500 dark:text-slate-400">
-              Already have an account?{' '}
-              <Link
-                to="/account"
-                className="font-medium text-indigo-600 hover:underline dark:text-indigo-400"
-              >
-                Sign in
-              </Link>
-            </p>
           </Stack>
         </form>
       </Stack>

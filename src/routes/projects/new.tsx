@@ -14,6 +14,7 @@ import {
   Textarea,
   ThemeIcon,
   SimpleGrid,
+  Slider,
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import {
@@ -26,24 +27,24 @@ import {
   FileText,
 } from "lucide-react"
 import { useMemo, useState } from "react"
-import { ProjectSchema, type ProjectRequest } from "@/db/validations/project.types"
+import { CreateProjectSchema, type ProjectRequest } from "@/db/validations/project.types"
 
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { useProjectCreateMutation } from "@/db/queries/project.mutations"
-import { uploadProjectImage } from "@/lib/supabase/client"
+import { uploadProjectImage } from "@/lib/storage"
 
 export const Route = createFileRoute("/projects/new")({
-  beforeLoad: async ({ context }) => {
-    const isAdmin = context.isAdmin
-    if (!isAdmin) {
-      throw redirect({
-        to: "/unauthorized",
-      })
-    }
-  },
-  loader: async ({ context }) => {
-    console.log(context.isAdmin) // ← available here
-  },
+  // beforeLoad: async ({ context }) => {
+  //   const isAdmin = context.isAdmin
+  //   if (!isAdmin) {
+  //     throw redirect({
+  //       to: "/unauthorized",
+  //     })
+  //   }
+  // },
+  // loader: async ({ context }) => {
+  //   console.log(context.isAdmin) 
+  // },
   component: RouteComponent,
 })
 
@@ -57,13 +58,14 @@ function RouteComponent() {
   const form = useForm<ProjectRequest>({
     initialValues: {
       title: "",
+      progress: 0,
       githubUrl: "",
       url: "",
       description: "",
       imageUrl: "",
       isPublic: true,
     },
-    validate: zod4Resolver(ProjectSchema),
+    validate: zod4Resolver(CreateProjectSchema),
     validateInputOnBlur: true,
   })
 
@@ -86,7 +88,7 @@ function RouteComponent() {
         imageUrl: uploadedImageUrl,
       })
 
-      router.history.back()
+      await router.navigate({to:"/projects"})
     } catch (err) {
       console.error(err)
     } finally {
@@ -147,7 +149,7 @@ function RouteComponent() {
                   <div className="title3">Basic Information</div>
                 </Group>
 
-                <SimpleGrid cols={{ base: 1, md: 2 }} spacing="md">
+             
                   <div>
                     <TextInput
                       label="Project Title"
@@ -156,8 +158,8 @@ function RouteComponent() {
                       size="sm"
                       {...form.getInputProps("title")}
                     />
-                    <Text size="xs" c={titleLength > 40 ? "red" : "dimmed"} mt={4} ta="right">
-                      {titleLength} / 40
+                    <Text size="xs" c="dimmed" mt={4}>
+                      {titleLength} / 50
                     </Text>
                   </div>
 
@@ -171,54 +173,78 @@ function RouteComponent() {
                   />
 
                   <TextInput
-                    label="Github URL"
-                    placeholder="https://myproject.com"
+                    label="GitHub URL"
+                    placeholder="https://github.com/..."
                     radius="md"
                     size="sm"
                     leftSection={<Globe size={15} />}
                     {...form.getInputProps("githubUrl")}
                   />
-                </SimpleGrid>
+               
 
+                {/* DESCRIPTION */}
                 <div>
                   <Textarea
                     label="Description"
-                    placeholder="Write a concise summary of the project — what it does and who it is for."
+                    placeholder="What does this project do?"
                     minRows={4}
                     autosize
                     radius="md"
                     size="sm"
                     {...form.getInputProps("description")}
                   />
+
                   <Group justify="space-between" mt={4}>
                     <Text size="xs" c="dimmed">100–160 characters</Text>
-                    <Text size="xs" c={descriptionLength > 160 || (descriptionLength > 0 && descriptionLength < 100) ? "red" : "dimmed"}>
-                      {descriptionLength} / 160
+                    <Text size="xs" c="dimmed">
+                      {descriptionLength} / 500
                     </Text>
                   </Group>
                 </div>
-              </Stack>
-              <Group id="btns" justify="space-between" align="flex-start" wrap="nowrap">
-                <Stack gap={4} style={{ flex: 1 }}>
-                  <Checkbox
-                    label="Make project public"
-                    {...form.getInputProps("isPublic", { type: "checkbox" })}
-                  />
-                  <Text size="xs" c="dimmed" ml={28}>
-                    Public projects appear on your portfolio. Private projects are stored for admin use only.
-                  </Text>
-                </Stack>
 
-                <Stack gap={4} style={{ flex: 1 }}>
-                  <Checkbox
-                    label="Enable featured project"
-                    {...form.getInputProps("isPublic", { type: "checkbox" })}
+                {/* PROGRESS FIELD (NEW) */}
+                <div className="space-y-2">
+                  <Group justify="space-between">
+                    <Text size="sm" fw={500}>
+                      Project Progress
+                    </Text>
+                    <Text size="sm" c="dimmed">
+                      {form.values.progress}%
+                    </Text>
+                  </Group>
+
+                  <Slider
+                    min={0}
+                    max={100}
+                    step={1}
+                    {...form.getInputProps("progress")}
                   />
-                  <Text size="xs" c="dimmed" ml={28}>
-                    Featured projects are highlighted on the homepage and portfolio sections.
-                  </Text>
-                </Stack>
-              </Group>
+                </div>
+
+                {/* CHECKBOXES */}
+                <Group justify="space-between" wrap="nowrap">
+                  <Stack gap={4} style={{ flex: 1 }}>
+                    <Checkbox
+                      label="Make project public"
+                      {...form.getInputProps("isPublic", { type: "checkbox" })}
+                    />
+                    <Text size="xs" c="dimmed" ml={28}>
+                      Public projects appear on your portfolio.
+                    </Text>
+                  </Stack>
+
+                  <Stack gap={4} style={{ flex: 1 }}>
+                    <Checkbox
+                      label="Featured project"
+                      // ⚠️ FIX: you need a new field in schema (recommended)
+                      {...form.getInputProps("isFeatured", { type: "checkbox" })}
+                    />
+                    <Text size="xs" c="dimmed" ml={28}>
+                      Highlight this project on homepage.
+                    </Text>
+                  </Stack>
+                </Group>
+              </Stack>
             </Card>
 
             {/* Project Image */}

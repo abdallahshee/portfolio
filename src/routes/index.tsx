@@ -241,26 +241,22 @@ function App() {
       <section className="w-full">
         <div className="relative w-full overflow-hidden rounded-2xl">
           <img
-            src="/images/home.png"
+            src="/images/home.jpg"
             alt="Abdallah Shee"
             onClick={() => {
               window.location.hash = 'about'
             }}
-            className="h-[180px] w-full cursor-pointer object-cover object-center transition-transform duration-500 hover:scale-[1.02] sm:h-[260px] md:h-[320px] lg:h-[380px]"
+            className="h-[160px] w-full cursor-pointer object-cover object-center transition-transform duration-500 hover:scale-[1.02] sm:h-[260px] md:h-[320px] lg:h-[380px]"
           />
 
           {/* Overlay */}
           <div className="absolute inset-0 bg-black/40" />
 
           {/* Content */}
-          <div className="absolute inset-0 flex items-center">
-            <div className="px-6 sm:px-10 lg:px-16">
-              <h1 className="max-w-3xl title3 leading-tight text-white">
-                Building Modern Software Systems
-              </h1>
-
-              <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-200 sm:text-base">
-                Modern, scalable, and reliable digital solutions built for real business needs.
+          <div className="absolute inset-0 flex items-end justify-center">
+            <div className="px-6 pb-2 sm:px-10 lg:px-16">
+              <p className="title3 text-center leading-tight text-white">
+                Software Developer
               </p>
             </div>
           </div>

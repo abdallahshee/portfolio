@@ -2,25 +2,16 @@ import { db } from "../db/index";
 import { desc, eq, ilike, or, sql } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { project } from "@/db/schema";
-import { ProjectSchema, UpdateProjectSchema } from "@/db/validations/project.types";
+import { CreateProjectSchema, UpdateProjectSchema } from "@/db/validations/project.types";
 import { AuthenticatedMiddleware } from "./middleware";
-
-export function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')   // remove special characters
-    .replace(/[\s_]+/g, '-')    // replace spaces and underscores with hyphens
-    .replace(/--+/g, '-')       // collapse multiple hyphens
-    .replace(/^-+|-+$/g, '')    // trim leading/trailing hyphens
-}
+import slugify from "slugify"
 
 export const createProject = createServerFn({ method: 'POST' })
   .middleware([AuthenticatedMiddleware])
-  .inputValidator(ProjectSchema)
+  .inputValidator(CreateProjectSchema)
   .handler(async ({ data }) => {
     try {
-      const slug = slugify(data.title)
+      const slug = slugify(data.title,{lower:true,strict:true})
       const [theSlug] = await db
         .insert(project)
         .values({ ...data, slug })
@@ -106,6 +97,7 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
             id: project.id,
             githubUrl:project.githubUrl,
             title: project.title,
+            progress:project.progress,
             slug: project.slug,
             description: project.description,
             imageUrl: project.imageUrl,
@@ -210,6 +202,7 @@ export const searchProjects = createServerFn({ method: "GET" })
         db
           .select({
             id: project.id,
+            progress:project.progress,
             githubUrl:project.githubUrl,
             title: project.title,
             slug: project.slug,

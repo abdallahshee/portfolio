@@ -19,12 +19,12 @@ export const Route = createFileRoute('/account/')({
   component: RouteComponent,
 })
 
-
 type SignInFormValues = z.infer<typeof SignInSchema>
 
 function RouteComponent() {
   const supabase = getSupabaseBrowserClient()
   const navigate = useNavigate()
+
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -42,31 +42,35 @@ function RouteComponent() {
       setIsSubmitting(true)
       setError(null)
 
-      const { error: signInError } = await supabase.auth.signInWithPassword({
-        email: values.email,
-        password: values.password,
-      })
+      const { error: signInError } =
+        await supabase.auth.signInWithPassword({
+          email: values.email,
+          password: values.password,
+        })
 
       if (signInError) {
         setError(signInError.message)
-        console.log(signInError)
         return
       }
 
       navigate({ to: '/' })
     } catch (err: any) {
-      setError(err?.message ?? 'Something went wrong. Please try again.')
+      setError(err?.message ?? 'Something went wrong.')
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <div>
-      <Stack gap="lg">
+    <div className="mx-auto w-full max-w-xl">
+      <Stack gap="lg" className="w-full">
+
         <div>
-          <div className="title3">Admin Sign In</div>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          <div className="flex items-center gap-2">
+            <Lock size={20} />
+            <div className="title3">Admin Sign In</div>
+          </div>
+          <p className="mt-1 text-sm text-slate-500">
             This area is restricted to authorised users only.
           </p>
         </div>
@@ -76,7 +80,6 @@ function RouteComponent() {
         {error && (
           <Alert
             color="red"
-            radius="md"
             icon={<AlertCircle size={18} />}
             title="Sign in failed"
             withCloseButton
@@ -86,13 +89,18 @@ function RouteComponent() {
           </Alert>
         )}
 
-        <form onSubmit={form.onSubmit(handleSubmit)}>
-          <Stack gap="md">
+        <form
+          onSubmit={form.onSubmit(handleSubmit)}
+          className="w-full"
+        >
+          <Stack gap="md" className="w-full">
+
             <TextInput
               label="Email Address"
               placeholder="your@email.com"
               radius="md"
               size="sm"
+              className="w-full"
               {...form.getInputProps('email')}
             />
 
@@ -101,29 +109,19 @@ function RouteComponent() {
               placeholder="Your password"
               radius="md"
               size="sm"
+              className="w-full"
               {...form.getInputProps('password')}
             />
 
             <Button
               type="submit"
-              radius="md"
-              size="sm"
               fullWidth
               loading={isSubmitting}
-              mt="xs"
               leftSection={<Lock size={16} />}
             >
               Sign In
             </Button>
-            {/* <p className="text-center text-sm text-slate-500 dark:text-slate-400">
-              Already have an account?{' '}
-              <Link
-                to="/account"
-                className="font-medium text-indigo-600 hover:underline dark:text-indigo-400"
-              >
-                Sign in
-              </Link>
-            </p> */}
+
           </Stack>
         </form>
       </Stack>
