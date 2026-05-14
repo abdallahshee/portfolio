@@ -256,7 +256,7 @@ function App() {
           <div className="absolute inset-0 flex items-center">
             <div className="px-6 sm:px-10 lg:px-16">
               <h1 className="max-w-3xl title3 leading-tight text-white">
-                Building Modern Software Developer
+                Building Modern Software Systems
               </h1>
 
               <p className="mt-1 max-w-2xl text-sm leading-6 text-slate-200 sm:text-base">
@@ -291,22 +291,22 @@ function App() {
             </p>
 
             {/* ── STATS ── */}
-         <div className="grid grid-cols-2 gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-4">
-  {STATS.map((stat) => (
-    <div
-      key={stat.label}
-      className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-5 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-800/60"
-    >
-      <span className="title3 text-slate-900 dark:text-slate-50">
-        {stat.value}
-      </span>
+            <div className="grid grid-cols-2 gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-4">
+              {STATS.map((stat) => (
+                <div
+                  key={stat.label}
+                  className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-5 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-800/60"
+                >
+                  <span className="title3 text-slate-900 dark:text-slate-50">
+                    {stat.value}
+                  </span>
 
-      <span className="mt-1 text-xs font-medium text-slate-500 dark:text-slate-400 sm:text-sm">
-        {stat.label}
-      </span>
-    </div>
-  ))}
-</div>
+                  <span className="mt-1 text-xs font-medium text-slate-500 dark:text-slate-400 sm:text-sm">
+                    {stat.label}
+                  </span>
+                </div>
+              ))}
+            </div>
           </Stack>
 
           {/* RIGHT */}
