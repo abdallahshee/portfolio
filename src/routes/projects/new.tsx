@@ -36,12 +36,12 @@ import { uploadProjectImage } from "@/lib/storage"
 
 export const Route = createFileRoute("/projects/new")({
   beforeLoad(ctx) {
-    const currentUser=ctx.context.user
-      if (!currentUser) {
-        throw redirect({
-          to: "/unauthorized",
-        })
-      }
+    const currentUser = ctx.context.user
+    if (!currentUser) {
+      throw redirect({
+        to: "/unauthorized",
+      })
+    }
   },
   // loader: async ({ context }) => {
   //   console.log(context.user) 
@@ -55,17 +55,17 @@ function RouteComponent() {
   const [loading, setLoading] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const createProject = useProjectCreateMutation()
-const [techInput, setTechInput] = useState('')
+  const [techInput, setTechInput] = useState('')
   const form = useForm<ProjectRequest>({
     initialValues: {
       title: "",
       progress: 0,
-      technologies:[],
+      technologies: [],
       githubUrl: "",
       liveUrl: "",
       description: "",
       imageUrl: "",
-      isFeatured:false
+      isFeatured: false
 
     },
     validate: zod4Resolver(CreateProjectSchema),
@@ -78,24 +78,24 @@ const [techInput, setTechInput] = useState('')
   }, [file])
 
   const addTechnology = (value: string) => {
-  const clean = value.trim()
+    const clean = value.trim()
 
-  if (!clean) return
+    if (!clean) return
 
-  if (form.values.technologies.includes(clean)) return
+    if (form.values.technologies.includes(clean)) return
 
-  form.setFieldValue('technologies', [
-    ...form.values.technologies,
-    clean,
-  ])
-}
+    form.setFieldValue('technologies', [
+      ...form.values.technologies,
+      clean,
+    ])
+  }
 
-const removeTechnology = (tech: string) => {
-  form.setFieldValue(
-    'technologies',
-    form.values.technologies.filter((t) => t !== tech)
-  )
-}
+  const removeTechnology = (tech: string) => {
+    form.setFieldValue(
+      'technologies',
+      form.values.technologies.filter((t) => t !== tech)
+    )
+  }
   const handleSubmit = async (values: ProjectRequest) => {
     // console.log('VALUES ',values)
     try {
@@ -109,10 +109,10 @@ const removeTechnology = (tech: string) => {
       await createProject.mutateAsync({
         ...values,
         // imageUrl: uploadedImageUrl,
-           imageUrl: 'https://claude.ai/chat/042d1c19-a179-4097-bd79-b3d719a0f7e6'
+        imageUrl: 'https://claude.ai/chat/042d1c19-a179-4097-bd79-b3d719a0f7e6'
       })
-      console.log('VALUES ',values)
-      await router.navigate({to:"/projects"})
+      console.log('VALUES ', values)
+      await router.navigate({ to: "/projects" })
     } catch (err) {
       console.error(err)
     } finally {
@@ -173,38 +173,38 @@ const removeTechnology = (tech: string) => {
                   <div className="title3">Basic Information</div>
                 </Group>
 
-             
-                  <div>
-                    <TextInput
-                      label="Project Title"
-                      placeholder="e.g. Fitness Booking Platform"
-                      radius="md"
-                      size="sm"
-                      {...form.getInputProps("title")}
-                    />
-                    <Text size="xs" c="dimmed" mt={4}>
-                      {titleLength} / 50
-                    </Text>
-                  </div>
 
+                <div>
                   <TextInput
-                    label="Live Project URL"
-                    placeholder="https://myproject.com"
+                    label="Project Title"
+                    placeholder="e.g. Fitness Booking Platform"
                     radius="md"
                     size="sm"
-                    leftSection={<Globe size={15} />}
-                    {...form.getInputProps("liveUrl")}
+                    {...form.getInputProps("title")}
                   />
+                  <Text size="xs" c="dimmed" mt={4}>
+                    {titleLength} / 50
+                  </Text>
+                </div>
 
-                  <TextInput
-                    label="GitHub URL"
-                    placeholder="https://github.com/..."
-                    radius="md"
-                    size="sm"
-                    leftSection={<Globe size={15} />}
-                    {...form.getInputProps("githubUrl")}
-                  />
-               
+                <TextInput
+                  label="Live Project URL"
+                  placeholder="https://myproject.com"
+                  radius="md"
+                  size="sm"
+                  leftSection={<Globe size={15} />}
+                  {...form.getInputProps("liveUrl")}
+                />
+
+                <TextInput
+                  label="GitHub URL"
+                  placeholder="https://github.com/..."
+                  radius="md"
+                  size="sm"
+                  leftSection={<Globe size={15} />}
+                  {...form.getInputProps("githubUrl")}
+                />
+
 
                 {/* DESCRIPTION */}
                 <div>
@@ -217,56 +217,56 @@ const removeTechnology = (tech: string) => {
                     size="sm"
                     {...form.getInputProps("description")}
                   />
-{/* TECHNOLOGIES */}
-<div className="space-y-2">
-  <Group justify="space-between">
-    <Text size="sm" fw={500}>
-      Technologies
-    </Text>
+                  {/* TECHNOLOGIES */}
+                  <div className="space-y-2">
+                    <Group justify="space-between">
+                      <Text size="sm" fw={500}>
+                        Technologies
+                      </Text>
 
-    <Text size="xs" c="dimmed">
-      {form.values.technologies.length} added
-    </Text>
-  </Group>
+                      <Text size="xs" c="dimmed">
+                        {form.values.technologies.length} added
+                      </Text>
+                    </Group>
 
-  {/* INPUT */}
-  <TextInput
-    size="sm"
-    radius="md"
-    placeholder="e.g. React, Node.js, PostgreSQL"
-    value={techInput}
-    onChange={(e) => setTechInput(e.currentTarget.value)}
-    onKeyDown={(e) => {
-      if (e.key === 'Enter') {
-        e.preventDefault()
-        addTechnology(techInput)
-        setTechInput('')
-      }
-    }}
-  />
+                    {/* INPUT */}
+                    <TextInput
+                      size="sm"
+                      radius="md"
+                      placeholder="e.g. React, Node.js, PostgreSQL"
+                      value={techInput}
+                      onChange={(e) => setTechInput(e.currentTarget.value)}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                          e.preventDefault()
+                          addTechnology(techInput)
+                          setTechInput('')
+                        }
+                      }}
+                    />
 
-  <Text size="xs" c="dimmed">
-    Press Enter to add a technology
-  </Text>
+                    <Text size="xs" c="dimmed">
+                      Press Enter to add a technology
+                    </Text>
 
-  {/* PILLS */}
-  {form.values.technologies.length > 0 && (
-    <Group gap="xs" mt={6}>
-      {form.values.technologies.map((tech) => (
-        <Badge
-          key={tech}
-          radius="xl"
-          variant="light"
-          color="blue"
-          className="cursor-pointer"
-          onClick={() => removeTechnology(tech)}
-        >
-          {tech} ✕
-        </Badge>
-      ))}
-    </Group>
-  )}
-</div>
+                    {/* PILLS */}
+                    {form.values.technologies.length > 0 && (
+                      <Group gap="xs" mt={6}>
+                        {form.values.technologies.map((tech) => (
+                          <Badge
+                            key={tech}
+                            radius="xl"
+                            variant="light"
+                            color="blue"
+                            className="cursor-pointer"
+                            onClick={() => removeTechnology(tech)}
+                          >
+                            {tech} ✕
+                          </Badge>
+                        ))}
+                      </Group>
+                    )}
+                  </div>
                   <Group justify="space-between" mt={4}>
                     <Text size="xs" c="dimmed">100–500 characters</Text>
                     <Text size="xs" c="dimmed">

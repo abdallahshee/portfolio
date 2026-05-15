@@ -189,7 +189,7 @@ function ProjectsPage() {
             </Badge>
 
             <h1 className="title2">
-          From Idea to Reality
+              From Idea to Reality
             </h1>
 
             <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">

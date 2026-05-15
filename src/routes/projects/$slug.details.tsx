@@ -125,7 +125,7 @@ function ProjectDetails() {
                 </Button>
               </Link>
 
-              <Link to="/projects/$slug/edit" params={{slug:project.slug!}}>
+              <Link to="/projects/$slug/edit" params={{ slug: project.slug! }}>
                 <Button
                   variant="light"
                   color="indigo"
