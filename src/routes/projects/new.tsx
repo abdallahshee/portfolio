@@ -34,16 +34,16 @@ import { useProjectCreateMutation } from "@/db/queries/project.mutations"
 import { uploadProjectImage } from "@/lib/storage"
 
 export const Route = createFileRoute("/projects/new")({
-  // beforeLoad: async ({ context }) => {
-  //   const isAdmin = context.isAdmin
-  //   if (!isAdmin) {
-  //     throw redirect({
-  //       to: "/unauthorized",
-  //     })
-  //   }
-  // },
+  beforeLoad(ctx) {
+    const currentUser=ctx.context.user
+      if (!currentUser) {
+        throw redirect({
+          to: "/unauthorized",
+        })
+      }
+  },
   // loader: async ({ context }) => {
-  //   console.log(context.isAdmin) 
+  //   console.log(context.user) 
   // },
   component: RouteComponent,
 })
@@ -60,10 +60,11 @@ function RouteComponent() {
       title: "",
       progress: 0,
       githubUrl: "",
-      url: "",
+      liveUrl: "",
       description: "",
       imageUrl: "",
-      isPublic: true,
+      isFeatured:false
+
     },
     validate: zod4Resolver(CreateProjectSchema),
     validateInputOnBlur: true,
@@ -75,19 +76,21 @@ function RouteComponent() {
   }, [file])
 
   const handleSubmit = async (values: ProjectRequest) => {
+    // console.log('VALUES ',values)
     try {
       setLoading(true)
 
-      let uploadedImageUrl = values.imageUrl
-      if (file) {
-        uploadedImageUrl = await uploadProjectImage(file, values.title)
-      }
-
+      // let uploadedImageUrl = values.imageUrl
+      // if (file) {
+      //   uploadedImageUrl = await uploadProjectImage(file, values.title)
+      // }
+      // console.log('IMAGE URL ',uploadedImageUrl)
       await createProject.mutateAsync({
         ...values,
-        imageUrl: uploadedImageUrl,
+        // imageUrl: uploadedImageUrl,
+           imageUrl: 'https://claude.ai/chat/042d1c19-a179-4097-bd79-b3d719a0f7e6'
       })
-
+      console.log('VALUES ',values)
       await router.navigate({to:"/projects"})
     } catch (err) {
       console.error(err)
@@ -169,7 +172,7 @@ function RouteComponent() {
                     radius="md"
                     size="sm"
                     leftSection={<Globe size={15} />}
-                    {...form.getInputProps("url")}
+                    {...form.getInputProps("liveUrl")}
                   />
 
                   <TextInput
@@ -195,7 +198,7 @@ function RouteComponent() {
                   />
 
                   <Group justify="space-between" mt={4}>
-                    <Text size="xs" c="dimmed">100–160 characters</Text>
+                    <Text size="xs" c="dimmed">100–500 characters</Text>
                     <Text size="xs" c="dimmed">
                       {descriptionLength} / 500
                     </Text>
@@ -223,16 +226,6 @@ function RouteComponent() {
 
                 {/* CHECKBOXES */}
                 <Group justify="space-between" wrap="nowrap">
-                  <Stack gap={4} style={{ flex: 1 }}>
-                    <Checkbox
-                      label="Make project public"
-                      {...form.getInputProps("isPublic", { type: "checkbox" })}
-                    />
-                    <Text size="xs" c="dimmed" ml={28}>
-                      Public projects appear on your portfolio.
-                    </Text>
-                  </Stack>
-
                   <Stack gap={4} style={{ flex: 1 }}>
                     <Checkbox
                       label="Featured project"

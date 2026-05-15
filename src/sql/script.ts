@@ -13,7 +13,6 @@ const files = [
 
   // ── Policies ──
   "project.policies.sql",
-  "case.policies.sql",
   "bucket.images.sql",
 
   // ── Triggers ──

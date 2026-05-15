@@ -21,11 +21,13 @@ export const useUpdateProjectMutation = () => {
 
 export const useProjectCreateMutation = () => {
   const queryClient = useQueryClient()
-  // const router=useRouter()
   return useMutation({
     mutationFn: (data: ProjectRequest) => createProject({ data }),
     onSuccess: async () => {
       await queryClient.refetchQueries({ queryKey: getPaginatedProjectsQueryOptions(1).queryKey })
+    },
+    onError: (err) => {
+      console.error("Mutation error:", err) // 👈 add this to see what's failing
     },
   })
 }

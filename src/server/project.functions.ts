@@ -11,6 +11,8 @@ export const createProject = createServerFn({ method: 'POST' })
   .inputValidator(CreateProjectSchema)
   .handler(async ({ data }) => {
     try {
+    
+      console.log('SERVER FUNCTION HIT ',)
       const slug = slugify(data.title,{lower:true,strict:true})
       const [theSlug] = await db
         .insert(project)
@@ -37,8 +39,7 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
           githubUrl:project.githubUrl,
           description: project.description,
           imageUrl: project.imageUrl,
-          isPublic: project.isPublic,
-          url: project.url,
+          liveUrl: project.liveUrl,
           createdAt: project.createdAt,
           updatedAt: project.updatedAt,
         })
@@ -66,7 +67,6 @@ export const getProjectById = createServerFn({ method: "GET" })
           slug: project.slug,
           description: project.description,
           imageUrl: project.imageUrl,
-          isPublic: project.isPublic,
           // url: project.url,
           createdAt: project.createdAt,
           updatedAt: project.updatedAt,
@@ -101,8 +101,7 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
             slug: project.slug,
             description: project.description,
             imageUrl: project.imageUrl,
-            isPublic: project.isPublic,
-            url: project.url,
+            liveUrl: project.liveUrl,
             createdAt: project.createdAt,
             updatedAt: project.updatedAt,
           })
@@ -170,7 +169,6 @@ export const getTopProjects = createServerFn({ method: "GET" })
           slug: project.slug,
           title: project.title,
           imageUrl: project.imageUrl,
-          isPublic: project.isPublic,
           createdAt: project.createdAt
         })
         .from(project)
@@ -208,8 +206,7 @@ export const searchProjects = createServerFn({ method: "GET" })
             slug: project.slug,
             description: project.description,
             imageUrl: project.imageUrl,
-            isPublic: project.isPublic,
-            url: project.url,
+            liveUrl: project.liveUrl,
             createdAt: project.createdAt,
             updatedAt: project.updatedAt,
           })

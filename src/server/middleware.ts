@@ -6,14 +6,10 @@ import { getSupabaseServerClient } from "@/lib/supabase/server";
 
 export const AuthenticatedMiddleware = createMiddleware()
   .server(async ({ next, request }) => {
-
-
     const supabase = getSupabaseServerClient()
-
     const { data: user } = await supabase.auth.getUser()
 
     console.log("USER ", JSON.stringify(user?.user))
-
     if (!user?.user) {
       const url = new URL(request.url)
       const redirectTo = url.pathname + url.search

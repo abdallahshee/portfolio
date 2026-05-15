@@ -1,8 +1,4 @@
--- DROPPING CASE POLICIES
-drop policy if exists "case_study_public_read" on case_study;
-drop policy if exists "case_study_auth_insert" on case_study;
-drop policy if exists "case_study_auth_update" on case_study;
-drop policy if exists "case_study_auth_delete" on case_study;
+
 
 -- DROPPING PROJECT POLICIES
 drop policy if exists "projects_public_read" on project;

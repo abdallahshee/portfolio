@@ -8,8 +8,8 @@ import { useCreateTestimonialMutation } from '@/db/queries/testimonial.queries'
 
 export const Route = createFileRoute('/testimonials/new')({
   beforeLoad(ctx) {
-    const isAdmin=ctx.context.isAdmin
-      if (!isAdmin) {
+    const currentUser=ctx.context.user
+      if (!currentUser) {
         throw redirect({
           to: "/unauthorized",
         })

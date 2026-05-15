@@ -6,8 +6,6 @@ export const getUserAndRole = createServerFn({
 }).handler(async () => {
   const supabase = getSupabaseServerClient()
   const { data: { user } } = await supabase.auth.getUser()
-  console.log('User Role ', user?.user_metadata.role)
-  const isAdmin = user?.user_metadata?.role == "admin"
-
-  return { isAdmin, user }
+  // console.log('User ', user)
+  return { user }
 })
