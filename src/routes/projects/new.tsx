@@ -15,6 +15,7 @@ import {
   ThemeIcon,
   SimpleGrid,
   Slider,
+  Badge
 } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import {
@@ -54,11 +55,12 @@ function RouteComponent() {
   const [loading, setLoading] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const createProject = useProjectCreateMutation()
-
+const [techInput, setTechInput] = useState('')
   const form = useForm<ProjectRequest>({
     initialValues: {
       title: "",
       progress: 0,
+      technologies:[],
       githubUrl: "",
       liveUrl: "",
       description: "",
@@ -75,6 +77,25 @@ function RouteComponent() {
     return URL.createObjectURL(file)
   }, [file])
 
+  const addTechnology = (value: string) => {
+  const clean = value.trim()
+
+  if (!clean) return
+
+  if (form.values.technologies.includes(clean)) return
+
+  form.setFieldValue('technologies', [
+    ...form.values.technologies,
+    clean,
+  ])
+}
+
+const removeTechnology = (tech: string) => {
+  form.setFieldValue(
+    'technologies',
+    form.values.technologies.filter((t) => t !== tech)
+  )
+}
   const handleSubmit = async (values: ProjectRequest) => {
     // console.log('VALUES ',values)
     try {
@@ -196,7 +217,56 @@ function RouteComponent() {
                     size="sm"
                     {...form.getInputProps("description")}
                   />
+{/* TECHNOLOGIES */}
+<div className="space-y-2">
+  <Group justify="space-between">
+    <Text size="sm" fw={500}>
+      Technologies
+    </Text>
 
+    <Text size="xs" c="dimmed">
+      {form.values.technologies.length} added
+    </Text>
+  </Group>
+
+  {/* INPUT */}
+  <TextInput
+    size="sm"
+    radius="md"
+    placeholder="e.g. React, Node.js, PostgreSQL"
+    value={techInput}
+    onChange={(e) => setTechInput(e.currentTarget.value)}
+    onKeyDown={(e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault()
+        addTechnology(techInput)
+        setTechInput('')
+      }
+    }}
+  />
+
+  <Text size="xs" c="dimmed">
+    Press Enter to add a technology
+  </Text>
+
+  {/* PILLS */}
+  {form.values.technologies.length > 0 && (
+    <Group gap="xs" mt={6}>
+      {form.values.technologies.map((tech) => (
+        <Badge
+          key={tech}
+          radius="xl"
+          variant="light"
+          color="blue"
+          className="cursor-pointer"
+          onClick={() => removeTechnology(tech)}
+        >
+          {tech} ✕
+        </Badge>
+      ))}
+    </Group>
+  )}
+</div>
                   <Group justify="space-between" mt={4}>
                     <Text size="xs" c="dimmed">100–500 characters</Text>
                     <Text size="xs" c="dimmed">

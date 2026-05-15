@@ -27,16 +27,15 @@ export const getTopProjectsQueryOptions = () =>
 
 export const getPaginatedProjectsQueryOptions = (page: number, pageSize = 6) =>
   queryOptions({
-    queryKey: ['projects', 'paginated', page, pageSize] as (string | number)[],
+    queryKey: ['projects', 'paginated', 'v2', page, pageSize] as (string | number | string)[],
     queryFn: () => getPaginatedProjects({ data: { page, pageSize } }),
   })
 
 export const searchProjectsQueryOptions = (query: string, page: number, pageSize = 6) =>
   queryOptions({
-    queryKey: ['projects', 'search', query, page, pageSize] as (string | number)[],
+    queryKey: ['projects', 'search', 'v2', query, page, pageSize] as (string | number)[],
     queryFn: () => searchProjects({ data: { query, page, pageSize } }),
   })
-
 
 export const getUserAndRoleQueryOptions = () =>
   queryOptions({

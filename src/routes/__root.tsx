@@ -50,7 +50,7 @@ const THEME_INIT_SCRIPT = `(function(){
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   beforeLoad: async () => {
-    const { user} = await getUserAndRole()
+    const { user } = await getUserAndRole()
     return { user }
   },
   head: () => ({
@@ -85,13 +85,11 @@ function AppShell({ children }: { children: React.ReactNode }) {
       <Notifications position="top-right" />
 
       <Header />
-      <Container size='2xl'>
-        <main className="flex-1 px-3 pb-10 pt-20 sm:px-4 sm:pb-12 md:px-6 md:pb-14 lg:px-8 lg:pb-16">
-          <ScrollToTopOnRouteChange />
-          {children}
-          <ScrollToTop />
-        </main>
-      </Container>
+      <main className="flex-1 w-full px-3 pb-10 pt-20 sm:px-4 sm:pb-12 md:px-6 md:pb-14 lg:px-8 lg:pb-16">
+        <ScrollToTopOnRouteChange />
+        {children}
+        <ScrollToTop />
+      </main>
       <Footer />
 
       <TanStackDevtools

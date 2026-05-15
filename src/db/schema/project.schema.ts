@@ -14,7 +14,7 @@ export const project = pgTable(
     liveUrl: text('live_url'),
     isFeatured: boolean('is_featured'),  // 👈 also fixed typo: isFeatures → isFeatured
     progress: integer("progress").default(0).notNull(),
-
+    technologies: text("technologies").array().notNull().default(['React']),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at")
       .defaultNow()

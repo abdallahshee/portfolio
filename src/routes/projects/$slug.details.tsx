@@ -1,7 +1,6 @@
 import {
   Button,
   Card,
-  Container,
   Divider,
   Group,
   Image,
@@ -11,20 +10,22 @@ import {
   Text,
   ThemeIcon,
   RingProgress,
-  Progress,
+  Container,
 } from "@mantine/core"
+
 import {
   ArrowLeft,
   CalendarDays,
   ExternalLink,
   Globe,
-  Lock,
   Pencil,
   RefreshCw,
   WandSparkles,
-  Globe2,
   Star,
+  Github,
+  Code2,
 } from "lucide-react"
+
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { getProjectBySlugQueryOptions } from "@/db/queries/project.queries"
 import { useSuspenseQuery } from "@tanstack/react-query"
@@ -39,70 +40,75 @@ export const Route = createFileRoute("/projects/$slug/details")({
   component: ProjectDetails,
 })
 
-// helper — pick colour based on progress value
 function progressColor(value: number) {
-  if (value >= 80) return "teal"
-  if (value >= 50) return "blue"
-  if (value >= 25) return "yellow"
+  if (value === 100) return "teal"
+  if (value >= 75) return "blue"
+  if (value >= 40) return "yellow"
   return "red"
+}
+
+function progressLabel(value: number) {
+  if (value === 100) return "Complete"
+  if (value >= 75) return "Almost there"
+  if (value >= 40) return "In progress"
+  return "Just started"
 }
 
 function ProjectDetails() {
   const { slug } = Route.useParams()
-  const { data: project } = useSuspenseQuery(getProjectBySlugQueryOptions(slug))
+  const { data: project } = useSuspenseQuery(
+    getProjectBySlugQueryOptions(slug)
+  )
 
   if (!project) {
     return (
       <Container className="py-20 text-center">
-        <div className="title2">Project not found</div>
+        <div className="text-2xl font-bold">Project not found</div>
       </Container>
     )
   }
 
   const color = progressColor(project.progress)
+  const label = progressLabel(project.progress)
+
+  const technologies = project.technologies ?? []
 
   return (
     <div className="space-y-8 py-10">
       <Stack gap="xl">
 
-        {/* ── HEADER ── */}
-        <Paper
-          radius="2xl"
-          p="xl"
-          withBorder
-          className="overflow-hidden bg-gradient-to-br from-white to-slate-50 shadow-sm dark:from-slate-900 dark:to-slate-950"
-        >
-          <Group justify="space-between" align="flex-start" className="gap-4">
+        {/* HEADER */}
+        <Paper radius="xl" p="xl" withBorder className="shadow-sm">
+          <Group justify="space-between" align="flex-start">
             <Stack gap={6}>
               <Group gap="xs">
-                <ThemeIcon variant="light" color="indigo" radius="md" size="sm">
+                <ThemeIcon variant="light" color="indigo" radius="xl" size="lg">
                   <WandSparkles size={18} />
                 </ThemeIcon>
-                <Text fw={600} c="dimmed" size="sm">Project Details</Text>
+                <Text fw={500} c="dimmed" size="sm">
+                  Project Details
+                </Text>
               </Group>
 
-              <div className="title2">{project.title}</div>
+              <div className="text-3xl font-bold">
+                {project.title}
+              </div>
 
-              <Group gap="xs">
-                {/* 👇 fixed: removed isPublic since it's not in your schema */}
+              <Group gap="xs" mt={4}>
                 {project.isFeatured && (
                   <Badge
                     variant="light"
                     color="yellow"
                     radius="md"
                     size="sm"
-                    leftSection={<Star size={12} />}
+                    leftSection={<Star size={11} />}
                   >
                     Featured
                   </Badge>
                 )}
-                <Badge
-                  variant="light"
-                  color={color}
-                  radius="md"
-                  size="sm"
-                >
-                  {project.progress}% complete
+
+                <Badge variant="light" color={color} radius="md" size="sm">
+                  {label}
                 </Badge>
               </Group>
             </Stack>
@@ -115,10 +121,11 @@ function ProjectDetails() {
                   size="sm"
                   leftSection={<ArrowLeft size={16} />}
                 >
-                  Back to Projects
+                  Back
                 </Button>
               </Link>
-              <Link to="/projects/$slug/edit" params={{ slug: project.slug! }}>
+
+              <Link to="/projects/$slug/edit" params={{slug:project.slug!}}>
                 <Button
                   variant="light"
                   color="indigo"
@@ -133,90 +140,128 @@ function ProjectDetails() {
           </Group>
         </Paper>
 
-        {/* ── BODY ── */}
-        <div className="grid gap-6 lg:grid-cols-[1fr_320px]">
+        {/* BODY */}
+        <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
 
-          {/* Left — image + description */}
+          {/* LEFT */}
           <Stack gap="lg">
-            <Card radius="2xl" withBorder padding="md" className="overflow-hidden shadow-sm">
+
+            {/* IMAGE */}
+            <Card radius="xl" withBorder p="md" className="overflow-hidden shadow-sm">
               {project.imageUrl ? (
                 <Image
                   src={project.imageUrl}
-                  alt={project.title!}
-                  radius="md"
+                  alt={project.title ?? "Project image"}
+                  radius="lg"
                   fit="cover"
-                  className="max-h-[460px] w-full"
+                  h={420}
                 />
               ) : (
-                <div className="flex h-[340px] items-center justify-center rounded-2xl bg-slate-100 text-slate-500 dark:bg-slate-800">
-                  No project image
+                <div className="flex h-[340px] items-center justify-center rounded-xl bg-slate-100 text-slate-400 dark:bg-slate-800">
+                  No image available
                 </div>
               )}
             </Card>
 
-            {/* 👇 Progress bar under image */}
-            <Paper radius="2xl" withBorder p="xl" className="shadow-sm">
-              <Stack gap="sm">
-                <Group justify="space-between">
-                  <Text size="sm" fw={600}>Project Progress</Text>
-                  <Text size="sm" fw={700} c={color}>{project.progress}%</Text>
-                </Group>
-                <Progress
-                  value={project.progress}
-                  color={color}
-                  radius="xl"
-                  size="lg"
-                  animated={project.progress < 100}
-                />
-                <Text size="xs" c="dimmed">
-                  {project.progress === 100
-                    ? "✅ Project complete"
-                    : project.progress >= 50
-                    ? "Halfway there — keep going!"
-                    : "Just getting started"}
-                </Text>
-              </Stack>
-            </Paper>
-
-            <Paper radius="2xl" withBorder p="xl" className="shadow-sm">
+            {/* DESCRIPTION */}
+            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
               <Stack gap="md">
-                <div className="title3">About this project</div>
+                <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+                  About this project
+                </Text>
+
                 <Divider />
-                <Text className="leading-8 text-slate-700 dark:text-slate-300">
+
+                <Text size="sm" lh={1.9} c="dimmed">
                   {project.description}
                 </Text>
               </Stack>
             </Paper>
-          </Stack>
 
-          {/* Right — metadata */}
-          <Stack gap="lg">
-            <Paper radius="2xl" withBorder p="xl" className="shadow-sm">
+            {/* TECHNOLOGIES (NEW) */}
+            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
               <Stack gap="md">
-                <div className="title3">Project Info</div>
-                <Divider />
-
-                {/* 👇 Ring progress in sidebar */}
-                <Group justify="center" py="sm">
-                  <RingProgress
-                    size={120}
-                    thickness={10}
-                    roundCaps
-                    sections={[{ value: project.progress, color }]}
-                    label={
-                      <Text ta="center" fw={700} size="lg" c={color}>
-                        {project.progress}%
-                      </Text>
-                    }
-                  />
+                <Group gap="xs">
+                  <Code2 size={16} className="text-slate-500" />
+                  <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+                    Technologies
+                  </Text>
                 </Group>
 
                 <Divider />
 
-                {/* Created */}
-                <Group gap="xs" justify="space-between">
+                {technologies.length === 0 ? (
+                  <Text size="sm" c="dimmed">
+                    No technologies listed for this project.
+                  </Text>
+                ) : (
+                  <Group gap="xs">
+                    {technologies.map((tech: string) => (
+                      <Badge
+                        key={tech}
+                        radius="xl"
+                        variant="light"
+                        color="blue"
+                      >
+                        {tech}
+                      </Badge>
+                    ))}
+                  </Group>
+                )}
+              </Stack>
+            </Paper>
+
+          </Stack>
+
+          {/* RIGHT SIDEBAR */}
+          <Stack gap="lg">
+
+            {/* PROGRESS */}
+            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
+              <Stack gap="md" align="center">
+                <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+                  Progress
+                </Text>
+
+                <Divider w="100%" />
+
+                <RingProgress
+                  size={180}
+                  thickness={16}
+                  roundCaps
+                  sections={[{ value: project.progress, color }]}
+                  label={
+                    <Stack gap={2} align="center">
+                      <Text fw={700} size="xl" c={color}>
+                        {project.progress}%
+                      </Text>
+                      <Text size="xs" c="dimmed">
+                        {label}
+                      </Text>
+                    </Stack>
+                  }
+                />
+
+                <Text size="xs" c="dimmed" ta="center">
+                  {project.progress === 100
+                    ? "Completed"
+                    : `${100 - project.progress}% remaining`}
+                </Text>
+              </Stack>
+            </Paper>
+
+            {/* META */}
+            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
+              <Stack gap="md">
+                <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+                  Info
+                </Text>
+
+                <Divider />
+
+                <Group justify="space-between">
                   <Group gap={6}>
-                    <CalendarDays size={15} className="text-slate-400" />
+                    <CalendarDays size={14} />
                     <Text size="sm" c="dimmed">Created</Text>
                   </Group>
                   <Text size="sm" fw={500}>
@@ -224,62 +269,61 @@ function ProjectDetails() {
                   </Text>
                 </Group>
 
-                {/* Updated */}
-                <Group gap="xs" justify="space-between">
+                <Group justify="space-between">
                   <Group gap={6}>
-                    <RefreshCw size={15} className="text-slate-400" />
-                    <Text size="sm" c="dimmed">Last updated</Text>
+                    <RefreshCw size={14} />
+                    <Text size="sm" c="dimmed">Updated</Text>
                   </Group>
                   <Text size="sm" fw={500}>
                     {moment(project.updatedAt).fromNow()}
                   </Text>
                 </Group>
 
-                <Divider />
+                {(project.liveUrl || project.githubUrl) && (
+                  <>
+                    <Divider />
 
-                {/* 👇 fixed: swapped the condition — was backwards */}
-                {project.liveUrl && (
-                  <Button
-                    component="a"
-                    href={project.liveUrl}
-                    target="_blank"
-                    radius="md"
-                    size="sm"
-                    leftSection={<Globe size={16} />}
-                    fullWidth
-                  >
-                    Visit Live URL
-                  </Button>
-                )}
+                    <Stack gap="xs">
+                      {project.liveUrl && (
+                        <Button
+                          component="a"
+                          href={project.liveUrl}
+                          target="_blank"
+                          radius="md"
+                          size="sm"
+                          leftSection={<Globe size={15} />}
+                          fullWidth
+                        >
+                          Live Site
+                        </Button>
+                      )}
 
-                {project.githubUrl && (
-                  <Button
-                    component="a"
-                    href={project.githubUrl}
-                    target="_blank"
-                    variant="light"
-                    radius="md"
-                    size="sm"
-                    leftSection={<Globe size={16} />}
-                    fullWidth
-                  >
-                    View Source Code
-                  </Button>
+                      {project.githubUrl && (
+                        <Button
+                          component="a"
+                          href={project.githubUrl}
+                          target="_blank"
+                          variant="light"
+                          radius="md"
+                          size="sm"
+                          leftSection={<Github size={15} />}
+                          fullWidth
+                        >
+                          Source Code
+                        </Button>
+                      )}
+                    </Stack>
+                  </>
                 )}
               </Stack>
             </Paper>
 
             <Link to="/projects">
-              <Button
-                fullWidth
-                variant="subtle"
-                radius="md"
-                size="sm"
-                rightSection={<ExternalLink size={16} />}
-              >
-                View More Projects
+              <Button fullWidth variant="subtle" rightSection={<ExternalLink size={15} />}>
+                View more projects
               </Button>
             </Link>
+
           </Stack>
         </div>
       </Stack>

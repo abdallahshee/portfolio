@@ -11,9 +11,9 @@ export const createProject = createServerFn({ method: 'POST' })
   .inputValidator(CreateProjectSchema)
   .handler(async ({ data }) => {
     try {
-    
+
       console.log('SERVER FUNCTION HIT ',)
-      const slug = slugify(data.title,{lower:true,strict:true})
+      const slug = slugify(data.title, { lower: true, strict: true })
       const [theSlug] = await db
         .insert(project)
         .values({ ...data, slug })
@@ -36,11 +36,12 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
           id: project.id,
           title: project.title,
           slug: project.slug,
-          progress:project.progress,
-          githubUrl:project.githubUrl,
+          progress: project.progress,
+          githubUrl: project.githubUrl,
           description: project.description,
-          isFeatured:project.isFeatured,
+          isFeatured: project.isFeatured,
           imageUrl: project.imageUrl,
+          technologies:project.technologies,
           liveUrl: project.liveUrl,
           createdAt: project.createdAt,
           updatedAt: project.updatedAt,
@@ -67,9 +68,10 @@ export const getProjectById = createServerFn({ method: "GET" })
           id: project.id,
           title: project.title,
           slug: project.slug,
-          progress:project.progress,
-           isFeatured:project.isFeatured,
-          githubUrl:project.githubUrl,
+          technologies:project.technologies,
+          progress: project.progress,
+          isFeatured: project.isFeatured,
+          githubUrl: project.githubUrl,
           description: project.description,
           imageUrl: project.imageUrl,
           liveUrl: project.liveUrl,
@@ -100,13 +102,15 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
         db
           .select({
             id: project.id,
-            githubUrl:project.githubUrl,
             title: project.title,
-            progress:project.progress,
             slug: project.slug,
             description: project.description,
             imageUrl: project.imageUrl,
+            githubUrl: project.githubUrl,
             liveUrl: project.liveUrl,
+            technologies:project.technologies,
+            isFeatured: project.isFeatured, // 👈 was missing
+            progress: project.progress,
             createdAt: project.createdAt,
             updatedAt: project.updatedAt,
           })
@@ -203,18 +207,20 @@ export const searchProjects = createServerFn({ method: "GET" })
 
       const [projectRows, totalResult] = await Promise.all([
         db
-          .select({
-            id: project.id,
-            progress:project.progress,
-            githubUrl:project.githubUrl,
-            title: project.title,
-            slug: project.slug,
-            description: project.description,
-            imageUrl: project.imageUrl,
-            liveUrl: project.liveUrl,
-            createdAt: project.createdAt,
-            updatedAt: project.updatedAt,
-          })
+    .select({
+    id: project.id,
+    title: project.title,
+    slug: project.slug,
+    description: project.description,
+    imageUrl: project.imageUrl,
+    githubUrl: project.githubUrl,
+    liveUrl: project.liveUrl,
+    technologies:project.technologies,
+    isFeatured: project.isFeatured, // 👈 was missing
+    progress: project.progress,
+    createdAt: project.createdAt,
+    updatedAt: project.updatedAt,
+  })
           .from(project)
           .where(whereClause)
           .orderBy(desc(project.createdAt))

@@ -14,6 +14,7 @@ const ProjectSchema = createSelectSchema(project, {
   isFeatured: z.boolean(),
   liveUrl: z.string(),   // 👈 matches table column name now
   githubUrl: z.string(),
+  technologies:z.array(z.string().min(1)).min(3)
 })
 
 export const CreateProjectSchema = ProjectSchema.pick({
@@ -23,7 +24,8 @@ export const CreateProjectSchema = ProjectSchema.pick({
     isFeatured:true,
     liveUrl: true,
     githubUrl: true,
-    progress: true
+    progress: true,
+    technologies:true
 })
 export type ProjectRequest = z.infer<typeof CreateProjectSchema>
 
