@@ -217,7 +217,7 @@ const STRENGTHS = [
   },
   {
     icon: <Sparkles size={20} />,
-    title: 'AI-Augmented Development',
+    title: 'AI-Assisted Development',
     desc: 'Leverage AI to accelerate development, improve code quality, and enhance product capabilities.',
     color: 'grape',
   },
@@ -329,12 +329,11 @@ function App() {
       </section>
 
    {/* ── FEATURED PROJECTS ── */}
-<div className="mx-auto w-3/4 scroll-mt-20">
+<div className="mx-auto w-full md:w-3/4 scroll-mt-20">
   <Suspense fallback={<ProjectsSkeleton />}>
     <FeaturedProjectsSection />
   </Suspense>
 </div>
-
   
 
       {/* ── CTA ── */}

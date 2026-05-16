@@ -58,6 +58,7 @@ function progressLabel(value: number) {
 
 function ProjectDetails() {
   const { slug } = Route.useParams()
+  const { user } = Route.useRouteContext()
   const { data: project } = useSuspenseQuery(
     getProjectBySlugQueryOptions(slug)
   )
@@ -126,24 +127,25 @@ function ProjectDetails() {
                   Back
                 </Button>
               </Link>
-
-              <Link to="/projects/$slug/edit" params={{ slug: project.slug! }}>
-                <Button
-                  variant="light"
-                  color="indigo"
-                  radius="md"
-                  size="sm"
-                  leftSection={<Pencil size={16} />}
-                >
-                  Edit
-                </Button>
-              </Link>
+              {user &&
+                <Link to="/projects/$slug/edit" params={{ slug: project.slug! }}>
+                  <Button
+                    variant="light"
+                    color="indigo"
+                    radius="md"
+                    size="sm"
+                    leftSection={<Pencil size={16} />}
+                  >
+                    Edit
+                  </Button>
+                </Link>
+              }
             </Group>
           </Group>
         </Paper>
 
         {/* BODY */}
-        <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
+        <div className="grid gap-6 lg:grid-cols-[1fr_400px]">
 
           {/* LEFT */}
           <Stack gap="lg">
@@ -186,7 +188,7 @@ function ProjectDetails() {
                 <Group gap="xs">
                   <Code2 size={16} className="text-slate-500" />
                   <Text fw={500} size="sm" c="dimmed" tt="uppercase">
-                    Technologies
+                    Technologies Used
                   </Text>
                 </Group>
 
@@ -218,49 +220,44 @@ function ProjectDetails() {
           {/* RIGHT SIDEBAR */}
           <Stack gap="lg">
 
-            {/* PROGRESS */}
-            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
-              <Stack gap="md" align="center">
-                <Text fw={500} size="sm" c="dimmed" tt="uppercase">
-                  Progress
-                </Text>
-
-                <Divider w="100%" />
-
-                <RingProgress
-                  size={180}
-                  thickness={16}
-                  roundCaps
-                  sections={[{ value: project.progress, color }]}
-                  label={
-                    <Stack gap={2} align="center">
-                      <Text fw={700} size="xl" c={color}>
-                        {project.progress}%
-                      </Text>
-                      <Text size="xs" c="dimmed">
-                        {label}
-                      </Text>
-                    </Stack>
-                  }
-                />
-
-                <Text size="xs" c="dimmed" ta="center">
-                  {project.progress === 100
-                    ? "Completed"
-                    : `${100 - project.progress}% remaining`}
-                </Text>
-              </Stack>
-            </Paper>
-
             {/* META */}
             <Paper radius="xl" withBorder p="xl" className="shadow-sm">
               <Stack gap="md">
-                <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+                <Text fw={500} size="sm" c="dimmed" tt="uppercase" className="text-center">
                   Info
                 </Text>
 
                 <Divider />
+                <Stack gap="md" align="center">
+                  {/* <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+                    Progress
+                  </Text> */}
 
+                  {/* <Divider w="100%" /> */}
+
+                  <RingProgress
+                    size={180}
+                    thickness={16}
+                    roundCaps
+                    sections={[{ value: project.progress, color }]}
+                    label={
+                      <Stack gap={2} align="center">
+                        <Text fw={700} size="xl" c={color}>
+                          {project.progress}%
+                        </Text>
+                        <Text size="xs" c="dimmed">
+                          {label}
+                        </Text>
+                      </Stack>
+                    }
+                  />
+
+                  <Text size="xs" c="dimmed" ta="center">
+                    {project.progress === 100
+                      ? "Completed"
+                      : `${100 - project.progress}% remaining`}
+                  </Text>
+                </Stack>
                 <Group justify="space-between">
                   <Group gap={6}>
                     <CalendarDays size={14} />
@@ -338,7 +335,7 @@ function ProjectDetails() {
             </Paper>
 
             <Link to="/projects">
-              <Button fullWidth variant="subtle" rightSection={<ExternalLink size={15} />}>
+              <Button fullWidth variant="outline" rightSection={<ExternalLink size={15} />}>
                 View more projects
               </Button>
             </Link>

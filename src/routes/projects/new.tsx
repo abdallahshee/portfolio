@@ -45,9 +45,7 @@ export const Route = createFileRoute("/projects/new")({
       })
     }
   },
-  // loader: async ({ context }) => {
-  //   console.log(context.user) 
-  // },
+
   component: RouteComponent,
 })
 
