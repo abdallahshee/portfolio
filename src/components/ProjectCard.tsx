@@ -9,7 +9,7 @@ interface ProjectCardProps {
 }
 
 export const ProjectCard = ({ project }: ProjectCardProps) => {
-  const isRecent = moment().diff(moment(project.createdAt), 'days') <= 30
+  const isRecent = moment().diff(moment(project.createdAt), 'days') <= 28
 
   return (
     <Card
@@ -22,6 +22,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       <Stack gap="sm" className="min-w-0">
 
         {/* Image */}
+
         <div className="relative flex h-[180px] items-center justify-center overflow-hidden rounded-md bg-slate-100 dark:bg-slate-800">
           {project.imageUrl ? (
             <Image
@@ -29,6 +30,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
               alt={project.title ?? "Project image"}
               height={180}
               fit="cover"
+              radius="md" // 👈 add this
               className="h-full w-full transition-transform duration-300 hover:scale-105"
             />
           ) : (
@@ -37,7 +39,6 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             </ThemeIcon>
           )}
 
-          {/* 👇 recent badge overlaid on image */}
           {isRecent && (
             <div className="absolute right-2 top-2">
               <Badge size="xs" radius="xl" color="teal" variant="filled">
