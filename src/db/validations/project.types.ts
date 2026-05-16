@@ -14,7 +14,7 @@ const ProjectSchema = createSelectSchema(project, {
   isFeatured: z.boolean(),
   liveUrl: z.string(),   // 👈 matches table column name now
   githubUrl: z.string(),
-  technologies:z.array(z.string().min(1)).min(3)
+   technologies: z.array(z.string()).default([]), // 👈 must be here
 })
 
 export const CreateProjectSchema = ProjectSchema.pick({

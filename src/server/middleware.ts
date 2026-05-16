@@ -1,6 +1,9 @@
 import { createMiddleware } from "@tanstack/react-start"
 import { redirect } from "@tanstack/react-router"
 import { getSupabaseServerClient } from "@/lib/supabase/server";
+import { createServerFn } from "@tanstack/react-start";
+import slugify from 'slugify'
+import z from "zod"
 
 
 
@@ -30,20 +33,36 @@ export const AuthenticatedMiddleware = createMiddleware()
     })
   })
 
-// export const AuthenticatedMiddleware = createMiddleware()
-// .server(async({request,next})=>{
-//    // Debug 1 — check raw cookie header
-//     const cookieHeader = request.headers.get("cookie")
-//     console.log("RAW COOKIE HEADER:", cookieHeader)
 
-//     // Debug 2 — check getCookies
-//     const cookies = getCookies()
-//     console.log("GET COOKIES:", Object.keys(cookies))
 
-//     const supabase = getSupabaseServerClient()
-//     const { data: { user }, error } = await supabase.auth.getUser()
-//     console.log("USER:", user)
-//     console.log("ERROR:", error)
-//     return next({})
-// })
+export const uploadProjectImage = createServerFn({ method: 'POST' })
+  .middleware([AuthenticatedMiddleware])
+  .inputValidator(z.object({
+    base64: z.string(),
+    title: z.string(),
+    mimeType: z.string(),
+  }))
+  .handler(async ({ data }) => {
 
+    const supabase = getSupabaseServerClient()
+    const slug = slugify(data.title, { lower: true, strict: true })
+    const ext = data.mimeType.split('/')[1] ?? 'jpeg'
+    const filePath = `${slug}/project.${ext}`
+
+    const buffer = Buffer.from(data.base64.split(',')[1], 'base64')
+
+    const { error } = await supabase.storage
+      .from('project-images')
+      .upload(filePath, buffer, {
+        contentType: data.mimeType,
+        upsert: true,
+      })
+
+    if (error) throw new Error(error.message)
+
+    const { data: { publicUrl } } = supabase.storage
+      .from('project-images')
+      .getPublicUrl(filePath)
+console.log('string url ',publicUrl)
+    return publicUrl
+  })

@@ -29,10 +29,12 @@ import {
 } from "lucide-react"
 import { useMemo, useState } from "react"
 import { CreateProjectSchema, type ProjectRequest } from "@/db/validations/project.types"
-
+import { Alert } from "@mantine/core"
+import { AlertCircle } from "lucide-react"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { useProjectCreateMutation } from "@/db/queries/project.mutations"
-import { uploadProjectImage } from "@/lib/storage"
+import { uploadProjectImage } from "@/server/middleware"
+
 
 export const Route = createFileRoute("/projects/new")({
   beforeLoad(ctx) {
@@ -55,6 +57,7 @@ function RouteComponent() {
   const [loading, setLoading] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const createProject = useProjectCreateMutation()
+    const [error, setError] = useState<string | null>(null) // 👈 add this
   const [techInput, setTechInput] = useState('')
   const form = useForm<ProjectRequest>({
     initialValues: {
@@ -65,8 +68,7 @@ function RouteComponent() {
       liveUrl: "",
       description: "",
       imageUrl: "",
-      isFeatured: false
-
+      isFeatured: false,
     },
     validate: zod4Resolver(CreateProjectSchema),
     validateInputOnBlur: true,
@@ -96,25 +98,37 @@ function RouteComponent() {
       form.values.technologies.filter((t) => t !== tech)
     )
   }
-  const handleSubmit = async (values: ProjectRequest) => {
-    // console.log('VALUES ',values)
+const handleSubmit = async (values: ProjectRequest) => {
     try {
       setLoading(true)
+      setError(null) // 👈 clear previous error on each submit
 
-      // let uploadedImageUrl = values.imageUrl
-      // if (file) {
-      //   uploadedImageUrl = await uploadProjectImage(file, values.title)
-      // }
-      // console.log('IMAGE URL ',uploadedImageUrl)
+      let uploadedImageUrl = values.imageUrl
+
+      if (file) {
+        const base64 = await new Promise<string>((res, rej) => {
+          const reader = new FileReader()
+          reader.onload = () => res(reader.result as string)
+          reader.onerror = rej
+          reader.readAsDataURL(file)
+        })
+
+        uploadedImageUrl = await uploadProjectImage({
+          data: { base64, title: values.title, mimeType: file.type }
+        })
+      }
+
       await createProject.mutateAsync({
         ...values,
-        // imageUrl: uploadedImageUrl,
-        imageUrl: 'https://claude.ai/chat/042d1c19-a179-4097-bd79-b3d719a0f7e6'
+        imageUrl: uploadedImageUrl,
       })
-      console.log('VALUES ', values)
-      await router.navigate({ to: "/projects" })
+
+      router.navigate({ to: "/projects" })
+
     } catch (err) {
-      console.error(err)
+      // 👇 extract a readable message and set it
+      const message = err instanceof Error ? err.message : "Something went wrong. Please try again."
+      setError(message)
     } finally {
       setLoading(false)
     }
@@ -159,6 +173,18 @@ function RouteComponent() {
             </Button>
           </Group>
         </Paper>
+    {error && (
+          <Alert
+            icon={<AlertCircle size={16} />}
+            title="Failed to create project"
+            color="red"
+            radius="md"
+            withCloseButton
+            onClose={() => setError(null)}
+          >
+            {error}
+          </Alert>
+        )}
 
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <Stack gap="lg">
@@ -299,7 +325,6 @@ function RouteComponent() {
                   <Stack gap={4} style={{ flex: 1 }}>
                     <Checkbox
                       label="Featured project"
-                      // ⚠️ FIX: you need a new field in schema (recommended)
                       {...form.getInputProps("isFeatured", { type: "checkbox" })}
                     />
                     <Text size="xs" c="dimmed" ml={28}>

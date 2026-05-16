@@ -22,7 +22,7 @@ export const createProject = createServerFn({ method: 'POST' })
       return { success: true, slug: theSlug };
     } catch (err) {
       console.error('Error creating project:', err);
-      return { success: false, projectId: null };
+    throw err
     }
   });
 
@@ -41,7 +41,7 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
           description: project.description,
           isFeatured: project.isFeatured,
           imageUrl: project.imageUrl,
-          technologies:project.technologies,
+          technologies: project.technologies,
           liveUrl: project.liveUrl,
           createdAt: project.createdAt,
           updatedAt: project.updatedAt,
@@ -54,7 +54,7 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
       return theProject;
     } catch (err) {
       console.error(err);
-      return null;
+      throw err
     }
   });
 
@@ -68,7 +68,7 @@ export const getProjectById = createServerFn({ method: "GET" })
           id: project.id,
           title: project.title,
           slug: project.slug,
-          technologies:project.technologies,
+          technologies: project.technologies,
           progress: project.progress,
           isFeatured: project.isFeatured,
           githubUrl: project.githubUrl,
@@ -86,7 +86,7 @@ export const getProjectById = createServerFn({ method: "GET" })
       return theProject;
     } catch (err) {
       console.error(err);
-      return null;
+       throw err
     }
   });
 
@@ -108,7 +108,7 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
             imageUrl: project.imageUrl,
             githubUrl: project.githubUrl,
             liveUrl: project.liveUrl,
-            technologies:project.technologies,
+            technologies: project.technologies,
             isFeatured: project.isFeatured, // 👈 was missing
             progress: project.progress,
             createdAt: project.createdAt,
@@ -164,7 +164,7 @@ export const updateProject = createServerFn({ method: "POST" })
       return updatedProject;
     } catch (err) {
       console.error(err);
-      return null;
+      throw err
     }
   });
 
@@ -207,20 +207,20 @@ export const searchProjects = createServerFn({ method: "GET" })
 
       const [projectRows, totalResult] = await Promise.all([
         db
-    .select({
-    id: project.id,
-    title: project.title,
-    slug: project.slug,
-    description: project.description,
-    imageUrl: project.imageUrl,
-    githubUrl: project.githubUrl,
-    liveUrl: project.liveUrl,
-    technologies:project.technologies,
-    isFeatured: project.isFeatured, // 👈 was missing
-    progress: project.progress,
-    createdAt: project.createdAt,
-    updatedAt: project.updatedAt,
-  })
+          .select({
+            id: project.id,
+            title: project.title,
+            slug: project.slug,
+            description: project.description,
+            imageUrl: project.imageUrl,
+            githubUrl: project.githubUrl,
+            liveUrl: project.liveUrl,
+            technologies: project.technologies,
+            isFeatured: project.isFeatured, // 👈 was missing
+            progress: project.progress,
+            createdAt: project.createdAt,
+            updatedAt: project.updatedAt,
+          })
           .from(project)
           .where(whereClause)
           .orderBy(desc(project.createdAt))
