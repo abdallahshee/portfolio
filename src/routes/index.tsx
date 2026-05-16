@@ -1,4 +1,4 @@
-import { getTopProjectsQueryOptions } from '@/db/queries/project.queries'
+import { getTopFeaturedProjectsQueryOptions } from '@/db/queries/project.queries'
 import {
   Badge,
   Button,
@@ -37,7 +37,7 @@ import { Suspense } from 'react'
 
 export const Route = createFileRoute('/')({
   loader: async ({ context }) => {
-    await context.queryClient.prefetchQuery(getTopProjectsQueryOptions())
+    await context.queryClient.prefetchQuery(getTopFeaturedProjectsQueryOptions())
   },
   component: App,
 })
@@ -92,7 +92,7 @@ function ProjectsPlaceholder() {
 
 // ── FEATURED PROJECTS ──
 function FeaturedProjectsSection() {
-  const { data: projects } = useSuspenseQuery(getTopProjectsQueryOptions())
+  const { data: projects } = useSuspenseQuery(getTopFeaturedProjectsQueryOptions())
   const router = useRouter()
 
   const isEmpty = !projects || projects.length === 0

@@ -57,7 +57,7 @@ function RouteComponent() {
   const [loading, setLoading] = useState(false)
   const [file, setFile] = useState<File | null>(null)
   const createProject = useProjectCreateMutation()
-    const [error, setError] = useState<string | null>(null) // 👈 add this
+  const [error, setError] = useState<string | null>(null) // 👈 add this
   const [techInput, setTechInput] = useState('')
   const form = useForm<ProjectRequest>({
     initialValues: {
@@ -98,7 +98,7 @@ function RouteComponent() {
       form.values.technologies.filter((t) => t !== tech)
     )
   }
-const handleSubmit = async (values: ProjectRequest) => {
+  const handleSubmit = async (values: ProjectRequest) => {
     try {
       setLoading(true)
       setError(null) // 👈 clear previous error on each submit
@@ -173,7 +173,7 @@ const handleSubmit = async (values: ProjectRequest) => {
             </Button>
           </Group>
         </Paper>
-    {error && (
+        {error && (
           <Alert
             icon={<AlertCircle size={16} />}
             title="Failed to create project"
@@ -231,7 +231,6 @@ const handleSubmit = async (values: ProjectRequest) => {
                   {...form.getInputProps("githubUrl")}
                 />
 
-
                 {/* DESCRIPTION */}
                 <div>
                   <Textarea
@@ -241,10 +240,33 @@ const handleSubmit = async (values: ProjectRequest) => {
                     autosize
                     radius="md"
                     size="sm"
+                    maxLength={800}
                     {...form.getInputProps("description")}
                   />
+
+                  {/* CHARACTER COUNT */}
+                  <Group justify="space-between" mt={4}>
+                    <Text size="xs" c="dimmed">
+                      Recommended: 100–800 characters
+                    </Text>
+
+                    <Text
+                      size="xs"
+                      fw={500}
+                      c={
+                        descriptionLength > 800
+                          ? "red"
+                          : descriptionLength > 700
+                            ? "yellow"
+                            : "dimmed"
+                      }
+                    >
+                      {descriptionLength} / 800
+                    </Text>
+                  </Group>
+
                   {/* TECHNOLOGIES */}
-                  <div className="space-y-2">
+                  <div className="mt-6 space-y-2">
                     <Group justify="space-between">
                       <Text size="sm" fw={500}>
                         Technologies
@@ -261,12 +283,16 @@ const handleSubmit = async (values: ProjectRequest) => {
                       radius="md"
                       placeholder="e.g. React, Node.js, PostgreSQL"
                       value={techInput}
-                      onChange={(e) => setTechInput(e.currentTarget.value)}
+                      onChange={(e) =>
+                        setTechInput(e.currentTarget.value)
+                      }
                       onKeyDown={(e) => {
-                        if (e.key === 'Enter') {
+                        if (e.key === "Enter") {
                           e.preventDefault()
+
                           addTechnology(techInput)
-                          setTechInput('')
+
+                          setTechInput("")
                         }
                       }}
                     />
@@ -285,7 +311,9 @@ const handleSubmit = async (values: ProjectRequest) => {
                             variant="light"
                             color="blue"
                             className="cursor-pointer"
-                            onClick={() => removeTechnology(tech)}
+                            onClick={() =>
+                              removeTechnology(tech)
+                            }
                           >
                             {tech} ✕
                           </Badge>
@@ -293,12 +321,6 @@ const handleSubmit = async (values: ProjectRequest) => {
                       </Group>
                     )}
                   </div>
-                  <Group justify="space-between" mt={4}>
-                    <Text size="xs" c="dimmed">100–500 characters</Text>
-                    <Text size="xs" c="dimmed">
-                      {descriptionLength} / 500
-                    </Text>
-                  </Group>
                 </div>
 
                 {/* PROGRESS FIELD (NEW) */}
@@ -344,8 +366,6 @@ const handleSubmit = async (values: ProjectRequest) => {
                   </ThemeIcon>
                   <div className="title3">Project Image</div>
                 </Group>
-
-
 
                 <div className="overflow-hidden rounded-xl border border-slate-200 bg-slate-50 p-3 dark:border-slate-700 dark:bg-slate-900/40">
                   {previewUrl || form.values.imageUrl ? (

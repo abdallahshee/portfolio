@@ -169,10 +169,10 @@ export const updateProject = createServerFn({ method: "POST" })
   });
 
 
-export const getTopProjects = createServerFn({ method: "GET" })
+export const getTopFeaturedProjects = createServerFn({ method: "GET" })
   .handler(async () => {
     try {
-      const topProjects = await db
+      const featuredProjects = await db
         .select({
           id: project.id,
           slug: project.slug,
@@ -183,7 +183,7 @@ export const getTopProjects = createServerFn({ method: "GET" })
         .from(project)
         .limit(5);
 
-      return topProjects;
+      return featuredProjects;
     } catch (err) {
       console.error(err);
       throw err;

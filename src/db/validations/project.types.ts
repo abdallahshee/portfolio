@@ -8,8 +8,8 @@ const ProjectSchema = createSelectSchema(project, {
   progress: z.number(),
   title: z.string().min(5, "Title out of range 3-50 characters").max(50, "Title out of range 3-50 characters"),
   description: z.string()
-    .min(100, "Description out of range 100-500 characters")
-    .max(500, "Description out of range 100-500 characters"),
+    .min(100, "Description out of range 100-800 characters")
+    .max(800, "Description out of range 100-800 characters"),
   imageUrl: z.string(),
   isFeatured: z.boolean(),
   liveUrl: z.string(),   // 👈 matches table column name now
