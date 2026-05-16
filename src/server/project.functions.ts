@@ -11,8 +11,7 @@ export const createProject = createServerFn({ method: 'POST' })
   .inputValidator(CreateProjectSchema)
   .handler(async ({ data }) => {
     try {
-
-      console.log('SERVER FUNCTION HIT ',)
+      // console.log('SERVER FUNCTION HIT ',)
       const slug = slugify(data.title, { lower: true, strict: true })
       const [theSlug] = await db
         .insert(project)
@@ -178,7 +177,7 @@ export const getTopFeaturedProjects = createServerFn({ method: "GET" })
           slug: project.slug,
           title: project.title,
           imageUrl: project.imageUrl,
-          createdAt: project.createdAt
+          updatedAt: project.updatedAt, 
         })
         .from(project)
         .limit(5);

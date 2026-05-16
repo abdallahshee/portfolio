@@ -90,7 +90,7 @@ function ProjectsPlaceholder() {
   )
 }
 
-// ── FEATURED PROJECTS ──
+
 function FeaturedProjectsSection() {
   const { data: projects } = useSuspenseQuery(getTopFeaturedProjectsQueryOptions())
   const router = useRouter()
@@ -102,10 +102,14 @@ function FeaturedProjectsSection() {
   return (
     <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
       <Stack gap="md">
-        <Group justify="space-between" align="flex-end">
+        <Group justify="space-between" align="flex-start">
           <div>
-            <div className="title3">Featured Projects</div>
-            <p className="text-sm text-slate-500">A selection of standout builds</p>
+            <div className="title2">Featured Projects</div>
+            <p className="mt-1 max-w-xl text-sm text-slate-500">
+              A curated selection of projects I have built and shipped — each one
+              reflecting my approach to writing clean, maintainable, and
+              production-ready software.
+            </p>
           </div>
           <Link to="/projects">
             <Button variant="subtle" size="sm" rightSection={<ArrowRight size={16} />}>
@@ -114,71 +118,60 @@ function FeaturedProjectsSection() {
           </Link>
         </Group>
 
-        <div className="-mx-1 overflow-x-auto sm:mx-0">
-          <Table highlightOnHover withTableBorder>
-            <Table.Thead>
-              <Table.Tr>
-                <Table.Th>Project</Table.Th>
-                <Table.Th>Status</Table.Th>
-                <Table.Th>Created</Table.Th>
-                <Table.Th />
-              </Table.Tr>
-            </Table.Thead>
-            <Table.Tbody>
-              {projects.map((project) => (
-                <Table.Tr
-                  key={project.id}
-                  onClick={() =>
-                    router.navigate({
-                      to: '/projects/$slug/details',
-                      params: { slug: project.slug! },
-                    })
-                  }
-                  className="cursor-pointer"
-                >
-                  <Table.Td>
-                    <Group gap="sm">
-                      {project.imageUrl ? (
-                        <Image src={project.imageUrl} w={46} h={46} radius="md" />
-                      ) : (
-                        <ThemeIcon size={46} radius="md" variant="light">
-                          <FolderKanban size={20} />
-                        </ThemeIcon>
-                      )}
-                      <div className="font-semibold truncate">{project.title}</div>
-                    </Group>
-                  </Table.Td>
+      {/* ── MOBILE — card list ── */}
+<Stack gap="sm" className="block sm:hidden">
+  {projects.map((project) => (
+    <div
+      key={project.id}
+      onClick={() =>
+        project.slug &&
+        router.navigate({
+          to: '/projects/$slug/details',
+          params: { slug: project.slug },
+        })
+      }
+      className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:shadow-sm dark:border-slate-700 dark:bg-slate-800/60"
+    >
+      {project.imageUrl ? (
+        <Image
+          src={project.imageUrl}
+          w={48}
+          h={48}
+          radius="md"
+          fit="cover"
+          style={{ flexShrink: 0 }}
+        />
+      ) : (
+        <ThemeIcon
+          size={48}
+          radius="md"
+          variant="light"
+          color="gray"
+          style={{ flexShrink: 0 }}
+        >
+          <FolderKanban size={20} />
+        </ThemeIcon>
+      )}
 
-                  <Table.Td>
-                    <Badge
-                      variant="light"
-                      color={project.isPublic ? 'teal' : 'gray'}
-                      radius="md"
-                      size="sm"
-                    >
-                      {project.isPublic ? 'Open Source' : 'Private'}
-                    </Badge>
-                  </Table.Td>
-
-                  <Table.Td>
-                    <span className="text-sm text-slate-500 dark:text-slate-400">
-                      {moment(project.createdAt).format('DD MMM YYYY')}
-                    </span>
-                  </Table.Td>
-
-                  <Table.Td w={60}>
-                    <span className="text-blue-600 font-semibold">View</span>
-                  </Table.Td>
-                </Table.Tr>
-              ))}
-            </Table.Tbody>
-          </Table>
+      <div className="min-w-0 flex-1">
+        <div className="truncate font-semibold text-slate-900 dark:text-slate-50">
+          {project.title}
         </div>
+      </div>
+
+      <span className="shrink-0 font-semibold text-blue-600">
+        View →
+      </span>
+    </div>
+  ))}
+</Stack>
+
+
+
       </Stack>
     </Paper>
   )
 }
-
 // ── STATS ──
 const STATS = [
   { icon: <Briefcase size={18} />, value: '4+', label: 'Years Experience', color: 'indigo' },
@@ -339,14 +332,14 @@ function App() {
         </SimpleGrid>
       </section>
 
-      {/* ── FEATURED PROJECTS ── */}
-      <div className="mx-auto w-full scroll-mt-20">
-        {/* <ErrorBoundary fallback={<ProjectsPlaceholder />}> */}
-        <Suspense fallback={<ProjectsSkeleton />}>
-          <FeaturedProjectsSection />
-        </Suspense>
-        {/* </ErrorBoundary> */}
-      </div>
+   {/* ── FEATURED PROJECTS ── */}
+<div className="mx-auto w-3/4 scroll-mt-20">
+  <Suspense fallback={<ProjectsSkeleton />}>
+    <FeaturedProjectsSection />
+  </Suspense>
+</div>
+
+  
 
       {/* ── CTA ── */}
       <section id="contact" className="mx-auto w-full scroll-mt-20">

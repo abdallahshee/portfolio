@@ -231,7 +231,7 @@ function ProjectsPage() {
             <TextInput
               radius="xl"
               size="md"
-              placeholder="Search projects..."
+              placeholder="Search projects by title..."
               leftSection={<Search size={16} />}
               value={searchInput}
               onChange={(e) => handleSearch(e.currentTarget.value)}
@@ -257,7 +257,6 @@ function ProjectsPage() {
 
           {/* FILTER */}
           <div className="w-full lg:w-[260px] space-y-4">
-
             {/* FILTER LABEL */}
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
               <LayoutGrid size={14} />
