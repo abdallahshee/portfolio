@@ -55,16 +55,15 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           {project.description}
         </p>
 
-        {/* 👇 dates */}
+        {/* dates */}
         <Stack gap={4} mt={4}>
           <Group gap={6}>
             <CalendarDays size={12} className="text-slate-400" />
             <Text size="xs" c="dimmed">
-              Added {moment(project.createdAt).fromNow()}
+              Added {moment(project.createdAt).format("D MMMM YYYY")}
             </Text>
           </Group>
 
-          {/* only show updated if it differs from created by more than a day */}
           {moment(project.updatedAt).diff(moment(project.createdAt), 'hours') > 24 && (
             <Group gap={6}>
               <RefreshCw size={12} className="text-slate-400" />

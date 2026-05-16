@@ -265,7 +265,7 @@ function ProjectDetails() {
                     <Text size="sm" c="dimmed">Created</Text>
                   </Group>
                   <Text size="sm" fw={500}>
-                    {moment(project.createdAt).fromNow()}
+                    {moment(project.createdAt).format("D MMMM YYYY")}
                   </Text>
                 </Group>
 
@@ -278,42 +278,59 @@ function ProjectDetails() {
                     {moment(project.updatedAt).fromNow()}
                   </Text>
                 </Group>
+                {/* Live URL */}
+                {project.liveUrl ? (
+                  <Button
+                    component="a"
+                    href={project.liveUrl}
+                    target="_blank"
+                    radius="md"
+                    size="sm"
+                    leftSection={<Globe size={15} />}
+                    fullWidth
+                  >
+                    Visit live site
+                  </Button>
+                ) : (
+                  <Button
+                    radius="md"
+                    size="sm"
+                    leftSection={<Globe size={15} />}
+                    fullWidth
+                    disabled
+                    variant="light"
+                    color="gray"
+                  >
+                    No live site — API or private deployment
+                  </Button>
+                )}
 
-                {(project.liveUrl || project.githubUrl) && (
-                  <>
-                    <Divider />
-
-                    <Stack gap="xs">
-                      {project.liveUrl && (
-                        <Button
-                          component="a"
-                          href={project.liveUrl}
-                          target="_blank"
-                          radius="md"
-                          size="sm"
-                          leftSection={<Globe size={15} />}
-                          fullWidth
-                        >
-                          Live Site
-                        </Button>
-                      )}
-
-                      {project.githubUrl && (
-                        <Button
-                          component="a"
-                          href={project.githubUrl}
-                          target="_blank"
-                          variant="light"
-                          radius="md"
-                          size="sm"
-                          leftSection={<Github size={15} />}
-                          fullWidth
-                        >
-                          Source Code
-                        </Button>
-                      )}
-                    </Stack>
-                  </>
+                {/* GitHub URL */}
+                {project.githubUrl ? (
+                  <Button
+                    component="a"
+                    href={project.githubUrl}
+                    target="_blank"
+                    variant="light"
+                    radius="md"
+                    size="sm"
+                    leftSection={<Github size={15} />}
+                    fullWidth
+                  >
+                    View source code
+                  </Button>
+                ) : (
+                  <Button
+                    radius="md"
+                    size="sm"
+                    leftSection={<Github size={15} />}
+                    fullWidth
+                    disabled
+                    variant="light"
+                    color="gray"
+                  >
+                    Source code is private
+                  </Button>
                 )}
               </Stack>
             </Paper>

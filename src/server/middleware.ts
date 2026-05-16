@@ -66,3 +66,46 @@ export const uploadProjectImage = createServerFn({ method: 'POST' })
 console.log('string url ',publicUrl)
     return publicUrl
   })
+
+  // in project.functions.ts
+// export const updateProjectImage = createServerFn({ method: 'POST' })
+//   .middleware([AuthenticatedMiddleware])
+//   .inputValidator(z.object({
+//     base64: z.string(),
+//     title: z.string(),
+//     mimeType: z.string(),
+//     slug: z.string(),
+//   }))
+//   .handler(async ({ data }) => {
+//     const supabase = getSupabaseServerClient()
+//     const fileSlug = slugify(data.title, { lower: true, strict: true })
+//     const ext = data.mimeType.split('/')[1] ?? 'jpeg'
+//     const filePath = `${fileSlug}/project.${ext}`
+
+//     const buffer = Buffer.from(data.base64.split(',')[1], 'base64')
+
+//     // 👇 upsert:true replaces existing image at the same path
+//     const { error: uploadError } = await supabase.storage
+//       .from('project-images')
+//       .upload(filePath, buffer, {
+//         contentType: data.mimeType,
+//         upsert: true,
+//       })
+
+//     if (uploadError) throw new Error(`Image upload failed: ${uploadError.message}`)
+
+//     const { data: { publicUrl } } = supabase.storage
+//       .from('project-images')
+//       .getPublicUrl(filePath)
+
+//     // 👇 immediately update the imageUrl in the database
+//     const [updated] = await db
+//       .update(project)
+//       .set({ imageUrl: publicUrl })
+//       .where(eq(project.slug, data.slug))
+//       .returning({ imageUrl: project.imageUrl })
+
+//     if (!updated) throw new Error('Failed to update image URL in database')
+
+//     return { publicUrl }
+//   })

@@ -1,15 +1,7 @@
 
-drop policy if exists "project_images_public_read" on storage.objects;
 drop policy if exists "project_images_auth_insert" on storage.objects;
 drop policy if exists "project_images_auth_update" on storage.objects;
 drop policy if exists "project_images_auth_delete" on storage.objects;
-
--- Anyone can read/view objects in the bucket
-create policy "project_images_public_read"
-on storage.objects
-for select
-to public
-using (bucket_id = 'project-images');
 
 -- Only authenticated user can upload
 create policy "project_images_auth_insert"
