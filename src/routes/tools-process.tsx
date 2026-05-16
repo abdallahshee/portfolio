@@ -29,36 +29,36 @@ export const Route = createFileRoute('/tools-process')({
 
 
 const PROCESS = [
-  {
-    icon: <Search size={18} />,
-    title: 'Discovery & Scoping',
-    desc: 'We start with a detailed conversation about your goals, users, and requirements. I map out the system, define scope, and propose a clear technical approach before any code is written. This ensures we solve the right problem from the start.',
-    color: 'indigo',
-  },
-  {
-    icon: <Pencil size={18} />,
-    title: 'Design & Architecture',
-    desc: 'I design the database schema, system architecture, and UI wireframes. This stage ensures we agree on structure and flow before building — saving time and rework down the line. Strong foundations reduce future complexity.',
-    color: 'blue',
-  },
-  {
-    icon: <Code2 size={18} />,
-    title: 'Development & Iteration',
-    desc: 'I build in focused sprints with regular check-ins and previews. You get visibility throughout — not just at the end. Feedback is incorporated continuously. This keeps development aligned with expectations.',
-    color: 'teal',
-  },
-  {
-    icon: <Rocket size={18} />,
-    title: 'Deployment & Launch',
-    desc: 'The product is optimized for performance and deployed to production with proper CI/CD pipelines, environment configuration, monitoring, and zero-downtime releases. Stability is prioritized at launch.',
-    color: 'orange',
-  },
-  {
-    icon: <HeartHandshake size={18} />,
-    title: 'Handover & Support',
-    desc: 'You receive full documentation, source code access, and a handover session. Post-launch support is available to ensure everything runs smoothly. Ongoing reliability matters beyond delivery.',
-    color: 'green',
-  },
+    {
+        icon: <Search size={18} />,
+        title: 'Discovery & Scoping',
+        desc: 'We start with a detailed conversation about your goals, users, and requirements. I map out the system, define scope, and propose a clear technical approach before any code is written. This ensures we solve the right problem from the start.',
+        color: 'indigo',
+    },
+    {
+        icon: <Pencil size={18} />,
+        title: 'Design & Architecture',
+        desc: 'I design the database schema, system architecture, and UI wireframes. This stage ensures we agree on structure and flow before building — saving time and rework down the line. Strong foundations reduce future complexity.',
+        color: 'blue',
+    },
+    {
+        icon: <Code2 size={18} />,
+        title: 'Development & Iteration',
+        desc: 'I build in focused sprints with regular check-ins and previews. You get visibility throughout — not just at the end. Feedback is incorporated continuously. This keeps development aligned with expectations.',
+        color: 'teal',
+    },
+    {
+        icon: <Rocket size={18} />,
+        title: 'Deployment & Launch',
+        desc: 'The product is optimized for performance and deployed to production with proper CI/CD pipelines, environment configuration, monitoring, and zero-downtime releases. Stability is prioritized at launch.',
+        color: 'orange',
+    },
+    {
+        icon: <HeartHandshake size={18} />,
+        title: 'Handover & Support',
+        desc: 'You receive full documentation, source code access, and a handover session. Post-launch support is available to ensure everything runs smoothly. Ongoing reliability matters beyond delivery.',
+        color: 'green',
+    },
 ]
 
 const CORE_SKILLS = [
@@ -83,8 +83,8 @@ function HowIWorkPage() {
             {/* ── PAGE HEADER ── */}
             <section className="w-full space-y-6">
                 <div className="heading">
-                 My Process: Think, Plan, Build
-                 {/* Thinking, Planning & Building */}
+                    My Process: Think, Plan, Build
+                    {/* Thinking, Planning & Building */}
                 </div>
 
                 <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
@@ -153,11 +153,13 @@ function HowIWorkPage() {
                         </p>
                     </div>
 
-                    <img
-                        src="/images/tools.jpg"
-                        alt="Distributed software system with multiple connected services"
-                        className="block h-24 w-full rounded-lg object-cover sm:h-32 md:h-40"
-                    />
+                <div className="group overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-900 ring-1 ring-slate-200/60 dark:ring-slate-700">
+  <img
+    src="/images/tools.jpg"
+    alt="Distributed software system with multiple connected services"
+    className="block h-30 w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] rounded-2xl"
+  />
+</div>
 
                     <List
                         spacing="sm"
