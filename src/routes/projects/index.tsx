@@ -193,7 +193,10 @@ function ProjectsPage() {
             </h1>
 
             <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">
-              Explore production-ready projects built with modern technologies.
+              These are a few of the projects I have built recently.
+              Beyond what you see here, I have worked on other projects across
+              client work, team collaborations, and open source contributions
+              that are not listed here.
             </p>
           </div>
 

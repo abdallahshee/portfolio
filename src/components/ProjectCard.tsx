@@ -1,13 +1,16 @@
 import type { Project } from '@/db/validations/project.types'
-import { Button, Card, Image, Stack, ThemeIcon } from '@mantine/core'
+import { Badge, Button, Card, Group, Image, Stack, Text, ThemeIcon } from '@mantine/core'
 import { Link } from '@tanstack/react-router'
-import { FolderKanban } from 'lucide-react'
+import { CalendarDays, FolderKanban, RefreshCw } from 'lucide-react'
+import moment from 'moment'
 
 interface ProjectCardProps {
   project: Project
 }
 
 export const ProjectCard = ({ project }: ProjectCardProps) => {
+  const isRecent = moment().diff(moment(project.createdAt), 'days') <= 30
+
   return (
     <Card
       shadow="sm"
@@ -19,7 +22,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       <Stack gap="sm" className="min-w-0">
 
         {/* Image */}
-        <div className="flex h-[180px] items-center justify-center overflow-hidden rounded-md bg-slate-100 dark:bg-slate-800">
+        <div className="relative flex h-[180px] items-center justify-center overflow-hidden rounded-md bg-slate-100 dark:bg-slate-800">
           {project.imageUrl ? (
             <Image
               src={project.imageUrl}
@@ -33,6 +36,15 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
               <FolderKanban size={28} />
             </ThemeIcon>
           )}
+
+          {/* 👇 recent badge overlaid on image */}
+          {isRecent && (
+            <div className="absolute right-2 top-2">
+              <Badge size="xs" radius="xl" color="teal" variant="filled">
+                New
+              </Badge>
+            </div>
+          )}
         </div>
 
         {/* Title */}
@@ -42,6 +54,26 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
         <p className="line-clamp-3 text-sm leading-6 text-slate-600 dark:text-slate-400">
           {project.description}
         </p>
+
+        {/* 👇 dates */}
+        <Stack gap={4} mt={4}>
+          <Group gap={6}>
+            <CalendarDays size={12} className="text-slate-400" />
+            <Text size="xs" c="dimmed">
+              Added {moment(project.createdAt).fromNow()}
+            </Text>
+          </Group>
+
+          {/* only show updated if it differs from created by more than a day */}
+          {moment(project.updatedAt).diff(moment(project.createdAt), 'hours') > 24 && (
+            <Group gap={6}>
+              <RefreshCw size={12} className="text-slate-400" />
+              <Text size="xs" c="dimmed">
+                Updated {moment(project.updatedAt).fromNow()}
+              </Text>
+            </Group>
+          )}
+        </Stack>
 
       </Stack>
 
@@ -60,7 +92,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
               fullWidth
               gradient={{ from: 'indigo', to: 'blue' }}
             >
-              View details ger
+              View details
             </Button>
           </Link>
         )}
