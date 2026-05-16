@@ -369,7 +369,7 @@ function ServicesPage() {
             <SimpleGrid cols={{ base: 1, sm: 2, lg: 4 }} spacing="lg" className="pt-4">
               <Paper
                 withBorder
-               radius="md"
+                radius="md"
                 p="lg"
                 className="group flex h-full flex-col justify-between border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800/60"
               >
@@ -387,7 +387,7 @@ function ServicesPage() {
 
               <Paper
                 withBorder
-             radius="md"
+                radius="md"
                 p="lg"
                 className="group flex h-full flex-col justify-between border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800/60"
               >
@@ -440,7 +440,7 @@ function ServicesPage() {
             </SimpleGrid>
 
           </Stack>
-          
+
         </div>
       </section>
 

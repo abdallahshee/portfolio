@@ -153,13 +153,13 @@ function HowIWorkPage() {
                         </p>
                     </div>
 
-                <div className="group overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-900 ring-1 ring-slate-200/60 dark:ring-slate-700">
-  <img
-    src="/images/tools.jpg"
-    alt="Distributed software system with multiple connected services"
-    className="block h-30 w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] rounded-2xl"
-  />
-</div>
+                    <div className="group overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-900 ring-1 ring-slate-200/60 dark:ring-slate-700">
+                        <img
+                            src="/images/tools.jpg"
+                            alt="Distributed software system with multiple connected services"
+                            className="block h-30 w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] rounded-2xl"
+                        />
+                    </div>
 
                     <List
                         spacing="sm"

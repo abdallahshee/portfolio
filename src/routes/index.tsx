@@ -114,56 +114,53 @@ function FeaturedProjectsSection() {
           </Link>
         </Group>
 
-      {/* ── MOBILE — card list ── */}
-<Stack gap="sm" className="block sm:hidden">
-  {projects.map((project) => (
-    <div
-      key={project.id}
-      onClick={() =>
-        project.slug &&
-        router.navigate({
-          to: '/projects/$slug/details',
-          params: { slug: project.slug },
-        })
-      }
-      className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:shadow-sm dark:border-slate-700 dark:bg-slate-800/60"
-    >
-      {project.imageUrl ? (
-        <Image
-          src={project.imageUrl}
-          w={48}
-          h={48}
-          radius="md"
-          fit="cover"
-          style={{ flexShrink: 0 }}
-        />
-      ) : (
-        <ThemeIcon
-          size={48}
-          radius="md"
-          variant="light"
-          color="gray"
-          style={{ flexShrink: 0 }}
-        >
-          <FolderKanban size={20} />
-        </ThemeIcon>
-      )}
 
-      <div className="min-w-0 flex-1">
-        <div className="truncate font-semibold text-slate-900 dark:text-slate-50">
-          {project.title}
-        </div>
-      </div>
+        <Stack gap="sm">
+          {projects.map((project) => (
+            <div
+              key={project.id}
+              onClick={() =>
+                project.slug &&
+                router.navigate({
+                  to: '/projects/$slug/details',
+                  params: { slug: project.slug },
+                })
+              }
+              className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:shadow-sm dark:border-slate-700 dark:bg-slate-800/60"
+            >
+              {project.imageUrl ? (
+                <Image
+                  src={project.imageUrl}
+                  w={48}
+                  h={48}
+                  radius="md"
+                  fit="cover"
+                  style={{ flexShrink: 0 }}
+                />
+              ) : (
+                <ThemeIcon
+                  size={48}
+                  radius="md"
+                  variant="light"
+                  color="gray"
+                  style={{ flexShrink: 0 }}
+                >
+                  <FolderKanban size={20} />
+                </ThemeIcon>
+              )}
 
-      <span className="shrink-0 font-semibold text-blue-600">
-        View →
-      </span>
-    </div>
-  ))}
-</Stack>
+              <div className="min-w-0 flex-1">
+                <div className="font-semibold text-slate-900 dark:text-slate-50 break-words">
+                  {project.title}
+                </div>
+              </div>
 
-
-
+              <span className="shrink-0 font-semibold text-blue-600">
+                View →
+              </span>
+            </div>
+          ))}
+        </Stack>
       </Stack>
     </Paper>
   )
@@ -328,13 +325,13 @@ function App() {
         </SimpleGrid>
       </section>
 
-   {/* ── FEATURED PROJECTS ── */}
-<div className="mx-auto w-full md:w-3/4 scroll-mt-20">
-  <Suspense fallback={<ProjectsSkeleton />}>
-    <FeaturedProjectsSection />
-  </Suspense>
-</div>
-  
+      {/* ── FEATURED PROJECTS ── */}
+      <div className="mx-auto w-full md:w-3/4 scroll-mt-20">
+        <Suspense fallback={<ProjectsSkeleton />}>
+          <FeaturedProjectsSection />
+        </Suspense>
+      </div>
+
 
       {/* ── CTA ── */}
       <section id="contact" className="mx-auto w-full scroll-mt-20">
