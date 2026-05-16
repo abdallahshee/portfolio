@@ -43,6 +43,7 @@ export const Route = createFileRoute("/projects/$slug/details")({
 function progressColor(value: number) {
   if (value === 100) return "teal"
   if (value >= 75) return "blue"
+  if (value >= 50) return "cyan"
   if (value >= 40) return "yellow"
   return "red"
 }
@@ -50,6 +51,7 @@ function progressColor(value: number) {
 function progressLabel(value: number) {
   if (value === 100) return "Complete"
   if (value >= 75) return "Almost there"
+  if (value >= 50) return "Halfway through"
   if (value >= 40) return "In progress"
   return "Just started"
 }
