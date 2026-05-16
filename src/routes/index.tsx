@@ -1,9 +1,7 @@
 import { getTopFeaturedProjectsQueryOptions } from '@/db/queries/project.queries'
 import {
-  Badge,
   Button,
   Card,
-  Table,
   Image,
   Group,
   Stack,
@@ -27,11 +25,9 @@ import {
   Sparkles,
   Mail,
   BriefcaseBusiness,
-  Code2,
   Clock3,
-  Star,
 } from 'lucide-react'
-import moment from 'moment'
+
 import { Suspense } from 'react'
 
 

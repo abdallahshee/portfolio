@@ -32,31 +32,31 @@ const PROCESS = [
   {
     icon: <Search size={18} />,
     title: 'Discovery & Scoping',
-    desc: 'We start with a detailed conversation about your goals, users, and requirements. I map out the system, define scope, and propose a clear technical approach before any code is written.',
+    desc: 'We start with a detailed conversation about your goals, users, and requirements. I map out the system, define scope, and propose a clear technical approach before any code is written. This ensures we solve the right problem from the start.',
     color: 'indigo',
   },
   {
     icon: <Pencil size={18} />,
     title: 'Design & Architecture',
-    desc: 'I design the database schema, system architecture, and UI wireframes. This stage ensures we agree on structure and flow before building — saving time and rework down the line.',
+    desc: 'I design the database schema, system architecture, and UI wireframes. This stage ensures we agree on structure and flow before building — saving time and rework down the line. Strong foundations reduce future complexity.',
     color: 'blue',
   },
   {
     icon: <Code2 size={18} />,
     title: 'Development & Iteration',
-    desc: 'I build in focused sprints with regular check-ins and previews. You get visibility throughout — not just at the end. Feedback is incorporated continuously.',
+    desc: 'I build in focused sprints with regular check-ins and previews. You get visibility throughout — not just at the end. Feedback is incorporated continuously. This keeps development aligned with expectations.',
     color: 'teal',
   },
   {
     icon: <Rocket size={18} />,
     title: 'Deployment & Launch',
-    desc: 'The product is optimized for performance and deployed to production with proper CI/CD pipelines, environment configuration, monitoring, and zero-downtime releases.',
+    desc: 'The product is optimized for performance and deployed to production with proper CI/CD pipelines, environment configuration, monitoring, and zero-downtime releases. Stability is prioritized at launch.',
     color: 'orange',
   },
   {
     icon: <HeartHandshake size={18} />,
     title: 'Handover & Support',
-    desc: 'You receive full documentation, source code access, and a handover session. Post-launch support is available to ensure everything runs smoothly.',
+    desc: 'You receive full documentation, source code access, and a handover session. Post-launch support is available to ensure everything runs smoothly. Ongoing reliability matters beyond delivery.',
     color: 'green',
   },
 ]
@@ -66,13 +66,12 @@ const CORE_SKILLS = [
     'React 19 & TanStack Start',
     'TanStack Query & TanStack Router',
     'PostgreSQL & Drizzle ORM',
+    'MongoDb and Mongoose DOM',
     'Supabase (Auth, Storage, Realtime)',
     'Material UI & Tailwind CSS',
     'ExpressJs & MeteorJS',
-    // 'REST APIs & Server Functions',
-    // 'Git, CI/CD & Agile workflows',
+    'Git, CI/CD & Agile workflows',
     "Serveless & Cloud Development",
-    // "System Analysis & Design"
 ]
 
 function HowIWorkPage() {
@@ -157,7 +156,7 @@ function HowIWorkPage() {
                     <img
                         src="/images/tools.jpg"
                         alt="Distributed software system with multiple connected services"
-                        className="block h-38 w-full rounded-lg object-cover sm:h-46 md:h-56"
+                        className="block h-24 w-full rounded-lg object-cover sm:h-32 md:h-40"
                     />
 
                     <List
