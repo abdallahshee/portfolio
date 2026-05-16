@@ -33,7 +33,8 @@ import type { UpdateProjectRequest } from "@/db/validations/project.types"
 import { UpdateProjectSchema } from "@/db/validations/project.types"
 import { zod4Resolver } from "mantine-form-zod-resolver"
 import { useUpdateProjectMutation } from "@/db/queries/project.mutations"
-import { uploadProjectImage } from "@/lib/storage"
+import { uploadProjectImage } from "@/server/middleware"
+
 
 export const Route = createFileRoute("/projects/$slug/edit")({
   beforeLoad: async (ctx) => {
