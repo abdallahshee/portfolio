@@ -236,7 +236,8 @@ function App() {
           />
 
           {/* Overlay */}
-          <div className="absolute inset-0 bg-black/40" />
+         {/* Overlay */}
+<div className="absolute inset-0 " />
 
           {/* Content */}
           <div className="absolute inset-0 flex items-end justify-center">
