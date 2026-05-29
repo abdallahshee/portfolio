@@ -193,7 +193,7 @@ export default function Header() {
                 Abdallah Shee
               </span>
               <span className="text-xs font-medium tracking-wide text-slate-500 dark:text-slate-400">
-                Software Developer
+                IT Support Specialist | Software Developer
               </span>
             </div>
           </div>

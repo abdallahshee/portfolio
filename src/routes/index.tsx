@@ -236,14 +236,14 @@ function App() {
           />
 
           {/* Overlay */}
-         {/* Overlay */}
-<div className="absolute inset-0 " />
+          {/* Overlay */}
+          <div className="absolute inset-0 " />
 
           {/* Content */}
           <div className="absolute inset-0 flex items-end justify-center">
             <div className="px-6 pb-2 sm:px-10 lg:px-16">
               <p className="title3 text-center leading-tight text-white">
-               IT Support Specialist | Software Developer
+                IT Support Specialist | Software Developer
               </p>
             </div>
           </div>
@@ -256,13 +256,13 @@ function App() {
           {/* LEFT */}
           <Stack gap="lg" className="w-full pb-2 lg:border-b-0 lg:pb-0">
             <div className="title2">About Me</div>
-  <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
-  I'm <strong>Abdallah Shee</strong>, an IT Support Specialist | Software Developer based in Nairobi, Kenya 🇰🇪. I specialize in building and supporting reliable digital systems with a strong focus on technical troubleshooting, system reliability, performance optimization, and user experience. My work spans both IT support and full-stack development — from diagnosing and resolving system issues, assisting users, and maintaining IT operations, to designing, developing, and deploying scalable web applications that meet real business needs.
-</p>
+            <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
+              I'm <strong>Abdallah Shee</strong>, an IT Support Specialist | Software Developer based in Nairobi, Kenya 🇰🇪. I specialize in building and supporting reliable digital systems with a strong focus on technical troubleshooting, system reliability, performance optimization, and user experience. My work spans both IT support and full-stack development — from diagnosing and resolving system issues, assisting users, and maintaining IT operations, to designing, developing, and deploying scalable web applications that meet real business needs.
+            </p>
 
-<p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
-  I believe great technology should be both practical and dependable — solving real user problems while supporting business growth and operational efficiency. With hands-on experience in IT support, software development, data analysis, and system troubleshooting, I bring a well-rounded and solution-oriented approach to every project. I focus on building clean, efficient systems that are not only well-architected, but also well-supported, maintainable, and adaptable throughout their lifecycle.
-</p>
+            <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
+              I believe great technology should be both practical and dependable — solving real user problems while supporting business growth and operational efficiency. With hands-on experience in IT support, software development, data analysis, and system troubleshooting, I bring a well-rounded and solution-oriented approach to every project. I focus on building clean, efficient systems that are not only well-architected, but also well-supported, maintainable, and adaptable throughout their lifecycle.
+            </p>
 
             {/* ── STATS ── */}
             <div className="grid grid-cols-2 gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-4">
