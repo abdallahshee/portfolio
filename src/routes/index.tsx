@@ -236,17 +236,15 @@ function App() {
           />
 
           {/* Overlay */}
-          {/* Overlay */}
+{/*     
           <div className="absolute inset-0 " />
-
-          {/* Content */}
           <div className="absolute inset-0 flex items-end justify-center">
             <div className="px-6 pb-2 sm:px-10 lg:px-16">
               <p className="title3 text-center leading-tight text-gray-700">
                 IT Support Specialist | Software Developer
               </p>
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
       {/* ── HERO ── */}
