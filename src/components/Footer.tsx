@@ -55,7 +55,7 @@ export default function Footer() {
                 Abdallah Shee
               </div>
               <div className="text-sm text-slate-500 dark:text-slate-400">
-                Software Developer
+               IT Support Specialist | Software Developer
               </div>
               <div className="text-sm text-slate-500 dark:text-slate-400">
                 Nairobi, Kenya 🇰🇪
