@@ -29,12 +29,21 @@ function applyThemeMode(mode: ThemeMode) {
   root.setAttribute("data-theme", mode)
 }
 
+// const links = linkOptions([
+//   { label: "Home", to: "/", icon: Home },
+//   { label: "Services", to: "/services", icon: Briefcase },
+//   { label: "Contacts", to: "/contacts", icon: Mail },
+//   { label: "Projects", to: "/projects", icon: Folder },
+//   { label: "Tools & Process", to: "/tools-process", icon: Wrench },
+
+// ])
+
 const links = linkOptions([
-  { label: "Home", to: "/", icon: Home },
-  { label: "Services", to: "/services", icon: Briefcase },
-  { label: "Contacts", to: "/contacts", icon: Mail },
-  { label: "Projects", to: "/projects", icon: Folder },
-  { label: "Tools & Process", to: "/tools-process", icon: Wrench },
+  { label: "Home", to: "/"},
+  { label: "Services", to: "/services" },
+  { label: "Contacts", to: "/contacts"},
+  { label: "Projects", to: "/projects" },
+  { label: "Tools & Process", to: "/tools-process" },
 
 ])
 
@@ -139,7 +148,7 @@ export default function Header() {
 
             <nav className="flex min-w-0 items-center gap-2.5 md:gap-3 lg:gap-5">
               {links.map((link) => {
-                const Icon = link.icon
+                // const Icon = link.icon
                 return (
                   <Link
                     key={link.label}
@@ -147,7 +156,7 @@ export default function Header() {
                     className="flex items-center gap-1.5 whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
                     activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
                   >
-                    <Icon size={16} />
+                    {/* <Icon size={16} /> */}
                     {link.label}
                   </Link>
                 )
@@ -203,7 +212,7 @@ export default function Header() {
         <ScrollArea style={{ height: "100%" }}>
           <div className="mt-4 flex flex-col space-y-4 text-lg">
             {links.map((link) => {
-              const Icon = link.icon
+              // const Icon = link.icon
               return (
                 <Link
                   key={link.label}
@@ -212,7 +221,7 @@ export default function Header() {
                   onClick={() => setOpened(false)}
                   activeProps={{ className: "text-indigo-500 dark:text-indigo-400" }}
                 >
-                  <Icon size={20} />
+                  {/* <Icon size={20} /> */}
                   {link.label}
                 </Link>
               )
