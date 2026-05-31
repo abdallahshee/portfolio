@@ -300,9 +300,9 @@ function App() {
           {STRENGTHS.map((strength) => (
             <Card key={strength.title} withBorder p="lg" radius="lg" className="shadow-sm">
               <Group gap="md" align="flex-start">
-                <ThemeIcon variant="light" color={strength.color} radius="md" size="lg">
+                {/* <ThemeIcon variant="light" color={strength.color} radius="md" size="lg">
                   {strength.icon}
-                </ThemeIcon>
+                </ThemeIcon> */}
                 <Stack gap={4} className="min-w-0 flex-1">
                   <div className="font-bold text-slate-900 dark:text-slate-50">{strength.title}</div>
                   <p className="text-sm leading-relaxed text-slate-600 dark:text-slate-400">
