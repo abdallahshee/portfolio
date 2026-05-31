@@ -1,6 +1,5 @@
 import { pgSchema, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { createSelectSchema } from "drizzle-zod";
-import z from "zod"
+
 const authSchema = pgSchema("auth");
 
 // Reference auth.users
