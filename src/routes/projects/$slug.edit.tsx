@@ -17,7 +17,7 @@ import {
   ThemeIcon,
   FileInput,
 } from "@mantine/core"
-import { useForm } from "@mantine/form"
+import { schemaResolver, useForm } from "@mantine/form"
 import {
   AlertCircle,
   ArrowLeft,
@@ -31,7 +31,6 @@ import { useMemo, useState } from "react"
 import { getProjectBySlugQueryOptions } from "@/db/queries/project.queries"
 import type { UpdateProjectRequest } from "@/db/validations/project.types"
 import { UpdateProjectSchema } from "@/db/validations/project.types"
-import { zod4Resolver } from "mantine-form-zod-resolver"
 import { useUpdateProjectMutation } from "@/db/queries/project.mutations"
 import { uploadProjectImage } from "@/server/middleware"
 
@@ -77,7 +76,7 @@ function RouteComponent() {
       progress: project?.progress ?? 0,
       technologies: project?.technologies ?? [],
     },
-    validate: zod4Resolver(UpdateProjectSchema),
+    validate: schemaResolver(UpdateProjectSchema,{sync:true}),
     validateInputOnBlur: true,
   })
 

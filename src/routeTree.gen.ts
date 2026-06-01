@@ -16,16 +16,21 @@ import { Route as ContactsRouteImport } from './routes/contacts'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as TestimonialsRouteRouteImport } from './routes/testimonials/route'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
+import { Route as ArticlesRouteRouteImport } from './routes/articles/route'
 import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as TestimonialsIndexRouteImport } from './routes/testimonials/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
+import { Route as ArticlesIndexRouteImport } from './routes/articles/index'
 import { Route as AccountIndexRouteImport } from './routes/account/index'
 import { Route as TestimonialsNewRouteImport } from './routes/testimonials/new'
 import { Route as ProjectsNewRouteImport } from './routes/projects/new'
+import { Route as ArticlesNewRouteImport } from './routes/articles/new'
 import { Route as AccountRegisterRouteImport } from './routes/account/register'
 import { Route as ProjectsSlugEditRouteImport } from './routes/projects/$slug.edit'
 import { Route as ProjectsSlugDetailsRouteImport } from './routes/projects/$slug.details'
+import { Route as ArticlesSlugEditRouteImport } from './routes/articles/$slug.edit'
+import { Route as ArticlesSlugDetailsRouteImport } from './routes/articles/$slug.details'
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
   id: '/unauthorized',
@@ -62,6 +67,11 @@ const ProjectsRouteRoute = ProjectsRouteRouteImport.update({
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArticlesRouteRoute = ArticlesRouteRouteImport.update({
+  id: '/articles',
+  path: '/articles',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AccountRouteRoute = AccountRouteRouteImport.update({
   id: '/account',
   path: '/account',
@@ -82,6 +92,11 @@ const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
+const ArticlesIndexRoute = ArticlesIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => ArticlesRouteRoute,
+} as any)
 const AccountIndexRoute = AccountIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -96,6 +111,11 @@ const ProjectsNewRoute = ProjectsNewRouteImport.update({
   id: '/new',
   path: '/new',
   getParentRoute: () => ProjectsRouteRoute,
+} as any)
+const ArticlesNewRoute = ArticlesNewRouteImport.update({
+  id: '/new',
+  path: '/new',
+  getParentRoute: () => ArticlesRouteRoute,
 } as any)
 const AccountRegisterRoute = AccountRegisterRouteImport.update({
   id: '/register',
@@ -112,10 +132,21 @@ const ProjectsSlugDetailsRoute = ProjectsSlugDetailsRouteImport.update({
   path: '/$slug/details',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
+const ArticlesSlugEditRoute = ArticlesSlugEditRouteImport.update({
+  id: '/$slug/edit',
+  path: '/$slug/edit',
+  getParentRoute: () => ArticlesRouteRoute,
+} as any)
+const ArticlesSlugDetailsRoute = ArticlesSlugDetailsRouteImport.update({
+  id: '/$slug/details',
+  path: '/$slug/details',
+  getParentRoute: () => ArticlesRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
+  '/articles': typeof ArticlesRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/testimonials': typeof TestimonialsRouteRouteWithChildren
   '/$': typeof SplatRoute
@@ -124,11 +155,15 @@ export interface FileRoutesByFullPath {
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/account/register': typeof AccountRegisterRoute
+  '/articles/new': typeof ArticlesNewRoute
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
   '/account/': typeof AccountIndexRoute
+  '/articles/': typeof ArticlesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/testimonials/': typeof TestimonialsIndexRoute
+  '/articles/$slug/details': typeof ArticlesSlugDetailsRoute
+  '/articles/$slug/edit': typeof ArticlesSlugEditRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
   '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
@@ -140,11 +175,15 @@ export interface FileRoutesByTo {
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/account/register': typeof AccountRegisterRoute
+  '/articles/new': typeof ArticlesNewRoute
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
   '/account': typeof AccountIndexRoute
+  '/articles': typeof ArticlesIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/testimonials': typeof TestimonialsIndexRoute
+  '/articles/$slug/details': typeof ArticlesSlugDetailsRoute
+  '/articles/$slug/edit': typeof ArticlesSlugEditRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
   '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
@@ -152,6 +191,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/account': typeof AccountRouteRouteWithChildren
+  '/articles': typeof ArticlesRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/testimonials': typeof TestimonialsRouteRouteWithChildren
   '/$': typeof SplatRoute
@@ -160,11 +200,15 @@ export interface FileRoutesById {
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/account/register': typeof AccountRegisterRoute
+  '/articles/new': typeof ArticlesNewRoute
   '/projects/new': typeof ProjectsNewRoute
   '/testimonials/new': typeof TestimonialsNewRoute
   '/account/': typeof AccountIndexRoute
+  '/articles/': typeof ArticlesIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/testimonials/': typeof TestimonialsIndexRoute
+  '/articles/$slug/details': typeof ArticlesSlugDetailsRoute
+  '/articles/$slug/edit': typeof ArticlesSlugEditRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
   '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
@@ -173,6 +217,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/account'
+    | '/articles'
     | '/projects'
     | '/testimonials'
     | '/$'
@@ -181,11 +226,15 @@ export interface FileRouteTypes {
     | '/tools-process'
     | '/unauthorized'
     | '/account/register'
+    | '/articles/new'
     | '/projects/new'
     | '/testimonials/new'
     | '/account/'
+    | '/articles/'
     | '/projects/'
     | '/testimonials/'
+    | '/articles/$slug/details'
+    | '/articles/$slug/edit'
     | '/projects/$slug/details'
     | '/projects/$slug/edit'
   fileRoutesByTo: FileRoutesByTo
@@ -197,17 +246,22 @@ export interface FileRouteTypes {
     | '/tools-process'
     | '/unauthorized'
     | '/account/register'
+    | '/articles/new'
     | '/projects/new'
     | '/testimonials/new'
     | '/account'
+    | '/articles'
     | '/projects'
     | '/testimonials'
+    | '/articles/$slug/details'
+    | '/articles/$slug/edit'
     | '/projects/$slug/details'
     | '/projects/$slug/edit'
   id:
     | '__root__'
     | '/'
     | '/account'
+    | '/articles'
     | '/projects'
     | '/testimonials'
     | '/$'
@@ -216,11 +270,15 @@ export interface FileRouteTypes {
     | '/tools-process'
     | '/unauthorized'
     | '/account/register'
+    | '/articles/new'
     | '/projects/new'
     | '/testimonials/new'
     | '/account/'
+    | '/articles/'
     | '/projects/'
     | '/testimonials/'
+    | '/articles/$slug/details'
+    | '/articles/$slug/edit'
     | '/projects/$slug/details'
     | '/projects/$slug/edit'
   fileRoutesById: FileRoutesById
@@ -228,6 +286,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AccountRouteRoute: typeof AccountRouteRouteWithChildren
+  ArticlesRouteRoute: typeof ArticlesRouteRouteWithChildren
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
   TestimonialsRouteRoute: typeof TestimonialsRouteRouteWithChildren
   SplatRoute: typeof SplatRoute
@@ -288,6 +347,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/articles': {
+      id: '/articles'
+      path: '/articles'
+      fullPath: '/articles'
+      preLoaderRoute: typeof ArticlesRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/account': {
       id: '/account'
       path: '/account'
@@ -316,6 +382,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
+    '/articles/': {
+      id: '/articles/'
+      path: '/'
+      fullPath: '/articles/'
+      preLoaderRoute: typeof ArticlesIndexRouteImport
+      parentRoute: typeof ArticlesRouteRoute
+    }
     '/account/': {
       id: '/account/'
       path: '/'
@@ -336,6 +409,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/projects/new'
       preLoaderRoute: typeof ProjectsNewRouteImport
       parentRoute: typeof ProjectsRouteRoute
+    }
+    '/articles/new': {
+      id: '/articles/new'
+      path: '/new'
+      fullPath: '/articles/new'
+      preLoaderRoute: typeof ArticlesNewRouteImport
+      parentRoute: typeof ArticlesRouteRoute
     }
     '/account/register': {
       id: '/account/register'
@@ -358,6 +438,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsSlugDetailsRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
+    '/articles/$slug/edit': {
+      id: '/articles/$slug/edit'
+      path: '/$slug/edit'
+      fullPath: '/articles/$slug/edit'
+      preLoaderRoute: typeof ArticlesSlugEditRouteImport
+      parentRoute: typeof ArticlesRouteRoute
+    }
+    '/articles/$slug/details': {
+      id: '/articles/$slug/details'
+      path: '/$slug/details'
+      fullPath: '/articles/$slug/details'
+      preLoaderRoute: typeof ArticlesSlugDetailsRouteImport
+      parentRoute: typeof ArticlesRouteRoute
+    }
   }
 }
 
@@ -373,6 +467,24 @@ const AccountRouteRouteChildren: AccountRouteRouteChildren = {
 
 const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
   AccountRouteRouteChildren,
+)
+
+interface ArticlesRouteRouteChildren {
+  ArticlesNewRoute: typeof ArticlesNewRoute
+  ArticlesIndexRoute: typeof ArticlesIndexRoute
+  ArticlesSlugDetailsRoute: typeof ArticlesSlugDetailsRoute
+  ArticlesSlugEditRoute: typeof ArticlesSlugEditRoute
+}
+
+const ArticlesRouteRouteChildren: ArticlesRouteRouteChildren = {
+  ArticlesNewRoute: ArticlesNewRoute,
+  ArticlesIndexRoute: ArticlesIndexRoute,
+  ArticlesSlugDetailsRoute: ArticlesSlugDetailsRoute,
+  ArticlesSlugEditRoute: ArticlesSlugEditRoute,
+}
+
+const ArticlesRouteRouteWithChildren = ArticlesRouteRoute._addFileChildren(
+  ArticlesRouteRouteChildren,
 )
 
 interface ProjectsRouteRouteChildren {
@@ -409,6 +521,7 @@ const TestimonialsRouteRouteWithChildren =
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AccountRouteRoute: AccountRouteRouteWithChildren,
+  ArticlesRouteRoute: ArticlesRouteRouteWithChildren,
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
   TestimonialsRouteRoute: TestimonialsRouteRouteWithChildren,
   SplatRoute: SplatRoute,

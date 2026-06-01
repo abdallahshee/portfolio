@@ -8,8 +8,7 @@ import {
   Alert,
   SimpleGrid,
 } from '@mantine/core'
-import { useForm } from '@mantine/form'
-import { zod4Resolver } from 'mantine-form-zod-resolver'
+import { schemaResolver, useForm } from '@mantine/form'
 import { z } from 'zod'
 import { useState } from 'react'
 import { AlertCircle, CheckCircle, UserPlus } from 'lucide-react'
@@ -38,7 +37,8 @@ function RouteComponent() {
       password: '',
       confirmPassword: '',
     },
-    validate: zod4Resolver(RegisterSchema),
+    validate: schemaResolver(RegisterSchema,{sync:true}),
+    validateInputOnBlur:true
   })
 
   const handleSubmit = async (values: RegisterFormValues) => {

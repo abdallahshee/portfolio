@@ -8,7 +8,6 @@ import {
   Alert,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { zod4Resolver } from 'mantine-form-zod-resolver'
 import { z } from 'zod'
 import { useState } from 'react'
 import { AlertCircle, Lock } from 'lucide-react'
@@ -33,7 +32,7 @@ function RouteComponent() {
       email: '',
       password: '',
     },
-    validate: zod4Resolver(SignInSchema),
+  
     validateInputOnBlur: true,
   })
 

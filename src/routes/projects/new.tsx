@@ -17,7 +17,7 @@ import {
   Slider,
   Badge
 } from "@mantine/core"
-import { useForm } from "@mantine/form"
+import { schemaResolver, useForm } from "@mantine/form"
 import {
   ArrowLeft,
   FolderPlus,
@@ -31,7 +31,6 @@ import { useMemo, useState } from "react"
 import { CreateProjectSchema, type ProjectRequest } from "@/db/validations/project.types"
 import { Alert } from "@mantine/core"
 import { AlertCircle } from "lucide-react"
-import { zod4Resolver } from "mantine-form-zod-resolver"
 import { useProjectCreateMutation } from "@/db/queries/project.mutations"
 import { uploadProjectImage } from "@/server/middleware"
 
@@ -68,7 +67,7 @@ function RouteComponent() {
       imageUrl: "",
       isFeatured: false,
     },
-    validate: zod4Resolver(CreateProjectSchema),
+    validate: schemaResolver(CreateProjectSchema,{sync:true}),
     validateInputOnBlur: true,
   })
 

@@ -1,8 +1,7 @@
 import { createFileRoute, useRouter,redirect } from '@tanstack/react-router'
-import { useForm} from '@mantine/form'
+import { schemaResolver, useForm} from '@mantine/form'
 import { TextInput, Textarea, Button, Stack, Paper, Title } from '@mantine/core'
 import { TestimonialSchema, type TestimonialRequest } from '@/db/validations/testimonial.types'
-import { zod4Resolver } from 'mantine-form-zod-resolver'
 import { useCreateTestimonialMutation } from '@/db/queries/testimonial.queries'
 
 
@@ -29,7 +28,8 @@ function RouteComponent() {
       authorTitle: '',
       company: '',
     },
-    validate: zod4Resolver(TestimonialSchema),
+  validate: schemaResolver(TestimonialSchema, { sync: true }),
+  validateInputOnBlur:true
   })
 
   const handleSubmit = async(values: TestimonialRequest) => {
