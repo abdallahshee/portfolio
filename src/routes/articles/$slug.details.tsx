@@ -22,7 +22,7 @@ type ArticleDetail = {
   title: string
   content: string
   coverImage: string | null
-  // slug: string
+  slug: string
   category: string
   featured: boolean
   createdAt: Date
@@ -48,6 +48,7 @@ function RouteComponent() {
     coverImage: 'https://placehold.co/1200x630',
     category: 'tutorial',
     featured: true,
+    slug: slug,
     createdAt: new Date('2024-03-15'),
     updatedAt: new Date('2024-04-01'),
   }

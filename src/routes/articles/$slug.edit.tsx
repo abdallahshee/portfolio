@@ -19,7 +19,7 @@ import {
   Loader,
   Center,
 } from '@mantine/core'
-import { Upload,X } from 'lucide-react'
+import { Upload, X } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import { SupportedArticleCategories } from '@/db/utils'
 import { ArticleCreateSchema, type ArticleRequest } from '@/db/validations/article.types'
