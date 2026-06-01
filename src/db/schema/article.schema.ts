@@ -2,7 +2,7 @@
 import { pgTable, text, timestamp, uuid, boolean} from "drizzle-orm/pg-core";
 import { SupportedArticleCategories } from "../utils";
 
-export const articles = pgTable("articles", {
+export const article = pgTable("articles", {
   id:          uuid("id").primaryKey().defaultRandom(),
   title:       text("title").notNull(),
   content:     text("content").notNull(),
