@@ -63,12 +63,12 @@ const PROCESS = [
 
 const CORE_SKILLS = [
     'TypeScript and Python',
-    'React 19 & TanStack Start',
+    'React 19 & Nextjs 16',
     'TanStack Query & TanStack Router',
     'PostgreSQL & Drizzle ORM',
     'MongoDb and Mongoose DOM',
     'Supabase (Auth, Storage, Realtime)',
-    'Material UI & Tailwind CSS',
+    'Mantine UI & Tailwind CSS',
     'ExpressJs & MeteorJS',
     'Git, CI/CD & Agile workflows',
     "Serveless & Cloud Development",
