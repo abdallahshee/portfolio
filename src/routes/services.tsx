@@ -105,13 +105,13 @@ const SERVICES = [
     color: 'violet',
 
   },
-  {
-    icon: <BarChart3 size={24} />,
-    title: 'Business & Inventory Systems',
-    desc: 'Custom ERP-lite solutions for SMEs — stock management, purchase orders, supplier tracking, sales reporting, and real-time business insights that help you make faster, smarter decisions.',
-    color: 'blue',
+  // {
+  //   icon: <BarChart3 size={24} />,
+  //   title: 'Business & Inventory Systems',
+  //   desc: 'Custom ERP-lite solutions for SMEs — stock management, purchase orders, supplier tracking, sales reporting, and real-time business insights that help you make faster, smarter decisions.',
+  //   color: 'blue',
 
-  },
+  // },
   {
     icon: <CalendarClock size={24} />,
     title: 'Booking & Scheduling Apps',
@@ -119,13 +119,12 @@ const SERVICES = [
     color: 'cyan',
 
   },
-  {
-    icon: <Wallet size={24} />,
-    title: 'Finance & Savings Platforms',
-    desc: 'SACCO, chama, and microfinance platforms with member management, contribution tracking, loan applications, repayment schedules, guarantor management, and financial reporting.',
-    color: 'green',
-
-  },
+  // {
+  //   icon: <Wallet size={24} />,
+  //   title: 'Finance & Savings Platforms',
+  //   desc: 'SACCO, chama, and microfinance platforms with member management, contribution tracking, loan applications, repayment schedules, guarantor management, and financial reporting.',
+  //   color: 'green',
+  // },
   {
     icon: <Globe size={24} />,
     title: 'Portals & SaaS Products',
@@ -133,13 +132,13 @@ const SERVICES = [
     color: 'indigo',
 
   },
-  {
-    icon: <MessageSquare size={24} />,
-    title: 'HR & Payroll Systems',
-    desc: 'Employee management platforms covering onboarding, leave requests, payroll processing, payslip generation, performance reviews, and department reporting for growing teams.',
-    color: 'pink',
+  // {
+  //   icon: <MessageSquare size={24} />,
+  //   title: 'HR & Payroll Systems',
+  //   desc: 'Employee management platforms covering onboarding, leave requests, payroll processing, payslip generation, performance reviews, and department reporting for growing teams.',
+  //   color: 'pink',
 
-  },
+  // },
   {
     icon: <Cpu size={24} />,
     title: 'Custom Software Solutions',
@@ -153,12 +152,12 @@ const SERVICES = [
     desc: 'Reliable integration with third-party services like payment gateways (M-Pesa, Stripe), SMS/email providers, CRMs, accounting tools, and APIs — ensuring seamless data flow and communication between your systems.',
     color: 'blue',
   },
-  {
-    icon: <Workflow size={24} />,
-    title: 'Workflow Automation Systems',
-    desc: 'Automation of repetitive business processes using custom workflows, triggers, and background jobs — reducing manual work, minimizing errors, and improving operational efficiency across your organization.',
-    color: 'teal',
-  },
+  // {
+  //   icon: <Workflow size={24} />,
+  //   title: 'Workflow Automation Systems',
+  //   desc: 'Automation of repetitive business processes using custom workflows, triggers, and background jobs — reducing manual work, minimizing errors, and improving operational efficiency across your organization.',
+  //   color: 'teal',
+  // },
 
 ]
 
