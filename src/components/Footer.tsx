@@ -18,6 +18,7 @@ import {
   Wrench,
 } from "lucide-react"
 import { Link, linkOptions, useRouter } from "@tanstack/react-router"
+import Brand from "./Brand"
 
 const links =linkOptions ([
   { label: "Home", to: "/", icon: Home },
@@ -51,12 +52,7 @@ export default function Footer() {
               />
             </Link>
             <Stack gap={4}>
-              <div className="text-base font-bold text-slate-900 dark:text-slate-50">
-                Abdallah Shee
-              </div>
-              <div className="text-sm text-slate-500 dark:text-slate-400">
-               IT Support Specialist | Software Developer
-              </div>
+            <Brand/>
               <div className="text-sm text-slate-500 dark:text-slate-400">
                 Nairobi, Kenya 🇰🇪
               </div>

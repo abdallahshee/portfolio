@@ -12,6 +12,7 @@ import { Sun, Moon, Briefcase, Home, Folder, Mail, Wrench } from "lucide-react"
 import { useRouter } from "@tanstack/react-router"
 import { Route as RootRoute } from "@/routes/__root"
 import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import Brand from "./Brand"
 
 type ThemeMode = "light" | "dark"
 
@@ -88,14 +89,7 @@ export default function Header() {
         fit="cover"
         className="transition-opacity duration-200 hover:opacity-80"
       />
-      <div className="flex flex-col leading-tight">
-        <span className="text-sm font-semibold tracking-tight text-slate-800 dark:text-slate-100">
-          Abdallah Shee
-        </span>
-        <span className="text-xs font-medium tracking-wide text-slate-500 dark:text-slate-400">
-         IT Support Specialist | Software Developer
-        </span>
-      </div>
+   <Brand/>
     </Link>
   )
 
@@ -197,14 +191,7 @@ export default function Header() {
               fit="cover"
               className="transition-opacity duration-200 hover:opacity-80"
             />
-            <div className="flex flex-col leading-tight">
-              <span className="text-sm font-semibold tracking-tight text-slate-800 dark:text-slate-100">
-                Abdallah Shee
-              </span>
-              <span className="text-xs font-medium tracking-wide text-slate-500 dark:text-slate-400">
-                IT Support Specialist | Software Developer
-              </span>
-            </div>
+       <Brand/>
           </div>
         }
         className="md:hidden"
