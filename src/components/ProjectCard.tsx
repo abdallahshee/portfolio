@@ -22,21 +22,20 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       <Stack gap="sm" className="min-w-0">
 
         {/* Image */}
-
-        <div className="relative flex h-[180px] items-center justify-center overflow-hidden rounded-md bg-slate-100 dark:bg-slate-800">
+        <div className="relative h-[160px] w-full overflow-hidden rounded-md bg-slate-100 dark:bg-slate-800">
           {project.imageUrl ? (
             <Image
               src={project.imageUrl}
               alt={project.title ?? "Project image"}
-              height={180}
               fit="cover"
-              radius="md" // 👈 add this
-              className="h-full w-full transition-transform duration-300 hover:scale-105"
+              className="absolute inset-0 h-full w-full transition-transform duration-300 hover:scale-105"
             />
           ) : (
-            <ThemeIcon size={56} radius="md" variant="light" color="gray">
-              <FolderKanban size={28} />
-            </ThemeIcon>
+            <div className="flex h-full w-full items-center justify-center">
+              <ThemeIcon size={56} radius="md" variant="light" color="gray">
+                <FolderKanban size={28} />
+              </ThemeIcon>
+            </div>
           )}
 
           {isRecent && (

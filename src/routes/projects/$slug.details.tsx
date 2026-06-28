@@ -9,14 +9,13 @@ import {
   Stack,
   Text,
   ThemeIcon,
-  RingProgress,
+  Progress,
   Container,
 } from "@mantine/core"
 
 import {
   ArrowLeft,
   CalendarDays,
-  ExternalLink,
   Globe,
   Pencil,
   RefreshCw,
@@ -79,17 +78,17 @@ function ProjectDetails() {
 
   const color = progressColor(project.progress)
   const label = progressLabel(project.progress)
-
   const technologies = project.technologies ?? []
   const roles = project.roles ?? []
   const nextSteps = project.nextSteps ?? []
 
   return (
-    <div className="space-y-8 py-10">
-      <Stack gap="xl">
+    // ONE MAIN GRID — single column, every block takes the full row width.
+    <div className="grid grid-cols-1 gap-6 py-10">
 
-        {/* HEADER */}
-        <Paper radius="xl" p="xl" withBorder className="shadow-sm">
+      {/* HEADER — title/actions + project info row (progress, dates, links) */}
+      <Paper radius="sm" p="xl" withBorder className="shadow-sm">
+        <Stack gap="lg">
           <Group justify="space-between" align="flex-start">
             <Stack gap={6}>
               <Group gap="xs">
@@ -101,9 +100,7 @@ function ProjectDetails() {
                 </Text>
               </Group>
 
-              <div className="text-3xl font-bold">
-                {project.title}
-              </div>
+              <div className="text-3xl font-bold">{project.title}</div>
 
               <Group gap="xs" mt={4}>
                 {project.isFeatured && (
@@ -157,7 +154,7 @@ function ProjectDetails() {
                   Back
                 </Button>
               </Link>
-              {user &&
+              {user && (
                 <Link to="/projects/$slug/edit" params={{ slug: project.slug! }}>
                   <Button
                     variant="light"
@@ -169,219 +166,65 @@ function ProjectDetails() {
                     Edit
                   </Button>
                 </Link>
-              }
+              )}
             </Group>
           </Group>
-        </Paper>
 
-        {/* BODY */}
-        <div className="grid gap-6 lg:grid-cols-[1fr_400px]">
+          <Divider />
 
-          {/* LEFT */}
+          {/* PROJECT INFO ROW — progress, dates, live/source links */}
           <Stack gap="lg">
-
-            {/* IMAGE */}
-            <Card radius="xl" withBorder p="md" className="overflow-hidden shadow-sm">
-              {project.imageUrl ? (
-                <Image
-                  src={project.imageUrl}
-                  alt={project.title ?? "Project image"}
-                  radius="lg"
-                  fit="cover"
-                  h={420}
-                />
-              ) : (
-                <div className="flex h-[340px] items-center justify-center rounded-xl bg-slate-100 text-slate-400 dark:bg-slate-800">
-                  No image available
-                </div>
-              )}
-            </Card>
-
-            {/* DESCRIPTION */}
-            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
-              <Stack gap="md">
-                <Text fw={500} size="sm" c="dimmed" tt="uppercase">
-                  About this project
+            {/* Progress bar — full width */}
+            <Stack gap={6}>
+              <Group justify="space-between">
+                <Text size="sm" fw={500} c="dimmed">
+                  Progress
                 </Text>
-
-                <Divider />
-
-                <Text size="sm" lh={1.9} c="dimmed">
-                  {project.description}
-                </Text>
-              </Stack>
-            </Paper>
-
-            {/* MY ROLE */}
-            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
-              <Stack gap="md">
-                <Group gap="xs">
-                  <ListChecks size={16} className="text-slate-500" />
-                  <Text fw={500} size="sm" c="dimmed" tt="uppercase">
-                    My Role
-                  </Text>
-                </Group>
-
-                <Divider />
-
-                {roles.length === 0 ? (
-                  <Text size="sm" c="dimmed">
-                    No role details listed for this project.
-                  </Text>
-                ) : (
-                  <Stack gap="sm">
-                    {roles.map((role: string, index: number) => (
-                      <Group key={index} gap="sm" align="flex-start" wrap="nowrap">
-                        <ThemeIcon
-                          variant="light"
-                          color="indigo"
-                          radius="xl"
-                          size="sm"
-                          style={{ flexShrink: 0, marginTop: 2 }}
-                        >
-                          <CheckCircle2 size={12} />
-                        </ThemeIcon>
-                        <Text size="sm" lh={1.7} c="dimmed">
-                          {role}
-                        </Text>
-                      </Group>
-                    ))}
-                  </Stack>
-                )}
-              </Stack>
-            </Paper>
-
-            {/* TECHNOLOGIES */}
-
-            {/* NEXT STEPS */}
-            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
-              <Stack gap="md">
-                <Group gap="xs">
-                  <Rocket size={16} className="text-slate-500" />
-                  <Text fw={500} size="sm" c="dimmed" tt="uppercase">
-                    What's Next
-                  </Text>
-                </Group>
-
-                <Divider />
-
-                {nextSteps.length === 0 ? (
-                  <Text size="sm" c="dimmed">
-                    {project.progress === 100
-                      ? "This project is complete — no further steps planned."
-                      : "No upcoming steps listed for this project yet."}
-                  </Text>
-                ) : (
-                  <Stack gap="sm">
-                    {nextSteps.map((step: string, index: number) => (
-                      <Group key={index} gap="sm" align="flex-start" wrap="nowrap">
-                        <ThemeIcon
-                          variant="light"
-                          color="orange"
-                          radius="xl"
-                          size="sm"
-                          style={{ flexShrink: 0, marginTop: 2 }}
-                        >
-                          <Circle size={10} />
-                        </ThemeIcon>
-                        <Text size="sm" lh={1.7} c="dimmed">
-                          {step}
-                        </Text>
-                      </Group>
-                    ))}
-                  </Stack>
-                )}
-              </Stack>
-            </Paper>
-            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
-              <Stack gap="md">
-                <Group gap="xs">
-                  <Code2 size={16} className="text-slate-500" />
-                  <Text fw={500} size="sm" c="dimmed" tt="uppercase">
-                    Technologies Used
-                  </Text>
-                </Group>
-
-                <Divider />
-
-                {technologies.length === 0 ? (
-                  <Text size="sm" c="dimmed">
-                    No technologies listed for this project.
-                  </Text>
-                ) : (
-                  <Group gap="xs">
-                    {technologies.map((tech: string) => (
-                      <Badge
-                        key={tech}
-                        radius="xl"
-                        variant="light"
-                        color="blue"
-                      >
-                        {tech}
-                      </Badge>
-                    ))}
-                  </Group>
-                )}
-              </Stack>
-            </Paper>
-
-          </Stack>
-
-          {/* RIGHT SIDEBAR */}
-          <Stack gap="lg">
-
-            {/* META */}
-            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
-              <Stack gap="md">
-                <Text fw={500} size="sm" c="dimmed" tt="uppercase" className="text-center">
-                  Info
-                </Text>
-
-                <Divider />
-                <Stack gap="md" align="center">
-                  <RingProgress
-                    size={180}
-                    thickness={16}
-                    roundCaps
-                    sections={[{ value: project.progress, color }]}
-                    label={
-                      <Stack gap={2} align="center">
-                        <Text fw={700} size="xl" c={color}>
-                          {project.progress}%
-                        </Text>
-                        <Text size="xs" c="dimmed">
-                          {label}
-                        </Text>
-                      </Stack>
-                    }
-                  />
-
-                  <Text size="xs" c="dimmed" ta="center">
-                    {project.progress === 100
+                <Text size="sm" fw={700} c={color}>
+                  {project.progress}%{" "}
+                  <Text component="span" size="xs" c="dimmed" fw={400}>
+                    ({project.progress === 100
                       ? "Completed"
-                      : `${100 - project.progress}% remaining`}
+                      : `${100 - project.progress}% remaining`})
                   </Text>
-                </Stack>
-                <Group justify="space-between">
-                  <Group gap={6}>
-                    <CalendarDays size={14} />
-                    <Text size="sm" c="dimmed">Created</Text>
-                  </Group>
-                  <Text size="sm" fw={500}>
-                    {moment(project.createdAt).format("D MMMM YYYY")}
-                  </Text>
+                </Text>
+              </Group>
+              <Progress value={project.progress} color={color} size="lg" radius="xl" />
+            </Stack>
+
+            {/* Dates + links */}
+            <Group justify="space-between" align="center" wrap="wrap" gap="xl">
+              <Group gap="xl" wrap="wrap">
+                <Group gap="sm">
+                  <ThemeIcon variant="light" color="gray" radius="xl" size="lg">
+                    <CalendarDays size={16} />
+                  </ThemeIcon>
+                  <Stack gap={0}>
+                    <Text size="xs" c="dimmed">
+                      Created
+                    </Text>
+                    <Text size="sm" fw={500}>
+                      {moment(project.createdAt).format("D MMMM YYYY")}
+                    </Text>
+                  </Stack>
                 </Group>
 
-                <Group justify="space-between">
-                  <Group gap={6}>
-                    <RefreshCw size={14} />
-                    <Text size="sm" c="dimmed">Updated</Text>
-                  </Group>
-                  <Text size="sm" fw={500}>
-                    {moment(project.updatedAt).fromNow()}
-                  </Text>
+                <Group gap="sm">
+                  <ThemeIcon variant="light" color="gray" radius="xl" size="lg">
+                    <RefreshCw size={16} />
+                  </ThemeIcon>
+                  <Stack gap={0}>
+                    <Text size="xs" c="dimmed">
+                      Updated
+                    </Text>
+                    <Text size="sm" fw={500}>
+                      {moment(project.updatedAt).fromNow()}
+                    </Text>
+                  </Stack>
                 </Group>
-                {/* Live URL */}
+              </Group>
+
+              <Group gap="sm" wrap="wrap">
                 {project.liveUrl ? (
                   <Button
                     component="a"
@@ -390,7 +233,6 @@ function ProjectDetails() {
                     radius="md"
                     size="sm"
                     leftSection={<Globe size={15} />}
-                    fullWidth
                   >
                     Visit live site
                   </Button>
@@ -399,16 +241,14 @@ function ProjectDetails() {
                     radius="md"
                     size="sm"
                     leftSection={<Globe size={15} />}
-                    fullWidth
                     disabled
                     variant="light"
                     color="gray"
                   >
-                    No live site — API or private deployment
+                    No live site
                   </Button>
                 )}
 
-                {/* GitHub URL */}
                 {project.githubUrl ? (
                   <Button
                     component="a"
@@ -418,35 +258,158 @@ function ProjectDetails() {
                     radius="md"
                     size="sm"
                     leftSection={<Github size={15} />}
-                    fullWidth
                   >
-                    View source code
+                    View source
                   </Button>
                 ) : (
                   <Button
                     radius="md"
                     size="sm"
                     leftSection={<Github size={15} />}
-                    fullWidth
                     disabled
                     variant="light"
                     color="gray"
                   >
-                    Source code is private
+                    Source is private
                   </Button>
                 )}
-              </Stack>
-            </Paper>
-
-            <Link to="/projects">
-              <Button fullWidth variant="outline" rightSection={<ExternalLink size={15} />}>
-                View more projects
-              </Button>
-            </Link>
-
+              </Group>
+            </Group>
           </Stack>
-        </div>
-      </Stack>
+        </Stack>
+      </Paper>
+
+      {/* IMAGE */}
+      <Card radius="xl" withBorder p="md" className="overflow-hidden shadow-sm">
+        {project.imageUrl ? (
+          <Image
+            src={project.imageUrl}
+            alt={project.title ?? "Project image"}
+            radius="lg"
+            fit="cover"
+            h={420}
+          />
+        ) : (
+          <div className="flex h-[340px] items-center justify-center rounded-xl bg-slate-100 text-slate-400 dark:bg-slate-800">
+            No image available
+          </div>
+        )}
+      </Card>
+
+      {/* ABOUT */}
+      <Paper p="sm" className="shadow-sm">
+        <Stack gap="md">
+          <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+            About this project
+          </Text>
+          <Divider />
+          <Text size="sm" lh={1.9} c="dimmed">
+            {project.description}
+          </Text>
+        </Stack>
+      </Paper>
+
+      {/* MY ROLE */}
+      <Paper p="sm" className="shadow-sm">
+        <Stack gap="md">
+          <Group gap="xs">
+            <ListChecks size={16} className="text-slate-500" />
+            <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+              My Role
+            </Text>
+          </Group>
+          <Divider />
+          {roles.length === 0 ? (
+            <Text size="sm" c="dimmed">
+              No role details listed for this project.
+            </Text>
+          ) : (
+            <Stack gap="sm">
+              {roles.map((role: string, index: number) => (
+                <Group key={index} gap="sm" align="flex-start" wrap="nowrap">
+                  <ThemeIcon
+                    variant="light"
+                    color="indigo"
+                    radius="xl"
+                    size="sm"
+                    style={{ flexShrink: 0, marginTop: 2 }}
+                  >
+                    <CheckCircle2 size={12} />
+                  </ThemeIcon>
+                  <Text size="sm" lh={1.7} c="dimmed">
+                    {role}
+                  </Text>
+                </Group>
+              ))}
+            </Stack>
+          )}
+        </Stack>
+      </Paper>
+
+      {/* WHAT'S NEXT */}
+      <Paper p="sm" className="shadow-sm">
+        <Stack gap="md">
+          <Group gap="xs">
+            <Rocket size={16} className="text-slate-500" />
+            <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+              What's Next
+            </Text>
+          </Group>
+          <Divider />
+          {nextSteps.length === 0 ? (
+            <Text size="sm" c="dimmed">
+              {project.progress === 100
+                ? "This project is complete — no further steps planned."
+                : "No upcoming steps listed for this project yet."}
+            </Text>
+          ) : (
+            <Stack gap="sm">
+              {nextSteps.map((step: string, index: number) => (
+                <Group key={index} gap="sm" align="flex-start" wrap="nowrap">
+                  <ThemeIcon
+                    variant="light"
+                    color="orange"
+                    radius="xl"
+                    size="sm"
+                    style={{ flexShrink: 0, marginTop: 2 }}
+                  >
+                    <Circle size={10} />
+                  </ThemeIcon>
+                  <Text size="sm" lh={1.7} c="dimmed">
+                    {step}
+                  </Text>
+                </Group>
+              ))}
+            </Stack>
+          )}
+        </Stack>
+      </Paper>
+
+      {/* TECH STACK */}
+      <Paper p="sm" className="shadow-sm">
+        <Stack gap="md">
+          <Group gap="xs">
+            <Code2 size={16} className="text-slate-500" />
+            <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+              Tech Stack
+            </Text>
+          </Group>
+          <Divider />
+          {technologies.length === 0 ? (
+            <Text size="sm" c="dimmed">
+              No technologies listed for this project.
+            </Text>
+          ) : (
+            <Group gap="xs">
+              {technologies.map((tech: string) => (
+                <Badge key={tech} radius="xl" variant="light" color="blue">
+                  {tech}
+                </Badge>
+              ))}
+            </Group>
+          )}
+        </Stack>
+      </Paper>
     </div>
   )
 }
