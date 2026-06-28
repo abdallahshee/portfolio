@@ -236,7 +236,7 @@ function App() {
           />
 
           {/* Overlay */}
-{/*     
+          {/*     
           <div className="absolute inset-0 " />
           <div className="absolute inset-0 flex items-end justify-center">
             <div className="px-6 pb-2 sm:px-10 lg:px-16">
@@ -252,7 +252,7 @@ function App() {
         <div className="grid grid-cols-1">
 
           {/* LEFT */}
-<Stack gap="lg" className="w-full pb-2 lg:border-b-0 lg:pb-0">
+          <Stack gap="lg" className="w-full pb-2 lg:border-b-0 lg:pb-0">
             <div className="title2">About Me</div>
             <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
               I'm <strong>Abdallah Shee</strong>, a Full-Stack Software Developer based in Nairobi, Kenya 🇰🇪. I specialize in designing, building, and deploying reliable, production-ready web applications, with a strong focus on clean architecture, performance optimization, and user experience. My work spans the full stack — from crafting responsive, accessible interfaces with React and Next.js to building scalable, type-safe APIs and well-structured databases that power real business needs.

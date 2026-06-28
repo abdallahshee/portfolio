@@ -185,9 +185,11 @@ export const getTopFeaturedProjects = createServerFn({ method: "GET" })
           slug: project.slug,
           title: project.title,
           imageUrl: project.imageUrl,
-          updatedAt: project.updatedAt, 
+          updatedAt: project.updatedAt,
         })
         .from(project)
+        .where(eq(project.isFeatured, true))
+        .orderBy(desc(project.updatedAt))
         .limit(5);
 
       return featuredProjects;
