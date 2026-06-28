@@ -75,6 +75,9 @@ function RouteComponent() {
       isFeatured: project?.isFeatured ?? false,
       progress: project?.progress ?? 0,
       technologies: project?.technologies ?? [],
+      roles: project?.roles ?? [],
+      nextSteps:project?.nextSteps??[],
+      isContributor:project?.isContributor??false
     },
     validate: schemaResolver(UpdateProjectSchema,{sync:true}),
     validateInputOnBlur: true,
@@ -293,7 +296,10 @@ function RouteComponent() {
                       label="Featured project"
                       {...form.getInputProps("isFeatured", { type: "checkbox" })}
                     />
-
+  <Checkbox
+                      label="Are you a Contributor"
+                      {...form.getInputProps("isContributor", { type: "checkbox" })}
+                    />
                     {/* TECHNOLOGIES */}
                     <div className="space-y-3">
                       <Group justify="space-between">

@@ -24,6 +24,12 @@ import {
   Star,
   Github,
   Code2,
+  ListChecks,
+  CheckCircle2,
+  User,
+  Users,
+  Rocket,
+  Circle,
 } from "lucide-react"
 
 import { createFileRoute, Link } from "@tanstack/react-router"
@@ -75,6 +81,8 @@ function ProjectDetails() {
   const label = progressLabel(project.progress)
 
   const technologies = project.technologies ?? []
+  const roles = project.roles ?? []
+  const nextSteps = project.nextSteps ?? []
 
   return (
     <div className="space-y-8 py-10">
@@ -113,6 +121,28 @@ function ProjectDetails() {
                 <Badge variant="light" color={color} radius="md" size="sm">
                   {label}
                 </Badge>
+
+                {project.isContributor ? (
+                  <Badge
+                    variant="light"
+                    color="grape"
+                    radius="md"
+                    size="sm"
+                    leftSection={<Users size={11} />}
+                  >
+                    Collaborative Project
+                  </Badge>
+                ) : (
+                  <Badge
+                    variant="light"
+                    color="teal"
+                    radius="md"
+                    size="sm"
+                    leftSection={<User size={11} />}
+                  >
+                    Solo Project
+                  </Badge>
+                )}
               </Group>
             </Stack>
 
@@ -182,7 +212,46 @@ function ProjectDetails() {
               </Stack>
             </Paper>
 
-            {/* TECHNOLOGIES (NEW) */}
+            {/* MY ROLE */}
+            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
+              <Stack gap="md">
+                <Group gap="xs">
+                  <ListChecks size={16} className="text-slate-500" />
+                  <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+                    My Role
+                  </Text>
+                </Group>
+
+                <Divider />
+
+                {roles.length === 0 ? (
+                  <Text size="sm" c="dimmed">
+                    No role details listed for this project.
+                  </Text>
+                ) : (
+                  <Stack gap="sm">
+                    {roles.map((role: string, index: number) => (
+                      <Group key={index} gap="sm" align="flex-start" wrap="nowrap">
+                        <ThemeIcon
+                          variant="light"
+                          color="indigo"
+                          radius="xl"
+                          size="sm"
+                          style={{ flexShrink: 0, marginTop: 2 }}
+                        >
+                          <CheckCircle2 size={12} />
+                        </ThemeIcon>
+                        <Text size="sm" lh={1.7} c="dimmed">
+                          {role}
+                        </Text>
+                      </Group>
+                    ))}
+                  </Stack>
+                )}
+              </Stack>
+            </Paper>
+
+            {/* TECHNOLOGIES */}
             <Paper radius="xl" withBorder p="xl" className="shadow-sm">
               <Stack gap="md">
                 <Group gap="xs">
@@ -215,6 +284,47 @@ function ProjectDetails() {
               </Stack>
             </Paper>
 
+            {/* NEXT STEPS */}
+            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
+              <Stack gap="md">
+                <Group gap="xs">
+                  <Rocket size={16} className="text-slate-500" />
+                  <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+                    What's Next
+                  </Text>
+                </Group>
+
+                <Divider />
+
+                {nextSteps.length === 0 ? (
+                  <Text size="sm" c="dimmed">
+                    {project.progress === 100
+                      ? "This project is complete — no further steps planned."
+                      : "No upcoming steps listed for this project yet."}
+                  </Text>
+                ) : (
+                  <Stack gap="sm">
+                    {nextSteps.map((step: string, index: number) => (
+                      <Group key={index} gap="sm" align="flex-start" wrap="nowrap">
+                        <ThemeIcon
+                          variant="light"
+                          color="orange"
+                          radius="xl"
+                          size="sm"
+                          style={{ flexShrink: 0, marginTop: 2 }}
+                        >
+                          <Circle size={10} />
+                        </ThemeIcon>
+                        <Text size="sm" lh={1.7} c="dimmed">
+                          {step}
+                        </Text>
+                      </Group>
+                    ))}
+                  </Stack>
+                )}
+              </Stack>
+            </Paper>
+
           </Stack>
 
           {/* RIGHT SIDEBAR */}
@@ -229,12 +339,6 @@ function ProjectDetails() {
 
                 <Divider />
                 <Stack gap="md" align="center">
-                  {/* <Text fw={500} size="sm" c="dimmed" tt="uppercase">
-                    Progress
-                  </Text> */}
-
-                  {/* <Divider w="100%" /> */}
-
                   <RingProgress
                     size={180}
                     thickness={16}

@@ -35,6 +35,7 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
           id: project.id,
           title: project.title,
           slug: project.slug,
+          roles:project.roles,
           progress: project.progress,
           githubUrl: project.githubUrl,
           description: project.description,
@@ -43,7 +44,9 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
           technologies: project.technologies,
           liveUrl: project.liveUrl,
           createdAt: project.createdAt,
+          isContributor:project.isContributor,
           updatedAt: project.updatedAt,
+          nextSteps:project.nextSteps
         })
         .from(project)
         .where(eq(project.slug, data.slug));
@@ -76,6 +79,8 @@ export const getProjectById = createServerFn({ method: "GET" })
           liveUrl: project.liveUrl,
           createdAt: project.createdAt,
           updatedAt: project.updatedAt,
+          isContributor:project.isContributor,
+                 next:project.nextSteps
         })
         .from(project)
         .where(eq(project.id, data.projectId));
@@ -110,8 +115,11 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
             technologies: project.technologies,
             isFeatured: project.isFeatured, // 👈 was missing
             progress: project.progress,
+            roles:project.roles,
             createdAt: project.createdAt,
+            isContributor:project.isContributor,
             updatedAt: project.updatedAt,
+                   next:project.nextSteps
           })
           .from(project)
           .orderBy(desc(project.createdAt))
@@ -215,10 +223,13 @@ export const searchProjects = createServerFn({ method: "GET" })
             githubUrl: project.githubUrl,
             liveUrl: project.liveUrl,
             technologies: project.technologies,
+            roles:project.roles,
             isFeatured: project.isFeatured, // 👈 was missing
             progress: project.progress,
             createdAt: project.createdAt,
+            isContributor:project.isContributor,
             updatedAt: project.updatedAt,
+                   next:project.nextSteps
           })
           .from(project)
           .where(whereClause)

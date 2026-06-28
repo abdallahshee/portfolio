@@ -110,7 +110,6 @@ const SERVICES = [
   //   title: 'Business & Inventory Systems',
   //   desc: 'Custom ERP-lite solutions for SMEs — stock management, purchase orders, supplier tracking, sales reporting, and real-time business insights that help you make faster, smarter decisions.',
   //   color: 'blue',
-
   // },
   {
     icon: <CalendarClock size={24} />,

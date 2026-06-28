@@ -12,16 +12,19 @@ export const project = pgTable(
     imageUrl: text("image_url"),
     githubUrl: text('github_url'),
     liveUrl: text('live_url'),
-    isFeatured: boolean('is_featured'),  // 👈 also fixed typo: isFeatures → isFeatured
+    isFeatured: boolean('is_featured'),
     progress: integer("progress").default(0).notNull(),
     technologies: text("technologies").array().notNull().default([]),
+    roles: text("roles").array().default([]), 
+    nextSteps: text("next-steps").array().default([]),  // 👈 new field — what you did on this project
     createdAt: timestamp("created_at").defaultNow().notNull(),
+    isContributor: boolean('is_contributor').default(false),  
     updatedAt: timestamp("updated_at")
       .defaultNow()
       .$onUpdate(() => new Date())
       .notNull(),
   },
-  (table) => [   // 👈 return an array, not an object
+  (table) => [
     check(
       "progress_range_check",
       sql`${table.progress} >= 0 AND ${table.progress} <= 100`

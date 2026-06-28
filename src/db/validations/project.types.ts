@@ -14,7 +14,10 @@ const ProjectSchema = createSelectSchema(project, {
   isFeatured: z.boolean(),
   liveUrl: z.string(),   // 👈 matches table column name now
   githubUrl: z.string(),
-   technologies: z.array(z.string()).default([]), // 👈 must be here
+  technologies: z.array(z.string()).default([]), // 👈 must be here
+  roles: z.array(z.string()).default([]), // 👈 must be here
+  isContributor:z.boolean(),
+  nextSteps: z.array(z.string()).default([]),
 })
 
 export const CreateProjectSchema = ProjectSchema.pick({
@@ -25,7 +28,10 @@ export const CreateProjectSchema = ProjectSchema.pick({
     liveUrl: true,
     githubUrl: true,
     progress: true,
-    technologies:true
+    technologies:true,
+    roles:true,
+    nextSteps:true,
+    isContributor:true
 })
 export type ProjectRequest = z.infer<typeof CreateProjectSchema>
 
