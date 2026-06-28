@@ -252,37 +252,6 @@ function ProjectDetails() {
             </Paper>
 
             {/* TECHNOLOGIES */}
-            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
-              <Stack gap="md">
-                <Group gap="xs">
-                  <Code2 size={16} className="text-slate-500" />
-                  <Text fw={500} size="sm" c="dimmed" tt="uppercase">
-                    Technologies Used
-                  </Text>
-                </Group>
-
-                <Divider />
-
-                {technologies.length === 0 ? (
-                  <Text size="sm" c="dimmed">
-                    No technologies listed for this project.
-                  </Text>
-                ) : (
-                  <Group gap="xs">
-                    {technologies.map((tech: string) => (
-                      <Badge
-                        key={tech}
-                        radius="xl"
-                        variant="light"
-                        color="blue"
-                      >
-                        {tech}
-                      </Badge>
-                    ))}
-                  </Group>
-                )}
-              </Stack>
-            </Paper>
 
             {/* NEXT STEPS */}
             <Paper radius="xl" withBorder p="xl" className="shadow-sm">
@@ -321,6 +290,37 @@ function ProjectDetails() {
                       </Group>
                     ))}
                   </Stack>
+                )}
+              </Stack>
+            </Paper>
+            <Paper radius="xl" withBorder p="xl" className="shadow-sm">
+              <Stack gap="md">
+                <Group gap="xs">
+                  <Code2 size={16} className="text-slate-500" />
+                  <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+                    Technologies Used
+                  </Text>
+                </Group>
+
+                <Divider />
+
+                {technologies.length === 0 ? (
+                  <Text size="sm" c="dimmed">
+                    No technologies listed for this project.
+                  </Text>
+                ) : (
+                  <Group gap="xs">
+                    {technologies.map((tech: string) => (
+                      <Badge
+                        key={tech}
+                        radius="xl"
+                        variant="light"
+                        color="blue"
+                      >
+                        {tech}
+                      </Badge>
+                    ))}
+                  </Group>
                 )}
               </Stack>
             </Paper>
