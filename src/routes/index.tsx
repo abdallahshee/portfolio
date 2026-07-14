@@ -185,7 +185,7 @@ function FeaturedProjectsSection() {
                     leftSection={<ExternalLink size={14} />}
                     onClick={(e) => e.stopPropagation()}
                   >
-                    Live Demo
+                    Live Site
                   </Button>
                 )}
               </div>
