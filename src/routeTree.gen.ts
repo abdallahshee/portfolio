@@ -15,13 +15,8 @@ import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ContactsRouteImport } from './routes/contacts'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
-import { Route as AccountRouteRouteImport } from './routes/account/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
-import { Route as AccountIndexRouteImport } from './routes/account/index'
-import { Route as ProjectsNewRouteImport } from './routes/projects/new'
-import { Route as AccountRegisterRouteImport } from './routes/account/register'
-import { Route as ProjectsSlugEditRouteImport } from './routes/projects/$slug.edit'
 import { Route as ProjectsSlugDetailsRouteImport } from './routes/projects/$slug.details'
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
@@ -54,11 +49,6 @@ const ProjectsRouteRoute = ProjectsRouteRouteImport.update({
   path: '/projects',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AccountRouteRoute = AccountRouteRouteImport.update({
-  id: '/account',
-  path: '/account',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -69,26 +59,6 @@ const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
-const AccountIndexRoute = AccountIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AccountRouteRoute,
-} as any)
-const ProjectsNewRoute = ProjectsNewRouteImport.update({
-  id: '/new',
-  path: '/new',
-  getParentRoute: () => ProjectsRouteRoute,
-} as any)
-const AccountRegisterRoute = AccountRegisterRouteImport.update({
-  id: '/register',
-  path: '/register',
-  getParentRoute: () => AccountRouteRoute,
-} as any)
-const ProjectsSlugEditRoute = ProjectsSlugEditRouteImport.update({
-  id: '/$slug/edit',
-  path: '/$slug/edit',
-  getParentRoute: () => ProjectsRouteRoute,
-} as any)
 const ProjectsSlugDetailsRoute = ProjectsSlugDetailsRouteImport.update({
   id: '/$slug/details',
   path: '/$slug/details',
@@ -97,19 +67,14 @@ const ProjectsSlugDetailsRoute = ProjectsSlugDetailsRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/account': typeof AccountRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/$': typeof SplatRoute
   '/contacts': typeof ContactsRoute
   '/services': typeof ServicesRoute
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
-  '/account/register': typeof AccountRegisterRoute
-  '/projects/new': typeof ProjectsNewRoute
-  '/account/': typeof AccountIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
-  '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -118,47 +83,33 @@ export interface FileRoutesByTo {
   '/services': typeof ServicesRoute
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
-  '/account/register': typeof AccountRegisterRoute
-  '/projects/new': typeof ProjectsNewRoute
-  '/account': typeof AccountIndexRoute
   '/projects': typeof ProjectsIndexRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
-  '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/account': typeof AccountRouteRouteWithChildren
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/$': typeof SplatRoute
   '/contacts': typeof ContactsRoute
   '/services': typeof ServicesRoute
   '/tools-process': typeof ToolsProcessRoute
   '/unauthorized': typeof UnauthorizedRoute
-  '/account/register': typeof AccountRegisterRoute
-  '/projects/new': typeof ProjectsNewRoute
-  '/account/': typeof AccountIndexRoute
   '/projects/': typeof ProjectsIndexRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
-  '/projects/$slug/edit': typeof ProjectsSlugEditRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/account'
     | '/projects'
     | '/$'
     | '/contacts'
     | '/services'
     | '/tools-process'
     | '/unauthorized'
-    | '/account/register'
-    | '/projects/new'
-    | '/account/'
     | '/projects/'
     | '/projects/$slug/details'
-    | '/projects/$slug/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -167,33 +118,23 @@ export interface FileRouteTypes {
     | '/services'
     | '/tools-process'
     | '/unauthorized'
-    | '/account/register'
-    | '/projects/new'
-    | '/account'
     | '/projects'
     | '/projects/$slug/details'
-    | '/projects/$slug/edit'
   id:
     | '__root__'
     | '/'
-    | '/account'
     | '/projects'
     | '/$'
     | '/contacts'
     | '/services'
     | '/tools-process'
     | '/unauthorized'
-    | '/account/register'
-    | '/projects/new'
-    | '/account/'
     | '/projects/'
     | '/projects/$slug/details'
-    | '/projects/$slug/edit'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AccountRouteRoute: typeof AccountRouteRouteWithChildren
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
   SplatRoute: typeof SplatRoute
   ContactsRoute: typeof ContactsRoute
@@ -246,13 +187,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/account': {
-      id: '/account'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof AccountRouteRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -267,34 +201,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
-    '/account/': {
-      id: '/account/'
-      path: '/'
-      fullPath: '/account/'
-      preLoaderRoute: typeof AccountIndexRouteImport
-      parentRoute: typeof AccountRouteRoute
-    }
-    '/projects/new': {
-      id: '/projects/new'
-      path: '/new'
-      fullPath: '/projects/new'
-      preLoaderRoute: typeof ProjectsNewRouteImport
-      parentRoute: typeof ProjectsRouteRoute
-    }
-    '/account/register': {
-      id: '/account/register'
-      path: '/register'
-      fullPath: '/account/register'
-      preLoaderRoute: typeof AccountRegisterRouteImport
-      parentRoute: typeof AccountRouteRoute
-    }
-    '/projects/$slug/edit': {
-      id: '/projects/$slug/edit'
-      path: '/$slug/edit'
-      fullPath: '/projects/$slug/edit'
-      preLoaderRoute: typeof ProjectsSlugEditRouteImport
-      parentRoute: typeof ProjectsRouteRoute
-    }
     '/projects/$slug/details': {
       id: '/projects/$slug/details'
       path: '/$slug/details'
@@ -305,32 +211,14 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface AccountRouteRouteChildren {
-  AccountRegisterRoute: typeof AccountRegisterRoute
-  AccountIndexRoute: typeof AccountIndexRoute
-}
-
-const AccountRouteRouteChildren: AccountRouteRouteChildren = {
-  AccountRegisterRoute: AccountRegisterRoute,
-  AccountIndexRoute: AccountIndexRoute,
-}
-
-const AccountRouteRouteWithChildren = AccountRouteRoute._addFileChildren(
-  AccountRouteRouteChildren,
-)
-
 interface ProjectsRouteRouteChildren {
-  ProjectsNewRoute: typeof ProjectsNewRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
   ProjectsSlugDetailsRoute: typeof ProjectsSlugDetailsRoute
-  ProjectsSlugEditRoute: typeof ProjectsSlugEditRoute
 }
 
 const ProjectsRouteRouteChildren: ProjectsRouteRouteChildren = {
-  ProjectsNewRoute: ProjectsNewRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
   ProjectsSlugDetailsRoute: ProjectsSlugDetailsRoute,
-  ProjectsSlugEditRoute: ProjectsSlugEditRoute,
 }
 
 const ProjectsRouteRouteWithChildren = ProjectsRouteRoute._addFileChildren(
@@ -339,7 +227,6 @@ const ProjectsRouteRouteWithChildren = ProjectsRouteRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AccountRouteRoute: AccountRouteRouteWithChildren,
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
   SplatRoute: SplatRoute,
   ContactsRoute: ContactsRoute,

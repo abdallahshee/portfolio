@@ -116,6 +116,7 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
             isFeatured: project.isFeatured, // 👈 was missing
             progress: project.progress,
             roles:project.roles,
+            nextSteps:project.nextSteps,
             createdAt: project.createdAt,
             isContributor:project.isContributor,
             updatedAt: project.updatedAt,
@@ -224,6 +225,7 @@ export const searchProjects = createServerFn({ method: "GET" })
             description: project.description,
             imageUrl: project.imageUrl,
             githubUrl: project.githubUrl,
+            nextSteps:project.nextSteps,
             liveUrl: project.liveUrl,
             technologies: project.technologies,
             roles:project.roles,

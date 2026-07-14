@@ -1,5 +1,5 @@
 import { getPaginatedProjects, getProjectBySlugName, getTopFeaturedProjects, searchProjects } from "@/server/project.functions"
-import { getUserAndRole } from "@/server/user.functions"
+// import { getUserAndRole } from "@/server/user.functions"
 import { queryOptions } from "@tanstack/react-query"
 
 //Geting all projects
@@ -37,10 +37,3 @@ export const searchProjectsQueryOptions = (query: string, page: number, pageSize
     queryFn: () => searchProjects({ data: { query, page, pageSize } }),
   })
 
-export const getUserAndRoleQueryOptions = () =>
-  queryOptions({
-    queryKey: ["currentUser"],
-    queryFn: () => getUserAndRole(),
-    staleTime: 1000 * 60 * 5, // 5 mins (avoid refetch spam)
-    retry: false, // ❗ prevents infinite retries when not logged in
-  })

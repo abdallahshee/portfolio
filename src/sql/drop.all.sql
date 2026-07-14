@@ -12,7 +12,6 @@ drop policy if exists "project_images_auth_insert" on storage.objects;
 drop policy if exists "project_images_auth_update" on storage.objects;
 drop policy if exists "project_images_auth_delete" on storage.objects;
 
-
 -- DROP TRIGGERS
 drop trigger if exists on_auth_user_created on auth.users;
 
