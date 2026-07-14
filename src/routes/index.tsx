@@ -339,7 +339,7 @@ function App() {
                     I'm passionate about{" "}
                     <span className="text-teal-400">
                       {typedText}
-                      <span className="animate-pulse">|</span>
+                      <span className="animate-pulse"> |</span>
                     </span>
                   </div>
                 </div>
