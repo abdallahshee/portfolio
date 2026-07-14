@@ -10,9 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnauthorizedRouteImport } from './routes/unauthorized'
-import { Route as ToolsProcessRouteImport } from './routes/tools-process'
+import { Route as SkillsRouteImport } from './routes/skills'
 import { Route as ServicesRouteImport } from './routes/services'
-import { Route as ContactsRouteImport } from './routes/contacts'
+import { Route as ConnectRouteImport } from './routes/connect'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
 import { Route as IndexRouteImport } from './routes/index'
@@ -24,9 +24,9 @@ const UnauthorizedRoute = UnauthorizedRouteImport.update({
   path: '/unauthorized',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ToolsProcessRoute = ToolsProcessRouteImport.update({
-  id: '/tools-process',
-  path: '/tools-process',
+const SkillsRoute = SkillsRouteImport.update({
+  id: '/skills',
+  path: '/skills',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ServicesRoute = ServicesRouteImport.update({
@@ -34,9 +34,9 @@ const ServicesRoute = ServicesRouteImport.update({
   path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ContactsRoute = ContactsRouteImport.update({
-  id: '/contacts',
-  path: '/contacts',
+const ConnectRoute = ConnectRouteImport.update({
+  id: '/connect',
+  path: '/connect',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SplatRoute = SplatRouteImport.update({
@@ -69,9 +69,9 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/$': typeof SplatRoute
-  '/contacts': typeof ContactsRoute
+  '/connect': typeof ConnectRoute
   '/services': typeof ServicesRoute
-  '/tools-process': typeof ToolsProcessRoute
+  '/skills': typeof SkillsRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/projects/': typeof ProjectsIndexRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
@@ -79,9 +79,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
-  '/contacts': typeof ContactsRoute
+  '/connect': typeof ConnectRoute
   '/services': typeof ServicesRoute
-  '/tools-process': typeof ToolsProcessRoute
+  '/skills': typeof SkillsRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/projects': typeof ProjectsIndexRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
@@ -91,9 +91,9 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/$': typeof SplatRoute
-  '/contacts': typeof ContactsRoute
+  '/connect': typeof ConnectRoute
   '/services': typeof ServicesRoute
-  '/tools-process': typeof ToolsProcessRoute
+  '/skills': typeof SkillsRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/projects/': typeof ProjectsIndexRoute
   '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
@@ -104,9 +104,9 @@ export interface FileRouteTypes {
     | '/'
     | '/projects'
     | '/$'
-    | '/contacts'
+    | '/connect'
     | '/services'
-    | '/tools-process'
+    | '/skills'
     | '/unauthorized'
     | '/projects/'
     | '/projects/$slug/details'
@@ -114,9 +114,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$'
-    | '/contacts'
+    | '/connect'
     | '/services'
-    | '/tools-process'
+    | '/skills'
     | '/unauthorized'
     | '/projects'
     | '/projects/$slug/details'
@@ -125,9 +125,9 @@ export interface FileRouteTypes {
     | '/'
     | '/projects'
     | '/$'
-    | '/contacts'
+    | '/connect'
     | '/services'
-    | '/tools-process'
+    | '/skills'
     | '/unauthorized'
     | '/projects/'
     | '/projects/$slug/details'
@@ -137,9 +137,9 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
   SplatRoute: typeof SplatRoute
-  ContactsRoute: typeof ContactsRoute
+  ConnectRoute: typeof ConnectRoute
   ServicesRoute: typeof ServicesRoute
-  ToolsProcessRoute: typeof ToolsProcessRoute
+  SkillsRoute: typeof SkillsRoute
   UnauthorizedRoute: typeof UnauthorizedRoute
 }
 
@@ -152,11 +152,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UnauthorizedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/tools-process': {
-      id: '/tools-process'
-      path: '/tools-process'
-      fullPath: '/tools-process'
-      preLoaderRoute: typeof ToolsProcessRouteImport
+    '/skills': {
+      id: '/skills'
+      path: '/skills'
+      fullPath: '/skills'
+      preLoaderRoute: typeof SkillsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/services': {
@@ -166,11 +166,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/contacts': {
-      id: '/contacts'
-      path: '/contacts'
-      fullPath: '/contacts'
-      preLoaderRoute: typeof ContactsRouteImport
+    '/connect': {
+      id: '/connect'
+      path: '/connect'
+      fullPath: '/connect'
+      preLoaderRoute: typeof ConnectRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/$': {
@@ -229,9 +229,9 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
   SplatRoute: SplatRoute,
-  ContactsRoute: ContactsRoute,
+  ConnectRoute: ConnectRoute,
   ServicesRoute: ServicesRoute,
-  ToolsProcessRoute: ToolsProcessRoute,
+  SkillsRoute: SkillsRoute,
   UnauthorizedRoute: UnauthorizedRoute,
 }
 export const routeTree = rootRouteImport

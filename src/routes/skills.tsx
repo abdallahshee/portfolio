@@ -21,7 +21,7 @@ import {
 } from 'lucide-react'
 import { Link, useRouter } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/tools-process')({
+export const Route = createFileRoute('/skills')({
     component: HowIWorkPage,
 })
 
@@ -193,7 +193,7 @@ function HowIWorkPage() {
                             size="sm"
                             radius="md"
                             leftSection={<Mail size={18} />}
-                            onClick={() => router.navigate({ to: '/contacts' })}
+                            onClick={() => router.navigate({ to: '/connect' })}
                         >
                             Contact Me
                         </Button>

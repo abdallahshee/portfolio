@@ -24,7 +24,7 @@ const links = linkOptions([
   { label: "Home", to: "/", icon: Home },
   { label: "Expertise", to: "/services", icon: Briefcase },
   { label: "Projects", to: "/projects", icon: Folder },
-  { label: "Tools & Process", to: "/tools-process", icon: Wrench },
+  { label: "Skills", to: "/skills", icon: Wrench },
 ])
 
 export default function Footer() {
@@ -52,9 +52,9 @@ export default function Footer() {
             </Link>
             <Stack gap={4}>
               <Brand />
-              <div className="text-sm text-slate-500 dark:text-slate-400">
+              {/* <div className="text-sm text-slate-500 dark:text-slate-400">
                 Nairobi, Kenya 🇰🇪
-              </div>
+              </div> */}
             </Stack>
           </Stack>
 
@@ -147,7 +147,7 @@ export default function Footer() {
                 <Linkedin size={16} />
               </ActionIcon>
               <ActionIcon
-                onClick={() => router.navigate({ to: "/contacts" })}
+                onClick={() => router.navigate({ to: "/connect" })}
                 variant="light"
                 color="indigo"
                 radius="md"

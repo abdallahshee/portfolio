@@ -29,9 +29,9 @@ function applyThemeMode(mode: ThemeMode) {
 const links = linkOptions([
   { label: "Home", to: "/" },
   { label: "Expertise", to: "/services" },
-  { label: "Contacts", to: "/contacts" },
+  { label: "Connect", to: "/connect" },
   { label: "Projects", to: "/projects" },
-  { label: "Tools & Process", to: "/tools-process" },
+  { label: "Skills", to: "/skills" },
 ])
 
 export default function Header() {

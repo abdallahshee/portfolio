@@ -1,3 +1,5 @@
+import Brand from '@/components/Brand'
+import BrandHome from '@/components/BrandHome'
 import { getTopFeaturedProjectsQueryOptions } from '@/db/queries/project.queries'
 import {
   Button,
@@ -8,6 +10,8 @@ import {
   Paper,
   ThemeIcon,
   SimpleGrid,
+  Badge,
+  Timeline,
 } from '@mantine/core'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
@@ -24,10 +28,11 @@ import {
   Sparkles,
   Mail,
   BriefcaseBusiness,
-  Github
+  Github,
+  Icon,
 } from 'lucide-react'
 
-import { Suspense } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 
 
 export const Route = createFileRoute('/')({
@@ -37,6 +42,67 @@ export const Route = createFileRoute('/')({
   component: App,
 })
 
+// ── TYPEWRITER HOOK ──
+function useTypewriter(words: string[], typingSpeed = 80, pauseTime = 1600, deletingSpeed = 40) {
+  const [text, setText] = useState('')
+  const [wordIndex, setWordIndex] = useState(0)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  useEffect(() => {
+    const currentWord = words[wordIndex % words.length]
+    let timeout: ReturnType<typeof setTimeout>
+
+    if (!isDeleting && text === currentWord) {
+      timeout = setTimeout(() => setIsDeleting(true), pauseTime)
+    } else if (isDeleting && text === '') {
+      setIsDeleting(false)
+      setWordIndex((i) => i + 1)
+    } else {
+      timeout = setTimeout(
+        () => {
+          setText((prev) =>
+            isDeleting ? currentWord.slice(0, prev.length - 1) : currentWord.slice(0, prev.length + 1)
+          )
+        },
+        isDeleting ? deletingSpeed : typingSpeed
+      )
+    }
+
+    return () => clearTimeout(timeout)
+  }, [text, isDeleting, wordIndex, words, typingSpeed, pauseTime, deletingSpeed])
+
+  return text
+}
+function useTypeName(words: string[], typingSpeed = 80, pauseTime = 2000, deletingSpeed = 30) {
+  const [text, setText] = useState('')
+  const [wordIndex, setWordIndex] = useState(0)
+  const [isDeleting, setIsDeleting] = useState(false)
+
+  useEffect(() => {
+    const currentWord = words[wordIndex % words.length]
+    let timeout: ReturnType<typeof setTimeout>
+
+    if (!isDeleting && text === currentWord) {
+      timeout = setTimeout(() => setIsDeleting(true), pauseTime)
+    } else if (isDeleting && text === '') {
+      setIsDeleting(false)
+      setWordIndex((i) => i + 1)
+    } else {
+      timeout = setTimeout(
+        () => {
+          setText((prev) =>
+            isDeleting ? currentWord.slice(0, prev.length - 1) : currentWord.slice(0, prev.length + 1)
+          )
+        },
+        isDeleting ? deletingSpeed : typingSpeed
+      )
+    }
+
+    return () => clearTimeout(timeout)
+  }, [text, isDeleting, wordIndex, words, typingSpeed, pauseTime, deletingSpeed])
+
+  return text
+}
 // ── SKELETONS ──
 function ProjectsSkeleton() {
   return (
@@ -194,7 +260,7 @@ function FeaturedProjectsSection() {
   )
 }
 
-// ── STRENGTHS ──
+// ── CORE STRENGTHS (technical) ──
 const STRENGTHS = [
   {
     icon: <Layout size={20} />,
@@ -234,45 +300,123 @@ const STRENGTHS = [
   },
 ]
 
+
+const ROLE_WORDS = [
+  'Full-Stack Development',
+  'Clean Architecture',
+  'Scalable Systems',
+  'Solving Real Problems',
+]
+
+
 // ── PAGE ──
 function App() {
+  const typedText = useTypewriter(ROLE_WORDS)
+  const typedName = useTypeName(["Abdallah Shee"])
+
   return (
-    <div className="max-w-full space-y-8 px-0 py-6 sm:space-y-10 sm:py-8 md:space-y-12 md:py-10">
-      <section className="w-full">
-        <div className="relative w-full overflow-hidden rounded-2xl">
-          <img
-            src="/images/home.jpg"
-            alt="Abdallah Shee — Full-Stack Software Developer"
-            onClick={() => {
-              document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
-            }}
-            className="h-[160px] w-full cursor-pointer object-cover object-center transition-transform duration-500 hover:scale-[1.02] sm:h-[260px] md:h-[320px] lg:h-[380px]"
-          />
+    <div className="max-w-full space-y-0 px-0">
+
+      {/* ── HERO + ABOUT (combined) ── */}
+<section className="py-20 lg:py-28">
+  <div className="mx-auto max-w-7xl">
+
+    <div className="grid items-center gap-16 lg:grid-cols-[4fr_1fr]">
+
+      {/* LEFT SIDE */}
+      <div className="max-w-4xl">
+        <Stack gap="xl">
+
+          <div>
+            <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
+              Hi, I'm{" "}
+              <span className="bg-linear-to-r from-teal-400 via-indigo-400 to-blue-400 bg-clip-text text-transparent">
+                {typedName}
+              </span>
+            </h1>
+
+            <div className="mt-5 text-xl font-medium text-slate-400 sm:text-2xl">
+              I'm passionate about{" "}
+              <span className="text-teal-400">
+                {typedText}
+                <span className="animate-pulse">|</span>
+              </span>
+            </div>
+          </div>
+
+          <p className="max-w-3xl text-lg leading-8 text-slate-400">
+            I'm a Full-Stack Software Developer based in Nairobi, Kenya 🇰🇪,
+            passionate about building scalable web applications that transform
+            complex business requirements into intuitive, reliable digital
+            experiences. From responsive React and Next.js frontends to secure
+            APIs and well-architected databases, I create maintainable software
+            focused on performance, usability, and long-term business value.
+          </p>
+
+          <Group gap="md" wrap="wrap">
+            <Link to="/projects">
+              <Button
+                size="lg"
+                radius="xl"
+                className="bg-linear-to-r from-teal-500 to-blue-500"
+                rightSection={<ArrowRight size={18} />}
+              >
+                View My Projects
+              </Button>
+            </Link>
+
+            <Link to="/connect">
+              <Button
+                size="lg"
+                radius="xl"
+                variant="outline"
+                color="gray"
+                rightSection={<Mail size={18} />}
+              >
+                Connect With Me
+              </Button>
+            </Link>
+          </Group>
+        </Stack>
+      </div>
+
+      {/* RIGHT SIDE */}
+      <div className="flex justify-center lg:justify-end">
+        <div
+          style={{
+            animation: "float-avatar 6s ease-in-out infinite",
+          }}
+          className="relative h-[260px] w-[260px] sm:h-[320px] sm:w-[320px]"
+        >
+          <div className="h-full w-full overflow-hidden rounded-full border border-slate-700/50 shadow-2xl">
+            <img
+              src="/images/home.jpg"
+              alt="Abdallah Shee"
+              className="h-full w-full object-cover"
+            />
+          </div>
+
+          {/* Floating Brand Card */}
+          <div className="absolute -bottom-6 left-1/2 z-20 -translate-x-1/2">
+            <div className="rounded-2xl px-5 py-3 bg-white backdrop-blur">
+              <BrandHome />
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
 
-      {/* ── HERO / ABOUT ── */}
-      <section id="about" className="grid items-start gap-10 scroll-mt-20 sm:gap-12">
-        <div className="grid grid-cols-1">
-          <Stack gap="lg" className="w-full pb-2 lg:border-b-0 lg:pb-0">
-            <div className="title2">About Me</div>
-            <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
-              I'm <strong>Abdallah Shee</strong>, a Full-Stack Software Developer based in Nairobi, Kenya 🇰🇪. I specialize in designing, building, and deploying reliable, production-ready web applications, with a strong focus on clean architecture, performance optimization, and user experience. My work spans the full stack — from crafting responsive, accessible interfaces with React and Next.js to building scalable, type-safe APIs and well-structured databases that power real business needs.
-            </p>
+    </div>
 
-            <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
-              I believe great software should be both practical and dependable — solving real problems for users while supporting business growth and operational efficiency. With hands-on experience across the modern web stack, including React, Next.js, Node.js, and PostgreSQL, I bring a solution-oriented approach to every project I take on, whether independently or as part of a team. I focus on building systems that are not only well-architected, but also maintainable, scalable, and easy to extend throughout their lifecycle.
-            </p>
-          </Stack>
-        </div>
-      </section>
+  </div>
+</section>
 
-      {/* ── STRENGTHS ── */}
-      <section className="space-y-6">
+
+      {/* ── CORE STRENGTHS (technical) ── */}
+      <section className="space-y-6 py-6 pt-16">
         <div>
           <div className="title2">Core Strengths</div>
           <p className="mt-2 max-w-3xl text-sm text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
-            The areas where I consistently deliver the most impact and value.
+            The technical areas where I consistently deliver the most impact and value.
           </p>
         </div>
 
@@ -295,16 +439,16 @@ function App() {
         </SimpleGrid>
       </section>
 
+
       {/* ── FEATURED PROJECTS ── */}
-      <div className="mx-auto w-full md:w-3/4 scroll-mt-20">
+      <div className="mx-auto w-full py-6 md:w-3/4 scroll-mt-20">
         <Suspense fallback={<ProjectsSkeleton />}>
           <FeaturedProjectsSection />
         </Suspense>
       </div>
 
-
       {/* ── CTA ── */}
-      <section id="contact" className="mx-auto w-full scroll-mt-20">
+      <section id="contact" className="mx-auto w-full scroll-mt-20 py-6">
         <Paper
           radius="24px"
           withBorder
@@ -320,7 +464,7 @@ function App() {
               Take a look at what I've built, and let's talk about how I can contribute to your team.
             </p>
             <Group justify="center" mt="md" wrap="wrap" gap="sm">
-              <Link to="/contacts">
+              <Link to="/connect">
                 <Button variant="filled" color="blue" size="sm" radius="md" leftSection={<Mail size={18} />}>
                   Get In Touch
                 </Button>
