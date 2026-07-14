@@ -16,8 +16,6 @@ import {
   ExternalLink,
   FolderKanban,
   BookOpen,
-  Briefcase,
-  Users,
   Database,
   Layout,
   Server,
@@ -26,7 +24,6 @@ import {
   Sparkles,
   Mail,
   BriefcaseBusiness,
-  Clock3,
   Github
 } from 'lucide-react'
 
@@ -79,7 +76,7 @@ function ProjectsPlaceholder() {
           </p>
           <Link to="/services">
             <Button size="sm" variant="light" leftSection={<BriefcaseBusiness size={16} />}>
-              See My Services
+              See My Skills & Approach
             </Button>
           </Link>
         </div>
@@ -164,7 +161,7 @@ function FeaturedProjectsSection() {
                     target="_blank"
                     rel="noopener noreferrer"
                     variant="filled"
-                    color="black"
+                    color="dark"
                     size="sm"
                     leftSection={<Github size={14} />}
                     onClick={(e) => e.stopPropagation()}
@@ -196,20 +193,6 @@ function FeaturedProjectsSection() {
     </Paper>
   )
 }
-// ── STATS ──
-const STATS = [
-  { icon: <Briefcase size={18} />, value: '4+', label: 'Years Experience', color: 'indigo' },
-
-  { icon: <FolderKanban size={18} />, value: '12+', label: 'Projects Delivered', color: 'blue' },
-
-  { icon: <Users size={18} />, value: '10+', label: 'Happy Clients', color: 'green' },
-
-  // { icon: <Code2 size={18} />, value: '20+', label: 'Technologies Used', color: 'pink' },
-
-  { icon: <Clock3 size={18} />, value: '99%', label: 'On-Time Delivery', color: 'amber' },
-
-  // { icon: <Star size={18} />, value: '5★', label: 'Client Satisfaction', color: 'rose' },
-]
 
 // ── STRENGTHS ──
 const STRENGTHS = [
@@ -259,30 +242,18 @@ function App() {
         <div className="relative w-full overflow-hidden rounded-2xl">
           <img
             src="/images/home.jpg"
-            alt="Abdallah Shee"
+            alt="Abdallah Shee — Full-Stack Software Developer"
             onClick={() => {
-              window.location.hash = 'about'
+              document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })
             }}
             className="h-[160px] w-full cursor-pointer object-cover object-center transition-transform duration-500 hover:scale-[1.02] sm:h-[260px] md:h-[320px] lg:h-[380px]"
           />
-
-          {/* Overlay */}
-          {/*     
-          <div className="absolute inset-0 " />
-          <div className="absolute inset-0 flex items-end justify-center">
-            <div className="px-6 pb-2 sm:px-10 lg:px-16">
-              <p className="title3 text-center leading-tight text-gray-700">
-                IT Support Specialist | Software Developer
-              </p>
-            </div>
-          </div> */}
         </div>
       </section>
-      {/* ── HERO ── */}
-      <section className="grid items-start gap-10 sm:gap-12">
-        <div className="grid grid-cols-1">
 
-          {/* LEFT */}
+      {/* ── HERO / ABOUT ── */}
+      <section id="about" className="grid items-start gap-10 scroll-mt-20 sm:gap-12">
+        <div className="grid grid-cols-1">
           <Stack gap="lg" className="w-full pb-2 lg:border-b-0 lg:pb-0">
             <div className="title2">About Me</div>
             <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
@@ -290,31 +261,9 @@ function App() {
             </p>
 
             <p className="w-full text-base leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
-              I believe great software should be both practical and dependable — solving real problems for users while supporting business growth and operational efficiency. With hands-on experience across the modern web stack, including React, Next.js, Node.js, and PostgreSQL, I bring a solution-oriented approach to every project. I focus on building systems that are not only well-architected, but also maintainable, scalable, and easy to extend throughout their lifecycle.
+              I believe great software should be both practical and dependable — solving real problems for users while supporting business growth and operational efficiency. With hands-on experience across the modern web stack, including React, Next.js, Node.js, and PostgreSQL, I bring a solution-oriented approach to every project I take on, whether independently or as part of a team. I focus on building systems that are not only well-architected, but also maintainable, scalable, and easy to extend throughout their lifecycle.
             </p>
-
-            {/* ── STATS ── */}
-            <div className="grid grid-cols-2 gap-3 pt-2 sm:grid-cols-2 lg:grid-cols-4">
-              {STATS.map((stat) => (
-                <div
-                  key={stat.label}
-                  className="flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white px-4 py-5 text-center shadow-sm transition duration-300 hover:-translate-y-1 hover:shadow-md dark:border-slate-700 dark:bg-slate-800/60"
-                >
-                  <span className="title3 text-slate-900 dark:text-slate-50">
-                    {stat.value}
-                  </span>
-
-                  <span className="mt-1 text-xs font-medium text-slate-500 dark:text-slate-400 sm:text-sm">
-                    {stat.label}
-                  </span>
-                </div>
-              ))}
-            </div>
           </Stack>
-
-          {/* RIGHT */}
-
-
         </div>
       </section>
 
@@ -364,16 +313,16 @@ function App() {
         >
           <Stack align="center" gap="md">
             <div className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent text-center">
-              Have an idea or project in mind?
+              Looking for a Full-Stack Developer?
             </div>
             <p className="max-w-2xl px-1 text-center text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-              Whether you're starting from scratch or improving an existing system, I can help you
-              design and build something reliable, scalable, and easy to use — tailored to your goals and users.
+              I'm actively seeking full-stack software developer opportunities in Nairobi and Mombasa.
+              Take a look at what I've built, and let's talk about how I can contribute to your team.
             </p>
             <Group justify="center" mt="md" wrap="wrap" gap="sm">
               <Link to="/contacts">
                 <Button variant="filled" color="blue" size="sm" radius="md" leftSection={<Mail size={18} />}>
-                  Let's Discuss it
+                  Get In Touch
                 </Button>
               </Link>
               <Link to="/projects">

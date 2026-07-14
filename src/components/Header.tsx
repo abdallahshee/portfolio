@@ -5,13 +5,9 @@ import {
   ScrollArea,
   Image,
   UnstyledButton,
-  Button,
 } from "@mantine/core"
 import { Link, linkOptions } from "@tanstack/react-router"
-import { Sun, Moon, Briefcase, Home, Folder, Mail, Wrench } from "lucide-react"
-import { useRouter } from "@tanstack/react-router"
-import { Route as RootRoute } from "@/routes/__root"
-import { getSupabaseBrowserClient } from "@/lib/supabase/client"
+import { Sun, Moon } from "lucide-react"
 import Brand from "./Brand"
 
 type ThemeMode = "light" | "dark"
@@ -30,39 +26,18 @@ function applyThemeMode(mode: ThemeMode) {
   root.setAttribute("data-theme", mode)
 }
 
-// const links = linkOptions([
-//   { label: "Home", to: "/", icon: Home },
-//   { label: "Services", to: "/services", icon: Briefcase },
-//   { label: "Contacts", to: "/contacts", icon: Mail },
-//   { label: "Projects", to: "/projects", icon: Folder },
-//   { label: "Tools & Process", to: "/tools-process", icon: Wrench },
-
-// ])
-
 const links = linkOptions([
-  { label: "Home", to: "/"},
-  { label: "Services", to: "/services" },
-  { label: "Contacts", to: "/contacts"},
+  { label: "Home", to: "/" },
+  { label: "Expertise", to: "/services" },
+  { label: "Contacts", to: "/contacts" },
   { label: "Projects", to: "/projects" },
   { label: "Tools & Process", to: "/tools-process" },
-
 ])
 
 export default function Header() {
   const [opened, setOpened] = useState(false)
   const [themeMode, setThemeMode] = useState<ThemeMode>("light")
-  const { user } = RootRoute.useRouteContext()
-  const router = useRouter()
-  // ✅ Supabase client
-  const supabase = getSupabaseBrowserClient()
-  const handleSignOut = async () => {
-    await supabase.auth.signOut()
-    await router.invalidate()
-    await router.navigate({ to: "/account" })
-  }
 
-
-  const currentUser = user
   useEffect(() => {
     const initial = getInitialMode()
     setThemeMode(initial)
@@ -89,7 +64,7 @@ export default function Header() {
         fit="cover"
         className="transition-opacity duration-200 hover:opacity-80"
       />
-   <Brand/>
+      <Brand />
     </Link>
   )
 
@@ -141,35 +116,17 @@ export default function Header() {
             {ThemeButton}
 
             <nav className="flex min-w-0 items-center gap-2.5 md:gap-3 lg:gap-5">
-              {links.map((link) => {
-                // const Icon = link.icon
-                return (
-                  <Link
-                    key={link.label}
-                    to={link.to}
-                    className="flex items-center gap-1.5 whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
-                    activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
-                  >
-                    {/* <Icon size={16} /> */}
-                    {link.label}
-                  </Link>
-                )
-              })}
+              {links.map((link) => (
+                <Link
+                  key={link.label}
+                  to={link.to}
+                  className="flex items-center gap-1.5 whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
+                  activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
+                >
+                  {link.label}
+                </Link>
+              ))}
             </nav>
-
-            {/* ✅ Sign Out (Desktop) */}
-            {currentUser && (
-              <Button
-                size="xs"
-                radius="md"
-                variant="light"
-                color="red"
-                onClick={handleSignOut}
-              >
-                Sign Out
-              </Button>
-            )}
-
           </div>
         </div>
       </div>
@@ -191,44 +148,24 @@ export default function Header() {
               fit="cover"
               className="transition-opacity duration-200 hover:opacity-80"
             />
-       <Brand/>
+            <Brand />
           </div>
         }
         className="md:hidden"
       >
         <ScrollArea style={{ height: "100%" }}>
           <div className="mt-4 flex flex-col space-y-4 text-lg">
-            {links.map((link) => {
-              // const Icon = link.icon
-              return (
-                <Link
-                  key={link.label}
-                  to={link.to}
-                  className="flex items-center gap-3 font-normal text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
-                  onClick={() => setOpened(false)}
-                  activeProps={{ className: "text-indigo-500 dark:text-indigo-400" }}
-                >
-                  {/* <Icon size={20} /> */}
-                  {link.label}
-                </Link>
-              )
-            })}
-
-            {/* ✅ Sign Out (Mobile) */}
-            {currentUser && (
-              <Button
-                fullWidth
-                radius="md"
-                color="red"
-                mt="md"
-                onClick={() => {
-                  setOpened(false)
-                  handleSignOut()
-                }}
+            {links.map((link) => (
+              <Link
+                key={link.label}
+                to={link.to}
+                className="flex items-center gap-3 font-normal text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
+                onClick={() => setOpened(false)}
+                activeProps={{ className: "text-indigo-500 dark:text-indigo-400" }}
               >
-                Sign Out
-              </Button>
-            )}
+                {link.label}
+              </Link>
+            ))}
           </div>
         </ScrollArea>
       </Drawer>
