@@ -13,6 +13,7 @@ import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {
   ArrowRight,
+  ExternalLink,
   FolderKanban,
   BookOpen,
   Briefcase,
@@ -26,6 +27,7 @@ import {
   Mail,
   BriefcaseBusiness,
   Clock3,
+  Github
 } from 'lucide-react'
 
 import { Suspense } from 'react'
@@ -108,12 +110,11 @@ function FeaturedProjectsSection() {
             </p>
           </div>
           <Link to="/projects">
-            <Button variant="subtle" size="sm" rightSection={<ArrowRight size={16} />}>
+            <Button variant="filled" size="sm" rightSection={<ArrowRight size={16} />}>
               View All
             </Button>
           </Link>
         </Group>
-
 
         <Stack gap="sm">
           {projects.map((project) => (
@@ -155,9 +156,39 @@ function FeaturedProjectsSection() {
                 </div>
               </div>
 
-              <span className="shrink-0 font-semibold text-blue-600">
-                View →
-              </span>
+              <div className="flex shrink-0 items-center gap-2">
+                {project.githubUrl && (
+                  <Button
+                    component="a"
+                    href={project.githubUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="filled"
+                    color="black"
+                    size="sm"
+                    leftSection={<Github size={14} />}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Source Code
+                  </Button>
+                )}
+
+                {project.liveUrl && (
+                  <Button
+                    component="a"
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="filled"
+                    color="green"
+                    size="sm"
+                    leftSection={<ExternalLink size={14} />}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Live Demo
+                  </Button>
+                )}
+              </div>
             </div>
           ))}
         </Stack>

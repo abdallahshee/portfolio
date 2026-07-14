@@ -167,7 +167,6 @@ export const updateProject = createServerFn({ method: "POST" })
         .returning();
 
       if (!updatedProject) return null;
-
       return updatedProject;
     } catch (err) {
       console.error(err);
@@ -184,6 +183,8 @@ export const getTopFeaturedProjects = createServerFn({ method: "GET" })
           id: project.id,
           slug: project.slug,
           title: project.title,
+          liveUrl:project.liveUrl,
+          githubUrl:project.githubUrl,
           imageUrl: project.imageUrl,
           updatedAt: project.updatedAt,
         })
