@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router"
 import {
   Anchor,
   Card,
-  Container,
   Divider,
   Group,
   List,
@@ -22,10 +21,10 @@ export const Route = createFileRoute("/contacts")({
 })
 
 const WHY_REACH_OUT = [
-  "Response guaranteed within 24 hours",
-  "Free initial consultation — no commitment",
-  "Clear communication throughout the project",
-  "Flexible engagement — freelance, contract, or full-time",
+  "I reply to every message within 24 hours",
+  "Open to full-time software developer roles",
+  "Available for interviews at short notice",
+  "Based in Nairobi, open to relocating within Kenya",
 ]
 
 const CONTACT_LINKS = [
@@ -71,10 +70,10 @@ function ContactPage() {
     <div className="max-w-3xl space-y-8 px-0 py-6 sm:py-8 md:py-10">
       {/* ── PAGE HEADER ── */}
       <Stack gap="sm">
-        <div className="heading">Let's Bring Your Idea to Life</div>
+        <div className="heading">Let's Connect</div>
         <p className="text-sm leading-7 text-slate-600 sm:text-base sm:leading-8 dark:text-slate-400">
-          Have a project, idea, or opportunity you'd like to discuss?
-          Reach out directly — I respond to every message.
+          I'm actively looking for full-stack software developer opportunities
+          in Nairobi and Mombasa. Reach out directly — I respond to every message.
         </p>
       </Stack>
 

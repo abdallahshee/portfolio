@@ -1,7 +1,7 @@
 import type { Project } from '@/db/validations/project.types'
 import { Badge, Button, Card, Group, Image, Stack, Text, ThemeIcon } from '@mantine/core'
 import { Link } from '@tanstack/react-router'
-import { CalendarDays, FolderKanban, RefreshCw } from 'lucide-react'
+import { CalendarDays, ExternalLink, FolderKanban, Github, RefreshCw } from 'lucide-react'
 import moment from 'moment'
 
 interface ProjectCardProps {
@@ -78,6 +78,40 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
 
       {/* CTA */}
       <Stack mt="md" gap="xs">
+        <Group gap="xs" grow>
+          {project.githubUrl && (
+            <Button
+              component="a"
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              radius="md"
+              variant="filled"
+              color="dark"
+              size="sm"
+              leftSection={<Github size={14} />}
+            >
+              Source Code
+            </Button>
+          )}
+
+          {project.liveUrl && (
+            <Button
+              component="a"
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              radius="md"
+              variant="filled"
+              color="green"
+              size="sm"
+              leftSection={<ExternalLink size={14} />}
+            >
+              Live Site
+            </Button>
+          )}
+        </Group>
+
         {project.slug && (
           <Link
             to="/projects/$slug/details"
@@ -91,7 +125,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
               fullWidth
               gradient={{ from: 'indigo', to: 'blue' }}
             >
-              View details
+              View Details
             </Button>
           </Link>
         )}

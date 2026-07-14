@@ -6,11 +6,10 @@ import {
 import { ProjectCard } from '@/components/ProjectCard'
 import type { Project } from '@/db/validations/project.types'
 
-import { createFileRoute, Link } from '@tanstack/react-router'
+import { createFileRoute } from '@tanstack/react-router'
 
 import {
   Badge,
-  Button,
   Card,
   Group,
   Pagination,
@@ -21,7 +20,6 @@ import {
 import { useDebouncedValue } from '@mantine/hooks'
 
 import {
-  FolderPlus,
   LayoutGrid,
   Search,
   Sparkles,
@@ -130,8 +128,6 @@ function ProjectsGrid({
 // PAGE
 // ─────────────────────────────────────────────
 function ProjectsPage() {
-  const { user } = Route.useRouteContext()
-
   const [page, setPage] = useState(1)
   const [searchInput, setSearchInput] = useState('')
   const [filter, setFilter] = useState<FilterValue>('all')
@@ -195,21 +191,10 @@ function ProjectsPage() {
             <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">
               These are a few of the projects I have built recently.
               Beyond what you see here, I have worked on other projects across
-              client work, team collaborations, and open source contributions
-              that are not listed here.
+              professional engagements, team collaborations, and open source
+              contributions that are not listed here.
             </p>
           </div>
-
-          {user && (
-            <Button
-              component={Link}
-              to="/projects/new"
-              radius="xl"
-              leftSection={<FolderPlus size={18} />}
-            >
-              Create Project
-            </Button>
-          )}
 
         </div>
       </div>

@@ -1,6 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router'
 import {
-    Container,
     Group,
     Stack,
     Paper,
@@ -26,37 +25,35 @@ export const Route = createFileRoute('/tools-process')({
     component: HowIWorkPage,
 })
 
-
-
 const PROCESS = [
     {
         icon: <Search size={18} />,
         title: 'Discovery & Scoping',
-        desc: 'We start with a detailed conversation about your goals, users, and requirements. I map out the system, define scope, and propose a clear technical approach before any code is written. This ensures we solve the right problem from the start.',
+        desc: 'I start by understanding the goals, users, and requirements behind a problem before writing any code. Mapping out the system and proposing a clear technical approach up front ensures the right problem gets solved from the start.',
         color: 'indigo',
     },
     {
         icon: <Pencil size={18} />,
         title: 'Design & Architecture',
-        desc: 'I design the database schema, system architecture, and UI wireframes. This stage ensures we agree on structure and flow before building — saving time and rework down the line. Strong foundations reduce future complexity.',
+        desc: 'I design the database schema, system architecture, and UI structure early. Agreeing on structure and flow before building saves time and rework later — strong foundations reduce future complexity.',
         color: 'blue',
     },
     {
         icon: <Code2 size={18} />,
         title: 'Development & Iteration',
-        desc: 'I build in focused sprints with regular check-ins and previews. You get visibility throughout — not just at the end. Feedback is incorporated continuously. This keeps development aligned with expectations.',
+        desc: 'I build in focused increments with regular check-ins, whether working solo or with a team. Feedback gets incorporated continuously, keeping development aligned with expectations throughout, not just at the end.',
         color: 'teal',
     },
     {
         icon: <Rocket size={18} />,
         title: 'Deployment & Launch',
-        desc: 'The product is optimized for performance and deployed to production with proper CI/CD pipelines, environment configuration, monitoring, and zero-downtime releases. Stability is prioritized at launch.',
+        desc: 'I optimize for performance and deploy to production with proper CI/CD pipelines, environment configuration, monitoring, and zero-downtime releases. Stability is prioritized at launch.',
         color: 'orange',
     },
     {
         icon: <HeartHandshake size={18} />,
-        title: 'Handover & Support',
-        desc: 'You receive full documentation, source code access, and a handover session. Post-launch support is available to ensure everything runs smoothly. Ongoing reliability matters beyond delivery.',
+        title: 'Documentation & Handover',
+        desc: "I document decisions and leave systems in a state that's easy for others to pick up — clear code, sensible structure, and knowledge that doesn't live only in my head. Reliability matters beyond initial delivery.",
         color: 'green',
     },
 ]
@@ -84,15 +81,14 @@ function HowIWorkPage() {
             <section className="w-full space-y-6">
                 <div className="heading">
                     My Process: Think, Plan, Build
-                    {/* Thinking, Planning & Building */}
                 </div>
 
                 <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-                    Building modern software is about making deliberate decisions at every stage —
-                    not just writing code. My workflow is structured around clarity, collaboration,
-                    and predictability. Every project begins with a thorough discovery phase where
-                    I invest time understanding your business, your users, and the problem we are
-                    solving together — ensuring what gets built is exactly what is needed.
+                    Building good software is about making deliberate decisions at every stage —
+                    not just writing code. My workflow is structured around clarity, solid
+                    architecture, and predictability. Every project starts with a thorough
+                    discovery phase, understanding the users and the problem being solved, to
+                    make sure what gets built is exactly what's needed.
                 </p>
 
                 <p className="text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
@@ -115,8 +111,9 @@ function HowIWorkPage() {
                     <div>
                         <div className="title2">How I Work</div>
                         <p className="mt-2 text-sm leading-7 text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
-                            A clear, collaborative process from first conversation to final handover — so you always
-                            know what's happening and what comes next.
+                            A clear, structured approach from first understanding a problem to final
+                            handover — the same discipline I bring whether working independently or
+                            as part of a team.
                         </p>
                     </div>
 
@@ -153,14 +150,6 @@ function HowIWorkPage() {
                         </p>
                     </div>
 
-                    <div className="group overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-900 ring-1 ring-slate-200/60 dark:ring-slate-700">
-                        <img
-                            src="/images/tools.jpg"
-                            alt="Distributed software system with multiple connected services"
-                            className="block h-30 w-full object-cover transition-transform duration-300 group-hover:scale-[1.02] rounded-2xl"
-                        />
-                    </div>
-
                     <List
                         spacing="sm"
                         size="md"
@@ -193,8 +182,8 @@ function HowIWorkPage() {
                         Like the Way I Work?
                     </div>
                     <p className="max-w-2xl px-1 text-center text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-                        If my process and stack align with what your project needs, I'd love to hear
-                        about it. Reach out and let's talk about how we can build something great together.
+                        If this approach and stack fit what your team needs, I'd love to talk.
+                        Reach out and let's discuss how I can contribute.
                     </p>
                     <Group justify="center" mt="md" wrap="wrap" gap="sm">
                         <Button
@@ -218,7 +207,7 @@ function HowIWorkPage() {
                                 radius="md"
                                 rightSection={<ArrowRight size={16} />}
                             >
-                                Explore Services
+                                See My Expertise
                             </Button>
                         </Link>
                     </Group>
