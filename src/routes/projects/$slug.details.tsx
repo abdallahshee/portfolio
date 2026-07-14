@@ -63,7 +63,7 @@ function progressLabel(value: number) {
 
 function ProjectDetails() {
   const { slug } = Route.useParams()
-  const { user } = Route.useRouteContext()
+  
   const { data: project } = useSuspenseQuery(
     getProjectBySlugQueryOptions(slug)
   )
@@ -154,19 +154,7 @@ function ProjectDetails() {
                   Back
                 </Button>
               </Link>
-              {user && (
-                <Link to="/projects/$slug/edit" params={{ slug: project.slug! }}>
-                  <Button
-                    variant="light"
-                    color="indigo"
-                    radius="md"
-                    size="sm"
-                    leftSection={<Pencil size={16} />}
-                  >
-                    Edit
-                  </Button>
-                </Link>
-              )}
+      
             </Group>
           </Group>
 

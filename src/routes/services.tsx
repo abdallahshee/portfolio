@@ -225,7 +225,7 @@ function ServicesPage() {
                 size="sm"
                 radius="md"
                 leftSection={<Mail size={18} />}
-                onClick={() => router.navigate({ to: '/contacts' })}
+                onClick={() => router.navigate({ to: '/connect' })}
               >
                 Get In Touch
               </Button>
