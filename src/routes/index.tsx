@@ -326,7 +326,7 @@ function App() {
 
       {/* ── HERO + ABOUT (combined) ── */}
       <section className="rounded-3xl bg-slate-950 py-20 lg:py-28">
-        <div className="mx-auto px-8">
+        <div className="mx-auto px-2">
           <div className="grid items-center gap-16 lg:grid-cols-[4fr_1fr]">
 
             {/* LEFT SIDE */}
