@@ -165,22 +165,22 @@ function FeaturedProjectsSection() {
         <Group justify="space-between" align="flex-start" wrap="wrap">
           <div className="flex justify-between">
             <div className="title2">Featured Projects</div>
-                  <Link to="/projects">
-            <Button
-              variant="filled"
-              size="sm"
-              rightSection={<ArrowRight size={16} />}
-            >
-              View All
-            </Button>
-          </Link>
+            <Link to="/projects">
+              <Button
+                variant="filled"
+                size="sm"
+                rightSection={<ArrowRight size={12} />}
+              >
+                View All
+              </Button>
+            </Link>
 
           </div>
-              <p className="mt-1 text-sm text-slate-500">
-              A curated selection of projects I have built and shipped — each one
-              reflecting my approach to writing clean, maintainable, and
-              production-ready software.
-            </p>
+          <p className="mt-1 text-sm text-slate-500">
+            A curated selection of projects I have built and shipped — each one
+            reflecting my approach to writing clean, maintainable, and
+            production-ready software.
+          </p>
         </Group>
 
         <Stack gap="sm">
