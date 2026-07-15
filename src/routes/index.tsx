@@ -184,7 +184,7 @@ function App() {
                     </span>
                   </h1>
 
-                  <div className="mt-5 text-md font-medium text-slate-400 sm:text-2xl">
+                  <div className="mt-3 text-md font-medium text-slate-400 sm:text-2xl">
                     <span className='font-semibold'>Developing{" "}</span>
                     <span className="text-teal-400">
                       {typedText}
