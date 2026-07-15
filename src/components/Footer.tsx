@@ -145,7 +145,7 @@ export default function Footer() {
             </p><Anchor
               component={Link}
               to="/connect"
-              c="orange.4"
+              c="orange.5"
               className="text-sm font-medium transition-colors hover:text-orange-700"
             >
               Let's Connect →

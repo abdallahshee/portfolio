@@ -335,7 +335,7 @@ function App() {
                   leftSection={<FolderKanban size={18} />}
                   fullWidth
                 >
-                  Explore Projects
+                  View Projects
                 </Button>
               </Link>
             </Group>
