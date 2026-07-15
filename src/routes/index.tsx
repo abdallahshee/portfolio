@@ -335,7 +335,7 @@ function App() {
               <Stack gap="xl">
 
                 <div>
-                  <h1 className="text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
+                  <h1 className="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
                     Hi, I'm{" "}
                     <span className="bg-linear-to-r from-teal-400 via-indigo-400 to-blue-400 bg-clip-text text-transparent">
                       {typedName}
