@@ -157,10 +157,10 @@ function FeaturedProjectsSection() {
   if (isEmpty) return <ProjectsPlaceholder />
 
   return (
-    <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
+    <Paper withBorder radius="lg" className="min-w-0 p-2 sm:p-3">
       <Stack gap="md">
         <Group justify="space-between" align="flex-start" wrap="wrap">
-          <div className="flex justify-between">
+          <div className="flex justify-between gap-1">
             <div className="title2">Featured Projects</div>
             <Link to="/projects">
               <Button
@@ -313,7 +313,6 @@ const ROLE_WORDS = [
   'Scalable Systems',
   'Reliable APIs',
   'Thoughtful UI/UX',
-  'Maintainable Code',
 ]
 
 
