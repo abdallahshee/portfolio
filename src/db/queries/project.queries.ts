@@ -1,8 +1,6 @@
 import { getPaginatedProjects, getProjectBySlugName, getTopFeaturedProjects, searchProjects } from "@/server/project.functions"
-// import { getUserAndRole } from "@/server/user.functions"
 import { queryOptions } from "@tanstack/react-query"
 
-//Geting all projects
 
 
 export const getProjectBySlugQueryOptions = (slug: string) =>

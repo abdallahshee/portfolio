@@ -20,13 +20,10 @@ import {
   Database,
   Layout,
   Server,
-  Network,
   Gauge,
-  Sparkles,
   Mail,
   BriefcaseBusiness,
   Github,
-  Icon,
   ShieldCheck,
   GitBranch,
 } from 'lucide-react'
@@ -328,97 +325,97 @@ function App() {
     <div className="max-w-full space-y-0 px-0">
 
       {/* ── HERO + ABOUT (combined) ── */}
-  <section className="rounded-3xl bg-slate-950 py-20 lg:py-28">
-  <div className="mx-auto max-w-7xl">
+      <section className="rounded-3xl bg-slate-950 py-20 lg:py-28">
+        <div className="mx-auto max-w-7xl">
 
-    <div className="grid items-center gap-16 lg:grid-cols-[4fr_1fr]">
+          <div className="grid items-center gap-16 lg:grid-cols-[4fr_1fr]">
 
-      {/* LEFT SIDE */}
-      <div className="max-w-4xl">
-        <Stack gap="xl">
+            {/* LEFT SIDE */}
+            <div className="max-w-4xl">
+              <Stack gap="xl">
 
-          <div>
-            <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
-              Hi, I'm{" "}
-              <span className="bg-linear-to-r from-teal-400 via-indigo-400 to-blue-400 bg-clip-text text-transparent">
-                {typedName}
-              </span>
-            </h1>
+                <div>
+                  <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
+                    Hi, I'm{" "}
+                    <span className="bg-linear-to-r from-teal-400 via-indigo-400 to-blue-400 bg-clip-text text-transparent">
+                      {typedName}
+                    </span>
+                  </h1>
 
-            <div className="mt-5 text-md font-medium text-slate-400 sm:text-2xl">
-              I'm passionate about{" "}
-              <span className="text-teal-400">
-                {typedText}
-                <span className="animate-pulse"> |</span>
-              </span>
+                  <div className="mt-5 text-md font-medium text-slate-400 sm:text-2xl">
+                    I'm passionate about{" "}
+                    <span className="text-teal-400">
+                      {typedText}
+                      <span className="animate-pulse"> |</span>
+                    </span>
+                  </div>
+                </div>
+
+                <p className="max-w-3xl text-lg leading-8 text-slate-400">
+                  I'm a Full-Stack Software Developer based in Nairobi, Kenya 🇰🇪,
+                  passionate about building scalable web applications that transform
+                  complex business requirements into intuitive, reliable digital
+                  experiences. From responsive React and Next.js frontends to secure
+                  APIs and well-architected databases, I create maintainable software
+                  focused on performance, usability, and long-term business value.
+                </p>
+
+                <Group gap="md" wrap="wrap">
+                  <Link to="/projects">
+                    <Button
+                      size="lg"
+                      radius="xl"
+                      className="bg-linear-to-r from-teal-500 to-blue-500"
+                      rightSection={<ArrowRight size={18} />}
+                    >
+                      View My Projects
+                    </Button>
+                  </Link>
+
+                  <Link to="/connect">
+                    <Button
+                      size="lg"
+                      radius="xl"
+                      variant="outline"
+                      color="gray"
+                      rightSection={<Mail size={18} />}
+                    >
+                      Connect With Me
+                    </Button>
+                  </Link>
+                </Group>
+              </Stack>
             </div>
+
+            {/* RIGHT SIDE */}
+            <div className="flex justify-center lg:justify-end">
+              <div
+                style={{
+                  animation: "float-avatar 6s ease-in-out infinite",
+                }}
+                className="relative h-[260px] w-[260px] sm:h-[320px] sm:w-[320px]"
+              >
+                <div className="h-full w-full overflow-hidden rounded-full border border-slate-700/50 shadow-2xl">
+                  <img
+                    src="/images/home.jpg"
+                    alt="Abdallah Shee"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
+
+                {/* Floating Brand Card */}
+                <div className="absolute -bottom-6 left-1/2 z-20 w-3/4 -translate-x-1/2">
+                  <div className="w-full rounded-2xl px-5 py-3 bg-white backdrop-blur">
+                    <BrandHome />
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
 
-          <p className="max-w-3xl text-lg leading-8 text-slate-400">
-            I'm a Full-Stack Software Developer based in Nairobi, Kenya 🇰🇪,
-            passionate about building scalable web applications that transform
-            complex business requirements into intuitive, reliable digital
-            experiences. From responsive React and Next.js frontends to secure
-            APIs and well-architected databases, I create maintainable software
-            focused on performance, usability, and long-term business value.
-          </p>
-
-          <Group gap="md" wrap="wrap">
-            <Link to="/projects">
-              <Button
-                size="lg"
-                radius="xl"
-                className="bg-linear-to-r from-teal-500 to-blue-500"
-                rightSection={<ArrowRight size={18} />}
-              >
-                View My Projects
-              </Button>
-            </Link>
-
-            <Link to="/connect">
-              <Button
-                size="lg"
-                radius="xl"
-                variant="outline"
-                color="gray"
-                rightSection={<Mail size={18} />}
-              >
-                Connect With Me
-              </Button>
-            </Link>
-          </Group>
-        </Stack>
-      </div>
-
-      {/* RIGHT SIDE */}
-      <div className="flex justify-center lg:justify-end">
-        <div
-          style={{
-            animation: "float-avatar 6s ease-in-out infinite",
-          }}
-          className="relative h-[260px] w-[260px] sm:h-[320px] sm:w-[320px]"
-        >
-          <div className="h-full w-full overflow-hidden rounded-full border border-slate-700/50 shadow-2xl">
-            <img
-              src="/images/home.jpg"
-              alt="Abdallah Shee"
-              className="h-full w-full object-cover"
-            />
-          </div>
-
-          {/* Floating Brand Card */}
-       <div className="absolute -bottom-6 left-1/2 z-20 w-3/4 -translate-x-1/2">
-  <div className="w-full rounded-2xl px-5 py-3 bg-white backdrop-blur">
-    <BrandHome />
-  </div>
-</div>
         </div>
-      </div>
-
-    </div>
-
-  </div>
-</section>
+      </section>
 
       {/* ── CORE STRENGTHS (technical) ── */}
       <section className="space-y-6 py-6 pt-16">

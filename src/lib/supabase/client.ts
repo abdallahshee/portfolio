@@ -1,7 +1,5 @@
 import { createBrowserClient } from '@supabase/ssr'
 
-
-
 // Browser client must use cookies storage, not localStorage
 export const getSupabaseBrowserClient = () =>
   createBrowserClient(

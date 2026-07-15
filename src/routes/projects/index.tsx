@@ -145,17 +145,6 @@ function ProjectsPage() {
   const allProjects = data?.projects ?? []
   const totalPages = data?.totalPages ?? 1
 
-  const filteredProjects = useMemo(() => {
-    return allProjects.filter((project: Project) => {
-      if (filter === 'featured') return project.isFeatured
-      return true
-    })
-  }, [allProjects, filter])
-
-  const featuredProjects = allProjects.filter(
-    (p: Project) => p.isFeatured
-  ).length
-
   const handleSearch = (value: string) => {
     setSearchInput(value)
     setPage(1)

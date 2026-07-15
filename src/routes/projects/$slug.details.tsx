@@ -25,8 +25,6 @@ import {
   CheckCircle2,
   User,
   Users,
-  Rocket,
-  Circle,
   FolderKanban,
 } from "lucide-react"
 
@@ -43,22 +41,6 @@ export const Route = createFileRoute("/projects/$slug/details")({
   },
   component: ProjectDetails,
 })
-
-function progressColor(value: number) {
-  if (value === 100) return "teal"
-  if (value >= 75) return "blue"
-  if (value >= 50) return "cyan"
-  if (value >= 40) return "yellow"
-  return "red"
-}
-
-function progressLabel(value: number) {
-  if (value === 100) return "Complete"
-  if (value >= 75) return "Almost there"
-  if (value >= 50) return "Halfway through"
-  if (value >= 40) return "In progress"
-  return "Just started"
-}
 
 function ProjectDetails() {
   const { slug } = Route.useParams()

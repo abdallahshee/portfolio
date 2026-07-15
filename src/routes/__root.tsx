@@ -11,7 +11,7 @@ import Footer from '../components/Footer'
 import '@mantine/core/styles.css'
 import TanStackQueryProvider from '../integrations/tanstack-query/root-provider'
 import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-import { Container, MantineProvider } from '@mantine/core'
+import { MantineProvider } from '@mantine/core'
 import '@mantine/notifications/styles.css'
 import "@mantine/tiptap/styles.css"
 import appCss from '../styles.css?url'
@@ -22,7 +22,6 @@ import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollTop'
 import { useEffect } from 'react'
 import { ScrollToTopOnRouteChange } from '@/components/ScrollTopOnRouteChnage'
-// import { getUserAndRole } from '@/server/user.functions'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -49,10 +48,6 @@ const THEME_INIT_SCRIPT = `(function(){
 })();`
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  // beforeLoad: async () => {
-  //   const { user } = await getUserAndRole()
-  //   return { user }
-  // },
   head: () => ({
     meta: [
       { charSet: 'utf-8' },

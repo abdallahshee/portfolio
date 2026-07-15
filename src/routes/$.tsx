@@ -1,5 +1,5 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { Container, Stack, Text, Button, ThemeIcon, Paper } from '@mantine/core'
+import { Stack, Text, Button, ThemeIcon, Paper } from '@mantine/core'
 import { FileQuestion, Home, ArrowLeft } from 'lucide-react'
 
 export const Route = createFileRoute('/$')({

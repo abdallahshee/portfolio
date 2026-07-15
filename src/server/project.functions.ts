@@ -3,11 +3,9 @@ import { desc, eq, ilike, or, sql } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { project } from "@/db/schema";
 import { CreateProjectSchema, UpdateProjectSchema } from "@/db/validations/project.types";
-// import { AuthenticatedMiddleware } from "./middleware";
 import slugify from "slugify"
 
 export const createProject = createServerFn({ method: 'POST' })
-  // .middleware([AuthenticatedMiddleware])
   .inputValidator(CreateProjectSchema)
   .handler(async ({ data }) => {
     try {
@@ -21,7 +19,7 @@ export const createProject = createServerFn({ method: 'POST' })
       return { success: true, slug: theSlug };
     } catch (err) {
       console.error('Error creating project:', err);
-    throw err
+      throw err
     }
   });
 
@@ -35,7 +33,7 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
           id: project.id,
           title: project.title,
           slug: project.slug,
-          roles:project.roles,
+          roles: project.roles,
           // progress: project.progress,
           githubUrl: project.githubUrl,
           description: project.description,
@@ -44,7 +42,7 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
           technologies: project.technologies,
           liveUrl: project.liveUrl,
           createdAt: project.createdAt,
-          isContributor:project.isContributor,
+          isContributor: project.isContributor,
           updatedAt: project.updatedAt
         })
         .from(project)
@@ -78,7 +76,7 @@ export const getProjectById = createServerFn({ method: "GET" })
           liveUrl: project.liveUrl,
           createdAt: project.createdAt,
           updatedAt: project.updatedAt,
-          isContributor:project.isContributor
+          isContributor: project.isContributor
         })
         .from(project)
         .where(eq(project.id, data.projectId));
@@ -88,7 +86,7 @@ export const getProjectById = createServerFn({ method: "GET" })
       return theProject;
     } catch (err) {
       console.error(err);
-       throw err
+      throw err
     }
   });
 
@@ -113,9 +111,9 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
             technologies: project.technologies,
             isFeatured: project.isFeatured, // 👈 was missing
             // progress: project.progress,
-            roles:project.roles,
+            roles: project.roles,
             createdAt: project.createdAt,
-            isContributor:project.isContributor,
+            isContributor: project.isContributor,
             updatedAt: project.updatedAt
           })
           .from(project)
@@ -180,8 +178,8 @@ export const getTopFeaturedProjects = createServerFn({ method: "GET" })
           id: project.id,
           slug: project.slug,
           title: project.title,
-          liveUrl:project.liveUrl,
-          githubUrl:project.githubUrl,
+          liveUrl: project.liveUrl,
+          githubUrl: project.githubUrl,
           imageUrl: project.imageUrl,
           updatedAt: project.updatedAt,
         })
@@ -223,11 +221,11 @@ export const searchProjects = createServerFn({ method: "GET" })
             githubUrl: project.githubUrl,
             liveUrl: project.liveUrl,
             technologies: project.technologies,
-            roles:project.roles,
+            roles: project.roles,
             isFeatured: project.isFeatured, // 👈 was missing
             // progress: project.progress,
             createdAt: project.createdAt,
-            isContributor:project.isContributor,
+            isContributor: project.isContributor,
             updatedAt: project.updatedAt,
           })
           .from(project)

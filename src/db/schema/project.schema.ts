@@ -1,5 +1,4 @@
-import { sql } from "drizzle-orm";
-import { pgTable, text, timestamp, boolean, integer, check, index } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, index } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
 export const project = pgTable(
@@ -13,7 +12,6 @@ export const project = pgTable(
     githubUrl: text('github_url'),
     liveUrl: text('live_url'),
     isFeatured: boolean('is_featured'),
-    // progress: integer("progress").default(0).notNull(),
     technologies: text("technologies").array().notNull().default([]),
     roles: text("roles").array().default([]),
     createdAt: timestamp("created_at").defaultNow().notNull(),
