@@ -277,12 +277,12 @@ function ServicesPage() {
       {/* ── EXPERIENCE AREAS ── */}
       <section className="space-y-3">
         <div>
-          <div className="title2">Domains I've Built In</div>
+          <div className="title2">Hands-On Experience</div>
           <p className="w-full text-base mb-6 leading-7 text-slate-600 sm:text-lg sm:leading-8 dark:text-slate-400">
-            Real problems I've solved through code — spanning customer-facing applications,
-            internal management systems, and API-driven platforms. Each one reflects practical
-            experience with the architecture, trade-offs, and edge cases that come with shipping
-            real software.
+            Real systems I've built and shipped — spanning customer-facing applications,
+            internal management platforms, and API-driven services. Each one reflects the
+            kind of hands-on experience that comes from navigating real architecture,
+            trade-offs, and edge cases in production.
           </p>
         </div>
 
