@@ -11,7 +11,6 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnauthorizedRouteImport } from './routes/unauthorized'
 import { Route as SkillsRouteImport } from './routes/skills'
-import { Route as ServicesRouteImport } from './routes/services'
 import { Route as ConnectRouteImport } from './routes/connect'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
@@ -27,11 +26,6 @@ const UnauthorizedRoute = UnauthorizedRouteImport.update({
 const SkillsRoute = SkillsRouteImport.update({
   id: '/skills',
   path: '/skills',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ServicesRoute = ServicesRouteImport.update({
-  id: '/services',
-  path: '/services',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConnectRoute = ConnectRouteImport.update({
@@ -70,7 +64,6 @@ export interface FileRoutesByFullPath {
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/$': typeof SplatRoute
   '/connect': typeof ConnectRoute
-  '/services': typeof ServicesRoute
   '/skills': typeof SkillsRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -80,7 +73,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/connect': typeof ConnectRoute
-  '/services': typeof ServicesRoute
   '/skills': typeof SkillsRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/projects': typeof ProjectsIndexRoute
@@ -92,7 +84,6 @@ export interface FileRoutesById {
   '/projects': typeof ProjectsRouteRouteWithChildren
   '/$': typeof SplatRoute
   '/connect': typeof ConnectRoute
-  '/services': typeof ServicesRoute
   '/skills': typeof SkillsRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/projects/': typeof ProjectsIndexRoute
@@ -105,7 +96,6 @@ export interface FileRouteTypes {
     | '/projects'
     | '/$'
     | '/connect'
-    | '/services'
     | '/skills'
     | '/unauthorized'
     | '/projects/'
@@ -115,7 +105,6 @@ export interface FileRouteTypes {
     | '/'
     | '/$'
     | '/connect'
-    | '/services'
     | '/skills'
     | '/unauthorized'
     | '/projects'
@@ -126,7 +115,6 @@ export interface FileRouteTypes {
     | '/projects'
     | '/$'
     | '/connect'
-    | '/services'
     | '/skills'
     | '/unauthorized'
     | '/projects/'
@@ -138,7 +126,6 @@ export interface RootRouteChildren {
   ProjectsRouteRoute: typeof ProjectsRouteRouteWithChildren
   SplatRoute: typeof SplatRoute
   ConnectRoute: typeof ConnectRoute
-  ServicesRoute: typeof ServicesRoute
   SkillsRoute: typeof SkillsRoute
   UnauthorizedRoute: typeof UnauthorizedRoute
 }
@@ -157,13 +144,6 @@ declare module '@tanstack/react-router' {
       path: '/skills'
       fullPath: '/skills'
       preLoaderRoute: typeof SkillsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/services': {
-      id: '/services'
-      path: '/services'
-      fullPath: '/services'
-      preLoaderRoute: typeof ServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/connect': {
@@ -230,7 +210,6 @@ const rootRouteChildren: RootRouteChildren = {
   ProjectsRouteRoute: ProjectsRouteRouteWithChildren,
   SplatRoute: SplatRoute,
   ConnectRoute: ConnectRoute,
-  ServicesRoute: ServicesRoute,
   SkillsRoute: SkillsRoute,
   UnauthorizedRoute: UnauthorizedRoute,
 }

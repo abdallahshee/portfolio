@@ -28,10 +28,10 @@ function applyThemeMode(mode: ThemeMode) {
 
 const links = linkOptions([
   { label: "Home", to: "/" },
-  { label: "Expertise", to: "/services" },
+  { label: "Skills", to: "/skills" },
   { label: "Connect", to: "/connect" },
   { label: "Projects", to: "/projects" },
-  { label: "Skills", to: "/skills" },
+  // { label: "Skills", to: "/skills" },
 ])
 
 export default function Header() {

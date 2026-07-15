@@ -13,7 +13,7 @@ export const project = pgTable(
     githubUrl: text('github_url'),
     liveUrl: text('live_url'),
     isFeatured: boolean('is_featured'),
-    progress: integer("progress").default(0).notNull(),
+    // progress: integer("progress").default(0).notNull(),
     technologies: text("technologies").array().notNull().default([]),
     roles: text("roles").array().default([]), 
     nextSteps: text("next-steps").array().default([]),  // 👈 new field — what you did on this project
@@ -25,9 +25,6 @@ export const project = pgTable(
       .notNull(),
   },
   (table) => [
-    check(
-      "progress_range_check",
-      sql`${table.progress} >= 0 AND ${table.progress} <= 100`
-    ),
+
   ]
 )

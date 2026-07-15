@@ -9,7 +9,6 @@ import {
   Stack,
   Text,
   ThemeIcon,
-  Progress,
   Container,
 } from "@mantine/core"
 
@@ -17,7 +16,6 @@ import {
   ArrowLeft,
   CalendarDays,
   Globe,
-  Pencil,
   RefreshCw,
   WandSparkles,
   Star,
@@ -29,6 +27,7 @@ import {
   Users,
   Rocket,
   Circle,
+  FolderKanban,
 } from "lucide-react"
 
 import { createFileRoute, Link } from "@tanstack/react-router"
@@ -63,7 +62,7 @@ function progressLabel(value: number) {
 
 function ProjectDetails() {
   const { slug } = Route.useParams()
-  
+
   const { data: project } = useSuspenseQuery(
     getProjectBySlugQueryOptions(slug)
   )
@@ -76,14 +75,12 @@ function ProjectDetails() {
     )
   }
 
-  const color = progressColor(project.progress)
-  const label = progressLabel(project.progress)
+
   const technologies = project.technologies ?? []
   const roles = project.roles ?? []
   const nextSteps = project.nextSteps ?? []
 
   return (
-    // ONE MAIN GRID — single column, every block takes the full row width.
     <div className="grid grid-cols-1 gap-6 py-10">
 
       {/* HEADER — title/actions + project info row (progress, dates, links) */}
@@ -115,9 +112,7 @@ function ProjectDetails() {
                   </Badge>
                 )}
 
-                <Badge variant="light" color={color} radius="md" size="sm">
-                  {label}
-                </Badge>
+            
 
                 {project.isContributor ? (
                   <Badge
@@ -143,127 +138,129 @@ function ProjectDetails() {
               </Group>
             </Stack>
 
-            <Group gap="xs">
-              <Link to="/projects">
-                <Button
-                  variant="light"
-                  radius="md"
-                  size="sm"
-                  leftSection={<ArrowLeft size={16} />}
-                >
-                  Back
-                </Button>
-              </Link>
-      
-            </Group>
+            <Link to="/projects">
+              <Button
+                variant="light"
+                radius="md"
+                size="sm"
+                leftSection={<ArrowLeft size={16} />}
+              >
+                Back
+              </Button>
+            </Link>
           </Group>
 
           <Divider />
 
-          {/* PROJECT INFO ROW — progress, dates, live/source links */}
-          <Stack gap="lg">
-            {/* Progress bar — full width */}
-            <Stack gap={6}>
-              <Group justify="space-between">
-                <Text size="sm" fw={500} c="dimmed">
-                  Progress
-                </Text>
-                <Text size="sm" fw={700} c={color}>
-                  {project.progress}%{" "}
-                  <Text component="span" size="xs" c="dimmed" fw={400}>
-                    ({project.progress === 100
-                      ? "Completed"
-                      : `${100 - project.progress}% remaining`})
+          {/* PROJECT INFO ROW — dates, live/source links */}
+          <Group justify="space-between" align="center" wrap="wrap" gap="xl">
+            <Group gap="xl" wrap="wrap">
+              <Group gap="sm">
+                <ThemeIcon variant="light" color="gray" radius="xl" size="lg">
+                  <CalendarDays size={16} />
+                </ThemeIcon>
+                <Stack gap={0}>
+                  <Text size="xs" c="dimmed">
+                    Created
                   </Text>
-                </Text>
-              </Group>
-              <Progress value={project.progress} color={color} size="lg" radius="xl" />
-            </Stack>
-
-            {/* Dates + links */}
-            <Group justify="space-between" align="center" wrap="wrap" gap="xl">
-              <Group gap="xl" wrap="wrap">
-                <Group gap="sm">
-                  <ThemeIcon variant="light" color="gray" radius="xl" size="lg">
-                    <CalendarDays size={16} />
-                  </ThemeIcon>
-                  <Stack gap={0}>
-                    <Text size="xs" c="dimmed">
-                      Created
-                    </Text>
-                    <Text size="sm" fw={500}>
-                      {moment(project.createdAt).format("D MMMM YYYY")}
-                    </Text>
-                  </Stack>
-                </Group>
-
-                <Group gap="sm">
-                  <ThemeIcon variant="light" color="gray" radius="xl" size="lg">
-                    <RefreshCw size={16} />
-                  </ThemeIcon>
-                  <Stack gap={0}>
-                    <Text size="xs" c="dimmed">
-                      Updated
-                    </Text>
-                    <Text size="sm" fw={500}>
-                      {moment(project.updatedAt).fromNow()}
-                    </Text>
-                  </Stack>
-                </Group>
+                  <Text size="sm" fw={500}>
+                    {moment(project.createdAt).format("D MMMM YYYY")}
+                  </Text>
+                </Stack>
               </Group>
 
-              <Group gap="sm" wrap="wrap">
-                {project.liveUrl ? (
-                  <Button
-                    component="a"
-                    href={project.liveUrl}
-                    target="_blank"
-                    radius="md"
-                    size="sm"
-                    leftSection={<Globe size={15} />}
-                  >
-                    Visit live site
-                  </Button>
-                ) : (
-                  <Button
-                    radius="md"
-                    size="sm"
-                    leftSection={<Globe size={15} />}
-                    disabled
-                    variant="light"
-                    color="gray"
-                  >
-                    No live site
-                  </Button>
-                )}
-
-                {project.githubUrl ? (
-                  <Button
-                    component="a"
-                    href={project.githubUrl}
-                    target="_blank"
-                    variant="light"
-                    radius="md"
-                    size="sm"
-                    leftSection={<Github size={15} />}
-                  >
-                    View source
-                  </Button>
-                ) : (
-                  <Button
-                    radius="md"
-                    size="sm"
-                    leftSection={<Github size={15} />}
-                    disabled
-                    variant="light"
-                    color="gray"
-                  >
-                    Source is private
-                  </Button>
-                )}
+              <Group gap="sm">
+                <ThemeIcon variant="light" color="gray" radius="xl" size="lg">
+                  <RefreshCw size={16} />
+                </ThemeIcon>
+                <Stack gap={0}>
+                  <Text size="xs" c="dimmed">
+                    Updated
+                  </Text>
+                  <Text size="sm" fw={500}>
+                    {moment(project.updatedAt).fromNow()}
+                  </Text>
+                </Stack>
               </Group>
             </Group>
-          </Stack>
+
+            <Group gap="sm" wrap="wrap">
+              {project.liveUrl ? (
+                <Button
+                  component="a"
+                  href={project.liveUrl}
+                  target="_blank"
+                  radius="md"
+                  size="sm"
+                  leftSection={<Globe size={15} />}
+                >
+                  Visit live site
+                </Button>
+              ) : (
+                <Button
+                  radius="md"
+                  size="sm"
+                  leftSection={<Globe size={15} />}
+                  disabled
+                  variant="light"
+                  color="gray"
+                >
+                  No live site
+                </Button>
+              )}
+
+              {project.githubUrl ? (
+                <Button
+                  component="a"
+                  href={project.githubUrl}
+                  target="_blank"
+                  variant="light"
+                  radius="md"
+                  size="sm"
+                  leftSection={<Github size={15} />}
+                >
+                  View source
+                </Button>
+              ) : (
+                <Button
+                  radius="md"
+                  size="sm"
+                  leftSection={<Github size={15} />}
+                  disabled
+                  variant="light"
+                  color="gray"
+                >
+                  Source is private
+                </Button>
+              )}
+            </Group>
+          </Group>
+        </Stack>
+      </Paper>
+
+      {/* TECH STACK — moved up so it's scannable immediately after the header */}
+      <Paper p="sm" className="shadow-sm">
+        <Stack gap="md">
+          <Group gap="xs">
+            <Code2 size={16} className="text-slate-500" />
+            <Text fw={500} size="sm" c="dimmed" tt="uppercase">
+              Tech Stack
+            </Text>
+          </Group>
+          <Divider />
+          {technologies.length === 0 ? (
+            <Text size="sm" c="dimmed">
+              No technologies listed for this project.
+            </Text>
+          ) : (
+            <Group gap="xs">
+              {technologies.map((tech: string, index: number) => (
+                <Badge key={`${tech}-${index}`} radius="xl" variant="light" color="blue">
+                  {tech}
+                </Badge>
+              ))}
+            </Group>
+          )}
         </Stack>
       </Paper>
 
@@ -278,8 +275,9 @@ function ProjectDetails() {
             h={420}
           />
         ) : (
-          <div className="flex h-[340px] items-center justify-center rounded-xl bg-slate-100 text-slate-400 dark:bg-slate-800">
-            No image available
+          <div className="flex h-[340px] flex-col items-center justify-center gap-2 rounded-xl bg-slate-100 text-slate-400 dark:bg-slate-800">
+            <FolderKanban size={32} />
+            <span className="text-sm">No image available</span>
           </div>
         )}
       </Card>
@@ -346,7 +344,7 @@ function ProjectDetails() {
           <Divider />
           {nextSteps.length === 0 ? (
             <Text size="sm" c="dimmed">
-              {project.progress === 100
+              {project.nextSteps && project?.nextSteps?.length <=1
                 ? "This project is complete — no further steps planned."
                 : "No upcoming steps listed for this project yet."}
             </Text>
@@ -369,32 +367,6 @@ function ProjectDetails() {
                 </Group>
               ))}
             </Stack>
-          )}
-        </Stack>
-      </Paper>
-
-      {/* TECH STACK */}
-      <Paper p="sm" className="shadow-sm">
-        <Stack gap="md">
-          <Group gap="xs">
-            <Code2 size={16} className="text-slate-500" />
-            <Text fw={500} size="sm" c="dimmed" tt="uppercase">
-              Tech Stack
-            </Text>
-          </Group>
-          <Divider />
-          {technologies.length === 0 ? (
-            <Text size="sm" c="dimmed">
-              No technologies listed for this project.
-            </Text>
-          ) : (
-            <Group gap="xs">
-              {technologies.map((tech: string) => (
-                <Badge key={tech} radius="xl" variant="light" color="blue">
-                  {tech}
-                </Badge>
-              ))}
-            </Group>
           )}
         </Stack>
       </Paper>

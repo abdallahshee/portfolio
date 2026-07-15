@@ -5,7 +5,7 @@ import { createSelectSchema } from "drizzle-zod"
 import type { InferSelectModel } from "drizzle-orm"
 
 const ProjectSchema = createSelectSchema(project, {
-  progress: z.number(),
+  // progress: z.number(),
   title: z.string().min(5, "Title out of range 3-50 characters").max(50, "Title out of range 3-50 characters"),
   description: z.string()
     .min(100, "Description out of range 100-800 characters")
@@ -27,7 +27,7 @@ export const CreateProjectSchema = ProjectSchema.pick({
     isFeatured:true,
     liveUrl: true,
     githubUrl: true,
-    progress: true,
+    // progress: true,
     technologies:true,
     roles:true,
     nextSteps:true,

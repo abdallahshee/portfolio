@@ -1,4 +1,3 @@
-import Brand from '@/components/Brand'
 import BrandHome from '@/components/BrandHome'
 import { getTopFeaturedProjectsQueryOptions } from '@/db/queries/project.queries'
 import {
@@ -10,8 +9,6 @@ import {
   Paper,
   ThemeIcon,
   SimpleGrid,
-  Badge,
-  Timeline,
 } from '@mantine/core'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
@@ -30,6 +27,8 @@ import {
   BriefcaseBusiness,
   Github,
   Icon,
+  ShieldCheck,
+  GitBranch,
 } from 'lucide-react'
 
 import { Suspense, useEffect, useState } from 'react'
@@ -140,7 +139,7 @@ function ProjectsPlaceholder() {
           <p className="text-sm text-slate-400 dark:text-slate-500">
             Featured projects will be added here shortly
           </p>
-          <Link to="/services">
+          <Link to="/skills">
             <Button size="sm" variant="light" leftSection={<BriefcaseBusiness size={16} />}>
               See My Skills & Approach
             </Button>
@@ -166,7 +165,7 @@ function FeaturedProjectsSection() {
         <Group justify="space-between" align="flex-start" wrap="wrap">
           <div className="min-w-0 flex-1">
             <div className="title2">Featured Projects</div>
-            <p className="mt-1 max-w-xl text-sm text-slate-500">
+            <p className="mt-1 text-sm text-slate-500">
               A curated selection of projects I have built and shipped — each one
               reflecting my approach to writing clean, maintainable, and
               production-ready software.
@@ -292,9 +291,9 @@ const STRENGTHS = [
     color: 'teal',
   },
   {
-    icon: <Network size={20} />,
-    title: 'System Design',
-    desc: 'Scalable, maintainable systems built through thoughtful architecture and practical engineering decisions.',
+    icon: <ShieldCheck size={20} />,
+    title: 'Testing & Reliability',
+    desc: 'Writing tests that catch regressions early, keeping releases stable and shipping with real confidence.',
     color: 'pink',
   },
   {
@@ -304,9 +303,9 @@ const STRENGTHS = [
     color: 'orange',
   },
   {
-    icon: <Sparkles size={20} />,
-    title: 'AI-Assisted Development',
-    desc: 'Leverage AI to accelerate development, improve code quality, and enhance product capabilities.',
+    icon: <GitBranch size={20} />,
+    title: 'Collaboration & Workflow',
+    desc: 'Comfortable working within existing codebases, git branching workflows, and team code review processes.',
     color: 'grape',
   },
 ]
