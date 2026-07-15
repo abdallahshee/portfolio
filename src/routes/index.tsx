@@ -316,12 +316,12 @@ function App() {
             <Group justify="center" mt="md" wrap="wrap" gap="sm">
               <Link to="/connect">
                 <Button variant="filled" color="blue" size="sm" radius="md" leftSection={<Mail size={18} />}>
-                  Get In Touch
+                  Let's Get Connected
                 </Button>
               </Link>
               <Link to="/projects">
                 <Button variant="outline" color="blue" size="sm" radius="md" leftSection={<FolderKanban size={18} />}>
-                  View My Work
+                  Explore My Projects
                 </Button>
               </Link>
             </Group>
