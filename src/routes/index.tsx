@@ -308,11 +308,13 @@ const STRENGTHS = [
 ]
 
 
-const ROLE_WORDS = [
-  'Full-Stack Development',
+const ROLE_WORDS = [ 
   'Clean Architecture',
   'Scalable Systems',
-  'Solving Real Problems',
+  'Reliable APIs',
+  'Thoughtful UI/UX',
+  'Maintainable Code',
+
 ]
 
 
