@@ -163,16 +163,9 @@ function FeaturedProjectsSection() {
     <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
       <Stack gap="md">
         <Group justify="space-between" align="flex-start" wrap="wrap">
-          <div className="flex-1">
+          <div className="flex justify-between">
             <div className="title2">Featured Projects</div>
-            <p className="mt-1 text-sm text-slate-500">
-              A curated selection of projects I have built and shipped — each one
-              reflecting my approach to writing clean, maintainable, and
-              production-ready software.
-            </p>
-          </div>
-
-          <Link to="/projects">
+                  <Link to="/projects">
             <Button
               variant="filled"
               size="sm"
@@ -181,6 +174,13 @@ function FeaturedProjectsSection() {
               View All
             </Button>
           </Link>
+
+          </div>
+              <p className="mt-1 text-sm text-slate-500">
+              A curated selection of projects I have built and shipped — each one
+              reflecting my approach to writing clean, maintainable, and
+              production-ready software.
+            </p>
         </Group>
 
         <Stack gap="sm">
