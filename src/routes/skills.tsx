@@ -327,7 +327,7 @@ function ServicesPage() {
         >
           <Stack align="center" gap="md">
             <div className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
-              Looking for a Developer Like This on Your Team?
+              Looking for a Developer Like Me?
             </div>
             <p className="max-w-2xl px-1 text-center text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
               I'm actively looking for full-stack software developer roles in Nairobi and Mombasa.

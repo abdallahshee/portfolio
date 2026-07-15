@@ -326,12 +326,11 @@ function App() {
 
       {/* ── HERO + ABOUT (combined) ── */}
       <section className="rounded-3xl bg-slate-950 py-20 lg:py-28">
-        <div className="mx-auto max-w-7xl">
-
+        <div className="mx-auto px-8">
           <div className="grid items-center gap-16 lg:grid-cols-[4fr_1fr]">
 
             {/* LEFT SIDE */}
-            <div className="max-w-4xl">
+            <div className="max-w-6xl">
               <Stack gap="xl">
 
                 <div>
@@ -404,8 +403,8 @@ function App() {
                 </div>
 
                 {/* Floating Brand Card */}
-                <div className="absolute -bottom-6 left-1/2 z-20 w-3/4 -translate-x-1/2">
-                  <div className="w-full rounded-2xl px-5 py-3 bg-white backdrop-blur">
+                <div className="absolute -bottom-6 left-1/2 z-20 w-full -translate-x-1/2">
+                  <div className="w-full rounded-2xl px-1 py-3 bg-white backdrop-blur">
                     <BrandHome />
                   </div>
                 </div>
@@ -413,7 +412,6 @@ function App() {
             </div>
 
           </div>
-
         </div>
       </section>
 
