@@ -34,65 +34,77 @@ export const Route = createFileRoute('/')({
 })
 
 // ── TYPEWRITER HOOK ──
-function useTypewriter(words: string[], typingSpeed = 80, pauseTime = 1600, deletingSpeed = 40) {
-  const [text, setText] = useState('')
-  const [wordIndex, setWordIndex] = useState(0)
-  const [isDeleting, setIsDeleting] = useState(false)
+type TypingPhase = 'typingName' | 'typingRole' | 'deleting'
+
+function useCoordinatedTyping(
+  name: string,
+  roleWords: string[],
+  {
+    nameTypingSpeed = 80,
+    roleTypingSpeed = 80,
+    namePause = 400,
+    rolePause = 1600,
+    deletingSpeed = 40,
+  } = {}
+) {
+  const [phase, setPhase] = useState<TypingPhase>('typingName')
+  const [typedName, setTypedName] = useState('')
+  const [typedRole, setTypedRole] = useState('')
+  const [roleIndex, setRoleIndex] = useState(0)
 
   useEffect(() => {
-    const currentWord = words[wordIndex % words.length]
+    const currentRole = roleWords[roleIndex % roleWords.length]
     let timeout: ReturnType<typeof setTimeout>
 
-    if (!isDeleting && text === currentWord) {
-      timeout = setTimeout(() => setIsDeleting(true), pauseTime)
-    } else if (isDeleting && text === '') {
-      setIsDeleting(false)
-      setWordIndex((i) => i + 1)
-    } else {
-      timeout = setTimeout(
-        () => {
-          setText((prev) =>
-            isDeleting ? currentWord.slice(0, prev.length - 1) : currentWord.slice(0, prev.length + 1)
-          )
-        },
-        isDeleting ? deletingSpeed : typingSpeed
-      )
+    if (phase === 'typingName') {
+      if (typedName.length < name.length) {
+        timeout = setTimeout(
+          () => setTypedName(name.slice(0, typedName.length + 1)),
+          nameTypingSpeed
+        )
+      } else {
+        // Name fully typed — pause briefly, then start the role
+        timeout = setTimeout(() => setPhase('typingRole'), namePause)
+      }
+    } else if (phase === 'typingRole') {
+      if (typedRole.length < currentRole.length) {
+        timeout = setTimeout(
+          () => setTypedRole(currentRole.slice(0, typedRole.length + 1)),
+          roleTypingSpeed
+        )
+      } else {
+        // Role fully typed — hold for a second, then delete both together
+        timeout = setTimeout(() => setPhase('deleting'), rolePause)
+      }
+    } else if (phase === 'deleting') {
+      if (typedName.length > 0 || typedRole.length > 0) {
+        timeout = setTimeout(() => {
+          setTypedName((prev) => prev.slice(0, -1))
+          setTypedRole((prev) => prev.slice(0, -1))
+        }, deletingSpeed)
+      } else {
+        // Both fully deleted — move to next role word and start over
+        setRoleIndex((i) => i + 1)
+        setPhase('typingName')
+      }
     }
 
     return () => clearTimeout(timeout)
-  }, [text, isDeleting, wordIndex, words, typingSpeed, pauseTime, deletingSpeed])
+  }, [
+    phase,
+    typedName,
+    typedRole,
+    roleIndex,
+    name,
+    roleWords,
+    nameTypingSpeed,
+    roleTypingSpeed,
+    namePause,
+    rolePause,
+    deletingSpeed,
+  ])
 
-  return text
-}
-function useTypeName(words: string[], typingSpeed = 80, pauseTime = 2000, deletingSpeed = 30) {
-  const [text, setText] = useState('')
-  const [wordIndex, setWordIndex] = useState(0)
-  const [isDeleting, setIsDeleting] = useState(false)
-
-  useEffect(() => {
-    const currentWord = words[wordIndex % words.length]
-    let timeout: ReturnType<typeof setTimeout>
-
-    if (!isDeleting && text === currentWord) {
-      timeout = setTimeout(() => setIsDeleting(true), pauseTime)
-    } else if (isDeleting && text === '') {
-      setIsDeleting(false)
-      setWordIndex((i) => i + 1)
-    } else {
-      timeout = setTimeout(
-        () => {
-          setText((prev) =>
-            isDeleting ? currentWord.slice(0, prev.length - 1) : currentWord.slice(0, prev.length + 1)
-          )
-        },
-        isDeleting ? deletingSpeed : typingSpeed
-      )
-    }
-
-    return () => clearTimeout(timeout)
-  }, [text, isDeleting, wordIndex, words, typingSpeed, pauseTime, deletingSpeed])
-
-  return text
+  return { typedName, typedRole, phase }
 }
 // ── SKELETONS ──
 function ProjectsSkeleton() {
@@ -161,8 +173,9 @@ const ROLE_WORDS = [
 
 // ── PAGE ──
 function App() {
-  const typedText = useTypewriter(ROLE_WORDS)
-  const typedName = useTypeName(["Abdallah Shee"])
+  // const typedText = useTypewriter(ROLE_WORDS)
+  // const typedName = typeName(["Abdallah Shee"])
+  const { typedName, typedRole } = useCoordinatedTyping('Abdallah Shee', ROLE_WORDS)
   const { data: projects } = useSuspenseQuery(getTopFeaturedProjectsQueryOptions())
   return (
     <div className="w-full space-y-0 px-0">
@@ -187,7 +200,7 @@ function App() {
                   <div className="mt-3 text-md font-medium text-slate-400 sm:text-2xl">
                     <span className='font-semibold'>Developing{" "}</span>
                     <span className="text-teal-400">
-                      {typedText}
+                      {typedRole}
                       <span className="animate-pulse"> |</span>
                     </span>
                   </div>
