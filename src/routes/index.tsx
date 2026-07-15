@@ -163,7 +163,7 @@ function FeaturedProjectsSection() {
     <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
       <Stack gap="md">
         <Group justify="space-between" align="flex-start" wrap="wrap">
-          <div className="min-w-0 flex-1">
+          <div className="flex-1">
             <div className="title2">Featured Projects</div>
             <p className="mt-1 text-sm text-slate-500">
               A curated selection of projects I have built and shipped — each one
@@ -426,7 +426,10 @@ function App() {
         <div>
           <div className="title2">Core Strengths</div>
           <p className="mt-2 max-w-3xl text-sm text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
-            The technical areas where I consistently deliver the most impact and value.
+            The technical areas where I consistently deliver the most impact and value — not
+            a checklist of buzzwords, but the parts of a project I actually get hands-on with
+            from day one: structuring the frontend, designing the data layer, and making sure
+            what ships holds up once real users start relying on it.
           </p>
         </div>
 

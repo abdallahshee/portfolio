@@ -140,11 +140,11 @@ export default function Footer() {
               Availability
             </div>
             <p className="text-md leading-relaxed text-green-600">
-              Open to full-time software developer opportunities.
+              Open to software developer opportunities.
             </p>
             <Anchor
               component={Link}
-              to="/contacts"
+              to="/connect"
               className="text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-500 dark:text-indigo-400"
             >
               Lets Connect →
