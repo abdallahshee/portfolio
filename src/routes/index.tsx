@@ -175,7 +175,7 @@ const ROLE_WORDS = [
 function App() {
   // const typedText = useTypewriter(ROLE_WORDS)
   // const typedName = typeName(["Abdallah Shee"])
-  const { typedName, typedRole } = useCoordinatedTyping('Abdallah Shee', ROLE_WORDS)
+  const { typedName, typedRole } = useCoordinatedTyping("Hi, I'm Abdallah Shee", ROLE_WORDS)
   const { data: projects } = useSuspenseQuery(getTopFeaturedProjectsQueryOptions())
   return (
     <div className="w-full space-y-0 px-0">
@@ -191,7 +191,7 @@ function App() {
 
                 <div>
                   <h1 className="text-2xl font-semibold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
-                    👋 Hi, I'm{" "}
+                    👋 
                     <span className="bg-linear-to-r from-teal-400 via-indigo-400 to-blue-400 bg-clip-text text-transparent">
                       {typedName}
                     </span>
