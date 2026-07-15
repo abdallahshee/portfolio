@@ -220,7 +220,7 @@ function FeaturedProjectsSection() {
               </div>
 
               <div className="flex shrink-0 items-center gap-2">
-                {project.githubUrl && (
+                 {(!project.liveUrl && project.githubUrl)&& (
                   <Button
                     component="a"
                     href={project.githubUrl}
@@ -236,7 +236,7 @@ function FeaturedProjectsSection() {
                   </Button>
                 )}
 
-                {project.liveUrl && (
+                {(project.liveUrl && project.githubUrl)&& (
                   <Button
                     component="a"
                     href={project.liveUrl}
@@ -251,6 +251,23 @@ function FeaturedProjectsSection() {
                     Live Site
                   </Button>
                 )}
+
+                {(project.liveUrl && !project.githubUrl)&& (
+                  <Button
+                    component="a"
+                    href={project.liveUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="filled"
+                    color="green"
+                    size="sm"
+                    leftSection={<ExternalLink size={14} />}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    Live Site
+                  </Button>
+                )}
+
               </div>
             </div>
           ))}
@@ -335,7 +352,7 @@ function App() {
                     </span>
                   </h1>
 
-                  <div className="mt-5 text-xl font-medium text-slate-400 sm:text-2xl">
+                  <div className="mt-5 text-md font-medium text-slate-400 sm:text-2xl">
                     I'm passionate about{" "}
                     <span className="text-teal-400">
                       {typedText}

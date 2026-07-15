@@ -36,4 +36,3 @@ export const searchProjectsQueryOptions = (query: string, page: number, pageSize
     queryKey: ['projects', 'search', 'v2', query, page, pageSize] as (string | number)[],
     queryFn: () => searchProjects({ data: { query, page, pageSize } }),
   })
-

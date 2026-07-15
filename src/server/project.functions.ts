@@ -3,11 +3,11 @@ import { desc, eq, ilike, or, sql } from "drizzle-orm";
 import { createServerFn } from "@tanstack/react-start";
 import { project } from "@/db/schema";
 import { CreateProjectSchema, UpdateProjectSchema } from "@/db/validations/project.types";
-import { AuthenticatedMiddleware } from "./middleware";
+// import { AuthenticatedMiddleware } from "./middleware";
 import slugify from "slugify"
 
 export const createProject = createServerFn({ method: 'POST' })
-  .middleware([AuthenticatedMiddleware])
+  // .middleware([AuthenticatedMiddleware])
   .inputValidator(CreateProjectSchema)
   .handler(async ({ data }) => {
     try {
@@ -157,7 +157,7 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
     }
   })
 export const updateProject = createServerFn({ method: "POST" })
-  .middleware([AuthenticatedMiddleware])
+  // .middleware([AuthenticatedMiddleware])
   .inputValidator(UpdateProjectSchema)
   .handler(async ({ data }) => {
     try {
