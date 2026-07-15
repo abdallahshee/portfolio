@@ -69,15 +69,6 @@ function ProjectDetails() {
         <Stack gap="lg">
           <Group justify="space-between" align="flex-start">
             <Stack gap={6}>
-              <Group gap="xs">
-                <ThemeIcon variant="light" color="indigo" radius="xl" size="lg">
-                  <WandSparkles size={18} />
-                </ThemeIcon>
-                <Text fw={500} c="dimmed" size="sm">
-                  Project Details
-                </Text>
-              </Group>
-
               <div className="text-3xl font-bold">{project.title}</div>
 
               <Group gap="xs" mt={4}>

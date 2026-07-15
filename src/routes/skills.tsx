@@ -336,7 +336,7 @@ function ServicesPage() {
               <Button
                 className="min-w-[200px] justify-center"
                 variant="filled"
-                color="blue"
+                color="orange"
                 size="sm"
                 radius="md"
                 leftSection={<Mail size={18} />}

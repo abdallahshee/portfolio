@@ -142,14 +142,15 @@ export default function Footer() {
             </div>
             <p className="text-md leading-relaxed text-slate-600 dark:text-slate-400">
               Open to software developer opportunities.
-            </p>
-            <Anchor
+            </p><Anchor
               component={Link}
               to="/connect"
-              className="text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-500 dark:text-indigo-400"
+              c="orange.4"
+              className="text-sm font-medium transition-colors hover:text-orange-700"
             >
               Let's Connect →
             </Anchor>
+
           </Stack>
 
         </SimpleGrid>

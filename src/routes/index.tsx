@@ -206,7 +206,7 @@ function App() {
                   <Link to="/projects">
                     <Button
                       size="lg"
-                      radius="xl"
+                      radius="md"
                       className="bg-linear-to-r from-teal-500 to-blue-500"
                       rightSection={<ArrowRight size={18} />}
                     >
@@ -217,9 +217,9 @@ function App() {
                   <Link to="/connect">
                     <Button
                       size="lg"
-                      radius="xl"
-                      variant="outline"
-                      color="gray"
+                      radius="md"
+                      variant="filled"
+                      color="orange"
                       rightSection={<Mail size={18} />}
                     >
                       Connect With Me
@@ -315,12 +315,12 @@ function App() {
             </p>
             <Group justify="center" mt="md" wrap="wrap" gap="sm">
               <Link to="/connect">
-                <Button variant="filled" color="blue" size="sm" radius="md" leftSection={<Mail size={18} />}>
+                <Button variant="filled" color="orange" size="sm" radius="sm" leftSection={<Mail size={18} />}>
                   Let's Connect
                 </Button>
               </Link>
               <Link to="/projects">
-                <Button variant="outline" color="blue" size="sm" radius="md" leftSection={<FolderKanban size={18} />}>
+                <Button variant="outline" color="blue" size="sm" radius="sm" leftSection={<FolderKanban size={18} />}>
                   Explore Projects
                 </Button>
               </Link>
