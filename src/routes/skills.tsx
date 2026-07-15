@@ -330,7 +330,7 @@ function ServicesPage() {
               Looking for a Developer Like Me?
             </div>
             <p className="max-w-2xl px-1 text-center text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-              I'm actively looking for full-stack software developer roles in Nairobi and Mombasa.
+              I'm actively looking for full-stack software developer roles. 
               Reach out and let's talk about how my experience fits what you're building.
             </p>
             <Group justify="center" mt="md" wrap="wrap" gap="sm">
@@ -343,7 +343,7 @@ function ServicesPage() {
                 leftSection={<Mail size={18} />}
                 onClick={() => router.navigate({ to: '/connect' })}
               >
-                Get In Touch
+                Let's Connect
               </Button>
 
               <Link to="/projects">

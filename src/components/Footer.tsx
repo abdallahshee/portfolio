@@ -136,10 +136,10 @@ export default function Footer() {
 
           {/* ── Availability ── */}
           <Stack gap="sm">
-            <div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
-              <span className="h-2 w-2 shrink-0 animate-pulse rounded-full bg-green-500" />
-              Availability
-            </div>
+<div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+  <span className="h-3 w-3 shrink-0 animate-pulse rounded-full bg-green-500" />
+  Availability
+</div>
             <p className="text-md leading-relaxed text-slate-600">
               Open to software developer opportunities.
             </p>

@@ -314,7 +314,6 @@ const ROLE_WORDS = [
   'Reliable APIs',
   'Thoughtful UI/UX',
   'Maintainable Code',
-
 ]
 
 
@@ -336,7 +335,7 @@ function App() {
               <Stack gap="xl">
 
                 <div>
-                  <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
+                  <h1 className="text-4xl font-semibold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
                     Hi, I'm{" "}
                     <span className="bg-linear-to-r from-teal-400 via-indigo-400 to-blue-400 bg-clip-text text-transparent">
                       {typedName}
@@ -361,30 +360,30 @@ function App() {
                   focused on performance, usability, and long-term business value.
                 </p>
 
-                <Group gap="md" wrap="wrap">
-                  <Link to="/projects">
-                    <Button
-                      size="lg"
-                      radius="xl"
-                      className="bg-linear-to-r from-teal-500 to-blue-500"
-                      rightSection={<ArrowRight size={18} />}
-                    >
-                      View My Projects
-                    </Button>
-                  </Link>
+<Group gap="md" wrap="wrap" justify="center" className="sm:justify-start">
+  <Link to="/projects">
+    <Button
+      size="lg"
+      radius="xl"
+      className="bg-linear-to-r from-teal-500 to-blue-500"
+      rightSection={<ArrowRight size={18} />}
+    >
+      View My Projects
+    </Button>
+  </Link>
 
-                  <Link to="/connect">
-                    <Button
-                      size="lg"
-                      radius="xl"
-                      variant="outline"
-                      color="gray"
-                      rightSection={<Mail size={18} />}
-                    >
-                      Connect With Me
-                    </Button>
-                  </Link>
-                </Group>
+  <Link to="/connect">
+    <Button
+      size="lg"
+      radius="xl"
+      variant="outline"
+      color="gray"
+      rightSection={<Mail size={18} />}
+    >
+      Connect With Me
+    </Button>
+  </Link>
+</Group>
               </Stack>
             </div>
 
