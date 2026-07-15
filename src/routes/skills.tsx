@@ -330,7 +330,7 @@ function ServicesPage() {
               Looking for a Developer Like Me?
             </div>
             <p className="max-w-2xl px-1 text-center text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
-              I'm actively looking for full-stack software developer roles. 
+              I'm actively looking for full-stack software developer roles.
               Reach out and let's talk about how my experience fits what you're building.
             </p>
             <Group justify="center" mt="md" wrap="wrap" gap="sm">

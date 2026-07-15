@@ -308,7 +308,7 @@ const STRENGTHS = [
 ]
 
 
-const ROLE_WORDS = [ 
+const ROLE_WORDS = [
   'Clean Architecture',
   'Scalable Systems',
   'Reliable APIs',
@@ -360,30 +360,30 @@ function App() {
                   focused on performance, usability, and long-term business value.
                 </p>
 
-<Group gap="md" wrap="wrap" justify="center" className="sm:justify-start">
-  <Link to="/projects">
-    <Button
-      size="lg"
-      radius="xl"
-      className="bg-linear-to-r from-teal-500 to-blue-500"
-      rightSection={<ArrowRight size={18} />}
-    >
-      View My Projects
-    </Button>
-  </Link>
+                <Group gap="md" wrap="wrap" justify="center" className="sm:justify-start">
+                  <Link to="/projects">
+                    <Button
+                      size="lg"
+                      radius="xl"
+                      className="bg-linear-to-r from-teal-500 to-blue-500"
+                      rightSection={<ArrowRight size={18} />}
+                    >
+                      View My Projects
+                    </Button>
+                  </Link>
 
-  <Link to="/connect">
-    <Button
-      size="lg"
-      radius="xl"
-      variant="outline"
-      color="gray"
-      rightSection={<Mail size={18} />}
-    >
-      Connect With Me
-    </Button>
-  </Link>
-</Group>
+                  <Link to="/connect">
+                    <Button
+                      size="lg"
+                      radius="xl"
+                      variant="outline"
+                      color="gray"
+                      rightSection={<Mail size={18} />}
+                    >
+                      Connect With Me
+                    </Button>
+                  </Link>
+                </Group>
               </Stack>
             </div>
 

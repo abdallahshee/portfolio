@@ -163,26 +163,16 @@ function ProjectsPage() {
         <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
 
           <div className="">
-            <Badge
-              size="lg"
-              radius="xl"
-              variant="light"
-              color="blue"
-              leftSection={<Sparkles size={12} />}
-            >
-              Portfolio Projects
-            </Badge>
 
             <h1 className="title2">
               From Idea to Reality
             </h1>
 
             <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">
-              These are a few of the projects I have built and shipped recently, each one
-              chosen to show a different side of how I think and build. Beyond what you
-              see here, I have worked on other projects across professional engagements,
-              team collaborations, and open source contributions that aren't listed on
-              this page but are just as much a part of how I've grown as a developer.
+              These are a few of the projects I have built and shipped recently, each
+              chosen to show a different side of how I think and build. Beyond what's
+              here, I've also worked across professional engagements, team collaborations,
+              and open source contributions not listed on this page.
             </p>
           </div>
 
