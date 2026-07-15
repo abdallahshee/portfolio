@@ -313,14 +313,28 @@ function App() {
               I'm actively seeking full-stack software developer opportunities in Nairobi and Mombasa.
               Take a look at what I've built, and let's talk about how I can contribute to your team.
             </p>
-            <Group justify="center" mt="md" wrap="wrap" gap="sm">
-              <Link to="/connect">
-                <Button variant="filled" color="orange" size="sm" radius="sm" leftSection={<Mail size={18} />}>
+            <Group justify="center" mt="md" wrap="wrap" gap="sm" grow>
+              <Link to="/connect" style={{ flex: '0 1 200px' }}>
+                <Button
+                  variant="filled"
+                  color="orange"
+                  size="sm"
+                  radius="sm"
+                  leftSection={<Mail size={18} />}
+                  fullWidth
+                >
                   Let's Connect
                 </Button>
               </Link>
-              <Link to="/projects">
-                <Button variant="outline" color="blue" size="sm" radius="sm" leftSection={<FolderKanban size={18} />}>
+              <Link to="/projects" style={{ flex: '0 1 200px' }}>
+                <Button
+                  variant="outline"
+                  color="blue"
+                  size="sm"
+                  radius="sm"
+                  leftSection={<FolderKanban size={18} />}
+                  fullWidth
+                >
                   Explore Projects
                 </Button>
               </Link>
