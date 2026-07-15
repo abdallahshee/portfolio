@@ -163,8 +163,8 @@ function FeaturedProjectsSection() {
   return (
     <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
       <Stack gap="md">
-        <Group justify="space-between" align="flex-start">
-          <div>
+        <Group justify="space-between" align="flex-start" wrap="wrap">
+          <div className="min-w-0 flex-1">
             <div className="title2">Featured Projects</div>
             <p className="mt-1 max-w-xl text-sm text-slate-500">
               A curated selection of projects I have built and shipped — each one
@@ -172,8 +172,13 @@ function FeaturedProjectsSection() {
               production-ready software.
             </p>
           </div>
+
           <Link to="/projects">
-            <Button variant="filled" size="sm" rightSection={<ArrowRight size={16} />}>
+            <Button
+              variant="filled"
+              size="sm"
+              rightSection={<ArrowRight size={16} />}
+            >
               View All
             </Button>
           </Link>
@@ -190,84 +195,74 @@ function FeaturedProjectsSection() {
                   params: { slug: project.slug },
                 })
               }
-              className="flex cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 transition hover:shadow-sm dark:border-slate-700 dark:bg-slate-800/60"
+              className="cursor-pointer rounded-xl border border-slate-200 bg-white p-4 transition hover:shadow-sm dark:border-slate-700 dark:bg-slate-800/60"
             >
-              {project.imageUrl ? (
-                <Image
-                  src={project.imageUrl}
-                  w={48}
-                  h={48}
-                  radius="md"
-                  fit="cover"
-                  style={{ flexShrink: 0 }}
-                />
-              ) : (
-                <ThemeIcon
-                  size={48}
-                  radius="md"
-                  variant="light"
-                  color="gray"
-                  style={{ flexShrink: 0 }}
-                >
-                  <FolderKanban size={20} />
-                </ThemeIcon>
-              )}
-
-              <div className="min-w-0 flex-1">
-                <div className="font-semibold text-slate-900 dark:text-slate-50 break-words">
-                  {project.title}
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                {/* Project Image / Icon */}
+                <div className="shrink-0">
+                  {project.imageUrl ? (
+                    <Image
+                      src={project.imageUrl}
+                      w={56}
+                      h={56}
+                      radius="md"
+                      fit="cover"
+                    />
+                  ) : (
+                    <ThemeIcon
+                      size={56}
+                      radius="md"
+                      variant="light"
+                      color="gray"
+                    >
+                      <FolderKanban size={24} />
+                    </ThemeIcon>
+                  )}
                 </div>
-              </div>
 
-              <div className="flex shrink-0 items-center gap-2">
-                 {(!project.liveUrl && project.githubUrl)&& (
-                  <Button
-                    component="a"
-                    href={project.githubUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variant="filled"
-                    color="dark"
-                    size="sm"
-                    leftSection={<Github size={14} />}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Source Code
-                  </Button>
-                )}
+                {/* Project Title */}
+                <div className="min-w-0 flex-1">
+                  <h3 className="break-words text-sm font-semibold leading-6 text-slate-900 sm:text-base dark:text-slate-50">
+                    {project.title}
+                  </h3>
+                </div>
 
-                {(project.liveUrl && project.githubUrl)&& (
-                  <Button
-                    component="a"
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variant="filled"
-                    color="green"
-                    size="sm"
-                    leftSection={<ExternalLink size={14} />}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Live Site
-                  </Button>
-                )}
+                {/* Action Buttons */}
+                <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:shrink-0">
+                  {!project.liveUrl && project.githubUrl && (
+                    <Button
+                      component="a"
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      variant="filled"
+                      color="dark"
+                      size="sm"
+                      className="w-full sm:w-auto"
+                      leftSection={<Github size={14} />}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      Source Code
+                    </Button>
+                  )}
 
-                {(project.liveUrl && !project.githubUrl)&& (
-                  <Button
-                    component="a"
-                    href={project.liveUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    variant="filled"
-                    color="green"
-                    size="sm"
-                    leftSection={<ExternalLink size={14} />}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Live Site
-                  </Button>
-                )}
-
+                  {project.liveUrl && (
+                    <Button
+                      component="a"
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      variant="filled"
+                      color="green"
+                      size="sm"
+                      className="w-full sm:w-auto"
+                      leftSection={<ExternalLink size={14} />}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      Live Site
+                    </Button>
+                  )}
+                </div>
               </div>
             </div>
           ))}
@@ -277,7 +272,6 @@ function FeaturedProjectsSection() {
   )
 }
 
-// ── CORE STRENGTHS (technical) ──
 const STRENGTHS = [
   {
     icon: <Layout size={20} />,
