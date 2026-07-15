@@ -96,7 +96,7 @@ export default function Footer() {
                 abdallahshee664@email.com
               </span>
             </Group>
-   
+
             <Group gap="xs" mt="xs">
               <ActionIcon
                 component="a"
