@@ -136,11 +136,11 @@ export default function Footer() {
 
           {/* ── Availability ── */}
           <Stack gap="sm">
-<div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
-  <span className="h-3 w-3 shrink-0 animate-pulse rounded-full bg-green-500" />
-  Availability
-</div>
-            <p className="text-md leading-relaxed text-slate-600">
+            <div className="mb-1 flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-400 dark:text-slate-500">
+              <span className="h-3 w-3 shrink-0 animate-pulse rounded-full bg-green-500" />
+              Availability
+            </div>
+            <p className="text-md leading-relaxed text-slate-600 dark:text-slate-400">
               Open to software developer opportunities.
             </p>
             <Anchor
@@ -148,7 +148,7 @@ export default function Footer() {
               to="/connect"
               className="text-sm font-medium text-indigo-600 transition-colors hover:text-indigo-500 dark:text-indigo-400"
             >
-              Lets Connect →
+              Let's Connect →
             </Anchor>
           </Stack>
 

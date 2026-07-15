@@ -14,17 +14,17 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
   return (
 
 
-      <Card
-        shadow="sm"
-        padding="md"
-        radius="lg"
-        withBorder
-        className="flex h-full min-w-0 cursor-pointer flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
-      >
-            <Link
-      to="/projects/$slug/details"
-      params={{ slug: project?.slug! }}
+    <Card
+      shadow="sm"
+      padding="md"
+      radius="lg"
+      withBorder
+      className="flex h-full min-w-0 cursor-pointer flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
     >
+      <Link
+        to="/projects/$slug/details"
+        params={{ slug: project?.slug! }}
+      >
         <Stack gap="sm" className="min-w-0">
 
           {/* Image */}
@@ -82,45 +82,45 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
 
         </Stack>
 
-     
-        </Link>
-           {/* CTA */}
-        <Stack mt="md" gap="xs">
-          <Group gap="xs" grow>
-            {project.githubUrl && (
-              <Button
-                component="a"
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                radius="md"
-                variant="filled"
-                color="dark"
-                size="sm"
-                leftSection={<Github size={14} />}
-              >
-                Source Code
-              </Button>
-            )}
 
-            {project.liveUrl && (
-              <Button
-                component="a"
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                radius="md"
-                variant="filled"
-                color="green"
-                size="sm"
-                leftSection={<ExternalLink size={14} />}
-              >
-                Live Site
-              </Button>
-            )}
-          </Group>
-        </Stack>
-      </Card>
-    
+      </Link>
+      {/* CTA */}
+      <Stack mt="md" gap="xs">
+        <Group gap="xs" grow>
+          {project.githubUrl && (
+            <Button
+              component="a"
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              radius="md"
+              variant="filled"
+              color="dark"
+              size="sm"
+              leftSection={<Github size={14} />}
+            >
+              Source Code
+            </Button>
+          )}
+
+          {project.liveUrl && (
+            <Button
+              component="a"
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              radius="md"
+              variant="filled"
+              color="green"
+              size="sm"
+              leftSection={<ExternalLink size={14} />}
+            >
+              Live Site
+            </Button>
+          )}
+        </Group>
+      </Stack>
+    </Card>
+
   )
 }
