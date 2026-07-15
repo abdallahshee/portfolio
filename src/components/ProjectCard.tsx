@@ -12,10 +12,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
   const isRecent = moment().diff(moment(project.createdAt), 'days') <= 28
 
   return (
-    <Link
-      to="/projects/$slug/details"
-      params={{ slug: project?.slug! }}
-    >
+
 
       <Card
         shadow="sm"
@@ -24,6 +21,10 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
         withBorder
         className="flex h-full min-w-0 cursor-pointer flex-col justify-between transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
       >
+            <Link
+      to="/projects/$slug/details"
+      params={{ slug: project?.slug! }}
+    >
         <Stack gap="sm" className="min-w-0">
 
           {/* Image */}
@@ -81,7 +82,9 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
 
         </Stack>
 
-        {/* CTA */}
+     
+        </Link>
+           {/* CTA */}
         <Stack mt="md" gap="xs">
           <Group gap="xs" grow>
             {project.githubUrl && (
@@ -118,6 +121,6 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           </Group>
         </Stack>
       </Card>
-    </Link>
+    
   )
 }

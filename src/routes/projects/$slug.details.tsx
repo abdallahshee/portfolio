@@ -331,45 +331,6 @@ function ProjectDetails() {
           )}
         </Stack>
       </Paper>
-
-      {/* WHAT'S NEXT */}
-      <Paper p="sm" className="shadow-sm">
-        <Stack gap="md">
-          <Group gap="xs">
-            <Rocket size={16} className="text-slate-500" />
-            <Text fw={500} size="sm" c="dimmed" tt="uppercase">
-              What's Next
-            </Text>
-          </Group>
-          <Divider />
-          {nextSteps.length === 0 ? (
-            <Text size="sm" c="dimmed">
-              {project.nextSteps && project?.nextSteps?.length <=1
-                ? "This project is complete — no further steps planned."
-                : "No upcoming steps listed for this project yet."}
-            </Text>
-          ) : (
-            <Stack gap="sm">
-              {nextSteps.map((step: string, index: number) => (
-                <Group key={index} gap="sm" align="flex-start" wrap="nowrap">
-                  <ThemeIcon
-                    variant="light"
-                    color="orange"
-                    radius="xl"
-                    size="sm"
-                    style={{ flexShrink: 0, marginTop: 2 }}
-                  >
-                    <Circle size={10} />
-                  </ThemeIcon>
-                  <Text size="sm" lh={1.7} c="dimmed">
-                    {step}
-                  </Text>
-                </Group>
-              ))}
-            </Stack>
-          )}
-        </Stack>
-      </Paper>
     </div>
   )
 }
