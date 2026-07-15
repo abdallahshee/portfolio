@@ -1,7 +1,6 @@
 // src/components/ArticleCard.tsx
 import { Badge, Group, Text, Paper, Image, Box } from '@mantine/core'
 import { Calendar, Folder,Star } from 'lucide-react'
-import { Link } from '@tanstack/react-router'
 
 type ArticleCardProps = {
   id: string

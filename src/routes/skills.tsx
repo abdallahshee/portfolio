@@ -6,7 +6,6 @@ import {
   Paper,
   ThemeIcon,
   SimpleGrid,
-  List,
 } from '@mantine/core'
 import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {

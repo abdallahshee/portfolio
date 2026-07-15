@@ -185,8 +185,8 @@ export const getTopFeaturedProjects = createServerFn({ method: "GET" })
         })
         .from(project)
         .where(eq(project.isFeatured, true))
-        .orderBy(desc(project.updatedAt))
-        .limit(5);
+        .orderBy(desc(project.createdAt))
+        .limit(3);
 
       return featuredProjects;
     } catch (err) {

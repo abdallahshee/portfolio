@@ -2,41 +2,29 @@ import {
   getPaginatedProjectsQueryOptions,
   searchProjectsQueryOptions,
 } from '@/db/queries/project.queries'
-
 import { ProjectCard } from '@/components/ProjectCard'
 import type { Project } from '@/db/validations/project.types'
-
-import { createFileRoute } from '@tanstack/react-router'
-
 import {
-  Badge,
   Card,
   Group,
-  Pagination,
+  Badge,
   Skeleton,
   TextInput,
+  Pagination,
 } from '@mantine/core'
-
-import { useDebouncedValue } from '@mantine/hooks'
-
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query'
+import { createFileRoute } from '@tanstack/react-router'
 import {
   LayoutGrid,
   Search,
-  Sparkles,
   Star,
   X,
 } from 'lucide-react'
-
 import {
   Suspense,
-  useMemo,
   useState,
 } from 'react'
-
-import {
-  useQuery,
-  useSuspenseQuery,
-} from '@tanstack/react-query'
+import { useDebouncedValue } from '@mantine/hooks'
 
 const PAGE_SIZE = 6
 
@@ -142,7 +130,6 @@ function ProjectsPage() {
       : getPaginatedProjectsQueryOptions(page, PAGE_SIZE)
   )
 
-  const allProjects = data?.projects ?? []
   const totalPages = data?.totalPages ?? 1
 
   const handleSearch = (value: string) => {

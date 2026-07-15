@@ -93,7 +93,7 @@ function ProjectDetails() {
                   </Badge>
                 )}
 
-            
+
 
                 {project.isContributor ? (
                   <Badge

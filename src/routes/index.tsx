@@ -1,35 +1,30 @@
 import BrandHome from '@/components/BrandHome'
+import { FeaturedProjectsSection } from '@/components/FeaturedProjects'
 import { getTopFeaturedProjectsQueryOptions } from '@/db/queries/project.queries'
 import {
   Button,
   Card,
-  Image,
   Group,
   Stack,
   Paper,
   ThemeIcon,
-  SimpleGrid,
+  SimpleGrid
 } from '@mantine/core'
 import { useSuspenseQuery } from '@tanstack/react-query'
-import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
+import { createFileRoute, Link } from '@tanstack/react-router'
 import {
   ArrowRight,
-  ExternalLink,
   FolderKanban,
-  BookOpen,
   Database,
   Layout,
   Server,
   Gauge,
   Mail,
-  BriefcaseBusiness,
-  Github,
   ShieldCheck,
   GitBranch,
 } from 'lucide-react'
 
 import { Suspense, useEffect, useState } from 'react'
-
 
 export const Route = createFileRoute('/')({
   loader: async ({ context }) => {
@@ -116,157 +111,6 @@ function ProjectsSkeleton() {
   )
 }
 
-// ── PLACEHOLDER — shown on error or empty ──
-function ProjectsPlaceholder() {
-  return (
-    <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
-      <Stack gap="md">
-        <div>
-          <div className="title3">Featured Projects</div>
-          <p className="text-sm text-slate-500">A selection of standout builds</p>
-        </div>
-
-        <div className="flex min-h-[180px] flex-col items-center justify-center gap-3 rounded-md border border-dashed border-slate-300 p-6 text-center dark:border-slate-700">
-          <ThemeIcon size={56} radius="md" variant="light" color="gray">
-            <BookOpen size={28} />
-          </ThemeIcon>
-          <div className="title2 text-slate-400 dark:text-slate-500">
-            Projects coming soon
-          </div>
-          <p className="text-sm text-slate-400 dark:text-slate-500">
-            Featured projects will be added here shortly
-          </p>
-          <Link to="/skills">
-            <Button size="sm" variant="light" leftSection={<BriefcaseBusiness size={16} />}>
-              See My Skills & Approach
-            </Button>
-          </Link>
-        </div>
-      </Stack>
-    </Paper>
-  )
-}
-
-
-function FeaturedProjectsSection() {
-  const { data: projects } = useSuspenseQuery(getTopFeaturedProjectsQueryOptions())
-  const router = useRouter()
-
-  const isEmpty = !projects || projects.length === 0
-
-  if (isEmpty) return <ProjectsPlaceholder />
-
-  return (
-    <Paper withBorder radius="lg" className="min-w-0 p-2 sm:p-3">
-      <Stack gap="md">
-        <Group justify="space-between" align="flex-start" wrap="wrap">
-          <div className="flex justify-between gap-1">
-            <div className="title2">Featured Projects</div>
-            <Link to="/projects">
-              <Button
-                variant="filled"
-                size="sm"
-                rightSection={<ArrowRight size={12} />}
-              >
-                View All
-              </Button>
-            </Link>
-
-          </div>
-          <p className="mt-1 text-sm text-slate-500">
-            A curated selection of projects I have built and shipped — each one
-            reflecting my approach to writing clean, maintainable, and
-            production-ready software.
-          </p>
-        </Group>
-
-        <Stack gap="sm">
-          {projects.map((project) => (
-            <div
-              key={project.id}
-              onClick={() =>
-                project.slug &&
-                router.navigate({
-                  to: '/projects/$slug/details',
-                  params: { slug: project.slug },
-                })
-              }
-              className="cursor-pointer rounded-xl border border-slate-200 bg-white p-4 transition hover:shadow-sm dark:border-slate-700 dark:bg-slate-800/60"
-            >
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                {/* Project Image / Icon */}
-                <div className="shrink-0">
-                  {project.imageUrl ? (
-                    <Image
-                      src={project.imageUrl}
-                      w={56}
-                      h={56}
-                      radius="md"
-                      fit="cover"
-                    />
-                  ) : (
-                    <ThemeIcon
-                      size={56}
-                      radius="md"
-                      variant="light"
-                      color="gray"
-                    >
-                      <FolderKanban size={24} />
-                    </ThemeIcon>
-                  )}
-                </div>
-
-                {/* Project Title */}
-                <div className="min-w-0 flex-1">
-                  <h3 className="break-words text-sm font-semibold leading-6 text-slate-900 sm:text-base dark:text-slate-50">
-                    {project.title}
-                  </h3>
-                </div>
-
-                {/* Action Buttons */}
-                <div className="flex w-full flex-wrap gap-2 sm:w-auto sm:shrink-0">
-                  {!project.liveUrl && project.githubUrl && (
-                    <Button
-                      component="a"
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="filled"
-                      color="dark"
-                      size="sm"
-                      className="w-full sm:w-auto"
-                      leftSection={<Github size={14} />}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      Source Code
-                    </Button>
-                  )}
-
-                  {project.liveUrl && (
-                    <Button
-                      component="a"
-                      href={project.liveUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      variant="filled"
-                      color="green"
-                      size="sm"
-                      className="w-full sm:w-auto"
-                      leftSection={<ExternalLink size={14} />}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      Live Site
-                    </Button>
-                  )}
-                </div>
-              </div>
-            </div>
-          ))}
-        </Stack>
-      </Stack>
-    </Paper>
-  )
-}
 
 const STRENGTHS = [
   {
@@ -320,17 +164,17 @@ const ROLE_WORDS = [
 function App() {
   const typedText = useTypewriter(ROLE_WORDS)
   const typedName = useTypeName(["Abdallah Shee"])
-
+  const { data: projects } = useSuspenseQuery(getTopFeaturedProjectsQueryOptions())
   return (
-    <div className="max-w-full space-y-0 px-0">
+    <div className="w-full space-y-0 px-0">
 
       {/* ── HERO + ABOUT (combined) ── */}
       <section className="rounded-3xl bg-slate-950 py-20 lg:py-28">
-        <div className="mx-auto px-2">
-          <div className="grid items-center gap-16 lg:grid-cols-[4fr_1fr]">
+        <div className="mx-auto px-6">
+          <div className="grid items-center gap-6 lg:grid-cols-[4fr_1fr]">
 
             {/* LEFT SIDE */}
-            <div className="max-w-6xl">
+            <div className="max-w-7xl">
               <Stack gap="xl">
 
                 <div>
@@ -359,7 +203,7 @@ function App() {
                   focused on performance, usability, and long-term business value.
                 </p>
 
-                <Group gap="md" wrap="wrap" justify="center" className="sm:justify-start">
+                <Group gap="md" wrap="wrap" justify="start">
                   <Link to="/projects">
                     <Button
                       size="lg"
@@ -450,7 +294,7 @@ function App() {
       {/* ── FEATURED PROJECTS ── */}
       <div className="mx-auto w-full py-6 md:w-3/4 scroll-mt-20">
         <Suspense fallback={<ProjectsSkeleton />}>
-          <FeaturedProjectsSection />
+          <FeaturedProjectsSection projects={projects} />
         </Suspense>
       </div>
 
