@@ -12,6 +12,11 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
   const isRecent = moment().diff(moment(project.createdAt), 'days') <= 28
 
   return (
+    <Link
+  to="/projects/$slug/details"
+  params={{ slug: project?.slug! }}
+>
+    
     <Card
       shadow="sm"
       padding="md"
@@ -111,25 +116,8 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             </Button>
           )}
         </Group>
-
-        {project.slug && (
-          <Link
-            to="/projects/$slug/details"
-            params={{ slug: project.slug }}
-            className="no-underline"
-          >
-            <Button
-              radius="md"
-              leftSection={<FolderKanban size={16} />}
-              variant="gradient"
-              fullWidth
-              gradient={{ from: 'indigo', to: 'blue' }}
-            >
-              View Details
-            </Button>
-          </Link>
-        )}
       </Stack>
     </Card>
-  )
+    </Link>
+)
 }

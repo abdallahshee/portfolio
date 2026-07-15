@@ -173,7 +173,7 @@ function ProjectsPage() {
       <div className="relative overflow-hidden rounded-[32px] border bg-white p-8 shadow-sm dark:border-slate-800 dark:bg-slate-950 md:p-12">
         <div className="relative z-10 flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
 
-          <div className="max-w-3xl">
+          <div className="">
             <Badge
               size="lg"
               radius="xl"
@@ -189,10 +189,11 @@ function ProjectsPage() {
             </h1>
 
             <p className="mt-4 text-sm text-slate-600 dark:text-slate-400">
-              These are a few of the projects I have built recently.
-              Beyond what you see here, I have worked on other projects across
-              professional engagements, team collaborations, and open source
-              contributions that are not listed here.
+              These are a few of the projects I have built and shipped recently, each one
+              chosen to show a different side of how I think and build. Beyond what you
+              see here, I have worked on other projects across professional engagements,
+              team collaborations, and open source contributions that aren't listed on
+              this page but are just as much a part of how I've grown as a developer.
             </p>
           </div>
 
