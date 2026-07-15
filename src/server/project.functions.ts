@@ -45,8 +45,7 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
           liveUrl: project.liveUrl,
           createdAt: project.createdAt,
           isContributor:project.isContributor,
-          updatedAt: project.updatedAt,
-          nextSteps:project.nextSteps
+          updatedAt: project.updatedAt
         })
         .from(project)
         .where(eq(project.slug, data.slug));
@@ -79,8 +78,7 @@ export const getProjectById = createServerFn({ method: "GET" })
           liveUrl: project.liveUrl,
           createdAt: project.createdAt,
           updatedAt: project.updatedAt,
-          isContributor:project.isContributor,
-                 next:project.nextSteps
+          isContributor:project.isContributor
         })
         .from(project)
         .where(eq(project.id, data.projectId));
@@ -116,11 +114,9 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
             isFeatured: project.isFeatured, // 👈 was missing
             // progress: project.progress,
             roles:project.roles,
-            nextSteps:project.nextSteps,
             createdAt: project.createdAt,
             isContributor:project.isContributor,
-            updatedAt: project.updatedAt,
-                   next:project.nextSteps
+            updatedAt: project.updatedAt
           })
           .from(project)
           .orderBy(desc(project.createdAt))
@@ -225,7 +221,6 @@ export const searchProjects = createServerFn({ method: "GET" })
             description: project.description,
             imageUrl: project.imageUrl,
             githubUrl: project.githubUrl,
-            nextSteps:project.nextSteps,
             liveUrl: project.liveUrl,
             technologies: project.technologies,
             roles:project.roles,
@@ -234,7 +229,6 @@ export const searchProjects = createServerFn({ method: "GET" })
             createdAt: project.createdAt,
             isContributor:project.isContributor,
             updatedAt: project.updatedAt,
-                   next:project.nextSteps
           })
           .from(project)
           .where(whereClause)

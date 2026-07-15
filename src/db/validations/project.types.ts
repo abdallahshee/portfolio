@@ -17,7 +17,6 @@ const ProjectSchema = createSelectSchema(project, {
   technologies: z.array(z.string()).default([]), // 👈 must be here
   roles: z.array(z.string()).default([]), // 👈 must be here
   isContributor:z.boolean(),
-  nextSteps: z.array(z.string()).default([]),
 })
 
 export const CreateProjectSchema = ProjectSchema.pick({
@@ -27,10 +26,8 @@ export const CreateProjectSchema = ProjectSchema.pick({
     isFeatured:true,
     liveUrl: true,
     githubUrl: true,
-    // progress: true,
     technologies:true,
     roles:true,
-    nextSteps:true,
     isContributor:true
 })
 export type ProjectRequest = z.infer<typeof CreateProjectSchema>

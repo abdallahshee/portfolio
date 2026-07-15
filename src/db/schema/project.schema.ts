@@ -16,7 +16,6 @@ export const project = pgTable(
     // progress: integer("progress").default(0).notNull(),
     technologies: text("technologies").array().notNull().default([]),
     roles: text("roles").array().default([]),
-    nextSteps: text("next-steps").array().default([]),  // 👈 new field — what you did on this project
     createdAt: timestamp("created_at").defaultNow().notNull(),
     isContributor: boolean('is_contributor').default(false),
     updatedAt: timestamp("updated_at")

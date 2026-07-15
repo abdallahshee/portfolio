@@ -78,7 +78,6 @@ function ProjectDetails() {
 
   const technologies = project.technologies ?? []
   const roles = project.roles ?? []
-  const nextSteps = project.nextSteps ?? []
 
   return (
     <div className="grid grid-cols-1 gap-6 py-10">
