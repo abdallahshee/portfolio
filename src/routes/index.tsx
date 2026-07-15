@@ -153,12 +153,11 @@ const STRENGTHS = [
 
 
 const ROLE_WORDS = [
-  'Clean Architecture',
-  'Scalable Systems',
-  'Reliable APIs',
-  'Thoughtful UI/UX',
+  'Rock-Solid Architecture',
+  'Systems That Scale',
+  'APIs You Can Trust',
+  'Thoughtful, Polished UI/UX',
 ]
-
 
 // ── PAGE ──
 function App() {
@@ -178,15 +177,15 @@ function App() {
               <Stack gap="xl">
 
                 <div>
-                  <h1 className="text-3xl font-semibold leading-tight tracking-tight text-white sm:text-5xl md:text-6xl">
-                    Hi, I'm{" "}
+                  <h1 className="text-2xl font-semibold leading-tight tracking-tight text-white sm:text-4xl md:text-5xl">
+                    👋 Hi, I'm{" "}
                     <span className="bg-linear-to-r from-teal-400 via-indigo-400 to-blue-400 bg-clip-text text-transparent">
                       {typedName}
                     </span>
                   </h1>
 
                   <div className="mt-5 text-md font-medium text-slate-400 sm:text-2xl">
-                    I'm passionate about{" "}
+                    <span className='font-semibold'>Developing{" "}</span>
                     <span className="text-teal-400">
                       {typedText}
                       <span className="animate-pulse"> |</span>
