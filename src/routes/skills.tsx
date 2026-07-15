@@ -51,7 +51,7 @@ const CORE_SKILLS = {
       'Python',
       'Express.js',
       'Meteor.js',
-      'TanStack Query',
+      'TanStack Start',
     ],
   },
 
@@ -75,7 +75,7 @@ const CORE_SKILLS = {
       'CI/CD Pipelines',
       'Serverless',
       'Docker & Containerization',
-      'Infrastracture as Code',
+      'Infrastracture as Code ( aws cdk )',
     ],
   }
 }
