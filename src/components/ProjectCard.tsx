@@ -48,7 +48,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
 
       {/* Content on top of image */}
       <Link
-        to="/projects/$slug/details"
+        to="/projects/$slug"
         params={{ slug: project?.slug! }}
         className="relative z-10 flex min-h-[300px] flex-1 flex-col justify-end p-4 no-underline"
       >

@@ -150,6 +150,21 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
       }
     }
   })
+
+export const getAllProjects = createServerFn({ method: 'GET' }).handler(
+  async () => {
+    const allProjects = await db
+      .select()
+      .from(project)
+      .orderBy(desc(project.createdAt))
+
+    return {
+      projects: allProjects,
+      total: allProjects.length,
+    }
+  }
+)
+
 export const updateProject = createServerFn({ method: "POST" })
   // .middleware([AuthenticatedMiddleware])
   .inputValidator(UpdateProjectSchema)

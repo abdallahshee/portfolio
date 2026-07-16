@@ -176,7 +176,7 @@ function App() {
   // const typedText = useTypewriter(ROLE_WORDS)
   // const typedName = typeName(["Abdallah Shee"])
   const { typedName, typedRole } = useCoordinatedTyping("Hi, I'm Abdallah Shee", ROLE_WORDS)
-  const { data: projects } = useSuspenseQuery(getTopFeaturedProjectsQueryOptions())
+
   return (
     <div className="w-full space-y-0 px-0">
 
@@ -306,7 +306,7 @@ function App() {
       {/* ── FEATURED PROJECTS ── */}
       <div className="mx-auto w-full py-6 md:w-3/4 scroll-mt-20">
         <Suspense fallback={<ProjectsSkeleton />}>
-          <FeaturedProjectsSection projects={projects} />
+          <FeaturedProjectsSection/>
         </Suspense>
       </div>
 

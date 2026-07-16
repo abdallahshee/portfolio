@@ -19,6 +19,8 @@ import {
     Star,
 } from 'lucide-react'
 import { Link } from "@tanstack/react-router"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { getTopFeaturedProjectsQueryOptions } from "@/db/queries/project.queries"
 function ProjectsPlaceholder() {
     return (
         <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
@@ -48,22 +50,12 @@ function ProjectsPlaceholder() {
         </Paper>
     )
 }
-interface FeaturedProject {
-    id: string;
-    slug: string | null;
-    title: string | null;
-    liveUrl: string | null;
-    githubUrl: string | null;
-    imageUrl: string | null;
-    updatedAt: Date;
-}
 
-interface FeaturedProjectsProps {
-    projects: FeaturedProject[]
-}
 
-export const FeaturedProjectsSection = ({ projects }: FeaturedProjectsProps) => {
 
+
+export const FeaturedProjectsSection = () => {
+    const { data: projects } = useSuspenseQuery(getTopFeaturedProjectsQueryOptions())
     const router = useRouter()
 
     const isEmpty = !projects || projects.length === 0
@@ -84,18 +76,18 @@ export const FeaturedProjectsSection = ({ projects }: FeaturedProjectsProps) => 
                     </div>
                 </Group>
 
-                <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
+              <SimpleGrid cols={{ base: 1, sm: 2, xl: 3 }} spacing="md">
                     {projects.map((project) => (
                         <div
                             key={project.id}
                             onClick={() =>
                                 project.slug &&
                                 router.navigate({
-                                    to: '/projects/$slug/details',
+                                    to: '/projects/$slug',
                                     params: { slug: project.slug },
                                 })
                             }
-                            className="group relative h-[280px] cursor-pointer overflow-hidden rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+                            className="group relative h-[240px] cursor-pointer overflow-hidden rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
                         >
                             {/* Background image / fallback */}
                             {project.imageUrl ? (

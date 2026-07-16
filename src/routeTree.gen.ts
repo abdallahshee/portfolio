@@ -16,7 +16,7 @@ import { Route as SplatRouteImport } from './routes/$'
 import { Route as ProjectsRouteRouteImport } from './routes/projects/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjectsIndexRouteImport } from './routes/projects/index'
-import { Route as ProjectsSlugDetailsRouteImport } from './routes/projects/$slug.details'
+import { Route as ProjectsSlugRouteImport } from './routes/projects/$slug'
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
   id: '/unauthorized',
@@ -53,9 +53,9 @@ const ProjectsIndexRoute = ProjectsIndexRouteImport.update({
   path: '/',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
-const ProjectsSlugDetailsRoute = ProjectsSlugDetailsRouteImport.update({
-  id: '/$slug/details',
-  path: '/$slug/details',
+const ProjectsSlugRoute = ProjectsSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
   getParentRoute: () => ProjectsRouteRoute,
 } as any)
 
@@ -66,8 +66,8 @@ export interface FileRoutesByFullPath {
   '/connect': typeof ConnectRoute
   '/skills': typeof SkillsRoute
   '/unauthorized': typeof UnauthorizedRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
   '/projects/': typeof ProjectsIndexRoute
-  '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,8 +75,8 @@ export interface FileRoutesByTo {
   '/connect': typeof ConnectRoute
   '/skills': typeof SkillsRoute
   '/unauthorized': typeof UnauthorizedRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
   '/projects': typeof ProjectsIndexRoute
-  '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,8 +86,8 @@ export interface FileRoutesById {
   '/connect': typeof ConnectRoute
   '/skills': typeof SkillsRoute
   '/unauthorized': typeof UnauthorizedRoute
+  '/projects/$slug': typeof ProjectsSlugRoute
   '/projects/': typeof ProjectsIndexRoute
-  '/projects/$slug/details': typeof ProjectsSlugDetailsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,8 +98,8 @@ export interface FileRouteTypes {
     | '/connect'
     | '/skills'
     | '/unauthorized'
+    | '/projects/$slug'
     | '/projects/'
-    | '/projects/$slug/details'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -107,8 +107,8 @@ export interface FileRouteTypes {
     | '/connect'
     | '/skills'
     | '/unauthorized'
+    | '/projects/$slug'
     | '/projects'
-    | '/projects/$slug/details'
   id:
     | '__root__'
     | '/'
@@ -117,8 +117,8 @@ export interface FileRouteTypes {
     | '/connect'
     | '/skills'
     | '/unauthorized'
+    | '/projects/$slug'
     | '/projects/'
-    | '/projects/$slug/details'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -181,24 +181,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjectsIndexRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
-    '/projects/$slug/details': {
-      id: '/projects/$slug/details'
-      path: '/$slug/details'
-      fullPath: '/projects/$slug/details'
-      preLoaderRoute: typeof ProjectsSlugDetailsRouteImport
+    '/projects/$slug': {
+      id: '/projects/$slug'
+      path: '/$slug'
+      fullPath: '/projects/$slug'
+      preLoaderRoute: typeof ProjectsSlugRouteImport
       parentRoute: typeof ProjectsRouteRoute
     }
   }
 }
 
 interface ProjectsRouteRouteChildren {
+  ProjectsSlugRoute: typeof ProjectsSlugRoute
   ProjectsIndexRoute: typeof ProjectsIndexRoute
-  ProjectsSlugDetailsRoute: typeof ProjectsSlugDetailsRoute
 }
 
 const ProjectsRouteRouteChildren: ProjectsRouteRouteChildren = {
+  ProjectsSlugRoute: ProjectsSlugRoute,
   ProjectsIndexRoute: ProjectsIndexRoute,
-  ProjectsSlugDetailsRoute: ProjectsSlugDetailsRoute,
 }
 
 const ProjectsRouteRouteWithChildren = ProjectsRouteRoute._addFileChildren(
