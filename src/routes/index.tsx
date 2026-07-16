@@ -153,7 +153,7 @@ function App() {
                   focused on performance, usability, and long-term business value.
                 </p>
 
-<div className="flex flex-wrap justify-center gap-3 sm:justify-start">
+                <div className="flex flex-wrap justify-center gap-3 sm:justify-start">
                   <Link to="/projects" className="w-full sm:w-48">
                     <Button
                       size="md"
@@ -188,7 +188,7 @@ function App() {
                   <img src="/images/home.jpg" alt="Abdallah Shee" className="h-full w-full object-cover" />
                 </div>
                 <div className="absolute -bottom-6 left-1/2 z-20 w-full -translate-x-1/2">
-                  <div className="w-full rounded-2xl  bg-green-700 px-1 py-3 backdrop-blur">
+                  <div className="w-full rounded-xl  bg-green-700 px-0 py-3 backdrop-blur">
                     <BrandHome />
                   </div>
                 </div>
