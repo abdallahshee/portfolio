@@ -1,17 +1,4 @@
-import {
-  Button,
-  Card,
-  Divider,
-  Group,
-  Image,
-  Paper,
-  Badge,
-  Stack,
-  Text,
-  ThemeIcon,
-  Container,
-  Skeleton,
-} from "@mantine/core"
+import { Button, Card, Divider, Image, Badge, ThemeIcon, Skeleton } from "@mantine/core"
 
 import {
   ArrowLeft,
@@ -34,11 +21,9 @@ import moment from "moment"
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: async ({ context, params }) => {
-    // console.log('loader running, slug param:', params.slug)
     const data = await context.queryClient.ensureQueryData(
       getProjectBySlugQueryOptions(params.slug)
     )
-    // console.log('loader data:', data)
     return data
   },
   pendingComponent: DetailsSkeleton,
@@ -47,7 +32,7 @@ export const Route = createFileRoute("/projects/$slug")({
 
 function DetailsSkeleton() {
   return (
-    <Stack gap="lg">
+    <div className="flex flex-col gap-6">
       <Card withBorder radius="sm" p="xl">
         <Skeleton height={28} width="60%" mb="sm" />
         <Skeleton height={16} width="40%" />
@@ -57,7 +42,7 @@ function DetailsSkeleton() {
         <Skeleton height={16} mb="xs" />
         <Skeleton height={16} width="80%" />
       </Card>
-    </Stack>
+    </div>
   )
 }
 
@@ -67,15 +52,36 @@ function ProjectDetails() {
   const roles = project?.roles ?? []
 
   return (
-    <div className="grid grid-cols-1 gap-6 py-10">
-      {/* HEADER */}
-      <Paper radius="sm" p={{ base: "md", sm: "lg", lg: "xl" }} className="shadow-sm">
-        <Stack gap="lg">
-          <Group justify="space-between" align="flex-start">
-            <Stack gap={6}>
-              <div className="text-3xl font-bold">{project?.title}</div>
+    <div className="flex flex-col gap-6 py-6 sm:py-8">
+      {/* IMAGE */}
+      <Card radius="xl" withBorder p="xs" className="overflow-hidden shadow-sm">
+        {project.imageUrl ? (
+          <Image
+            src={project.imageUrl}
+            alt={project.title ?? "Project image"}
+            radius="lg"
+            fit="cover"
+            className="h-[200px] sm:h-[280px] lg:h-[320px]"
+          />
+        ) : (
+          <div className="flex h-[200px] sm:h-[280px] flex-col items-center justify-center gap-2 rounded-xl bg-slate-100 text-slate-400 dark:bg-slate-800">
+            <FolderKanban size={32} />
+            <span className="text-sm">No image available</span>
+          </div>
+        )}
+      </Card>
 
-              <Group gap="xs" mt={4}>
+      {/* HEADER */}
+      <Card radius="lg" withBorder p="lg" className="shadow-sm">
+        <div className="flex flex-col gap-4">
+          {/* TITLE + BACK */}
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <h1 className="truncate text-2xl font-semibold text-slate-900 dark:text-slate-50 sm:text-3xl">
+                {project?.title}
+              </h1>
+
+              <div className="mt-2 flex flex-wrap items-center gap-2">
                 {project?.isFeatured && (
                   <Badge variant="light" color="yellow" radius="md" size="sm" leftSection={<Star size={11} />}>
                     Featured
@@ -91,139 +97,170 @@ function ProjectDetails() {
                     Solo Project
                   </Badge>
                 )}
-              </Group>
-            </Stack>
+              </div>
+            </div>
 
-            <Link to="/projects">
+            <Link to="/projects" className="shrink-0">
               <Button variant="light" radius="md" size="sm" leftSection={<ArrowLeft size={16} />}>
                 Back
               </Button>
             </Link>
-          </Group>
+          </div>
+
+          {/* DESCRIPTION */}
+          <p className="text-sm leading-7 text-slate-600 dark:text-slate-400">
+            {project.description}
+          </p>
 
           <Divider />
 
-          <Group justify="space-between" align="center" wrap="wrap" gap="xl">
-            <Group gap="xl" wrap="wrap">
-              <Group gap="sm">
-                <ThemeIcon variant="light" color="gray" radius="xl" size="lg">
-                  <CalendarDays size={16} />
-                </ThemeIcon>
-                <Stack gap={0}>
-                  <Text size="xs" c="dimmed">Created</Text>
-                  <Text size="sm" fw={500}>{moment(project.createdAt).format("D MMMM YYYY")}</Text>
-                </Stack>
-              </Group>
+          {/* DATES */}
+          <div className="flex flex-wrap gap-x-8 gap-y-4">
+            <div className="flex items-center gap-3">
+              <ThemeIcon variant="light" color="gray" radius="xl" size="lg">
+                <CalendarDays size={16} />
+              </ThemeIcon>
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Created</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  {moment(project.createdAt).format("D MMMM YYYY")}
+                </p>
+              </div>
+            </div>
 
-              <Group gap="sm">
-                <ThemeIcon variant="light" color="gray" radius="xl" size="lg">
-                  <RefreshCw size={16} />
-                </ThemeIcon>
-                <Stack gap={0}>
-                  <Text size="xs" c="dimmed">Updated</Text>
-                  <Text size="sm" fw={500}>{moment(project?.updatedAt).fromNow()}</Text>
-                </Stack>
-              </Group>
-            </Group>
+            <div className="flex items-center gap-3">
+              <ThemeIcon variant="light" color="gray" radius="xl" size="lg">
+                <RefreshCw size={16} />
+              </ThemeIcon>
+              <div>
+                <p className="text-xs text-slate-500 dark:text-slate-400">Updated</p>
+                <p className="text-sm font-medium text-slate-900 dark:text-slate-100">
+                  {moment(project?.updatedAt).fromNow()}
+                </p>
+              </div>
+            </div>
+          </div>
 
-            <Group gap="sm" wrap="wrap">
-              {project?.liveUrl ? (
-                <Button component="a" href={project.liveUrl} target="_blank" radius="md" size="sm" leftSection={<Globe size={15} />}>
-                  Visit live site
-                </Button>
-              ) : (
-                <Button radius="md" size="sm" leftSection={<Globe size={15} />} disabled variant="light" color="gray">
-                  No live site
-                </Button>
-              )}
+          {/* LINKS */}
+          <div className="flex flex-wrap gap-2">
+            {project?.liveUrl ? (
+              <Button
+                component="a"
+                href={project.liveUrl}
+                target="_blank"
+                radius="md"
+                size="sm"
+                leftSection={<Globe size={15} />}
+                className="grow sm:grow-0"
+              >
+                Visit live site
+              </Button>
+            ) : (
+              <Button
+                radius="md"
+                size="sm"
+                leftSection={<Globe size={15} />}
+                disabled
+                variant="light"
+                color="gray"
+                className="grow sm:grow-0"
+              >
+                No live site
+              </Button>
+            )}
 
-              {project?.githubUrl ? (
-                <Button component="a" href={project.githubUrl} target="_blank" variant="light" radius="md" size="sm" leftSection={<Github size={15} />}>
-                  View source
-                </Button>
-              ) : (
-                <Button radius="md" size="sm" leftSection={<Github size={15} />} disabled variant="light" color="gray">
-                  Source is private
-                </Button>
-              )}
-            </Group>
-          </Group>
-        </Stack>
-      </Paper>
+            {project?.githubUrl ? (
+              <Button
+                component="a"
+                href={project.githubUrl}
+                target="_blank"
+                variant="light"
+                radius="md"
+                size="sm"
+                leftSection={<Github size={15} />}
+                className="grow sm:grow-0"
+              >
+                View source
+              </Button>
+            ) : (
+              <Button
+                radius="md"
+                size="sm"
+                leftSection={<Github size={15} />}
+                disabled
+                variant="light"
+                color="gray"
+                className="grow sm:grow-0"
+              >
+                Source is private
+              </Button>
+            )}
+          </div>
+        </div>
+      </Card>
 
       {/* TECH STACK */}
-      <Paper p="sm" className="shadow-sm">
-        <Stack gap="md">
-          <Group gap="xs">
+      <Card radius="lg" withBorder p="lg" className="shadow-sm">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-2">
             <Code2 size={16} className="text-slate-500" />
-            <Text fw={500} size="sm" c="dimmed" tt="uppercase">Tech Stack</Text>
-          </Group>
-          <Divider />
+            <p className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              Tech stack
+            </p>
+          </div>
+
           {technologies.length === 0 ? (
-            <Text size="sm" c="dimmed">No technologies listed for this project.</Text>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              No technologies listed for this project.
+            </p>
           ) : (
-            <Group gap="xs">
+            <div className="flex flex-wrap gap-2">
               {technologies.map((tech: string, index: number) => (
                 <Badge key={`${tech}-${index}`} radius="xl" variant="light" color="blue">
                   {tech}
                 </Badge>
               ))}
-            </Group>
+            </div>
           )}
-        </Stack>
-      </Paper>
-
-      {/* IMAGE */}
-      <Card radius="xl" withBorder p="md" className="overflow-hidden shadow-sm">
-        {project.imageUrl ? (
-          <Image
-            src={project.imageUrl}
-            alt={project.title ?? "Project image"}
-            radius="lg"
-            fit="cover"
-            className="h-[220px] sm:h-[300px] lg:h-[340px]"
-          />
-        ) : (
-          <div className="flex h-[220px] sm:h-[300px] flex-col items-center justify-center gap-2 rounded-xl bg-slate-100 text-slate-400 dark:bg-slate-800">
-            <FolderKanban size={32} />
-            <span className="text-sm">No image available</span>
-          </div>
-        )}
+        </div>
       </Card>
 
-      {/* ABOUT */}
-      <Paper p="sm" className="shadow-sm">
-        <Stack gap="md">
-          <Text fw={500} size="sm" c="dimmed" tt="uppercase">About this project</Text>
-          <Divider />
-          <Text size="sm" lh={1.9} c="dimmed">{project.description}</Text>
-        </Stack>
-      </Paper>
-
       {/* MY ROLE */}
-      <Paper p="sm" className="shadow-sm">
-        <Stack gap="md">
-          <Group gap="xs">
+      <Card radius="lg" withBorder p="lg" className="shadow-sm">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-2">
             <ListChecks size={16} className="text-slate-500" />
-            <Text fw={500} size="sm" c="dimmed" tt="uppercase">My Role</Text>
-          </Group>
-          <Divider />
+            <p className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              My role
+            </p>
+          </div>
+
           {roles.length === 0 ? (
-            <Text size="sm" c="dimmed">No role details listed for this project.</Text>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              No role details listed for this project.
+            </p>
           ) : (
-            <Stack gap="sm">
+            <div className="flex flex-col gap-3">
               {roles.map((role: string, index: number) => (
-                <Group key={index} gap="sm" align="flex-start" wrap="nowrap">
-                  <ThemeIcon variant="light" color="indigo" radius="xl" size="sm" style={{ flexShrink: 0, marginTop: 2 }}>
+                <div key={index} className="flex items-start gap-3">
+                  <ThemeIcon
+                    variant="light"
+                    color="indigo"
+                    radius="xl"
+                    size="sm"
+                    className="mt-0.5 shrink-0"
+                  >
                     <CheckCircle2 size={12} />
                   </ThemeIcon>
-                  <Text size="sm" lh={1.7} c="dimmed">{role}</Text>
-                </Group>
+                  <p className="text-sm leading-7 text-slate-600 dark:text-slate-400">
+                    {role}
+                  </p>
+                </div>
               ))}
-            </Stack>
+            </div>
           )}
-        </Stack>
-      </Paper>
+        </div>
+      </Card>
     </div>
   )
 }

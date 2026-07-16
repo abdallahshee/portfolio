@@ -1,5 +1,5 @@
 import type { Project } from '@/db/validations/project.types'
-import { Badge, Button, Card, Group, Image, Stack, Text, ThemeIcon } from '@mantine/core'
+import { Badge, Button, Card, Image, ThemeIcon } from '@mantine/core'
 import { Link } from '@tanstack/react-router'
 import { CalendarDays, ExternalLink, FolderKanban, Github, RefreshCw } from 'lucide-react'
 import moment from 'moment'
@@ -19,7 +19,6 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       withBorder
       className="group relative flex h-full min-w-0 flex-col justify-between overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
     >
-      {/* Background image / fallback */}
       {project.imageUrl ? (
         <Image
           src={project.imageUrl}
@@ -35,7 +34,6 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
         </div>
       )}
 
-      {/* Gradient overlay for text legibility */}
       <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-black/10" />
 
       {isRecent && (
@@ -46,77 +44,72 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
         </div>
       )}
 
-      {/* Content on top of image */}
       <Link
         to="/projects/$slug"
         params={{ slug: project?.slug! }}
-        className="relative z-10 flex min-h-[300px] flex-1 flex-col justify-end p-4 no-underline"
+        className="relative z-10 flex min-h-[260px] flex-1 flex-col justify-end p-4 no-underline sm:min-h-[300px]"
       >
-        <Stack gap="sm" className="min-w-0">
-          {/* Title */}
-          <div className="title3 truncate text-white">{project.title}</div>
+        <div className="flex min-w-0 flex-col gap-3">
+          <h3 className="truncate text-lg font-semibold text-white">{project.title}</h3>
 
-          {/* Description */}
           <p className="line-clamp-2 text-sm leading-6 text-slate-200">
             {project.description}
           </p>
 
-          {/* dates */}
-          <Stack gap={4}>
-            <Group gap={6}>
-              <CalendarDays size={12} className="text-slate-300" />
-              <Text size="xs" className="text-slate-300">
+          <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-1.5">
+              <CalendarDays size={12} className="shrink-0 text-slate-300" />
+              <span className="text-xs text-slate-300">
                 Added {moment(project.createdAt).format("D MMMM YYYY")}
-              </Text>
-            </Group>
+              </span>
+            </div>
 
             {moment(project.updatedAt).diff(moment(project.createdAt), 'hours') > 24 && (
-              <Group gap={6}>
-                <RefreshCw size={12} className="text-slate-300" />
-                <Text size="xs" className="text-slate-300">
+              <div className="flex items-center gap-1.5">
+                <RefreshCw size={12} className="shrink-0 text-slate-300" />
+                <span className="text-xs text-slate-300">
                   Updated {moment(project.updatedAt).fromNow()}
-                </Text>
-              </Group>
+                </span>
+              </div>
             )}
-          </Stack>
-        </Stack>
+          </div>
+        </div>
       </Link>
 
-      {/* CTA */}
-      <div className="relative z-10 p-4 pt-0">
-        <Group gap="xs" grow>
-          {project.githubUrl && (
-            <Button
-              component="a"
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              radius="md"
-              variant="white"
-              color="dark"
-              size="sm"
-              leftSection={<Github size={14} />}
-            >
-              Source Code
-            </Button>
-          )}
+      <div className="relative z-10 flex gap-2 p-4 pt-0">
+        {project.githubUrl && (
+          <Button
+            component="a"
+            href={project.githubUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            radius="md"
+            variant="white"
+            color="dark"
+            size="sm"
+            leftSection={<Github size={14} />}
+            className="flex-1"
+          >
+            Source Code
+          </Button>
+        )}
 
-          {project.liveUrl && (
-            <Button
-              component="a"
-              href={project.liveUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              radius="md"
-              variant="filled"
-              color="green"
-              size="sm"
-              leftSection={<ExternalLink size={14} />}
-            >
-              Live Site
-            </Button>
-          )}
-        </Group>
+        {project.liveUrl && (
+          <Button
+            component="a"
+            href={project.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            radius="md"
+            variant="filled"
+            color="green"
+            size="sm"
+            leftSection={<ExternalLink size={14} />}
+            className="flex-1"
+          >
+            Live Site
+          </Button>
+        )}
       </div>
     </Card>
   )

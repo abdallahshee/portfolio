@@ -1,5 +1,5 @@
 import { createFileRoute, useRouter } from '@tanstack/react-router'
-import { Container, Stack, Text, Button, ThemeIcon, Paper } from '@mantine/core'
+import { Button, ThemeIcon, Paper } from '@mantine/core'
 import { ShieldX, Home, ArrowLeft } from 'lucide-react'
 
 export const Route = createFileRoute('/unauthorized')({
@@ -10,32 +10,27 @@ function UnauthorizedPage() {
   const router = useRouter()
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-
+    <div className="flex min-h-screen items-center justify-center px-4">
       <Paper
         radius="24px"
         withBorder
         shadow="sm"
-
-        className="relative overflow-hidden border border-slate-200/70 bg-linear-to-br from-white via-indigo-50 to-blue-50 px-4 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
+        className="relative w-full max-w-md overflow-hidden border border-slate-200/70 bg-linear-to-br from-white via-indigo-50 to-blue-50 px-6 py-10 sm:px-10 sm:py-12 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
       >
-        <Stack align="center" gap="lg" py="xl" >
-
+        <div className="flex flex-col items-center gap-6">
           <ThemeIcon size={80} radius="md" variant="light" color="red">
             <ShieldX size={40} />
           </ThemeIcon>
 
-          <Stack align="center" gap="xs">
-            <div className="title2 text-slate-900 dark:text-white">401</div>
-            <div className="title2 text-slate-700 dark:text-slate-300">
-              Unauthorized
-            </div>
-            <Text c="dimmed" ta="center" size="md" className="max-w-sm leading-7" lineClamp={2}>
+          <div className="flex flex-col items-center gap-1 text-center">
+            <p className="title2 text-slate-900 dark:text-white">401</p>
+            <p className="title2 text-slate-700 dark:text-slate-300">Unauthorized</p>
+            <p className="mt-1 max-w-sm text-sm leading-7 text-slate-500 dark:text-slate-400">
               You don't have permission to access this page.
-            </Text>
-          </Stack>
+            </p>
+          </div>
 
-          <Stack gap="sm" w="100%" maw={320}>
+          <div className="flex w-full max-w-[320px] flex-col gap-3">
             <Button
               fullWidth
               radius="md"
@@ -57,11 +52,9 @@ function UnauthorizedPage() {
             >
               Go Back
             </Button>
-          </Stack>
-
-        </Stack>
+          </div>
+        </div>
       </Paper>
-
     </div>
   )
 }

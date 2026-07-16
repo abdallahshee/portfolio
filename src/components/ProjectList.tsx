@@ -1,13 +1,11 @@
-// components/ProjectList.tsx
 import { ProjectCard } from '@/components/ProjectCard'
 import type { Project } from '@/db/validations/project.types'
-import { Card, Group, Badge, TextInput, Pagination } from '@mantine/core'
+import { Card, Badge, TextInput, Pagination } from '@mantine/core'
 import { LayoutGrid, Search, Star, X } from 'lucide-react'
 import { useMemo, useState } from 'react'
 import { useDebouncedValue } from '@mantine/hooks'
 
 const PAGE_SIZE = 6
-
 type FilterValue = 'all' | 'featured'
 
 const FILTER_OPTIONS = [
@@ -27,20 +25,15 @@ export function ProjectList({ projects }: ProjectListProps) {
   const [debouncedSearch] = useDebouncedValue(searchInput, 300)
   const isSearching = debouncedSearch.trim().length > 0
 
-  // ── client-side filter + search ──
   const filtered = useMemo(() => {
     return projects.filter((project) => {
       if (filter === 'featured' && !project.isFeatured) return false
-      if (
-        isSearching &&
-        !project.title!.toLowerCase().includes(debouncedSearch.toLowerCase())
-      )
+      if (isSearching && !project.title!.toLowerCase().includes(debouncedSearch.toLowerCase()))
         return false
       return true
     })
   }, [projects, filter, isSearching, debouncedSearch])
 
-  // ── client-side pagination ──
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
@@ -55,15 +48,13 @@ export function ProjectList({ projects }: ProjectListProps) {
   }
 
   return (
-    <div className="space-y-6">
-      {/* CONTROLS */}
+    <div className="flex flex-col gap-6">
       <Card radius="xl" padding="lg" withBorder>
         <div className="flex flex-col gap-6">
-          {/* SEARCH */}
-          <div className="w-full space-y-3">
+          <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
               <Search size={14} />
-              Search Projects
+              Search projects
             </div>
 
             <TextInput
@@ -83,14 +74,13 @@ export function ProjectList({ projects }: ProjectListProps) {
             />
 
             {isSearching && (
-              <Badge variant="light" color="gray" radius="xl">
+              <Badge variant="light" color="gray" radius="xl" className="w-fit">
                 {`Results for "${debouncedSearch}"`}
               </Badge>
             )}
           </div>
 
-          {/* FILTER */}
-          <div className="w-full space-y-4">
+          <div className="flex flex-col gap-3">
             <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
               <LayoutGrid size={14} />
               Filter
@@ -121,7 +111,6 @@ export function ProjectList({ projects }: ProjectListProps) {
         </div>
       </Card>
 
-      {/* GRID */}
       {paginated.length ? (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
           {paginated.map((project) => (
@@ -130,23 +119,17 @@ export function ProjectList({ projects }: ProjectListProps) {
         </div>
       ) : (
         <Card radius="xl" padding="xl" withBorder className="w-full border-dashed">
-          <Group justify="center" className="py-10">
-            <LayoutGrid size={40} />
-          </Group>
+          <div className="flex justify-center py-10">
+            <LayoutGrid size={40} className="text-slate-400" />
+          </div>
           <p className="text-center text-slate-500">No projects found</p>
         </Card>
       )}
 
-      {/* PAGINATION */}
       {totalPages > 1 && (
-        <Group justify="center">
-          <Pagination
-            value={page}
-            onChange={(value) => setPage(value)}
-            total={totalPages}
-            radius="xl"
-          />
-        </Group>
+        <div className="flex justify-center">
+          <Pagination value={page} onChange={setPage} total={totalPages} radius="xl" />
+        </div>
       )}
     </div>
   )
