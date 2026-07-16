@@ -160,10 +160,12 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+
+
 html {
   scroll-padding-top: 80px;
+  scrollbar-gutter: stable;
 }
-
 html,
 body,
 #app {

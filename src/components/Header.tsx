@@ -5,6 +5,8 @@ import {
   ScrollArea,
   Image,
   UnstyledButton,
+  Modal,
+  Button,
 } from "@mantine/core"
 import { Link, linkOptions } from "@tanstack/react-router"
 import { Sun, Moon, Download } from "lucide-react"
@@ -14,18 +16,16 @@ type ThemeMode = "light" | "dark"
 const resume = "/abdallah-cv.pdf"
 const resumeButtonClasses = `
   flex items-center gap-1
-  bg-green-700
-  px-2 py-2
+  px-1 py-2
   ml-2
-  text-sm font-semibold
-  !text-white
+  text-md font-semibold
+   dark:!text-white
+ text-green-700
+ dark:text-white
+  cursor-pointer
   transition-all duration-200
-  hover:bg-green-600
-  hover:shadow-md
-  active:scale-95
-  dark: bg-green-600
-  dark:hover:bg-green-500
 `
+
 function getInitialMode(): ThemeMode {
   if (typeof window === "undefined") return "dark"
   return window.localStorage.getItem("theme") === "light" ? "light" : "dark" // ← defaults to dark
@@ -51,7 +51,7 @@ const links = linkOptions([
 export default function Header() {
   const [opened, setOpened] = useState(false)
   const [themeMode, setThemeMode] = useState<ThemeMode>("light")
-
+  const [resumeModalOpen, setResumeModalOpen] = useState(false)
   useEffect(() => {
     const initial = getInitialMode()
     setThemeMode(initial)
@@ -60,6 +60,17 @@ export default function Header() {
     return () => clearTimeout(timeout)
   }, [])
 
+  const handleResumeDownload = () => {
+    const link = document.createElement("a")
+    link.href = resume
+    link.download = "Abdallah-Shee-CV.pdf"
+
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+
+    setResumeModalOpen(false)
+  }
   const handleThemeChange = () => {
     const next: ThemeMode = themeMode === "light" ? "dark" : "light"
     setThemeMode(next)
@@ -82,14 +93,20 @@ export default function Header() {
         <Brand />
       </Link>
 
-      <a
-        href={resume}
-        download
+      <button
+        type="button"
         className={resumeButtonClasses}
+        onClick={() => setResumeModalOpen(true)}
       >
-        <Download size={16} className="text-white" />
-        Resume
-      </a>
+        <span className="font-semibold">
+          Resume
+        </span>
+
+        <Download
+          size={24}
+          className="shrink-0"
+        />
+      </button>
     </div>
   )
 
@@ -194,6 +211,37 @@ export default function Header() {
           </div>
         </ScrollArea>
       </Drawer>
+      <Modal
+        opened={resumeModalOpen}
+        onClose={() => setResumeModalOpen(false)}
+        title="Download Resume"
+        centered
+        radius="md"
+      >
+        <div className="space-y-4">
+          <p className="text-sm text-slate-600 dark:text-slate-300">
+            Would you like to download Abdallah Shee's resume?
+          </p>
+
+          <div className="flex justify-end gap-3">
+            <Button
+              variant="filled"
+              color="red"
+              onClick={() => setResumeModalOpen(false)}
+            >
+              Cancel
+            </Button>
+
+            <Button
+              color="green"
+              leftSection={<Download size={16} />}
+              onClick={handleResumeDownload}
+            >
+              Download
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </header>
   )
 }

@@ -46,16 +46,15 @@ function useCoordinatedTyping(
         timeout = setTimeout(() => setPhase('deleting'), rolePause)
       }
     } else if (phase === 'deleting') {
-      if (typedName.length > 0 || typedRole.length > 0) {
-        timeout = setTimeout(() => {
-          setTypedName((prev) => prev.slice(0, -1))
-          setTypedRole((prev) => prev.slice(0, -1))
-        }, deletingSpeed)
-      } else {
-        setRoleIndex((i) => i + 1)
-        setPhase('typingName')
-      }
-    }
+  if (typedRole.length > 0) {
+    timeout = setTimeout(() => {
+      setTypedRole((prev) => prev.slice(0, -1))
+    }, deletingSpeed)
+  } else {
+    setRoleIndex((i) => i + 1)
+    setPhase('typingRole')
+  }
+}
 
     return () => clearTimeout(timeout)
   }, [phase, typedName, typedRole, roleIndex, name, roleWords, nameTypingSpeed, roleTypingSpeed, namePause, rolePause, deletingSpeed])
@@ -111,9 +110,9 @@ function App() {
                     </span>
                   </h1>
 
-                  <p className="mt-3 text-base font-medium text-slate-400 sm:text-2xl">
-                    <span className="font-semibold">Developing </span>
-                    <span className="text-teal-400">
+                  <p className="mt-3 text-base font-semibold text-slate-400 sm:text-2xl">
+                    <span className="font-semibold">For </span>
+                    <span className="text-green-700 dark:text-white">
                       {typedRole}
                       <span className="animate-pulse"> |</span>
                     </span>
