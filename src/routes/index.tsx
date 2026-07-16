@@ -129,21 +129,27 @@ function App() {
                   focused on performance, usability, and long-term business value.
                 </p>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap justify-center gap-3 sm:justify-start">
                   <Link to="/projects">
                     <Button
-                      size="lg"
-                      radius="md"
+                      size="md"
+                      radius="sm"
                       className="bg-linear-to-r from-teal-500 to-blue-500"
                       rightSection={<ArrowRight size={18} />}
                     >
-                      View My Projects
+                      My Projects
                     </Button>
                   </Link>
 
                   <Link to="/connect">
-                    <Button size="lg" radius="md" variant="filled" color="orange" rightSection={<Mail size={18} />}>
-                      Connect With Me
+                    <Button
+                      size="md"
+                      radius="sm"
+                      variant="filled"
+                      color="orange"
+                      rightSection={<Mail size={18} />}
+                    >
+                      Let's Connect
                     </Button>
                   </Link>
                 </div>
@@ -218,14 +224,35 @@ function App() {
               I'm actively seeking full-stack software developer opportunities in Nairobi and Mombasa.
               Take a look at what I've built, and let's talk about how I can contribute to your team.
             </p>
-            <div className="mt-2 flex w-full flex-wrap justify-center gap-3">
-              <Link to="/connect" className="flex-1 basis-[200px]">
-                <Button variant="filled" color="orange" size="sm" radius="sm" leftSection={<Mail size={18} />} fullWidth>
+            <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:justify-center">
+              <Link
+                to="/connect"
+                className="w-full sm:min-w-[200px] sm:flex-1"
+              >
+                <Button
+                  variant="filled"
+                  color="orange"
+                  size="sm"
+                  radius="sm"
+                  leftSection={<Mail size={18} />}
+                  fullWidth
+                >
                   Let's Connect
                 </Button>
               </Link>
-              <Link to="/projects" className="flex-1 basis-[200px]">
-                <Button variant="outline" color="blue" size="sm" radius="sm" leftSection={<FolderKanban size={18} />} fullWidth>
+
+              <Link
+                to="/projects"
+                className="w-full sm:min-w-[200px] sm:flex-1"
+              >
+                <Button
+                  variant="outline"
+                  color="blue"
+                  size="sm"
+                  radius="sm"
+                  leftSection={<FolderKanban size={18} />}
+                  fullWidth
+                >
                   View Projects
                 </Button>
               </Link>

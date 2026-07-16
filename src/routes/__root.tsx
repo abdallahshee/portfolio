@@ -22,6 +22,7 @@ import Header from '@/components/Header'
 import ScrollToTop from '@/components/ScrollTop'
 import { useEffect } from 'react'
 import { ScrollToTopOnRouteChange } from '@/components/ScrollTopOnRouteChnage'
+import { ErrorPage } from '@/components/Error'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -59,9 +60,17 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       { rel: 'icon', href: '/favicon.ico' },
     ],
   }),
+
   shellComponent: RootDocument,
-  // notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent,
+
+  errorComponent: ({ error, reset }) => (
+    <ErrorPage
+      error={error as Error}
+      reset={reset}
+    />
+  ),
+
+  // notFoundComponent: NotFoundPage,
 })
 
 function AppShell({ children }: { children: React.ReactNode }) {

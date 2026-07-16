@@ -22,7 +22,12 @@ interface ProjectsOverviewPanelProps {
 
 export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
   return (
-    <Card withBorder radius="lg" p="xl" className="h-full">
+    <Card
+      withBorder
+      radius="lg"
+      p="xl"
+      className="min-h-[500px] lg:min-h-full"
+    >
       <div className="flex h-full flex-col items-center justify-center gap-6 text-center">
         <ThemeIcon size={64} radius="xl" variant="light" color="blue">
           <MousePointerClick size={30} />
@@ -42,7 +47,7 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
         <div className="flex justify-center gap-8">
           <div className="flex flex-col items-center gap-1">
             <div className="flex items-center gap-1">
-              <FolderKanban size={14} className="text-slate-400" />
+              {/* <FolderKanban size={14} className="text-slate-400" /> */}
               <span className="text-xs font-medium uppercase tracking-wide text-slate-400">
                 Projects
               </span>
@@ -54,7 +59,7 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
 
           <div className="flex flex-col items-center gap-1">
             <div className="flex items-center gap-1">
-              <Star size={14} className="text-slate-400" />
+              {/* <Star size={14} className="text-slate-400" /> */}
               <span className="text-xs font-medium uppercase tracking-wide text-slate-400">
                 Featured
               </span>
@@ -66,7 +71,6 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
 
           <div className="flex flex-col items-center gap-1">
             <div className="flex items-center gap-1">
-              <Code2 size={14} className="text-slate-400" />
               <span className="text-xs font-medium uppercase tracking-wide text-slate-400">
                 Tech used
               </span>

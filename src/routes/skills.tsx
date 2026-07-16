@@ -162,16 +162,16 @@ function ServicesPage() {
           className="relative overflow-hidden border border-slate-200/70 bg-linear-to-br from-white via-indigo-50 to-blue-50 px-4 py-8 sm:px-8 sm:py-12 lg:px-12 lg:py-14 dark:border-slate-700 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800"
         >
           <div className="flex flex-col items-center gap-4">
-            <h2 className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-transparent">
+            <h2 className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-center text-transparent">
               Looking for a Developer Like Me?
             </h2>
             <p className="max-w-2xl px-1 text-center text-base leading-8 text-slate-600 sm:text-lg dark:text-slate-400">
               I'm actively looking for full-stack software developer roles.
               Reach out and let's talk about how my experience fits what you're building.
             </p>
-            <div className="mt-2 flex flex-wrap justify-center gap-3">
+            <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:justify-center">
               <Button
-                className="min-w-[200px] justify-center"
+                className="w-full sm:min-w-[200px] sm:w-auto"
                 variant="filled"
                 color="orange"
                 size="sm"
@@ -182,8 +182,18 @@ function ServicesPage() {
                 Let's Connect
               </Button>
 
-              <Link to="/projects">
-                <Button className="min-w-[200px] justify-center" variant="outline" color="blue" size="sm" radius="md" leftSection={<FolderKanban size={18} />}>
+              <Link
+                to="/projects"
+                className="w-full sm:w-auto"
+              >
+                <Button
+                  className="w-full sm:min-w-[200px] sm:w-auto"
+                  variant="outline"
+                  color="blue"
+                  size="sm"
+                  radius="md"
+                  leftSection={<FolderKanban size={18} />}
+                >
                   Explore My Projects
                 </Button>
               </Link>
