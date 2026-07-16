@@ -46,15 +46,15 @@ function useCoordinatedTyping(
         timeout = setTimeout(() => setPhase('deleting'), rolePause)
       }
     } else if (phase === 'deleting') {
-  if (typedRole.length > 0) {
-    timeout = setTimeout(() => {
-      setTypedRole((prev) => prev.slice(0, -1))
-    }, deletingSpeed)
-  } else {
-    setRoleIndex((i) => i + 1)
-    setPhase('typingRole')
-  }
-}
+      if (typedRole.length > 0) {
+        timeout = setTimeout(() => {
+          setTypedRole((prev) => prev.slice(0, -1))
+        }, deletingSpeed)
+      } else {
+        setRoleIndex((i) => i + 1)
+        setPhase('typingRole')
+      }
+    }
 
     return () => clearTimeout(timeout)
   }, [phase, typedName, typedRole, roleIndex, name, roleWords, nameTypingSpeed, roleTypingSpeed, namePause, rolePause, deletingSpeed])
