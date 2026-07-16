@@ -162,7 +162,7 @@ function App() {
                   <img src="/images/home.jpg" alt="Abdallah Shee" className="h-full w-full object-cover" />
                 </div>
                 <div className="absolute -bottom-6 left-1/2 z-20 w-full -translate-x-1/2">
-                  <div className="w-full rounded-2xl bg-white px-1 py-3 backdrop-blur">
+                  <div className="w-full rounded-2xl  bg-green-700 px-1 py-3 backdrop-blur">
                     <BrandHome />
                   </div>
                 </div>

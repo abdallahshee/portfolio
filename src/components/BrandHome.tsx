@@ -1,9 +1,9 @@
 
 const BrandHome = () => {
   return (
-     <div className="flex flex-col leading-tight">
-        <span className="text-md font-semibold tracking-wide text-center text-slate-700">
-         Full-Stack Developer 🇰🇪
+     <div className="flex flex-col leading-tight ">
+        <span className="text-lg font-normal tracking-wide text-center text-white">
+         Full-Stack Developer {" "} {" "}{" "} 🇰🇪
         </span>
       </div>
   )
