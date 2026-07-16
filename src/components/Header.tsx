@@ -1,10 +1,7 @@
-import { createFileRoute } from "@tanstack/react-router"
 import { Anchor, Card, Divider, List, ThemeIcon } from "@mantine/core"
 import { CheckCircle, Github, Linkedin, Mail, Phone } from "lucide-react"
 
-export const Route = createFileRoute("/connect")({
-  component: ContactPage,
-})
+
 
 const WHY_REACH_OUT = [
   "I reply to every message within 24 hours",
@@ -30,7 +27,7 @@ const CONTACT_LINKS = [
   { icon: <Linkedin size={20} />, label: "linkedin.com/in/abdallahshee", href: "https://linkedin.com/in/abdallahshee", color: "blue" },
 ]
 
-function ContactPage() {
+export default function ContactPage() {
   return (
     <div className="flex justify-center px-4">
       <div className="max-w-3xl space-y-8 px-0 py-6 sm:py-8 md:py-10">
@@ -98,3 +95,4 @@ function ContactPage() {
     </div>
   )
 }
+
