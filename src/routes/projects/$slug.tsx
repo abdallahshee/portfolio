@@ -18,6 +18,7 @@ import {
 import { createFileRoute, Link } from "@tanstack/react-router"
 import { getProjectBySlugQueryOptions } from "@/db/queries/project.queries"
 import moment from "moment"
+import { useEffect, useRef } from "react"
 
 export const Route = createFileRoute("/projects/$slug")({
   loader: async ({ context, params }) => {
@@ -50,9 +51,16 @@ function ProjectDetails() {
   const project = Route.useLoaderData()!
   const technologies = project?.technologies ?? []
   const roles = project?.roles ?? []
+    const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (window.innerWidth < 1024) { // below Tailwind's `lg` breakpoint
+      containerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }, [project?.slug]) // re-run when a different project is selected
 
   return (
-    <div className="flex flex-col gap-6 py-6 sm:py-8">
+     <div ref={containerRef} className="flex flex-col gap-6 py-6 sm:py-8">
       {/* IMAGE */}
       <Card radius="xl" withBorder p="xs" className="overflow-hidden shadow-sm">
         {project.imageUrl ? (

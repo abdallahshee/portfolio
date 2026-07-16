@@ -17,6 +17,13 @@ export const getProjectBySlugQueryOptions = (slug: string) =>
 //     queryFn: () => getProjectById({ data: { projectId: projectId } }),
 //   })
 
+export const getAllProjectsQueryOptions = () =>
+  queryOptions({
+    queryKey: ['projects', 'all'],
+    queryFn: () => getAllProjects(),
+    staleTime: 60 * 1000,
+  })
+
 export const getTopFeaturedProjectsQueryOptions = () =>
   queryOptions({
     queryKey: ['top5Projects'],

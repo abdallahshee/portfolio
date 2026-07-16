@@ -57,6 +57,37 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
     }
   });
 
+  export const getAllProjects = createServerFn({ method: "GET" }).handler(
+  async () => {
+    try {
+      const allProjects = await db
+        .select({
+          id: project.id,
+          title: project.title,
+          slug: project.slug,
+          roles: project.roles,
+          githubUrl: project.githubUrl,
+          description: project.description,
+          isFeatured: project.isFeatured,
+          imageUrl: project.imageUrl,
+          technologies: project.technologies,
+          liveUrl: project.liveUrl,
+          createdAt: project.createdAt,
+          isContributor: project.isContributor,
+          updatedAt: project.updatedAt,
+        })
+        .from(project)
+        .orderBy(desc(project.createdAt))
+
+      return { projects: allProjects, total: allProjects.length }
+    } catch (err) {
+      console.error(err)
+      throw err
+    }
+  }
+)
+
+
 
 export const getProjectById = createServerFn({ method: "GET" })
   .inputValidator((data: { projectId: string }) => data)
@@ -151,19 +182,19 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
     }
   })
 
-export const getAllProjects = createServerFn({ method: 'GET' }).handler(
-  async () => {
-    const allProjects = await db
-      .select()
-      .from(project)
-      .orderBy(desc(project.createdAt))
+// export const getAllProjects = createServerFn({ method: 'GET' }).handler(
+//   async () => {
+//     const allProjects = await db
+//       .select()
+//       .from(project)
+//       .orderBy(desc(project.createdAt))
 
-    return {
-      projects: allProjects,
-      total: allProjects.length,
-    }
-  }
-)
+//     return {
+//       projects: allProjects,
+//       total: allProjects.length,
+//     }
+//   }
+// )
 
 export const updateProject = createServerFn({ method: "POST" })
   // .middleware([AuthenticatedMiddleware])
