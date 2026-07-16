@@ -79,7 +79,7 @@ export default function Header() {
   }
 
   const BrandLogo = (
-    <div className="flex flex-shrink-0 items-center gap-3">
+    <div className="flex flex-shrink-0 items-center gap-2">
       <Link to="/" className="flex items-center gap-2.5 no-underline">
         <Image
           src="/images/profile.jpg"

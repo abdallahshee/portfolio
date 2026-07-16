@@ -64,17 +64,42 @@ function useCoordinatedTyping(
 
 function ProjectsSkeleton() {
   return (
-    <div className="flex flex-col gap-3">
-      {Array.from({ length: 3 }).map((_, i) => (
-        <div key={i} className="flex animate-pulse items-center gap-3 rounded-lg border p-3">
-          <div className="h-12 w-12 rounded-md bg-slate-200 dark:bg-slate-700" />
-          <div className="flex-1 space-y-2">
-            <div className="h-3 w-2/3 rounded bg-slate-200 dark:bg-slate-700" />
-            <div className="h-2 w-1/3 rounded bg-slate-200 dark:bg-slate-700" />
-          </div>
+    <Paper withBorder radius="lg" className="min-w-0 p-3 sm:p-4">
+      <div className="flex flex-col gap-4">
+        <div className="min-w-0 flex-1">
+          <div className="h-7 w-48 animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
+          <div className="mt-2 h-4 w-full max-w-2xl animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
+          <div className="mt-2 h-4 w-2/3 animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
         </div>
-      ))}
-    </div>
+
+        <SimpleGrid cols={{ base: 1, sm: 2, xl: 3 }} spacing="md">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div
+              key={i}
+              className="relative h-[220px] overflow-hidden rounded-2xl bg-slate-200 dark:bg-slate-800 sm:h-[240px]"
+            >
+              {/* Image placeholder */}
+              <div className="absolute inset-0 animate-pulse bg-slate-200 dark:bg-slate-700" />
+
+              {/* Featured badge */}
+              <div className="absolute right-3 top-3 z-10 h-6 w-20 animate-pulse rounded-full bg-slate-300 dark:bg-slate-600" />
+
+              {/* Content area */}
+              <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-3 p-4">
+                {/* Title */}
+                <div className="h-6 w-3/4 animate-pulse rounded bg-slate-300 dark:bg-slate-600" />
+
+                {/* Buttons */}
+                <div className="flex gap-2">
+                  <div className="h-8 w-28 animate-pulse rounded-full bg-slate-300 dark:bg-slate-600" />
+                  <div className="h-8 w-24 animate-pulse rounded-full bg-slate-300 dark:bg-slate-600" />
+                </div>
+              </div>
+            </div>
+          ))}
+        </SimpleGrid>
+      </div>
+    </Paper>
   )
 }
 
@@ -97,7 +122,7 @@ function App() {
   return (
     <div className="w-full space-y-0 px-0">
       {/* HERO + ABOUT */}
-      <section className="rounded-none py-20 lg:py-28">
+      <section className="rounded-none py-10 lg:py-14">
         <div className="mx-auto px-6">
           <div className="grid items-center gap-6 lg:grid-cols-[4fr_1fr]">
             <div className="max-w-7xl">
