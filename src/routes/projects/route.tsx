@@ -54,7 +54,7 @@ function ProjectsLayout() {
       {/* CTA Section */}
       <div className="overflow-hidden rounded-2xl border border-indigo-200 bg-linear-to-r from-indigo-50 via-blue-50 to-cyan-50 p-6 shadow-sm dark:border-slate-700 dark:from-slate-900/40 dark:via-slate-800/40 dark:to-slate-900/40 sm:p-8 lg:p-10">
         <div className="mx-auto max-w-4xl text-center">
-            <h2 className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-center text-transparent">
+          <h2 className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-center text-transparent">
             Interested in Working Together?
           </h2>
 

@@ -57,7 +57,7 @@ export const getProjectBySlugName = createServerFn({ method: "GET" })
     }
   });
 
-  export const getAllProjects = createServerFn({ method: "GET" }).handler(
+export const getAllProjects = createServerFn({ method: "GET" }).handler(
   async () => {
     try {
       const allProjects = await db
@@ -182,19 +182,6 @@ export const getPaginatedProjects = createServerFn({ method: "GET" })
     }
   })
 
-// export const getAllProjects = createServerFn({ method: 'GET' }).handler(
-//   async () => {
-//     const allProjects = await db
-//       .select()
-//       .from(project)
-//       .orderBy(desc(project.createdAt))
-
-//     return {
-//       projects: allProjects,
-//       total: allProjects.length,
-//     }
-//   }
-// )
 
 export const updateProject = createServerFn({ method: "POST" })
   // .middleware([AuthenticatedMiddleware])

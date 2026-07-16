@@ -152,7 +152,7 @@ function ContactPage() {
           withBorder
           className="overflow-hidden border-blue-200 bg-linear-to-r from-blue-50 via-indigo-50 to-blue-50 p-6 text-center shadow-sm dark:border-slate-700 dark:from-slate-900/40 dark:via-slate-800/40 dark:to-slate-900/40 sm:p-8 lg:p-10"
         >
-            <h2 className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-center text-transparent">
+          <h2 className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-center text-transparent">
             Ready to Build Something Great Together?
           </h2>
 
