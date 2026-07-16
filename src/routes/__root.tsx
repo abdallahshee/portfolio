@@ -79,7 +79,7 @@ function AppShell({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen flex-col">
       <Notifications position="top-right" />
 
-      <Header />
+      {/* <Header /> */}
       <main className="flex-1 w-full px-3 pb-10 pt-20 sm:px-4 sm:pb-12 md:px-6 md:pb-14 lg:px-8 lg:pb-16">
         <ScrollToTopOnRouteChange />
         {children}
