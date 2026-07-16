@@ -98,7 +98,7 @@ function App() {
   return (
     <div className="w-full space-y-0 px-0">
       {/* HERO + ABOUT */}
-      <section className="rounded-3xl bg-slate-950 py-20 lg:py-28">
+      <section className="rounded-none py-20 lg:py-28">
         <div className="mx-auto px-6">
           <div className="grid items-center gap-6 lg:grid-cols-[4fr_1fr]">
             <div className="max-w-7xl">

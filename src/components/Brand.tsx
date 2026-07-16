@@ -6,7 +6,7 @@ const Brand = () => {
         Abdallah Shee
       </span>
       <span className="text-xs font-medium tracking-wide text-slate-500 dark:text-slate-400">
-        Full-Stack Developer 🇰🇪
+        Full-Stack Developer
       </span>
     </div>
   )

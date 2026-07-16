@@ -7,11 +7,25 @@ import {
   UnstyledButton,
 } from "@mantine/core"
 import { Link, linkOptions } from "@tanstack/react-router"
-import { Sun, Moon } from "lucide-react"
+import { Sun, Moon, Download } from "lucide-react"
 import Brand from "./Brand"
 
 type ThemeMode = "light" | "dark"
-
+const resume = "/abdallah-cv.pdf"
+const resumeButtonClasses = `
+  flex items-center gap-1
+  bg-green-700
+  px-2 py-2
+  ml-2
+  text-sm font-semibold
+  !text-white
+  transition-all duration-200
+  hover:bg-green-600
+  hover:shadow-md
+  active:scale-95
+  dark: bg-green-600
+  dark:hover:bg-green-500
+`
 function getInitialMode(): ThemeMode {
   if (typeof window === "undefined") return "dark"
   return window.localStorage.getItem("theme") === "light" ? "light" : "dark" // ← defaults to dark
@@ -54,18 +68,29 @@ export default function Header() {
   }
 
   const BrandLogo = (
-    <Link to="/" className="flex flex-shrink-0 items-center gap-2.5 no-underline">
-      <Image
-        src="/images/profile.jpg"
-        alt="Abdallah Shee"
-        radius="md"
-        w={36}
-        h={36}
-        fit="cover"
-        className="transition-opacity duration-200 hover:opacity-80"
-      />
-      <Brand />
-    </Link>
+    <div className="flex flex-shrink-0 items-center gap-3">
+      <Link to="/" className="flex items-center gap-2.5 no-underline">
+        <Image
+          src="/images/profile.jpg"
+          alt="Abdallah Shee"
+          radius="md"
+          w={36}
+          h={36}
+          fit="cover"
+          className="transition-opacity duration-200 hover:opacity-80"
+        />
+        <Brand />
+      </Link>
+
+      <a
+        href={resume}
+        download
+        className={resumeButtonClasses}
+      >
+        <Download size={16} className="text-white" />
+        Resume
+      </a>
+    </div>
   )
 
   const ThemeButton = (
