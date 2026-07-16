@@ -153,11 +153,12 @@ function App() {
                   focused on performance, usability, and long-term business value.
                 </p>
 
-                <div className="flex flex-wrap justify-center gap-3 sm:justify-start">
-                  <Link to="/projects">
+<div className="flex flex-wrap justify-center gap-3 sm:justify-start">
+                  <Link to="/projects" className="w-full sm:w-48">
                     <Button
                       size="md"
                       radius="sm"
+                      fullWidth
                       className="bg-linear-to-r from-teal-500 to-blue-500"
                       rightSection={<ArrowRight size={18} />}
                     >
@@ -165,10 +166,11 @@ function App() {
                     </Button>
                   </Link>
 
-                  <Link to="/connect">
+                  <Link to="/connect" className="w-full sm:w-48">
                     <Button
                       size="md"
                       radius="sm"
+                      fullWidth
                       variant="filled"
                       color="orange"
                       rightSection={<Mail size={18} />}
