@@ -87,7 +87,7 @@ function ProjectsLayout() {
                 href="https://github.com/abdallahshee"
                 target="_blank"
                 variant="outline"
-                color="dark"
+                color="blue"
                 radius="md"
                 size="md"
                 fullWidth
