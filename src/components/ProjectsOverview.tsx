@@ -49,7 +49,7 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
     >
       <div className="flex h-full flex-col items-center justify-center gap-6 text-center">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+          <h2 className="text-md font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
             Select a project
           </h2>
           <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
@@ -57,7 +57,7 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
           </p>
         </div>
 
-        <Divider className="w-full" />
+        {/* <Divider className="w-3/4" /> */}
 
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
           {statsdata.map((item) => (
@@ -84,7 +84,13 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
             </Card>
           ))}
         </div>
-
+        {/* <Divider className="w-full" /> */}
+        <div className="flex items-center gap-2">
+          <Code2 size={16} className="text-slate-500" />
+          <p className="text-sm font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+            Tech stack and skills
+          </p>
+        </div>
         {stats.topTechnologies?.length > 0 && (
           <div className="flex flex-wrap justify-center gap-2">
             {stats.topTechnologies.map((tech: string) => (
@@ -95,7 +101,7 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
           </div>
         )}
 
-        <Divider className="w-full" />
+        {/* <Divider className="w-full" /> */}
 
         <div className="flex flex-wrap justify-center gap-2">
           <Button
