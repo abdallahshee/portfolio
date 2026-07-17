@@ -1,14 +1,18 @@
-import { Badge, Button, Card, Divider} from '@mantine/core'
+import { Badge, Button, Card, Divider, Group } from '@mantine/core'
 import { Link } from '@tanstack/react-router'
 import {
+  Code2,
+  FolderKanban,
   Github,
-  Sparkles
+  Kanban,
+  Sparkles,
+  Users
 } from 'lucide-react'
 
 interface ProjectStats {
   total: number
   featured: number
-  contributorCount:number
+  contributorCount: number
   technologiesCount: number
   topTechnologies: string[]
 }
@@ -18,6 +22,24 @@ interface ProjectsOverviewPanelProps {
 }
 
 export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
+  const statsdata = [
+    {
+      icon: Kanban,
+      label: "Projects",
+      value: stats.total,
+    },
+    {
+      icon: Users,
+      label:"Co-Built",
+      value: stats.contributorCount
+    },
+    {
+      icon: Code2,
+      label: "Skills",
+      value: stats.technologiesCount
+    },
+
+  ]
   return (
     <Card
       withBorder
@@ -37,41 +59,30 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
 
         <Divider className="w-full" />
 
-        <div className="flex justify-center gap-8">
-          <div className="flex flex-col items-center gap-1">
-            <div className="flex items-center gap-1">
-              {/* <FolderKanban size={14} className="text-slate-400" /> */}
-              <span className="text-xs font-medium uppercase tracking-wide text-slate-400">
-                Projects
-              </span>
-            </div>
-            <span className="text-xl font-bold text-slate-900 dark:text-slate-50">
-              {stats.total}
-            </span>
-          </div>
-
-          <div className="flex flex-col items-center gap-1">
-            <div className="flex items-center gap-1">
-              {/* <Star size={14} className="text-slate-400" /> */}
-              <span className="text-xs font-medium uppercase tracking-wide text-slate-400">
-                Collaborative
-              </span>
-            </div>
-            <span className="text-xl font-bold text-slate-900 dark:text-slate-50">
-              {stats.contributorCount}
-            </span>
-          </div>
-
-          <div className="flex flex-col items-center gap-1">
-            <div className="flex items-center gap-1">
-              <span className="text-xs font-medium uppercase tracking-wide text-slate-400">
-                Tech used
-              </span>
-            </div>
-            <span className="text-xl font-bold text-slate-900 dark:text-slate-50">
-              {stats.technologiesCount}
-            </span>
-          </div>
+<div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+          {statsdata.map((item) => (
+            <Card
+              key={item.label}
+              withBorder
+              radius="lg"
+              padding="md"
+              className="border-green-200 bg-green-50 dark:border-green-800 dark:bg-green-950/40"
+            >
+              <Group gap="sm" wrap="nowrap">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-500/15 dark:bg-green-400/15">
+                  <item.icon size={20} className="text-green-600 dark:text-green-400" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-xl font-bold text-green-700 dark:text-green-300">
+                    {item.value}+
+                  </span>
+                  <span className="text-xs font-medium uppercase tracking-wide text-green-600/80 dark:text-green-400/70">
+                    {item.label}
+                  </span>
+                </div>
+              </Group>
+            </Card>
+          ))}
         </div>
 
         {stats.topTechnologies?.length > 0 && (
