@@ -94,11 +94,6 @@ function ProjectDetails() {
               </h1>
 
               <div className="mt-2 flex flex-wrap items-center gap-2">
-                {project?.isFeatured && (
-                  <Badge variant="light" color="yellow" radius="md" size="sm" leftSection={<Star size={11} />}>
-                    Featured
-                  </Badge>
-                )}
 
                 {project?.isContributor ? (
                   <Badge variant="light" color="grape" radius="md" size="sm" leftSection={<Users size={11} />}>
