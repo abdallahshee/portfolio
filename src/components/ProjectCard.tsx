@@ -37,17 +37,6 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-black/10" />
 
       <div className="absolute right-3 top-3 z-10 flex gap-2">
-        {project.isFeatured && (
-          <Badge
-            size="xs"
-            radius="xl"
-            color="yellow"
-            variant="filled"
-          >
-            Featured
-          </Badge>
-        )}
-
         {isRecent && (
           <Badge
             size="xs"
