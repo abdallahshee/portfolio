@@ -1,17 +1,14 @@
-import { Badge, Button, Card, Divider, ThemeIcon } from '@mantine/core'
+import { Badge, Button, Card, Divider} from '@mantine/core'
 import { Link } from '@tanstack/react-router'
 import {
-  Code2,
-  FolderKanban,
   Github,
-  MousePointerClick,
-  Sparkles,
-  Star,
+  Sparkles
 } from 'lucide-react'
 
 interface ProjectStats {
   total: number
   featured: number
+  contributorCount:number
   technologiesCount: number
   topTechnologies: string[]
 }
@@ -29,10 +26,6 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
       className="min-h-[500px] lg:min-h-full"
     >
       <div className="flex h-full flex-col items-center justify-center gap-6 text-center">
-        <ThemeIcon size={64} radius="xl" variant="light" color="blue">
-          <MousePointerClick size={30} />
-        </ThemeIcon>
-
         <div>
           <h2 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
             Select a project
@@ -61,11 +54,11 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
             <div className="flex items-center gap-1">
               {/* <Star size={14} className="text-slate-400" /> */}
               <span className="text-xs font-medium uppercase tracking-wide text-slate-400">
-                Featured
+                Collaborative
               </span>
             </div>
             <span className="text-xl font-bold text-slate-900 dark:text-slate-50">
-              {stats.featured}
+              {stats.contributorCount}
             </span>
           </div>
 

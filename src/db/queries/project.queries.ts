@@ -55,6 +55,7 @@ export const getProjectStatsQueryOptions = () =>
       return {
         total: projects.length,
         featured: projects.filter((p) => p.isFeatured).length,
+        contributorCount: projects.filter((p) => p.isContributor).length,
         technologiesCount: technologies.size,
         topTechnologies: [...technologies].slice(0, 10),
       }

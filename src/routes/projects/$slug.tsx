@@ -202,7 +202,7 @@ function ProjectDetails() {
                 color="blue"
                 className="grow sm:grow-0"
               >
-                Source is private
+                Private Source
               </Button>
             )}
           </div>
