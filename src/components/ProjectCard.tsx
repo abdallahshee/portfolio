@@ -73,21 +73,20 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
           </p>
 
           <div className="flex flex-col gap-1">
-            <div className="flex items-center gap-1.5">
+            {/* <div className="flex items-center gap-1.5">
               <CalendarDays size={12} className="shrink-0 text-slate-300" />
               <span className="text-xs text-slate-300">
                 Added {moment(project.createdAt).format("D MMMM YYYY")}
               </span>
+            </div> */}
+
+            <div className="flex items-center gap-1.5">
+              <RefreshCw size={12} className="shrink-0 text-slate-300" />
+              <span className="text-xs text-slate-300">
+                Updated {moment(project.updatedAt).fromNow()}
+              </span>
             </div>
 
-            {moment(project.updatedAt).diff(moment(project.createdAt), 'hours') > 24 && (
-              <div className="flex items-center gap-1.5">
-                <RefreshCw size={12} className="shrink-0 text-slate-300" />
-                <span className="text-xs text-slate-300">
-                  Updated {moment(project.updatedAt).fromNow()}
-                </span>
-              </div>
-            )}
           </div>
         </div>
       </Link>
