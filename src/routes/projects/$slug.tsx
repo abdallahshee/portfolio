@@ -157,6 +157,8 @@ function ProjectDetails() {
                 target="_blank"
                 radius="md"
                 size="sm"
+                variant="filled"
+                color="blue"
                 leftSection={<Globe size={15} />}
                 className="grow sm:grow-0"
               >
@@ -168,8 +170,8 @@ function ProjectDetails() {
                 size="sm"
                 leftSection={<Globe size={15} />}
                 disabled
-                variant="light"
-                color="gray"
+                variant="filled"
+                color="blue"
                 className="grow sm:grow-0"
               >
                 No live site
@@ -181,7 +183,8 @@ function ProjectDetails() {
                 component="a"
                 href={project.githubUrl}
                 target="_blank"
-                variant="light"
+                variant="filled"
+                color="blue"
                 radius="md"
                 size="sm"
                 leftSection={<Github size={15} />}
@@ -195,8 +198,8 @@ function ProjectDetails() {
                 size="sm"
                 leftSection={<Github size={15} />}
                 disabled
-                variant="light"
-                color="gray"
+                variant="filled"
+                color="blue"
                 className="grow sm:grow-0"
               >
                 Source is private
