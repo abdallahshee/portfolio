@@ -30,7 +30,7 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
     },
     {
       icon: Users,
-      label:"Co-Built",
+      label: "Co-Built",
       value: stats.contributorCount
     },
     {
@@ -59,7 +59,7 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
 
         <Divider className="w-full" />
 
-<div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
           {statsdata.map((item) => (
             <Card
               key={item.label}
