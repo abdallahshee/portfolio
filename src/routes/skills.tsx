@@ -3,6 +3,7 @@ import { createFileRoute, Link, useRouter } from '@tanstack/react-router'
 import {
   Mail, ShoppingCart, GraduationCap, CalendarClock, Globe, Cpu, Plug, FolderKanban,
   CheckCircle, MonitorSmartphone, Server, Database, GitBranch,
+  Code2,
 } from 'lucide-react'
 
 export const Route = createFileRoute('/skills')({
@@ -10,11 +11,41 @@ export const Route = createFileRoute('/skills')({
 })
 
 const CORE_SKILLS = {
-  Frontend: { color: "#3B82F6", icon: MonitorSmartphone, skills: ['React 19', 'Next.js 16', 'Mantine UI', 'Tailwind CSS', 'TanStack Router'] },
-  Backend: { color: "#22C55E", icon: Server, skills: ['TypeScript', 'Python', 'Express.js', 'Meteor.js', 'TanStack Start'] },
-  Database: { color: "#A855F7", icon: Database, skills: ['PostgreSQL', 'Drizzle ORM', 'MongoDB', 'Mongoose', 'Supabase'] },
-  DevOps: { color: "#F97316", icon: GitBranch, skills: ['Git', 'CI/CD Pipelines', 'Serverless', 'Docker & Containerization', 'Infrastracture as Code ( aws cdk )'] },
-}
+  Frontend: {
+    color: "#3B82F6",
+    icon: MonitorSmartphone,
+    skills: ["React 19", "Next.js 16", "Mantine UI", "Tailwind CSS"],
+  },
+
+  Languages: {
+    color: "#EAB308",
+    icon: Code2,
+    skills: ["TypeScript", "Python", "Java", "JavaScript"],
+  },
+
+  Backend: {
+    color: "#22C55E",
+    icon: Server,
+    skills: ["Next.js 16", "Express.js", "Spring Boot", "TanStack Start"],
+  },
+
+  Database: {
+    color: "#A855F7",
+    icon: Database,
+    skills: ["PostgreSQL", "Drizzle ORM", "MongoDB", "Mongoose"],
+  },
+
+  DevOps: {
+    color: "#F97316",
+    icon: GitBranch,
+    skills: [
+      "Git",
+      "CI/CD Pipelines",
+      "Docker & Containerization",
+      "Infrastructure as Code (AWS CDK)",
+    ],
+  },
+};
 
 const EXPERIENCE_AREAS = [
   { icon: <ShoppingCart size={24} />, title: 'E-Commerce Platforms', desc: 'Built full-featured online stores with product management, cart, checkout, payments (M-Pesa, Stripe), order tracking, inventory control, and admin dashboards.', color: 'orange' },
@@ -76,36 +107,54 @@ function ServicesPage() {
         <div>
           <h2 className="title2">Tech Stack & Technologies</h2>
           <p className="mt-2 text-sm leading-7 text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
-            A modern, production-proven technology stack, chosen deliberately for reliability,
-            scalability, developer experience, and long-term maintainability. I lean toward tools
-            that stay stable at scale, integrate cleanly with the rest of the system, and don't
-            get in the way once a project moves from prototype to production — not trends I'm
-            chasing, but a toolkit I trust to hold up over time, project after project, team
-            after team.
+            These are some of the core technologies I use to design, build, and deploy modern software.
+            While they don't represent my complete skill set, they reflect the tools I rely on most to
+            deliver scalable, secure, and maintainable applications. I continuously expand my expertise
+            by learning new technologies and frameworks, always selecting the right tool for the problem
+            rather than following trends, with a strong focus on clean architecture, performance, and
+            long-term maintainability.
           </p>
         </div>
 
-        <SimpleGrid cols={{ base: 1, md: 2, lg: 4 }} spacing="lg">
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-5">
           {Object.entries(CORE_SKILLS).map(([category, skills]) => (
             <Paper
               key={category}
               withBorder
               radius="lg"
               p="lg"
-              className="border-slate-200 bg-white shadow-sm transition-colors duration-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800/60"
+              className="border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800/60"
             >
-              <div className="flex flex-col gap-4">
+              <div className="flex h-full flex-col gap-4">
                 <div className="flex items-center gap-3">
-                  <ThemeIcon size={36} radius="md" color={skills.color} variant="light">
-                    <skills.icon size={18} />
+                  <ThemeIcon
+                    size={42}
+                    radius="md"
+                    variant="light"
+                    style={{
+                      color: skills.color,
+                      backgroundColor: `${skills.color}20`,
+                    }}
+                  >
+                    <skills.icon size={20} />
                   </ThemeIcon>
-                  <p className="font-semibold text-slate-900 dark:text-slate-50">{category}</p>
+
+                  <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
+                    {category}
+                  </h3>
                 </div>
 
                 <div className="flex flex-col gap-2">
                   {skills.skills.map((skill) => (
-                    <div key={skill} className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400">
-                      <CheckCircle size={14} className="shrink-0 text-indigo-500" />
+                    <div
+                      key={skill}
+                      className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400"
+                    >
+                      <CheckCircle
+                        size={14}
+                        className="shrink-0"
+                        style={{ color: skills.color }}
+                      />
                       <span>{skill}</span>
                     </div>
                   ))}
@@ -113,7 +162,7 @@ function ServicesPage() {
               </div>
             </Paper>
           ))}
-        </SimpleGrid>
+        </div>
       </section>
 
       {/* EXPERIENCE AREAS */}
@@ -153,54 +202,54 @@ function ServicesPage() {
         </SimpleGrid>
       </section>
 
-  {/* CTA */}
-<section id="contact" className="mx-auto w-full scroll-mt-20">
-  <div className="overflow-hidden rounded-2xl border border-indigo-200 bg-linear-to-r from-indigo-50 via-blue-50 to-cyan-50 p-6 shadow-sm dark:border-slate-700 dark:from-slate-900/40 dark:via-slate-800/40 dark:to-slate-900/40 sm:p-8 lg:p-10">
-    <div className="mx-auto max-w-4xl text-center">
-      <h2 className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-center text-transparent">
-        Looking for a Developer Like Me?
-      </h2>
+      {/* CTA */}
+      <section id="contact" className="mx-auto w-full scroll-mt-20">
+        <div className="overflow-hidden rounded-2xl border border-indigo-200 bg-linear-to-r from-indigo-50 via-blue-50 to-cyan-50 p-6 shadow-sm dark:border-slate-700 dark:from-slate-900/40 dark:via-slate-800/40 dark:to-slate-900/40 sm:p-8 lg:p-10">
+          <div className="mx-auto max-w-4xl text-center">
+            <h2 className="title3 bg-linear-to-r from-teal-500 via-indigo-500 to-blue-500 bg-clip-text text-center text-transparent">
+              Looking for a Developer Like Me?
+            </h2>
 
-      <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base sm:leading-8 dark:text-slate-400">
-        I'm actively seeking full-stack software developer opportunities where I
-        can contribute to building scalable, user-focused applications. If
-        you're hiring, growing a team, or working on an exciting project, I'd
-        love to discuss how my skills and experience can add value.
-      </p>
+            <p className="mx-auto mt-4 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base sm:leading-8 dark:text-slate-400">
+              I'm actively seeking full-stack software developer opportunities where I
+              can contribute to building scalable, user-focused applications. If
+              you're hiring, growing a team, or working on an exciting project, I'd
+              love to discuss how my skills and experience can add value.
+            </p>
 
-      <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-        <div className="w-full sm:w-[220px]">
-          <Button
-            size="md"
-            radius="md"
-            color="orange"
-            fullWidth
-            leftSection={<Mail size={18} />}
-            onClick={() => router.navigate({ to: '/connect' })}
-          >
-            Let's Connect
-          </Button>
+            <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
+              <div className="w-full sm:w-[220px]">
+                <Button
+                  size="md"
+                  radius="md"
+                  color="orange"
+                  fullWidth
+                  leftSection={<Mail size={18} />}
+                  onClick={() => router.navigate({ to: '/connect' })}
+                >
+                  Let's Connect
+                </Button>
+              </div>
+
+              <Link
+                to="/projects"
+                className="w-full sm:w-[220px]"
+              >
+                <Button
+                  variant="outline"
+                  color="blue"
+                  radius="md"
+                  size="md"
+                  fullWidth
+                  leftSection={<FolderKanban size={18} />}
+                >
+                  Explore My Projects
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
-
-        <Link
-          to="/projects"
-          className="w-full sm:w-[220px]"
-        >
-          <Button
-            variant="outline"
-            color="blue"
-            radius="md"
-            size="md"
-            fullWidth
-            leftSection={<FolderKanban size={18} />}
-          >
-            Explore My Projects
-          </Button>
-        </Link>
-      </div>
-    </div>
-  </div>
-</section>
+      </section>
     </div>
   )
 }
