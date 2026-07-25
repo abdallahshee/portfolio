@@ -14,35 +14,28 @@ const CORE_SKILLS = {
   Frontend: {
     color: "#3B82F6",
     icon: MonitorSmartphone,
-    skills: ["React 19", "Next.js 16", "Mantine UI", "Tailwind CSS"],
+    skills: ["TypeScript", "React 19", "Zustand", "Tanstack Query", "Mantine UI", "Tailwind CSS"],
   },
 
-  Languages: {
-    color: "#EAB308",
-    icon: Code2,
-    skills: ["TypeScript", "Python", "Java", "JavaScript"],
-  },
 
   Backend: {
     color: "#22C55E",
     icon: Server,
-    skills: ["Next.js 16", "Express.js", "Spring Boot", "TanStack Start"],
-  },
-
-  Database: {
-    color: "#A855F7",
-    icon: Database,
-    skills: ["PostgreSQL", "Drizzle ORM", "MongoDB", "Mongoose"],
+    skills: ["TypeScript", "Next.js 16", "Express.js", "Redis", "PostgreSQL", "Drizzle ORM"],
   },
 
   DevOps: {
     color: "#F97316",
     icon: GitBranch,
     skills: [
-      "Git",
-      "CI/CD Pipelines",
+
       "Docker & Containerization",
       "Infrastructure as Code (AWS CDK)",
+      "Git & GitHub",
+      "CI/CD Pipelines",
+      "Vercel Deployment Pipelines",
+      "AWS Lambda (Serverless)",
+
     ],
   },
 };
@@ -116,14 +109,14 @@ function ServicesPage() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-5">
-          {Object.entries(CORE_SKILLS).map(([category, skills]) => (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {Object.entries(CORE_SKILLS).map(([category, group]) => (
             <Paper
               key={category}
               withBorder
               radius="lg"
               p="lg"
-              className="border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800/60"
+              className="flex h-full flex-col border-slate-200 bg-white shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-700 dark:bg-slate-800/60"
             >
               <div className="flex h-full flex-col gap-4">
                 <div className="flex items-center gap-3">
@@ -132,11 +125,11 @@ function ServicesPage() {
                     radius="md"
                     variant="light"
                     style={{
-                      color: skills.color,
-                      backgroundColor: `${skills.color}20`,
+                      color: group.color,
+                      backgroundColor: `${group.color}20`,
                     }}
                   >
-                    <skills.icon size={20} />
+                    <group.icon size={20} />
                   </ThemeIcon>
 
                   <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-50">
@@ -144,8 +137,8 @@ function ServicesPage() {
                   </h3>
                 </div>
 
-                <div className="flex flex-col gap-2">
-                  {skills.skills.map((skill) => (
+                <div className="flex flex-1 flex-col gap-2.5">
+                  {group.skills.map((skill) => (
                     <div
                       key={skill}
                       className="flex items-center gap-2 text-sm text-slate-600 dark:text-slate-400"
@@ -153,7 +146,7 @@ function ServicesPage() {
                       <CheckCircle
                         size={14}
                         className="shrink-0"
-                        style={{ color: skills.color }}
+                        style={{ color: group.color }}
                       />
                       <span>{skill}</span>
                     </div>

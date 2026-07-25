@@ -13,7 +13,7 @@ import { Sun, Moon, Download } from "lucide-react"
 import Brand from "./Brand"
 
 type ThemeMode = "light" | "dark"
-const resume = "/abdallah-cv.pdf"
+const resume = "/abdallah-resume.pdf"
 const resumeButtonClasses = `
   flex items-center gap-1
   px-1 py-2
@@ -63,7 +63,7 @@ export default function Header() {
   const handleResumeDownload = () => {
     const link = document.createElement("a")
     link.href = resume
-    link.download = "Abdallah-Shee-CV.pdf"
+    link.download = "abdallah-resume.pdf"
 
     document.body.appendChild(link)
     link.click()
