@@ -63,7 +63,7 @@ export default function Header() {
   const handleResumeDownload = () => {
     const link = document.createElement("a")
     link.href = resume
-    link.download = {resume}
+    link.download = resume
 
     document.body.appendChild(link)
     link.click()
