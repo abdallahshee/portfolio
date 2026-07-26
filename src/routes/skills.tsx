@@ -21,7 +21,7 @@ const CORE_SKILLS = {
   Backend: {
     color: "#22C55E",
     icon: Server,
-    skills: ["TypeScript", "Next.js 16", "Express.js", "Redis", "PostgreSQL", "Drizzle ORM"],
+    skills: ["TypeScript", "Next.js 16", "Express.js", "Redis", "PostgreSQL", "Python (FastAPI)"],
   },
 
   DevOps: {

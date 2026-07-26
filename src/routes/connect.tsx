@@ -66,15 +66,15 @@ function LinkedInBadge({ vanity = "abdallahshee" }: { vanity?: string }) {
 
 
   return (
-<div
-  className="LI-profile-badge"
-  data-version="v1"
-  data-size="large"
-  data-locale="en_US"
-  data-type="HORIZONTAL"
-  data-theme="light"
-  data-vanity={vanity}
-/>
+    <div
+      className="LI-profile-badge"
+      data-version="v1"
+      data-size="large"
+      data-locale="en_US"
+      data-type="HORIZONTAL"
+      data-theme="light"
+      data-vanity={vanity}
+    />
   )
 }
 
@@ -276,56 +276,56 @@ function ContactPage() {
           </div>
         </Card>
 
-{/* LinkedIn + GitHub */}
-<Card
-  radius="xl"
-  withBorder
-  className="overflow-hidden p-5 shadow-sm sm:p-6 lg:p-8"
->
-  <div>
-    <h2 className="title3">Find Me Online</h2>
-    <Divider color="blue" mt="sm" mb="lg" />
-  </div>
+        {/* LinkedIn + GitHub */}
+        <Card
+          radius="xl"
+          withBorder
+          className="overflow-hidden p-5 shadow-sm sm:p-6 lg:p-8"
+        >
+          <div>
+            <h2 className="title3">Find Me Online</h2>
+            <Divider color="blue" mt="sm" mb="lg" />
+          </div>
 
-  <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2">
-    {/* LinkedIn */}
-{/* LinkedIn */}
-<div className="flex h-full w-full flex-col rounded-xl border border-slate-200 p-6 dark:border-slate-700">
-  <div>
-    <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-      LinkedIn
-    </h3>
+          <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2">
+            {/* LinkedIn */}
+            {/* LinkedIn */}
+            <div className="flex h-full w-full flex-col rounded-xl border border-slate-200 p-6 dark:border-slate-700">
+              <div>
+                <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+                  LinkedIn
+                </h3>
 
-    <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-400">
-      Follow my professional journey, connect with me, and stay updated on my
-      latest projects and career milestones.
-    </p>
-  </div>
+                <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-400">
+                  Follow my professional journey, connect with me, and stay updated on my
+                  latest projects and career milestones.
+                </p>
+              </div>
 
-  <div className="mt-8 flex min-h-[120px] w-full items-center justify-center">
-    <LinkedInBadge vanity="abdallahshee" />
-  </div>
-</div>
+              <div className="mt-8 flex min-h-[120px] w-full items-center justify-center">
+                <LinkedInBadge vanity="abdallahshee" />
+              </div>
+            </div>
 
-    {/* GitHub */}
-    <div className="flex h-full w-full flex-col rounded-xl border border-slate-200 p-6 dark:border-slate-700">
-      <div className="mb-6">
-        <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
-          GitHub
-        </h3>
+            {/* GitHub */}
+            <div className="flex h-full w-full flex-col rounded-xl border border-slate-200 p-6 dark:border-slate-700">
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+                  GitHub
+                </h3>
 
-        <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-400">
-          Browse my repositories, explore open-source contributions, and see
-          the technologies I enjoy working with.
-        </p>
-      </div>
+                <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-400">
+                  Browse my repositories, explore open-source contributions, and see
+                  the technologies I enjoy working with.
+                </p>
+              </div>
 
-      <div className="flex-1">
-        <GitHubCard username="abdallahshee" />
-      </div>
-    </div>
-  </div>
-</Card>
+              <div className="flex-1">
+                <GitHubCard username="abdallahshee" />
+              </div>
+            </div>
+          </div>
+        </Card>
 
         {/* CTA Section */}
         <Card
