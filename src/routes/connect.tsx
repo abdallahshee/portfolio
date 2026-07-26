@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react"
 import { createFileRoute } from "@tanstack/react-router"
-import { Anchor, Button, Card, Divider, List, ThemeIcon } from "@mantine/core"
-import { CheckCircle, Github, Linkedin, Mail, Phone } from "lucide-react"
+import { Anchor, Avatar, Button, Card, Divider, List, ThemeIcon, useMantineColorScheme } from "@mantine/core"
+import { BookMarked, CheckCircle, Github, Linkedin, Mail, Phone, Users } from "lucide-react"
 
 export const Route = createFileRoute("/connect")({
   component: ContactPage,
@@ -36,19 +37,148 @@ const CONTACT_LINKS = [
     href: "https://wa.me/254796515302",
     color: "green",
   },
-  {
-    icon: <Github size={20} />,
-    label: "github.com/abdallahshee",
-    href: "https://github.com/abdallahshee",
-    color: "dark",
-  },
-  {
-    icon: <Linkedin size={20} />,
-    label: "linkedin.com/in/abdallahshee",
-    href: "https://linkedin.com/in/abdallahshee",
-    color: "blue",
-  },
 ]
+
+/**
+ * Renders LinkedIn's official "Profile Badge" widget.
+ * The badge script must be injected client-side (it can't sit as a
+ * static <script> tag in JSX), and LinkedIn only scans the DOM for
+ * `.LI-profile-badge` elements once, on script load — so if this
+ * component ever mounts after the script has already loaded once
+ * elsewhere on the site, we manually trigger IN.parse() to re-scan.
+ */
+function LinkedInBadge({ vanity = "abdallahshee" }: { vanity?: string }) {
+  useEffect(() => {
+    const existing = document.getElementById("linkedin-badge-script")
+
+    if (existing) {
+      const w = window as typeof window & { IN?: { parse?: () => void } }
+      w.IN?.parse?.()
+      return
+    }
+    const script = document.createElement("script")
+    script.id = "linkedin-badge-script"
+    script.src = "https://platform.linkedin.com/badges/js/profile.js"
+    script.async = true
+    script.defer = true
+    document.body.appendChild(script)
+  }, [])
+
+
+  return (
+<div
+  className="LI-profile-badge"
+  data-version="v1"
+  data-size="large"
+  data-locale="en_US"
+  data-type="HORIZONTAL"
+  data-theme="light"
+  data-vanity={vanity}
+/>
+  )
+}
+
+type GitHubProfile = {
+  login: string
+  name: string | null
+  bio: string | null
+  avatar_url: string
+  html_url: string
+  public_repos: number
+  followers: number
+}
+
+/**
+ * GitHub has no official embeddable badge widget (unlike LinkedIn), so this
+ * fetches the public profile via GitHub's REST API and renders it as a
+ * native card matching the rest of the site's design system — including
+ * proper dark mode, which an embedded iframe/image badge can't offer.
+ */
+function GitHubCard({ username = "abdallahshee" }: { username?: string }) {
+  const [profile, setProfile] = useState<GitHubProfile | null>(null)
+  const [status, setStatus] = useState<"loading" | "ready" | "error">("loading")
+
+  useEffect(() => {
+    let cancelled = false
+
+    fetch(`https://api.github.com/users/${username}`)
+      .then((res) => {
+        if (!res.ok) throw new Error("GitHub API request failed")
+        return res.json()
+      })
+      .then((data: GitHubProfile) => {
+        if (!cancelled) {
+          setProfile(data)
+          setStatus("ready")
+        }
+      })
+      .catch(() => {
+        if (!cancelled) setStatus("error")
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [username])
+
+  if (status === "loading") {
+    return (
+      <div className="flex items-center gap-3 rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+        <div className="h-14 w-14 animate-pulse rounded-full bg-slate-200 dark:bg-slate-700" />
+        <div className="flex flex-col gap-2">
+          <div className="h-3 w-28 animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
+          <div className="h-3 w-40 animate-pulse rounded bg-slate-200 dark:bg-slate-700" />
+        </div>
+      </div>
+    )
+  }
+
+  if (status === "error" || !profile) {
+    return (
+      <Anchor href={`https://github.com/${username}`} target="_blank" underline="never">
+        <div className="flex items-center gap-3 rounded-xl border border-slate-200 p-4 transition-colors hover:border-blue-300 dark:border-slate-700">
+          <ThemeIcon variant="light" color="dark" radius="md" size={44}>
+            <Github size={22} />
+          </ThemeIcon>
+          <span className="text-sm font-medium text-slate-700 dark:text-slate-200">
+            github.com/{username}
+          </span>
+        </div>
+      </Anchor>
+    )
+  }
+
+  return (
+    <Anchor href={profile.html_url} target="_blank" underline="never" className="block">
+      <div className="flex items-center gap-4 rounded-xl border border-slate-200 p-4 transition-all duration-200 hover:border-blue-300 hover:bg-slate-50 hover:shadow-sm dark:border-slate-700 dark:hover:bg-slate-800">
+        <Avatar src={profile.avatar_url} alt={profile.login} size={56} radius="xl" />
+
+        <div className="flex flex-col gap-1">
+          <span className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+            {profile.name ?? profile.login}
+          </span>
+
+          {profile.bio && (
+            <span className="text-xs text-slate-500 dark:text-slate-400">
+              {profile.bio}
+            </span>
+          )}
+
+          <div className="mt-1 flex items-center gap-4 text-xs text-slate-600 dark:text-slate-400">
+            <span className="flex items-center gap-1">
+              <BookMarked size={13} />
+              {profile.public_repos} repos
+            </span>
+            <span className="flex items-center gap-1">
+              <Users size={13} />
+              {profile.followers} followers
+            </span>
+          </div>
+        </div>
+      </div>
+    </Anchor>
+  )
+}
 
 function ContactPage() {
   return (
@@ -80,7 +210,7 @@ function ContactPage() {
                 <Divider color="blue" mt="sm" />
               </div>
 
-              <div className="grid gap-3 sm:grid-cols-2">
+              <div className="grid gap-2 sm:grid-cols-1">
                 {CONTACT_LINKS.map(({ icon, label, href, color }) => (
                   <Anchor
                     key={href}
@@ -145,6 +275,57 @@ function ContactPage() {
             </div>
           </div>
         </Card>
+
+{/* LinkedIn + GitHub */}
+<Card
+  radius="xl"
+  withBorder
+  className="overflow-hidden p-5 shadow-sm sm:p-6 lg:p-8"
+>
+  <div>
+    <h2 className="title3">Find Me Online</h2>
+    <Divider color="blue" mt="sm" mb="lg" />
+  </div>
+
+  <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2">
+    {/* LinkedIn */}
+{/* LinkedIn */}
+<div className="flex h-full w-full flex-col rounded-xl border border-slate-200 p-6 dark:border-slate-700">
+  <div>
+    <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+      LinkedIn
+    </h3>
+
+    <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-400">
+      Follow my professional journey, connect with me, and stay updated on my
+      latest projects and career milestones.
+    </p>
+  </div>
+
+  <div className="mt-8 flex min-h-[120px] w-full items-center justify-center">
+    <LinkedInBadge vanity="abdallahshee" />
+  </div>
+</div>
+
+    {/* GitHub */}
+    <div className="flex h-full w-full flex-col rounded-xl border border-slate-200 p-6 dark:border-slate-700">
+      <div className="mb-6">
+        <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
+          GitHub
+        </h3>
+
+        <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-400">
+          Browse my repositories, explore open-source contributions, and see
+          the technologies I enjoy working with.
+        </p>
+      </div>
+
+      <div className="flex-1">
+        <GitHubCard username="abdallahshee" />
+      </div>
+    </div>
+  </div>
+</Card>
 
         {/* CTA Section */}
         <Card
