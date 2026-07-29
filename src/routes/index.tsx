@@ -4,7 +4,7 @@ import { getTopFeaturedProjectsQueryOptions } from '@/db/queries/project.queries
 import { Button, Card, Paper, ThemeIcon, SimpleGrid } from '@mantine/core'
 import { createFileRoute, Link } from '@tanstack/react-router'
 import {
-  ArrowRight, FolderKanban, Database, Layout, Server, Gauge, Mail, ShieldCheck, GitBranch,
+  ArrowRight, FolderKanban, Layout, Server, Target, Mail, Layers,
 } from 'lucide-react'
 import { Suspense, useEffect, useState } from 'react'
 
@@ -104,12 +104,30 @@ function ProjectsSkeleton() {
 }
 
 const STRENGTHS = [
-  { icon: <Layout size={20} />, title: 'Frontend Development', desc: 'Clean, responsive interfaces with React, Mantine UI, and Tailwind CSS — built for performance and accessibility.', color: 'indigo' },
-  { icon: <Server size={20} />, title: 'Backend & APIs', desc: 'Scalable server functions and type-safe APIs focused on clean architecture and reliability.', color: 'blue' },
-  { icon: <Database size={20} />, title: 'Database Design', desc: 'Efficient relational schemas with PostgreSQL and Drizzle ORM, optimized queries and solid data modeling.', color: 'teal' },
-  { icon: <ShieldCheck size={20} />, title: 'Testing & Reliability', desc: 'Writing tests that catch regressions early, keeping releases stable and shipping with real confidence.', color: 'pink' },
-  { icon: <Gauge size={20} />, title: 'Performance & Scale', desc: 'Production-ready systems optimized through efficient data fetching, caching, and scalable patterns.', color: 'orange' },
-  { icon: <GitBranch size={20} />, title: 'Collaboration & Workflow', desc: 'Comfortable working within existing codebases, git branching workflows, and team code review processes.', color: 'grape' },
+  {
+    icon: <Server size={20} />,
+    title: 'Backend Strengths',
+    desc: 'Builds high-performance, self-documenting APIs on whichever stack the problem calls for — FastAPI in Python with Pydantic validation, dependency injection, and async endpoints, or Express in Node.js with clean middleware pipelines, structured error handling, and thoroughly tested, well-documented REST routes.',
+    color: 'blue',
+  },
+  {
+    icon: <Layout size={20} />,
+    title: 'Frontend Strengths',
+    desc: 'Ships fast, reliable UIs with React, TypeScript, TanStack Router, and TanStack Query — with Zod catching bad input before it becomes a bug, and Tailwind CSS with DaisyUI turning designs into polished interfaces quickly. A frontend that is both fast to build and resilient to the runtime errors that slip past looser type systems.',
+    color: 'indigo',
+  },
+  {
+    icon: <Target size={20} />,
+    title: 'Business-Driven System Design',
+    desc: 'Translates business goals into working software by modeling data and logic around real workflows, not assumptions — the foundation behind a regulatory-compliant invoicing platform and multi-tenant SaaS systems built to meet their objectives, keeping every solution aligned with what stakeholders actually need day to day.',
+    color: 'teal',
+  },
+  {
+    icon: <Layers size={20} />,
+    title: 'Full-Stack Development',
+    desc: "Builds end-to-end, production-grade applications with Next.js — App Router, SSR/SSG/ISR, and Server Actions — or with TanStack Start's file-based routing and type-safe server functions, both paired with well-modeled PostgreSQL schemas and clean, maintainable data-access layers throughout the entire stack.",
+    color: 'orange',
+  },
 ]
 
 const ROLE_WORDS = [
@@ -205,15 +223,15 @@ function App() {
           <p className="mt-2 text-sm text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
             The technical areas where I consistently deliver the most impact and value — not
             a checklist of buzzwords, but the parts of a project I actually get hands-on with
-            from day one: structuring the frontend, designing the data layer, and making sure
-            what ships holds up once real users start relying on it.
+            from day one: structuring the frontend, designing the API layer, and making sure
+            what ships actually meets the business objectives behind it.
           </p>
         </div>
 
-        <SimpleGrid cols={{ base: 1, sm: 2, lg: 3 }} spacing="md">
+        <SimpleGrid cols={{ base: 1, sm: 2, xl: 4 }} spacing="md">
           {STRENGTHS.map((strength) => (
             <Card key={strength.title} withBorder p="lg" radius="lg" className="shadow-sm">
-              <div className="flex items-start gap-3">
+              <div className="flex h-full flex-col gap-3">
                 <ThemeIcon variant="light" color={strength.color} radius="md" size="lg">
                   {strength.icon}
                 </ThemeIcon>
