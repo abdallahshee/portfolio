@@ -149,34 +149,38 @@ function GitHubCard({ username = "abdallahshee" }: { username?: string }) {
   }
 
   return (
-    <Anchor href={profile.html_url} target="_blank" underline="never" className="block">
-      <div className="flex items-center gap-4 rounded-xl border border-slate-200 p-4 transition-all duration-200 hover:border-blue-300 hover:bg-slate-50 hover:shadow-sm dark:border-slate-700 dark:hover:bg-slate-800">
-        <Avatar src={profile.avatar_url} alt={profile.login} size={56} radius="xl" />
+    <div className="flex items-center gap-4 rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+      <Avatar
+        src={profile.avatar_url}
+        alt={profile.login}
+        size={56}
+        radius="xl"
+      />
 
-        <div className="flex flex-col gap-1">
-          <span className="text-sm font-semibold text-slate-900 dark:text-slate-50">
-            {profile.name ?? profile.login}
+      <div className="flex flex-col gap-1">
+        <span className="text-sm font-semibold text-slate-900 dark:text-slate-50">
+          {profile.name ?? profile.login}
+        </span>
+
+        {profile.bio && (
+          <span className="text-xs text-slate-500 dark:text-slate-400">
+            {profile.bio}
+          </span>
+        )}
+
+        <div className="mt-1 flex items-center gap-4 text-xs text-slate-600 dark:text-slate-400">
+          <span className="flex items-center gap-1">
+            <BookMarked size={13} />
+            {profile.public_repos} repos
           </span>
 
-          {profile.bio && (
-            <span className="text-xs text-slate-500 dark:text-slate-400">
-              {profile.bio}
-            </span>
-          )}
-
-          <div className="mt-1 flex items-center gap-4 text-xs text-slate-600 dark:text-slate-400">
-            <span className="flex items-center gap-1">
-              <BookMarked size={13} />
-              {profile.public_repos} repos
-            </span>
-            <span className="flex items-center gap-1">
-              <Users size={13} />
-              {profile.followers} followers
-            </span>
-          </div>
+          <span className="flex items-center gap-1">
+            <Users size={13} />
+            {profile.followers} followers
+          </span>
         </div>
       </div>
-    </Anchor>
+    </div>
   )
 }
 
@@ -290,8 +294,8 @@ function ContactPage() {
           <div className="grid grid-cols-1 items-stretch gap-6 lg:grid-cols-2">
             {/* LinkedIn */}
             {/* LinkedIn */}
-            <div className="flex h-full w-full flex-col rounded-xl border border-slate-200 p-6 dark:border-slate-700">
-              <div>
+            <div className="flex h-full flex-col rounded-xl border border-slate-200 p-6 dark:border-slate-700">
+              <div className="flex-1">
                 <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
                   LinkedIn
                 </h3>
@@ -300,29 +304,61 @@ function ContactPage() {
                   Follow my professional journey, connect with me, and stay updated on my
                   latest projects and career milestones.
                 </p>
+
+                <div className="mt-8 flex justify-center">
+                  <LinkedInBadge vanity="abdallahshee" />
+                </div>
               </div>
 
-              <div className="mt-8 flex min-h-[120px] w-full items-center justify-center">
-                <LinkedInBadge vanity="abdallahshee" />
-              </div>
+              <Anchor
+                href="https://www.linkedin.com/in/abdallahshee"
+                target="_blank"
+                underline="never"
+                className="mt-6"
+              >
+                <Button
+                  fullWidth
+                  leftSection={<Linkedin size={18} />}
+                  color="blue"
+                  radius="md"
+                >
+                  View LinkedIn Profile
+                </Button>
+              </Anchor>
             </div>
 
             {/* GitHub */}
-            <div className="flex h-full w-full flex-col rounded-xl border border-slate-200 p-6 dark:border-slate-700">
-              <div className="mb-6">
+            <div className="flex h-full flex-col rounded-xl border border-slate-200 p-6 dark:border-slate-700">
+              <div className="flex-1">
                 <h3 className="text-lg font-semibold text-slate-800 dark:text-slate-100">
                   GitHub
                 </h3>
 
                 <p className="mt-2 text-sm leading-7 text-slate-600 dark:text-slate-400">
-                  Browse my repositories, explore open-source contributions, and see
-                  the technologies I enjoy working with.
+                  Browse my repositories, explore open-source contributions, and see the
+                  technologies I enjoy working with.
                 </p>
+
+                <div className="mt-6">
+                  <GitHubCard username="abdallahshee" />
+                </div>
               </div>
 
-              <div className="flex-1">
-                <GitHubCard username="abdallahshee" />
-              </div>
+              <Anchor
+                href="https://github.com/abdallahshee"
+                target="_blank"
+                underline="never"
+                className="mt-6"
+              >
+                <Button
+                  fullWidth
+                  leftSection={<Github size={18} />}
+                  color="dark"
+                  radius="md"
+                >
+                  View GitHub Profile
+                </Button>
+              </Anchor>
             </div>
           </div>
         </Card>
