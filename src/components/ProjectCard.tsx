@@ -1,7 +1,7 @@
-import type { Project } from '@/db/validations/project.types'
+import type { Project } from '@/server/project.functions'
 import { Badge, Button, Card, Image, ThemeIcon } from '@mantine/core'
-import { Link } from '@tanstack/react-router'
-import { CalendarDays, ExternalLink, FolderKanban, Github, RefreshCw } from 'lucide-react'
+import Link from 'next/link'
+import { ExternalLink, FolderKanban, Github, RefreshCw } from 'lucide-react'
 import moment from 'moment'
 
 interface ProjectCardProps {
@@ -50,8 +50,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
       </div>
 
       <Link
-        to="/projects/$slug"
-        params={{ slug: project?.slug! }}
+        href={`/projects/${project?.slug}`}
         className="relative z-10 flex min-h-[260px] flex-1 flex-col justify-end p-4 no-underline sm:min-h-[300px]"
       >
         <div className="flex min-w-0 flex-col gap-3">

@@ -1,6 +1,6 @@
 # Portfolio Website
 
-A modern personal portfolio website built with TanStack Start and Supabase to showcase projects, technical skills, work experience, and contact information in a clean and responsive interface.
+A modern personal portfolio website built with Next.js and Supabase to showcase projects, technical skills, work experience, and contact information in a clean and responsive interface.
 
 ---
 
@@ -34,7 +34,7 @@ The site focuses on:
 
 **Frontend**
 
-* TanStack Start
+* Next.js (App Router)
 * React
 * TypeScript
 * Tailwind CSS
@@ -61,18 +61,13 @@ portfolio-website/
 │
 ├── public/                     # Static assets such as images, icons, and downloadable files
 ├── src/
+│   ├── app/                    # Next.js App Router pages, layouts, and global stylesheet
 │   ├── components/             # Reusable UI components used across the application
-│   ├── routes/                 # TanStack Start route-based pages and layouts
-│   ├── styles/                 # Global styling utilities and shared styles
 │   ├── css/                    # Component-specific CSS modules or custom CSS files
-│   ├── db/                     # Database schemas, queries, types, and database helpers
-│   ├── libs/                   # Supabase browser client and server client setup
-│   ├── server/                 # Server-side functions, RPC handlers, and backend logic
-│   ├── sql/                    # SQL scripts, triggers, views, policies, and migrations
-│   ├── utils/                  # Helper functions and reusable utilities
-│   ├── route.tsx               # Main TanStack Router configuration
-│   ├── routerTree.gen.ts       # Auto-generated TanStack Router tree configuration
-│   └── styles.css              # Global stylesheet entry point
+│   ├── db/                     # Database schemas, types, and database helpers
+│   ├── lib/                    # Supabase browser client and server client setup
+│   ├── server/                 # Server-side data functions and Server Actions
+│   └── sql/                    # SQL scripts, triggers, views, policies, and migrations
 │
 ├── components.json             # shadcn/ui or component configuration file
 ├── drizzle.config.ts           # Drizzle ORM configuration
@@ -80,7 +75,7 @@ portfolio-website/
 ├── package.json                # Project metadata and scripts
 ├── README.md                   # Project documentation
 ├── tsconfig.json               # TypeScript configuration
-├── vite.config.ts              # Vite build and development configuration
+├── next.config.ts              # Next.js configuration
 
 ---
 
@@ -136,13 +131,13 @@ Step 3: Create an Environment File
 Create a .env.local file in the root of your project.
 
 Example:
-# Supabase Project URL
-VITE_SUPABASE_URL=https://your-project-id.supabase.co
+# Supabase Project URL (public, browser-accessible)
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-id.supabase.co
 
-# Supabase Public Anonymous Key
-VITE_SUPABASE_PUBLISHABLE_KEY=your_public_anon_key
+# Supabase Public Anonymous Key (public, browser-accessible)
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=your_public_anon_key
 
-# Optional Server Variables
+# Server-only variables
 SUPABASE_URL=https://your-project-id.supabase.co
 SUPABASE_PUBLISHABLE_KEY=your_public_anon_key
 ---

@@ -1,10 +1,10 @@
+'use client'
+
 import { useEffect } from "react"
-import { useRouterState } from "@tanstack/react-router"
+import { usePathname } from "next/navigation"
 
 export function ScrollToTopOnRouteChange() {
-  const pathname = useRouterState({
-    select: (state) => state.location.pathname,
-  })
+  const pathname = usePathname()
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" })

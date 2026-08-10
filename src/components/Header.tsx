@@ -1,3 +1,5 @@
+'use client'
+
 import { useState, useEffect } from "react"
 import {
   Burger,
@@ -8,7 +10,8 @@ import {
   Modal,
   Button,
 } from "@mantine/core"
-import { Link, linkOptions } from "@tanstack/react-router"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
 import { Sun, Moon, Download } from "lucide-react"
 import Brand from "./Brand"
 
@@ -40,15 +43,15 @@ function applyThemeMode(mode: ThemeMode) {
   root.setAttribute("data-theme", mode)
 }
 
-const links = linkOptions([
-  { label: "Home", to: "/" },
-  { label: "Skills", to: "/skills" },
-  { label: "Connect", to: "/connect" },
-  { label: "Projects", to: "/projects" },
-  // { label: "Skills", to: "/skills" },
-])
+const links = [
+  { label: "Home", href: "/" },
+  { label: "Skills", href: "/skills" },
+  { label: "Connect", href: "/connect" },
+  { label: "Projects", href: "/projects" },
+]
 
 export default function Header() {
+  const pathname = usePathname()
   const [opened, setOpened] = useState(false)
   const [themeMode, setThemeMode] = useState<ThemeMode>("light")
   const [resumeModalOpen, setResumeModalOpen] = useState(false)
@@ -80,7 +83,7 @@ export default function Header() {
 
   const BrandLogo = (
     <div className="flex flex-shrink-0 items-center gap-2">
-      <Link to="/" className="flex items-center gap-2.5 no-underline">
+      <Link href="/" className="flex items-center gap-2.5 no-underline">
         <Image
           src="/images/profile.jpg"
           alt="Abdallah Shee"
@@ -161,9 +164,12 @@ export default function Header() {
               {links.map((link) => (
                 <Link
                   key={link.label}
-                  to={link.to}
-                  className="flex items-center gap-1.5 whitespace-nowrap font-normal text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-300 dark:hover:text-indigo-400"
-                  activeProps={{ className: "text-blue-600 dark:text-blue-400" }}
+                  href={link.href}
+                  className={`flex items-center gap-1.5 whitespace-nowrap font-normal transition-colors hover:text-indigo-500 dark:hover:text-indigo-400 ${
+                    pathname === link.href
+                      ? "text-blue-600 dark:text-blue-400"
+                      : "text-slate-600 dark:text-slate-300"
+                  }`}
                 >
                   {link.label}
                 </Link>
@@ -200,10 +206,13 @@ export default function Header() {
             {links.map((link) => (
               <Link
                 key={link.label}
-                to={link.to}
-                className="flex items-center gap-3 font-normal text-gray-800 transition hover:text-indigo-500 dark:text-gray-100"
+                href={link.href}
+                className={`flex items-center gap-3 font-normal transition hover:text-indigo-500 ${
+                  pathname === link.href
+                    ? "text-indigo-500 dark:text-indigo-400"
+                    : "text-gray-800 dark:text-gray-100"
+                }`}
                 onClick={() => setOpened(false)}
-                activeProps={{ className: "text-indigo-500 dark:text-indigo-400" }}
               >
                 {link.label}
               </Link>

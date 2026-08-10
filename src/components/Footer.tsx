@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Group,
   Stack,
@@ -16,15 +18,15 @@ import {
   Folder,
   BadgeCheck,
 } from "lucide-react"
-import { Link, linkOptions, useRouter } from "@tanstack/react-router"
+import Link from "next/link"
+import { useRouter } from "next/navigation"
 import Brand from "./Brand"
 
-const links = linkOptions([
-  { label: "Home", to: "/", icon: Home },
-  { label: "Skills", to: "/skills", icon: BadgeCheck },
-  { label: "Projects", to: "/projects", icon: Folder },
-  // { label: "", to: "/skills", icon: Wrench },
-])
+const links = [
+  { label: "Home", href: "/", icon: Home },
+  { label: "Skills", href: "/skills", icon: BadgeCheck },
+  { label: "Projects", href: "/projects", icon: Folder },
+]
 
 export default function Footer() {
   const router = useRouter()
@@ -38,7 +40,7 @@ export default function Footer() {
 
           {/* ── Identity ── */}
           <Stack gap="md">
-            <Link to="/" className="inline-block w-fit">
+            <Link href="/" className="inline-block w-fit">
               <Image
                 src="/images/profile.jpg"
                 alt="Abdallah Shee"
@@ -66,9 +68,9 @@ export default function Footer() {
               const Icon = link.icon
               return (
                 <Anchor
-                  key={link.to}
+                  key={link.href}
                   component={Link}
-                  to={link.to}
+                  href={link.href}
                   style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
                   className="text-sm text-slate-600 transition-colors hover:text-indigo-500 dark:text-slate-400 dark:hover:text-indigo-400"
                 >
@@ -123,7 +125,7 @@ export default function Footer() {
                 <Linkedin size={16} />
               </ActionIcon>
               <ActionIcon
-                onClick={() => router.navigate({ to: "/connect" })}
+                onClick={() => router.push("/connect")}
                 variant="light"
                 color="indigo"
                 radius="md"
@@ -144,7 +146,7 @@ export default function Footer() {
               Open to software developer opportunities.
             </p><Anchor
               component={Link}
-              to="/connect"
+              href="/connect"
               c="orange.5"
               className="text-sm font-medium transition-colors hover:text-orange-700"
             >

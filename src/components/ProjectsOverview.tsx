@@ -1,8 +1,7 @@
-import { Badge, Button, Card, Divider, Group } from '@mantine/core'
-import { Link } from '@tanstack/react-router'
+import { Badge, Button, Card, Group } from '@mantine/core'
+import Link from 'next/link'
 import {
   Code2,
-  FolderKanban,
   Github,
   Kanban,
   Sparkles,
@@ -115,7 +114,7 @@ export function ProjectsOverviewPanel({ stats }: ProjectsOverviewPanelProps) {
           >
             View GitHub
           </Button>
-          <Link to="/skills">
+          <Link href="/skills">
             <Button variant="filled" radius="md" size="sm" leftSection={<Sparkles size={15} />}>
               My Skills
             </Button>

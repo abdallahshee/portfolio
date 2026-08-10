@@ -1,9 +1,7 @@
-import { useRouter } from "@tanstack/react-router"
+import Link from 'next/link'
 import { Badge, Button, Image, Paper, SimpleGrid, ThemeIcon } from '@mantine/core'
 import { BookOpen, BriefcaseBusiness, ExternalLink, FolderKanban, Github, Star } from 'lucide-react'
-import { Link } from "@tanstack/react-router"
-import { useSuspenseQuery } from "@tanstack/react-query"
-import { getTopFeaturedProjectsQueryOptions } from "@/db/queries/project.queries"
+import { getTopFeaturedProjects } from '@/server/project.functions'
 
 function ProjectsPlaceholder() {
   return (
@@ -22,7 +20,7 @@ function ProjectsPlaceholder() {
           <p className="text-sm text-slate-400 dark:text-slate-500">
             Featured projects will be added here shortly
           </p>
-          <Link to="/skills">
+          <Link href="/skills">
             <Button size="sm" variant="light" leftSection={<BriefcaseBusiness size={16} />}>
               See My Skills & Approach
             </Button>
@@ -33,9 +31,8 @@ function ProjectsPlaceholder() {
   )
 }
 
-export const FeaturedProjectsSection = () => {
-  const { data: projects } = useSuspenseQuery(getTopFeaturedProjectsQueryOptions())
-  const router = useRouter()
+export async function FeaturedProjectsSection() {
+  const projects = await getTopFeaturedProjects()
 
   const isEmpty = !projects || projects.length === 0
 
@@ -56,11 +53,7 @@ export const FeaturedProjectsSection = () => {
           {projects.map((project) => (
             <div
               key={project.id}
-              onClick={() =>
-                project.slug &&
-                router.navigate({ to: '/projects/$slug', params: { slug: project.slug } })
-              }
-              className="group relative h-[220px] cursor-pointer overflow-hidden rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:h-[240px]"
+              className="group relative h-[220px] overflow-hidden rounded-2xl shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl sm:h-[240px]"
             >
               {project.imageUrl ? (
                 <Image
@@ -91,9 +84,17 @@ export const FeaturedProjectsSection = () => {
               </Badge>
 
               <div className="absolute inset-x-0 bottom-0 z-10 flex flex-col gap-3 p-4">
-                <h3 className="text-lg font-bold leading-tight text-white drop-shadow-sm">
-                  {project.title}
-                </h3>
+                {project.slug ? (
+                  <Link href={`/projects/${project.slug}`} className="no-underline">
+                    <h3 className="text-lg font-bold leading-tight text-white drop-shadow-sm">
+                      {project.title}
+                    </h3>
+                  </Link>
+                ) : (
+                  <h3 className="text-lg font-bold leading-tight text-white drop-shadow-sm">
+                    {project.title}
+                  </h3>
+                )}
 
                 <div className="flex flex-wrap gap-2">
                   {project.githubUrl && (
@@ -107,7 +108,6 @@ export const FeaturedProjectsSection = () => {
                       size="xs"
                       radius="xl"
                       leftSection={<Github size={13} />}
-                      onClick={(e) => e.stopPropagation()}
                     >
                       Source Code
                     </Button>
@@ -124,7 +124,6 @@ export const FeaturedProjectsSection = () => {
                       size="xs"
                       radius="xl"
                       leftSection={<ExternalLink size={13} />}
-                      onClick={(e) => e.stopPropagation()}
                     >
                       Live Site
                     </Button>

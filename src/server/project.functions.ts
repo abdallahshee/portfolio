@@ -1,291 +1,119 @@
-import { db } from "../db/index";
-import { desc, eq, ilike, or, sql } from "drizzle-orm";
-import { createServerFn } from "@tanstack/react-start";
-import { project } from "@/db/schema";
-import { CreateProjectSchema, UpdateProjectSchema } from "@/db/validations/project.types";
-import slugify from "slugify"
+import { data } from '../../data/data'
 
-export const createProject = createServerFn({ method: 'POST' })
-  .inputValidator(CreateProjectSchema)
-  .handler(async ({ data }) => {
-    try {
-      // console.log('SERVER FUNCTION HIT ',)
-      const slug = slugify(data.title, { lower: true, strict: true })
-      const [theSlug] = await db
-        .insert(project)
-        .values({ ...data, slug })
-        .returning({ slug: project.slug });
+export type Project = {
+  id: string
+  title: string | null
+  slug: string | null
+  description: string | null
+  imageUrl: string | null
+  githubUrl: string | null
+  liveUrl: string | null
+  isFeatured: boolean | null
+  technologies: string[]
+  roles: string[]
+  isContributor: boolean | null
+  createdAt: Date
+  updatedAt: Date
+}
 
-      return { success: true, slug: theSlug };
-    } catch (err) {
-      console.error('Error creating project:', err);
-      throw err
-    }
-  });
-
-
-export const getProjectBySlugName = createServerFn({ method: "GET" })
-  .inputValidator((data: { slug: string }) => data)
-  .handler(async ({ data }) => {
-    try {
-      const [theProject] = await db
-        .select({
-          id: project.id,
-          title: project.title,
-          slug: project.slug,
-          roles: project.roles,
-          // progress: project.progress,
-          githubUrl: project.githubUrl,
-          description: project.description,
-          isFeatured: project.isFeatured,
-          imageUrl: project.imageUrl,
-          technologies: project.technologies,
-          liveUrl: project.liveUrl,
-          createdAt: project.createdAt,
-          isContributor: project.isContributor,
-          updatedAt: project.updatedAt
-        })
-        .from(project)
-        .where(eq(project.slug, data.slug));
-
-      if (!theProject) return null;
-
-      return theProject;
-    } catch (err) {
-      console.error(err);
-      throw err
-    }
-  });
-
-export const getAllProjects = createServerFn({ method: "GET" }).handler(
-  async () => {
-    try {
-      const allProjects = await db
-        .select({
-          id: project.id,
-          title: project.title,
-          slug: project.slug,
-          roles: project.roles,
-          githubUrl: project.githubUrl,
-          description: project.description,
-          isFeatured: project.isFeatured,
-          imageUrl: project.imageUrl,
-          technologies: project.technologies,
-          liveUrl: project.liveUrl,
-          createdAt: project.createdAt,
-          isContributor: project.isContributor,
-          updatedAt: project.updatedAt,
-        })
-        .from(project)
-        .orderBy(desc(project.createdAt))
-
-      return { projects: allProjects, total: allProjects.length }
-    } catch (err) {
-      console.error(err)
-      throw err
-    }
+function toProject(raw: (typeof data)[number]): Project {
+  return {
+    id: raw.id,
+    title: raw.title,
+    slug: raw.slug,
+    description: raw.description,
+    imageUrl: raw.image_url,
+    githubUrl: raw.github_url,
+    liveUrl: raw.live_url,
+    isFeatured: raw.is_featured,
+    technologies: raw.technologies ?? [],
+    roles: raw.roles ?? [],
+    isContributor: raw.is_contributor,
+    createdAt: new Date(raw.created_at),
+    updatedAt: new Date(raw.updated_at),
   }
-)
+}
 
+function allProjectsSortedByCreatedAt(): Project[] {
+  return data
+    .map(toProject)
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+}
 
+export async function getProjectBySlugName(slug: string) {
+  const project = allProjectsSortedByCreatedAt().find((p) => p.slug === slug)
+  return project ?? null
+}
 
-export const getProjectById = createServerFn({ method: "GET" })
-  .inputValidator((data: { projectId: string }) => data)
-  .handler(async ({ data }) => {
-    try {
-      const [theProject] = await db
-        .select({
-          id: project.id,
-          title: project.title,
-          slug: project.slug,
-          technologies: project.technologies,
-          // progress: project.progress,
-          isFeatured: project.isFeatured,
-          githubUrl: project.githubUrl,
-          description: project.description,
-          imageUrl: project.imageUrl,
-          liveUrl: project.liveUrl,
-          createdAt: project.createdAt,
-          updatedAt: project.updatedAt,
-          isContributor: project.isContributor
-        })
-        .from(project)
-        .where(eq(project.id, data.projectId));
+export async function getAllProjects() {
+  const projects = allProjectsSortedByCreatedAt()
+  return { projects, total: projects.length }
+}
 
-      if (!theProject) return null;
+export async function getProjectById(projectId: string) {
+  const project = allProjectsSortedByCreatedAt().find((p) => p.id === projectId)
+  return project ?? null
+}
 
-      return theProject;
-    } catch (err) {
-      console.error(err);
-      throw err
-    }
-  });
+export async function getPaginatedProjects(page: number, pageSize: number) {
+  const all = allProjectsSortedByCreatedAt()
+  const total = all.length
+  const offset = (page - 1) * pageSize
 
-export const getPaginatedProjects = createServerFn({ method: "GET" })
-  .inputValidator((data: { page: number; pageSize: number }) => data)
-  .handler(async ({ data }) => {
-    const { page, pageSize } = data  // ← move destructure outside try/catch
+  return {
+    projects: all.slice(offset, offset + pageSize),
+    total,
+    page,
+    pageSize,
+    totalPages: Math.ceil(total / pageSize),
+    hasNextPage: page < Math.ceil(total / pageSize),
+    hasPrevPage: page > 1,
+  }
+}
 
-    try {
-      const offset = (page - 1) * pageSize
+export async function getTopFeaturedProjects() {
+  return allProjectsSortedByCreatedAt()
+    .filter((p) => p.isFeatured)
+    .slice(0, 3)
+}
 
-      const [projectRows, totalResult] = await Promise.all([
-        db
-          .select({
-            id: project.id,
-            title: project.title,
-            slug: project.slug,
-            description: project.description,
-            imageUrl: project.imageUrl,
-            githubUrl: project.githubUrl,
-            liveUrl: project.liveUrl,
-            technologies: project.technologies,
-            isFeatured: project.isFeatured, // 👈 was missing
-            // progress: project.progress,
-            roles: project.roles,
-            createdAt: project.createdAt,
-            isContributor: project.isContributor,
-            updatedAt: project.updatedAt
-          })
-          .from(project)
-          .orderBy(desc(project.createdAt))
-          .limit(pageSize)
-          .offset(offset),
+export async function searchProjects(query: string, page: number, pageSize: number) {
+  const all = allProjectsSortedByCreatedAt()
+  const search = query.trim().toLowerCase()
 
-        db
-          .select({ count: sql<number>`count(*)` })
-          .from(project),
-      ])
+  const filtered = search
+    ? all.filter(
+      (p) =>
+        p.title?.toLowerCase().includes(search) ||
+        p.description?.toLowerCase().includes(search)
+    )
+    : all
 
-      const total = Number(totalResult[0].count)
+  const total = filtered.length
+  const offset = (page - 1) * pageSize
 
-      return {
-        projects: projectRows,
-        total,
-        page,
-        pageSize,
-        totalPages: Math.ceil(total / pageSize),
-        hasNextPage: page < Math.ceil(total / pageSize),
-        hasPrevPage: page > 1,
-      }
-    } catch (err) {
-      console.error("Error fetching paginated projects:", err)
-      return {
-        projects: [],
-        total: 0,
-        page,
-        pageSize,
-        totalPages: 0,
-        hasNextPage: false,
-        hasPrevPage: false,
-      }
-    }
-  })
+  return {
+    projects: filtered.slice(offset, offset + pageSize),
+    total,
+    page,
+    pageSize,
+    totalPages: Math.ceil(total / pageSize),
+    hasNextPage: page < Math.ceil(total / pageSize),
+    hasPrevPage: page > 1,
+  }
+}
 
+export async function getProjectStats() {
+  const { projects } = await getAllProjects()
+  const technologies = new Set(
+    projects.flatMap((p) => p.technologies ?? [])
+  )
 
-export const updateProject = createServerFn({ method: "POST" })
-  // .middleware([AuthenticatedMiddleware])
-  .inputValidator(UpdateProjectSchema)
-  .handler(async ({ data }) => {
-    try {
-      const [updatedProject] = await db
-        .update(project)
-        .set({ ...data })
-        .where(eq(project.id, data.slug))
-        .returning();
-
-      if (!updatedProject) return null;
-      return updatedProject;
-    } catch (err) {
-      console.error(err);
-      throw err
-    }
-  });
-
-
-export const getTopFeaturedProjects = createServerFn({ method: "GET" })
-  .handler(async () => {
-    try {
-      const featuredProjects = await db
-        .select({
-          id: project.id,
-          slug: project.slug,
-          title: project.title,
-          liveUrl: project.liveUrl,
-          githubUrl: project.githubUrl,
-          imageUrl: project.imageUrl,
-          updatedAt: project.updatedAt,
-        })
-        .from(project)
-        .where(eq(project.isFeatured, true))
-        .orderBy(desc(project.createdAt))
-        .limit(3);
-
-      return featuredProjects;
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
-  });
-
-
-export const searchProjects = createServerFn({ method: "GET" })
-  .inputValidator((data: { query: string; page: number; pageSize: number }) => data)
-  .handler(async ({ data: { query, page, pageSize } }) => {
-    try {
-      const offset = (page - 1) * pageSize
-      const search = `%${query}%`
-
-      const whereClause = query.trim()
-        ? or(
-          ilike(project.title, search),
-          ilike(project.description, search),
-        )
-        : undefined
-
-      const [projectRows, totalResult] = await Promise.all([
-        db
-          .select({
-            id: project.id,
-            title: project.title,
-            slug: project.slug,
-            description: project.description,
-            imageUrl: project.imageUrl,
-            githubUrl: project.githubUrl,
-            liveUrl: project.liveUrl,
-            technologies: project.technologies,
-            roles: project.roles,
-            isFeatured: project.isFeatured, // 👈 was missing
-            // progress: project.progress,
-            createdAt: project.createdAt,
-            isContributor: project.isContributor,
-            updatedAt: project.updatedAt,
-          })
-          .from(project)
-          .where(whereClause)
-          .orderBy(desc(project.createdAt))
-          .limit(pageSize)
-          .offset(offset),
-
-        db
-          .select({ count: sql<number>`count(*)` })
-          .from(project)
-          .where(whereClause),
-      ])
-
-      const total = Number(totalResult[0].count)
-
-      return {
-        projects: projectRows,
-        total,
-        page,
-        pageSize,
-        totalPages: Math.ceil(total / pageSize),
-        hasNextPage: page < Math.ceil(total / pageSize),
-        hasPrevPage: page > 1,
-      }
-    } catch (err) {
-      console.error("Error searching projects:", err)
-      throw err
-    }
-  })
+  return {
+    total: projects.length,
+    featured: projects.filter((p) => p.isFeatured).length,
+    contributorCount: projects.filter((p) => p.isContributor).length,
+    technologiesCount: technologies.size,
+    topTechnologies: [...technologies].slice(0, 10),
+  }
+}

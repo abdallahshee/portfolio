@@ -21,7 +21,6 @@ function formatDate(date: Date) {
 }
 
 export function ArticleCard({
-  id,
   title,
   excerpt,
   coverImage,

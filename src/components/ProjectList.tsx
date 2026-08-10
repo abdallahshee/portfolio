@@ -1,5 +1,7 @@
+'use client'
+
 import { ProjectCard } from '@/components/ProjectCard'
-import type { Project } from '@/db/validations/project.types'
+import type { Project } from '@/server/project.functions'
 import { Card, Badge, TextInput, Pagination } from '@mantine/core'
 import { LayoutGrid, Search, Star, X } from 'lucide-react'
 import { useMemo, useState } from 'react'

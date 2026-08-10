@@ -1,6 +1,8 @@
+'use client'
+
 import { Button, Paper, ThemeIcon } from '@mantine/core'
 import { AlertTriangle, ArrowLeft, Home, RefreshCw } from 'lucide-react'
-import { useRouter } from '@tanstack/react-router'
+import { useRouter } from 'next/navigation'
 
 interface ErrorPageProps {
   error?: Error
@@ -92,7 +94,7 @@ export function ErrorPage({ error, reset }: ErrorPageProps) {
                 color="gray"
                 radius="md"
                 leftSection={<ArrowLeft size={16} />}
-                onClick={() => router.history.back()}
+                onClick={() => router.back()}
               >
                 Go Back
               </Button>
@@ -104,7 +106,7 @@ export function ErrorPage({ error, reset }: ErrorPageProps) {
                 color="indigo"
                 radius="md"
                 leftSection={<Home size={16} />}
-                onClick={() => router.navigate({ to: '/' })}
+                onClick={() => router.push('/')}
               >
                 Go Home
               </Button>

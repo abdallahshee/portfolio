@@ -1,3 +1,5 @@
+'use client'
+
 import { useWindowScroll } from '@mantine/hooks'
 import { ActionIcon, Affix, Transition } from '@mantine/core'
 import { ArrowUp } from 'lucide-react'
