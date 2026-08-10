@@ -11,7 +11,7 @@ export const data =
             "updated_at": "2026-03-20 09:50:16.850651",
             "github_url": null,
             "technologies": [
-     "Meteorjs",
+                "Meteorjs",
                 "javascript",
                 "mongodb",
                 "daraja api",
@@ -42,41 +42,25 @@ export const data =
             ],
             "is_contributor": true
         },
-        // {
-        //     "id": "lluoeah8q6Y83o22jOQzr9rf",
-        //     "title": "Personal Portfolio",
-        //     "slug": "personal-portfolio",
-        //     "description": "This is my personal portfolio — a web app showcasing the real projects I have shipped, the skills I have sharpened along the way, and how I think about software development. If you are a client or employer, dig into my work and get a genuine feel for what I build — SaaS platforms, booking systems, school management apps, and custom software that solves real problems. You can also reach me directly from the site via email, phone, WhatsApp, LinkedIn, or GitHub.",
-        //     "image_url": "/images/projects/personal-portfolio.png",
-        //     "live_url": "https://portfolio-git-main-abdallahshees-projects.vercel.app/",
-        //     "created_at": "2026-05-16 09:57:08.634873",
-        //     "updated_at": "2026-07-24 09:57:08.634873",
-        //     "github_url": "https://github.com/abdallahshee/portfolio",
-        //     "is_featured": true,
-        //     "technologies": [
-        //         "React",
-        //         "Mantine UI",
-        //         "Tanstack Start",
-        //         "Supabase",
-        //         "Tanstack Query",
-        //         "PostgresQL",
-        //         "Zod",
-        //         "Drizzle zod",
-        //         "Tailwind css",
-        //         "TypeScript"
-        //     ],
-        //     "roles": [
-        //         "Built this project from scratch, treating it as a real exercise in system design and planning rather than just another template site.",
-        //         "Designed the database models using a solid combination of Drizzle ORM and Drizzle-Zod alongside PostgreSQL.",
-        //         "Built the authentication system with Supabase Auth to keep the admin dashboard private and secure from public access.",
-        //         "Implemented full CRUD operations for every model in the project.",
-        //         "Followed DRY and SOLID principles throughout, aiming for an architecture that stays clean as the project grows.",
-        //         "Strongly typed every model end to end, cutting down on runtime errors and making the codebase easier to maintain.",
-        //         "Set up a Git-based CI/CD workflow through Vercel — every push to a feature branch triggers an automatic preview deployment, while merging to main automatically builds and ships to production, with no manual deploy steps involved.",
-        //         "Set up [analytics tool] to track [specific metrics — e.g. page views, visitor trends, Core Web Vitals], giving me visibility into how the site performs and how people actually use it."
-        //     ],
-        //     "is_contributor": false
-        // },
+        {
+            "id": "lluoeah8q6Y83o22jOQzr9rf",
+            "title": "Personal Portfolio",
+            "slug": "personal-portfolio",
+            "description": "This is my personal portfolio — a web app showcasing the real projects I have shipped, the skills I have sharpened along the way, and how I think about software development. If you are a client or employer, dig into my work and get a genuine feel for what I build — SaaS platforms, booking systems, school management apps, and custom software that solves real problems. You can also reach me directly from the site via email, phone, WhatsApp, LinkedIn, or GitHub. Every project listed here is real, shipped, and still live — not a tutorial clone or a throwaway demo.",
+            "image_url": "/images/projects/personal-portfolio.png",
+            "live_url": "https://portfolio-git-main-abdallahshees-projects.vercel.app/",
+            "created_at": "2026-05-16 09:57:08.634873",
+            "updated_at": "2026-07-24 09:57:08.634873",
+            "github_url": "https://github.com/abdallahshee/portfolio",
+            "technologies": [
+                "React",
+                "Mantine UI",
+                "NextJS",
+                "Tailwind css",
+                "TypeScript"
+            ],
+            "is_contributor": false
+        },
         {
             "id": "lnGjc8OIahnkCPhR1omNnWp1",
             "title": "eTIMS API",
@@ -103,12 +87,11 @@ export const data =
             "title": "School Management Platform",
             "slug": "school-management-platform",
             "description": "This school management platform digitizes core school operations. It replaces paper-based student records and attendance tracking with a centralized system, giving administrators real-time visibility into attendance. It streamlines fee collection, tracking, and reconciliation, cutting manual bookkeeping and the burden of chasing outstanding balances. It also creates a direct channel between parents and teachers, improving transparency around student progress and reducing reliance on phone calls and paper notices. It also gives school leadership clear reporting for faster term-end reviews.",
-             "image_url": "/images/projects/saifullah.png",
+            "image_url": "/images/projects/saifullah.png",
             "live_url": "https://saifullah-five.vercel.app",
             "created_at": "2026-08-10 00:00:00.000000",
             "updated_at": "2026-08-10 00:00:00.000000",
             "github_url": "https://github.com/abdallahshee/saifullah",
-       
             "technologies": [
                 "React",
                 "Nextjs",
@@ -118,7 +101,6 @@ export const data =
                 "Zod",
                 "Drizzle-zod",
                 "TypeScript"
-
             ],
             "is_contributor": false
         }
