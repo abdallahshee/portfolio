@@ -1,10 +1,10 @@
 'use client'
 
 import BrandHome from '@/components/BrandHome'
-import { Button, Card, Paper, ThemeIcon } from '@mantine/core'
+import { Button, Paper, ThemeIcon } from '@mantine/core'
 import Link from 'next/link'
 import {
-  ArrowRight, FolderKanban, Mail,
+  FolderKanban, Mail,
   CheckCircle,
   MonitorSmartphone,
   Server,
@@ -220,10 +220,7 @@ export default function HomeContent({ children }: { children: ReactNode }) {
 
       {/* PROJECTS */}
       <div id="projects" className="w-full scroll-mt-20">
-   
-     
         {children}
-      
       </div>
 
       {/* CTA */}

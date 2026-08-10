@@ -20,18 +20,18 @@ export function ProjectList({ projects }: ProjectListProps) {
 
   return (
     <div className="flex flex-col gap-6">
-    
-        <div className="flex flex-col items-center justify-center gap-6 text-center">
-          <div>
-            <h2 className="text-lg font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
-              Projects Overview
-            </h2>
-            <p className="mt-1 text-md text-slate-500 dark:text-slate-400">
-              Real-world problems tackled through code — full details for every project are listed below.
-            </p>
-          </div>
-        </div>
-    
+      <div>
+        <h2 className="title2">Projects Overview</h2>
+        <p className="mt-2 text-sm leading-7 text-slate-600 sm:mt-3 sm:text-base dark:text-slate-400">
+          Each project below represents a real-world problem I set out to solve, from initial concept through
+          to a working, deployed solution. Rather than building for the sake of building, I focus on identifying
+          genuine pain points — whether in workflow efficiency, data management, or user experience — and
+          designing systems that directly address them. Full details, including the technical approach and
+          reasoning behind key decisions, are listed below for every project.
+        </p>
+      </div>
+
+
 
       {paginated.length ? (
         <div className="flex flex-col gap-6">
