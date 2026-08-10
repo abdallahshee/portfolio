@@ -15,8 +15,7 @@ import {
   Mail,
   Phone,
   Home,
-  Folder,
-  BadgeCheck,
+  Folder
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -24,8 +23,7 @@ import Brand from "./Brand"
 
 const links = [
   { label: "Home", href: "/", icon: Home },
-  { label: "Skills", href: "/skills", icon: BadgeCheck },
-  { label: "Projects", href: "/projects", icon: Folder },
+  { label: "Projects", href: "/#projects", icon: Folder },
 ]
 
 export default function Footer() {

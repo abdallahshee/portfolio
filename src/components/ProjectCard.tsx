@@ -1,7 +1,15 @@
 import type { Project } from '@/server/project.functions'
-import { Badge, Button, Card, Image, ThemeIcon } from '@mantine/core'
-import Link from 'next/link'
-import { ExternalLink, FolderKanban, Github, RefreshCw } from 'lucide-react'
+import { Badge, Button, Card, Divider, Image } from '@mantine/core'
+import {
+  CalendarDays,
+  Code2,
+  ExternalLink,
+  FolderKanban,
+  Github,
+  RefreshCw,
+  User,
+  Users,
+} from 'lucide-react'
 import moment from 'moment'
 
 interface ProjectCardProps {
@@ -10,109 +18,133 @@ interface ProjectCardProps {
 
 export const ProjectCard = ({ project }: ProjectCardProps) => {
   const isRecent = moment().diff(moment(project.createdAt), 'days') <= 28
+  const technologies = project.technologies ?? []
 
   return (
     <Card
       shadow="sm"
-      padding={0}
+      padding="lg"
       radius="lg"
       withBorder
-      className="group relative flex h-full min-w-0 flex-col justify-between overflow-hidden transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl"
+      className="w-full"
     >
-      {project.imageUrl ? (
-        <Image
-          src={project.imageUrl}
-          alt={project.title ?? "Project image"}
-          fit="cover"
-          className="absolute inset-0 h-full w-full opacity-25 transition-transform duration-500 group-hover:scale-110"
-        />
-      ) : (
-        <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-slate-800 to-slate-950">
-          <ThemeIcon size={56} radius="md" variant="light" color="gray">
-            <FolderKanban size={28} />
-          </ThemeIcon>
+      <div className="flex flex-col gap-6 lg:flex-row">
+        {/* IMAGE */}
+        <div className="lg:w-80 lg:shrink-0">
+          {project.imageUrl ? (
+            <div className="flex h-55 w-full items-center justify-center overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800 lg:h-full">
+              <Image
+                src={project.imageUrl}
+                alt={project.title ?? 'Project image'}
+                fit="contain"
+                className="h-full w-full"
+              />
+            </div>
+          ) : (
+            <div className="flex h-55 w-full flex-col items-center justify-center gap-2 rounded-lg bg-slate-100 text-slate-400 dark:bg-slate-800 lg:h-full">
+              <FolderKanban size={32} />
+              <span className="text-sm">No image available</span>
+            </div>
+          )}
         </div>
-      )}
 
-      <div className="absolute inset-0 bg-linear-to-t from-black/90 via-black/50 to-black/10" />
+        {/* CONTENT */}
+        <div className="flex min-w-0 flex-1 flex-col gap-4">
+          {/* TITLE + BADGES */}
+          <div className="min-w-0">
+            <h3 className="truncate text-xl font-semibold text-slate-900 dark:text-slate-50">
+              {project.title}
+            </h3>
 
-      <div className="absolute right-3 top-3 z-10 flex gap-2">
-        {isRecent && (
-          <Badge
-            size="xs"
-            radius="xl"
-            color="teal"
-            variant="filled"
-          >
-            New
-          </Badge>
-        )}
-      </div>
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              {isRecent && (
+                <Badge size="sm" radius="xl" color="teal" variant="filled">
+                  New
+                </Badge>
+              )}
+              {project.isContributor ? (
+                <Badge variant="light" color="grape" radius="md" size="sm" leftSection={<Users size={11} />}>
+                  Collaborative Project
+                </Badge>
+              ) : (
+                <Badge variant="light" color="teal" radius="md" size="sm" leftSection={<User size={11} />}>
+                  Solo Project
+                </Badge>
+              )}
+            </div>
+          </div>
 
-      <Link
-        href={`/projects/${project?.slug}`}
-        className="relative z-10 flex min-h-[260px] flex-1 flex-col justify-end p-4 no-underline sm:min-h-[300px]"
-      >
-        <div className="flex min-w-0 flex-col gap-3">
-          <h3 className="truncate text-lg font-semibold text-white">{project.title}</h3>
-
-          <p className="line-clamp-2 text-sm leading-6 text-slate-200">
+          {/* DESCRIPTION */}
+          <p className="text-sm leading-7 text-slate-600 dark:text-slate-400">
             {project.description}
           </p>
 
-          <div className="flex flex-col gap-1">
-            {/* <div className="flex items-center gap-1.5">
-              <CalendarDays size={12} className="shrink-0 text-slate-300" />
-              <span className="text-xs text-slate-300">
-                Added {moment(project.createdAt).format("D MMMM YYYY")}
-              </span>
-            </div> */}
-
+          {/* DATES */}
+          <div className="flex flex-wrap gap-x-8 gap-y-2 text-xs text-slate-500 dark:text-slate-400">
             <div className="flex items-center gap-1.5">
-              <RefreshCw size={12} className="shrink-0 text-slate-300" />
-              <span className="text-xs text-slate-300">
-                Updated {moment(project.updatedAt).fromNow()}
-              </span>
+              <CalendarDays size={13} className="shrink-0" />
+              Created {moment(project.createdAt).format('D MMMM YYYY')}
             </div>
+            <div className="flex items-center gap-1.5">
+              <RefreshCw size={13} className="shrink-0" />
+              Updated {moment(project.updatedAt).fromNow()}
+            </div>
+          </div>
 
+          {/* TECH STACK */}
+          {technologies.length > 0 && (
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center gap-2 text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                <Code2 size={13} />
+                Core stack Used
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {technologies.map((tech, index) => (
+                  <Badge key={`${tech}-${index}`} radius="xl" variant="light" color="blue" size="sm">
+                    {tech}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <Divider />
+
+          {/* LINKS */}
+          <div className="flex flex-wrap gap-2">
+            {project.githubUrl && (
+              <Button
+                component="a"
+                href={project.githubUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                radius="md"
+                variant="filled"
+                color="blue"
+                size="sm"
+                leftSection={<Github size={14} />}
+              >
+                Source Code
+              </Button>
+            )}
+
+            {project.liveUrl && (
+              <Button
+                component="a"
+                href={project.liveUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                radius="md"
+                variant="filled"
+                color="green"
+                size="sm"
+                leftSection={<ExternalLink size={14} />}
+              >
+                Live Site
+              </Button>
+            )}
           </div>
         </div>
-      </Link>
-
-      <div className="relative z-10 flex gap-2 p-4 pt-0">
-        {project.githubUrl && (
-          <Button
-            component="a"
-            href={project.githubUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            radius="md"
-            variant="white"
-            color="dark"
-            size="sm"
-            leftSection={<Github size={14} />}
-            className="flex-1"
-          >
-            Source Code
-          </Button>
-        )}
-
-        {project.liveUrl && (
-          <Button
-            component="a"
-            href={project.liveUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            radius="md"
-            variant="filled"
-            color="green"
-            size="sm"
-            leftSection={<ExternalLink size={14} />}
-            className="flex-1"
-          >
-            Live Site
-          </Button>
-        )}
       </div>
     </Card>
   )

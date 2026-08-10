@@ -45,9 +45,8 @@ function applyThemeMode(mode: ThemeMode) {
 
 const links = [
   { label: "Home", href: "/" },
-  { label: "Skills", href: "/skills" },
   { label: "Connect", href: "/connect" },
-  { label: "Projects", href: "/projects" },
+  { label: "Projects", href: "/#projects" },
 ]
 
 export default function Header() {

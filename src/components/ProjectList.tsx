@@ -2,18 +2,11 @@
 
 import { ProjectCard } from '@/components/ProjectCard'
 import type { Project } from '@/server/project.functions'
-import { Card, Badge, TextInput, Pagination } from '@mantine/core'
-import { LayoutGrid, Search, Star, X } from 'lucide-react'
-import { useMemo, useState } from 'react'
-import { useDebouncedValue } from '@mantine/hooks'
+import { Card, Pagination } from '@mantine/core'
+import { LayoutGrid } from 'lucide-react'
+import { useState } from 'react'
 
 const PAGE_SIZE = 6
-type FilterValue = 'all' | 'featured'
-
-const FILTER_OPTIONS = [
-  { label: 'All', value: 'all', icon: LayoutGrid },
-  { label: 'Featured', value: 'featured', icon: Star },
-]
 
 interface ProjectListProps {
   projects: Project[]
@@ -21,100 +14,27 @@ interface ProjectListProps {
 
 export function ProjectList({ projects }: ProjectListProps) {
   const [page, setPage] = useState(1)
-  const [searchInput, setSearchInput] = useState('')
-  const [filter, setFilter] = useState<FilterValue>('all')
 
-  const [debouncedSearch] = useDebouncedValue(searchInput, 300)
-  const isSearching = debouncedSearch.trim().length > 0
-
-  const filtered = useMemo(() => {
-    return projects.filter((project) => {
-      if (filter === 'featured' && !project.isFeatured) return false
-      if (isSearching && !project.title!.toLowerCase().includes(debouncedSearch.toLowerCase()))
-        return false
-      return true
-    })
-  }, [projects, filter, isSearching, debouncedSearch])
-
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
-
-  const handleSearch = (value: string) => {
-    setSearchInput(value)
-    setPage(1)
-  }
-
-  const handleFilter = (value: FilterValue) => {
-    setFilter(value)
-    setPage(1)
-  }
+  const totalPages = Math.max(1, Math.ceil(projects.length / PAGE_SIZE))
+  const paginated = projects.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE)
 
   return (
     <div className="flex flex-col gap-6">
       <Card radius="xl" padding="lg" withBorder>
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
-              <Search size={14} />
-              Search projects
-            </div>
-
-            <TextInput
-              radius="xl"
-              size="md"
-              placeholder="Search projects by title..."
-              leftSection={<Search size={16} />}
-              value={searchInput}
-              onChange={(e) => handleSearch(e.currentTarget.value)}
-              rightSection={
-                searchInput ? (
-                  <button onClick={() => handleSearch('')}>
-                    <X size={14} />
-                  </button>
-                ) : null
-              }
-            />
-
-            {isSearching && (
-              <Badge variant="light" color="gray" radius="xl" className="w-fit">
-                {`Results for "${debouncedSearch}"`}
-              </Badge>
-            )}
-          </div>
-
-          <div className="flex flex-col gap-3">
-            <div className="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-slate-500">
-              <LayoutGrid size={14} />
-              Filter
-            </div>
-
-            <div className="flex gap-2">
-              {FILTER_OPTIONS.map((option) => {
-                const active = filter === option.value
-                const Icon = option.icon
-
-                return (
-                  <Badge
-                    key={option.value}
-                    radius="xl"
-                    size="lg"
-                    variant={active ? 'filled' : 'light'}
-                    color={active ? 'blue' : 'gray'}
-                    className="cursor-pointer transition hover:scale-[1.03]"
-                    leftSection={<Icon size={12} />}
-                    onClick={() => handleFilter(option.value as FilterValue)}
-                  >
-                    {option.label}
-                  </Badge>
-                )
-              })}
-            </div>
+        <div className="flex flex-col items-center justify-center gap-6 text-center">
+          <div>
+            <h2 className="text-lg font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              Projects Overview
+            </h2>
+            <p className="mt-1 text-md text-slate-500 dark:text-slate-400">
+              Real-world problems tackled through code — full details for every project are listed below.
+            </p>
           </div>
         </div>
       </Card>
 
       {paginated.length ? (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
+        <div className="flex flex-col gap-6">
           {paginated.map((project) => (
             <ProjectCard key={project.id} project={project} />
           ))}
