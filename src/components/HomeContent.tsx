@@ -63,12 +63,12 @@ const CORE_SKILLS = {
   Frontend: {
     color: "#3B82F6",
     icon: MonitorSmartphone,
-    skills: ["TypeScript", "React 19", "Zustand", "NextJS (App Router)", "Tailwind CSS"],
+    skills: ["TypeScript", "React 19", "Zustand","DaisyUi", "NextJS (App Router)", "Tailwind CSS"],
   },
   Backend: {
     color: "#22C55E",
     icon: Server,
-    skills: ["TypeScript", "REST APIs", "Supabase", "Python (FastAPI)", "PostgreSQL"],
+    skills: ["TypeScript", "REST APIs", "Supabase", "Drizzle ORM","Python (FastAPI)", "PostgreSQL"],
   },
   DevOps: {
     color: "#F97316",
