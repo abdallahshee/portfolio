@@ -20,7 +20,7 @@ export function ProjectList({ projects }: ProjectListProps) {
 
   return (
     <div className="flex flex-col gap-6">
-      <Card radius="xl" padding="lg" withBorder>
+    
         <div className="flex flex-col items-center justify-center gap-6 text-center">
           <div>
             <h2 className="text-lg font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
@@ -31,7 +31,7 @@ export function ProjectList({ projects }: ProjectListProps) {
             </p>
           </div>
         </div>
-      </Card>
+    
 
       {paginated.length ? (
         <div className="flex flex-col gap-6">

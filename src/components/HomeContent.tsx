@@ -1,7 +1,7 @@
 'use client'
 
 import BrandHome from '@/components/BrandHome'
-import { Button, Paper, ThemeIcon } from '@mantine/core'
+import { Button, Card, Paper, ThemeIcon } from '@mantine/core'
 import Link from 'next/link'
 import {
   ArrowRight, FolderKanban, Mail,
@@ -123,17 +123,6 @@ export default function HomeContent({ children }: { children: ReactNode }) {
               </p>
 
               <div className="flex flex-wrap justify-center gap-3 sm:justify-start">
-                <Link href="/#projects" className="w-full sm:w-48">
-                  <Button
-                    size="md"
-                    radius="sm"
-                    fullWidth
-                    className="bg-linear-to-r from-teal-500 to-blue-500"
-                    rightSection={<ArrowRight size={18} />}
-                  >
-                    My Projects
-                  </Button>
-                </Link>
 
                 <Link href="/connect" className="w-full sm:w-48">
                   <Button
@@ -231,7 +220,10 @@ export default function HomeContent({ children }: { children: ReactNode }) {
 
       {/* PROJECTS */}
       <div id="projects" className="w-full scroll-mt-20">
+   
+     
         {children}
+      
       </div>
 
       {/* CTA */}
