@@ -6,10 +6,10 @@ import '@mantine/tiptap/styles.css'
 import type { Metadata } from 'next'
 import { MantineProvider } from '@mantine/core'
 import { Notifications } from '@mantine/notifications'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import ScrollToTop from '@/components/ScrollTop'
-import { ScrollToTopOnRouteChange } from '@/components/ScrollTopOnRouteChnage'
+import Header from '@/components/header'
+import Footer from '@/components/footer'
+import ScrollToTop from '@/components/scroll-top'
+import { ScrollToTopOnRouteChange } from '@/components/scroll-top-on-route-chnage'
 
 export const metadata: Metadata = {
   title: 'Abdallah Shee',

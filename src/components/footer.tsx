@@ -19,7 +19,7 @@ import {
 } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import Brand from "./Brand"
+import Brand from "./brand"
 
 const links = [
   { label: "Home", href: "/", icon: Home },

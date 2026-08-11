@@ -1,6 +1,6 @@
 'use client'
 
-import { ProjectCard } from '@/components/ProjectCard'
+import { ProjectCard } from '@/components/project-card'
 import type { Project } from '@/server/project.functions'
 import { Card, Pagination } from '@mantine/core'
 import { LayoutGrid } from 'lucide-react'

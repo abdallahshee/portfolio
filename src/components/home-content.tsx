@@ -1,6 +1,6 @@
 'use client'
 
-import BrandHome from '@/components/BrandHome'
+import BrandHome from '@/components/brand-home'
 import { Button, Paper, ThemeIcon } from '@mantine/core'
 import Link from 'next/link'
 import {

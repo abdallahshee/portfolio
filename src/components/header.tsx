@@ -13,7 +13,7 @@ import {
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Sun, Moon, Download } from "lucide-react"
-import Brand from "./Brand"
+import Brand from "./brand"
 
 type ThemeMode = "light" | "dark"
 const resume = "/abdallah-resume.pdf"

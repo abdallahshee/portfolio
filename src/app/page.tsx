@@ -1,5 +1,5 @@
-import HomeContent from '@/components/HomeContent'
-import { ProjectList } from '@/components/ProjectList'
+import HomeContent from '@/components/home-content'
+import { ProjectList } from '@/components/project-list'
 import { getAllProjects } from '@/server/project.functions'
 
 export default async function Page() {
