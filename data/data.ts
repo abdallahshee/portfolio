@@ -72,11 +72,11 @@ export const data =
             "updated_at": "2026-03-28 07:39:14.072038",
             "github_url": "https://github.com/abdallahshee/eTIMS",
             "technologies": [
-                "MongoDb",
                 "React",
                 "NextJS",
                 "Tailwind CSS",
-                "Formik",
+                "Mantine UI",
+                "Zod",
                 "TypeScript",
             ],
             "is_contributor": false
