@@ -74,11 +74,10 @@ export const data =
             "technologies": [
                 "MongoDb",
                 "React",
-                "ExpressJS",
+                "NextJS",
                 "Tailwind CSS",
                 "Formik",
                 "TypeScript",
-                "Tanstack Query"
             ],
             "is_contributor": false
         },
