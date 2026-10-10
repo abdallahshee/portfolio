@@ -143,7 +143,7 @@ export default function HomeContent({ children }: { children: ReactNode }) {
           <div className="flex justify-center lg:justify-end">
             <div style={{ animation: "float-avatar 6s ease-in-out infinite" }} className="relative h-65 w-65 sm:h-80 sm:w-80">
               <div className="h-full w-full overflow-hidden rounded-full border border-slate-700/50 shadow-2xl">
-                <img src="/images/home.jpg" alt="Abdallah Shee" className="h-full w-full object-cover" />
+                <img src="/images/profile.jpg" alt="Abdallah Shee" className="h-full w-full object-cover" />
               </div>
               <div className="absolute -bottom-6 left-1/2 z-20 w-full -translate-x-1/2">
                 <div className="w-full rounded-xl bg-green-700 px-0 py-3 backdrop-blur">
