@@ -40,7 +40,7 @@ export default function Footer() {
           <Stack gap="md">
             <Link href="/" className="inline-block w-fit">
               <Image
-                src="/images/profile.jpg"
+                src="/images/projects/profile.jpg"
                 alt="Abdallah Shee"
                 w={60}
                 h={60}

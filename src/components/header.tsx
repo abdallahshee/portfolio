@@ -84,7 +84,7 @@ export default function Header() {
     <div className="flex flex-shrink-0 items-center gap-2">
       <Link href="/" className="flex items-center gap-2.5 no-underline">
         <Image
-          src="/images/profile.jpg"
+          src="/images/projects/profile.jpg"
           alt="Abdallah Shee"
           radius="md"
           w={36}
