@@ -74,7 +74,7 @@ export const ProjectCard = ({ project }: ProjectCardProps) => {
             </div>
           </div>
 
-          {/* DESCRIPTION */}
+   
           <p className="text-sm leading-7 text-slate-600 dark:text-slate-400">
             {project.description}
           </p>

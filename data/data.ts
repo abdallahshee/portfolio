@@ -84,23 +84,23 @@ export const data =
             ],
             "is_contributor": false
         },
-                {
-            "id": "lluoeah8q6Y83o22jOQzr9rf",
-            "title": "Personal Portfolio",
-            "slug": "personal-portfolio",
-            "description": "This is my personal portfolio — a web app showcasing the real projects I have shipped, the skills I have sharpened along the way, and how I think about software development. If you are a client or employer, dig into my work and get a genuine feel for what I build — SaaS platforms, booking systems, school management apps, and custom software that solves real problems. You can also reach me directly from the site via email, phone, WhatsApp, LinkedIn, or GitHub. Every project listed here is real, shipped, and still live — not a tutorial clone or a throwaway demo.",
-            "image_url": "/images/projects/profile.jpg",
-            "live_url": "https://portfolio-git-main-abdallahshees-projects.vercel.app/",
-            "created_at": "2026-05-16 09:57:08.634873",
-            "updated_at": "2026-07-24 09:57:08.634873",
-            "github_url": "https://github.com/abdallahshee/portfolio",
-            "technologies": [
-                "React",
-                "Mantine UI",
-                "NextJS",
-                "Tailwind css",
-                "TypeScript"
-            ],
-            "is_contributor": false
-        }
+        // {
+        //     "id": "lluoeah8q6Y83o22jOQzr9rf",
+        //     "title": "Personal Portfolio",
+        //     "slug": "personal-portfolio",
+        //     "description": "This is my personal portfolio — a web app showcasing the real projects I have shipped, the skills I have sharpened along the way, and how I think about software development. If you are a client or employer, dig into my work and get a genuine feel for what I build — SaaS platforms, booking systems, school management apps, and custom software that solves real problems. You can also reach me directly from the site via email, phone, WhatsApp, LinkedIn, or GitHub. Every project listed here is real, shipped, and still live — not a tutorial clone or a throwaway demo.",
+        //     "image_url": "/images/projects/profile.jpg",
+        //     "live_url": "https://portfolio-git-main-abdallahshees-projects.vercel.app/",
+        //     "created_at": "2026-05-16 09:57:08.634873",
+        //     "updated_at": "2026-07-24 09:57:08.634873",
+        //     "github_url": "https://github.com/abdallahshee/portfolio",
+        //     "technologies": [
+        //         "React",
+        //         "Mantine UI",
+        //         "NextJS",
+        //         "Tailwind css",
+        //         "TypeScript"
+        //     ],
+        //     "is_contributor": false
+        // }
     ]
